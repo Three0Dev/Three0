@@ -1,9 +1,13 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
+# Developer note: near.gitignore will be renamed to .gitignore upon project creation
 # dependencies
 /node_modules
 /.pnp
 .pnp.js
+/out
+
+#keys
+/neardev
 
 # testing
 /coverage
@@ -21,3 +25,5 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+contract/node_modules
