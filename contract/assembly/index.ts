@@ -12,23 +12,75 @@
  *
  */
 
-import { Context, logging, storage } from 'near-sdk-as'
+import { Context, logging, PersistentMap, base64, math} from 'near-sdk-as'
+import {User, Database, Project} from './model'
 
-const DEFAULT_MESSAGE = 'Hello'
+// Dev Functions
 
-// Exported functions will be part of the public interface for your smart contract.
-// Feel free to extract behavior to non-exported functions!
-export function getGreeting(accountId: string): string | null {
-  // This uses raw `storage.get`, a low-level way to interact with on-chain
-  // storage for simple contracts.
-  // If you have something more complex, check out persistent collections:
-  // https://docs.near.org/docs/concepts/data-storage#assemblyscript-collection-types
-  return storage.get<string>(accountId, DEFAULT_MESSAGE)
+let devProjectMap = new PersistentMap<string, Array<string>>('devProjectMap');
+let projectMap = new PersistentMap<string, Project>('projectMap')
+
+const DNA_DIGITS = 8
+
+export function createDev(): void {
+    if(devProjectMap.contains(Context.sender)) return
+    devProjectMap.set(Context.sender, [])
+    logging.log('Created dev account')
 }
 
-export function setGreeting(message: string): void {
-  const accountId = Context.sender
-  // Use logging.log to record logs permanently to the blockchain!
-  logging.log(`Saving greeting "${message}" for account "${accountId}"`)
-  storage.set(accountId, message)
+export function createProject(name: string = `Untitled Project`): void {
+    if(!devProjectMap.contains(Context.sender)) return
+    let project = new Project(Context.sender, name)
+
+    const pid = base64.encode(math.randomBuffer(DNA_DIGITS));
+
+    projectMap.set(pid, project)
+    devProjectMap.get(Context.sender)?.push(pid)
+    logging.log(`Created project ${name} by ${Context.sender}`)
+}
+
+export function addDatabase(details: any, pid: string): void {
+    if(!devProjectMap.contains(Context.sender)) return
+    let project = projectMap.get(pid)
+    if(!project) return
+    let database = new Database(details.url, details.name, details.type)
+    project.addDatabase(database)
+    logging.log(`Added database ${details.url} to project ${pid}`)
+}
+
+export function getProjectDetails(pid: string): Project | null{
+  logging.log(`Getting project details for ${pid}`)
+    return projectMap.get(pid)
+}
+
+export function getAllProjects(): Array<any> {
+    let projects:Array<any> = []
+    const project_ids = devProjectMap.get(Context.sender) || []
+    project_ids.forEach(pid => {
+        let project = projectMap.get(pid)
+        if(project){
+            projects.push({
+                name: project.name,
+                numUsers: project.users.size,
+                numDatabases: project.databases.length,
+            })
+        }
+    })
+    return projects
+}
+
+// User Functions
+
+export function createUser(pid: string, orbitID: string): void {
+    let project = projectMap.get(pid)
+    if(!project) return
+    let user = new User(Context.sender, orbitID)
+    project.addUser(user)
+    logging.log(`Created user ${Context.sender} in project ${pid}`)
+}
+
+export function getDatabases(pid: string): Array<Database> {
+    let project = projectMap.get(pid)
+    logging.log(`Got databases for project ${pid}`)
+    return project && project.users.has(Context.sender) ? project.databases : []
 }
