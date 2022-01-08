@@ -39,6 +39,25 @@ export function createProject(name: string = `Untitled Project`): void {
     logging.log(`Created project ${name} by ${Context.sender}`)
 }
 
+export function updateProject(pid: string, name:string): void {
+    assert(devProjectMap.contains(Context.sender))
+    let project = projectMap.get(pid)
+    if(!project) return
+    project.name = name
+    logging.log(`Updated project ${name} by ${Context.sender}`)
+}
+
+export function deleteProject(pid: string): void {
+    assert(devProjectMap.contains(Context.sender) && projectMap.contains(pid))
+
+    let project = projectMap.get(pid)
+    if(!project) return
+    project.databases = []
+
+    projectMap.delete(pid)
+    logging.log(`Deleted project ${pid}`)
+}
+
 export function addDatabase(details: any, pid: string): void {
     assert(devProjectMap.contains(Context.sender))
     let project = projectMap.get(pid)
