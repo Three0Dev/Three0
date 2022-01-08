@@ -23,13 +23,13 @@ let projectMap = new PersistentMap<string, Project>('projectMap')
 const DNA_DIGITS = 8
 
 export function createDev(): void {
-    if(devProjectMap.contains(Context.sender)) return
+    assert(!devProjectMap.contains(Context.sender))
     devProjectMap.set(Context.sender, [])
     logging.log('Created dev account')
 }
 
 export function createProject(name: string = `Untitled Project`): void {
-    if(!devProjectMap.contains(Context.sender)) return
+    assert(devProjectMap.contains(Context.sender))
     let project = new Project(Context.sender, name)
 
     const pid = base64.encode(math.randomBuffer(DNA_DIGITS));
@@ -40,7 +40,7 @@ export function createProject(name: string = `Untitled Project`): void {
 }
 
 export function addDatabase(details: any, pid: string): void {
-    if(!devProjectMap.contains(Context.sender)) return
+    assert(devProjectMap.contains(Context.sender))
     let project = projectMap.get(pid)
     if(!project) return
     let database = new Database(details.url, details.name, details.type)
@@ -49,7 +49,7 @@ export function addDatabase(details: any, pid: string): void {
 }
 
 export function getProjectDetails(pid: string): Project | null{
-  logging.log(`Getting project details for ${pid}`)
+    logging.log(`Getting project details for ${pid}`)
     return projectMap.get(pid)
 }
 
