@@ -107,8 +107,16 @@ export function userExists(pid:string): bool {
     return project != null && project.users.has(Context.sender)
 }
 
-export function getDatabases(pid: string): Array<Database> {
+export function getDatabaseAddress(pid: string, name:string): Database | null {
     let project = projectMap.get(pid)
     logging.log(`Got databases for project ${pid}`)
-    return project && project.users.has(Context.sender) ? project.databases : []
+    if(project){
+        for(let i = 0; i < project.databases.length; i++){
+            let database = project.databases[i]
+            if(database.name == name){
+                return database
+            }
+        }
+    }
+    return null
 }

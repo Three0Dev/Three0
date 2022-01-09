@@ -3,7 +3,7 @@ export class Project {
     name: string;
     budget: number;
     currentUsed: number = 0;
-    databases: Database[] = [];
+    databases: Array<Database> = [];
     users: Map<string, User>;
 
     constructor(creator: string, name: string, budget: number = 100) {
