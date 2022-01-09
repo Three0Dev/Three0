@@ -67,6 +67,10 @@ export function addDatabase(details: any, pid: string): void {
     logging.log(`Added database ${details.url} to project ${pid}`)
 }
 
+export function deleteDatabase(): void {
+    // TODO
+}
+
 export function getProjectDetails(pid: string): Project | null{
     logging.log(`Getting project details for ${pid}`)
     return projectMap.get(pid)
@@ -96,6 +100,11 @@ export function createUser(pid: string, orbitID: string): void {
     let user = new User(Context.sender, orbitID)
     project.addUser(user)
     logging.log(`Created user ${Context.sender} in project ${pid}`)
+}
+
+export function userExists(pid:string): bool {
+    let project = projectMap.get(pid)
+    return project != null && project.users.has(Context.sender)
 }
 
 export function getDatabases(pid: string): Array<Database> {
