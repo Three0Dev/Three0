@@ -68,8 +68,17 @@ export function addDatabase(details: any, pid: string): void {
     logging.log(`Added database ${details.url} to project ${pid}`)
 }
 
-export function deleteDatabase(): void {
-    // TODO
+export function deleteDatabase(pid:string, name:string): void {
+    let project = projectMap.get(pid)
+    if(!project) return
+    for(let i = 0; i < project.databases.length; i++){
+        let database = project.databases[i]
+        if(database.name == name){
+            project.databases.splice(i, 1)
+            break
+        }
+    }
+    logging.log(`Deleted database ${name} from project ${pid}`)
 }
 
 export function getProjectDetails(pid: string): Project | null{
