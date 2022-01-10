@@ -28,7 +28,7 @@ export function createDev(): void {
     logging.log('Created dev account')
 }
 
-export function createProject(name: string = `Untitled Project`): void {
+export function createProject(name: string = `Untitled Project`): string {
     assert(devProjectMap.contains(Context.sender))
     let project = new Project(Context.sender, name)
 
@@ -37,6 +37,7 @@ export function createProject(name: string = `Untitled Project`): void {
     projectMap.set(pid, project)
     devProjectMap.get(Context.sender)?.push(pid)
     logging.log(`Created project ${name} by ${Context.sender}`)
+    return pid
 }
 
 export function updateProject(pid: string, name:string): void {
