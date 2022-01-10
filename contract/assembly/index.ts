@@ -104,10 +104,10 @@ export function getAllProjects(): Array<any> {
 
 // User Functions
 
-export function createUser(pid: string, orbitID: string): void {
+export function createUser(pid: string): void {
     let project = projectMap.get(pid)
     if(!project) return
-    let user = new User(Context.sender, orbitID)
+    let user = new User(Context.sender)
     project.addUser(user)
     logging.log(`Created user ${Context.sender} in project ${pid}`)
 }

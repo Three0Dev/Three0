@@ -37,25 +37,13 @@ export class Database {
 }
 
 export class User {
-    private orbitID: string;
     private accountID: string;
 
-    constructor(accountID: string, orbitID: string = '') {
+    constructor(accountID: string) {
         this.accountID = accountID;
-        this.orbitID = orbitID;
     }
 
     getaccountID(): string {
         return this.accountID;
     }
-
-    getOrbitID(sender: string): string {
-        return this.accountID == sender ? this.orbitID : '';
-    }
-
-    setOrbitID(orbitID: string, sender: string): void {
-        if (this.accountID !== sender) return;
-        this.orbitID = orbitID;
-    }
-
 }
