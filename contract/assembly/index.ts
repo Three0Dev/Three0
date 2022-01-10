@@ -120,12 +120,11 @@ export function userExists(pid:string): bool {
 export function getDatabaseAddress(pid: string, name:string): Database | null {
     let project = projectMap.get(pid)
     logging.log(`Got databases for project ${pid}`)
-    if(project){
-        for(let i = 0; i < project.databases.length; i++){
-            let database = project.databases[i]
-            if(database.name == name){
-                return database
-            }
+    if(!project) return null
+    for(let i = 0; i < project.databases.length; i++){
+        let database = project.databases[i]
+        if(database.name == name){
+            return database
         }
     }
     return null
