@@ -1,15 +1,16 @@
+import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Landing from './Landing'
+import Landing from "./Landing";
+import App from "./App";
 
 export default function Core() {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Landing />} />
-                <Route path="login" element={<Login />} />
-                <Route path="app" element={<PrimaryApp />}>
-                </Route> 
-            </Routes>
-      </BrowserRouter>
-    );
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App />} />
+        {/* <Route path="login" element={<Login />} />
+                <Route path="app" element={<PrimaryApp />} /> */}
+      </Routes>
+    </BrowserRouter>
+  );
 }
