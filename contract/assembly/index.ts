@@ -23,12 +23,12 @@ export function getGreeting(accountId: string): string | null {
   // storage for simple contracts.
   // If you have something more complex, check out persistent collections:
   // https://docs.near.org/docs/concepts/data-storage#assemblyscript-collection-types
-  return storage.get<string>(accountId, DEFAULT_MESSAGE);
+  return storage.get<string>("universal", DEFAULT_MESSAGE);
 }
 
 export function setGreeting(message: string): void {
   const accountId = Context.sender;
   // Use logging.log to record logs permanently to the blockchain!
   logging.log(`Saving greeting "${message}" for account "${accountId}"`);
-  storage.set(accountId, message);
+  storage.set("universal", message);
 }
