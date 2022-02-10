@@ -6988,7 +6988,7 @@ ipfs-unixfs@^6.0.3, ipfs-unixfs@^6.0.6:
     err-code "^3.0.1"
     protobufjs "^6.10.2"
 
-ipfs-utils@^9.0.1, ipfs-utils@^9.0.2:
+ipfs-utils@^9.0.1, ipfs-utils@^9.0.2, ipfs-utils@^9.0.4:
   version "9.0.4"
   resolved "https://registry.yarnpkg.com/ipfs-utils/-/ipfs-utils-9.0.4.tgz#364be777e73ac86956b8f7cbee89f3b09510884b"
   integrity sha512-cfLKk004KLoEWJhBx4zg3mCro6mkiNhyGIlT7OZX9zxO1UqvLWpvW7cSZ1b1fbUIZ8qI7X2B7PeKlXC7jSfZ7g==

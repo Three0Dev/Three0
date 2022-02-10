@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "ipfs": "^0.62.1",
+    "ipfs-utils": "^9.0.4",
     "near-api-js": "~0.43.1",
     "orbit-db": "^0.28.1",
     "react": "~17.0.1",
