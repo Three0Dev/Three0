@@ -1,5 +1,5 @@
 {
-  "name": "DESI",
+  "name": "desi",
   "version": "0.1.0",
   "license": "UNLICENSED",
   "scripts": {
@@ -14,7 +14,8 @@
     "prestart": "npm run build:contract:debug && npm run dev:deploy:contract",
     "start": "echo The app is starting! It will automatically open in your browser when ready && env-cmd -f ./neardev/dev-account.env parcel src/index.html --open",
     "dev": "nodemon --watch contract -e ts --exec \"npm run start\"",
-    "test": "npm run build:contract:debug && cd contract && npm run test && cd .. && jest test --runInBand"
+    "test": "npm run build:contract:debug && cd contract && npm run test && cd .. && jest test --runInBand",
+    "test2": "npm run build:contract:debug && cd contract && npm run test"
   },
   "devDependencies": {
     "@babel/core": "~7.14.0",
@@ -32,11 +33,11 @@
     "shelljs": "~0.8.4"
   },
   "dependencies": {
-    "@emotion/react": "^11.7.1",
-    "@emotion/styled": "^11.6.0",
-    "@mui/material": "^5.2.7",
+    "ipfs": "^0.62.1",
+    "ipfs-utils": "^9.0.4",
     "near-api-js": "~0.43.1",
     "near-sdk-as": "^3.2.3",
+    "orbit-db": "^0.28.1",
     "react": "~17.0.1",
     "react-dom": "~17.0.1",
     "react-router-dom": "^6.2.1",
