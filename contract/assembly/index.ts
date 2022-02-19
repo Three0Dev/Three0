@@ -76,7 +76,7 @@ export function setGreeting(message: string): void {
 //   let project = projectMap.get(pid);
 //   if (!project) return;
 //   project.name = name;
-//   logging.log(`Updated project ${name} by ${Context.sender}`);
+//   logging.log(`Updated psroject ${name} by ${Context.sender}`);
 // }
 
 // export function deleteProject(pid: string): void {
@@ -139,20 +139,20 @@ export function setGreeting(message: string): void {
 //   return projects;
 // }
 
-// // User Functions
+// User Functions
 
-// // export function createUser(pid: string): void {
-// //   let project = projectMap.get(pid);
-// //   if (!project) return;
-// //   let user = new User(Context.sender);
-// //   project.addUser(user);
-// //   logging.log(`Created user ${Context.sender} in project ${pid}`);
-// // }
+// export function createUser(pid: string): void {
+//   let project = projectMap.get(pid);
+//   if (!project) return;
+//   let user = new User(Context.sender);
+//   project.addUser(user);
+//   logging.log(`Created user ${Context.sender} in project ${pid}`);
+// }
 
-// // export function userExists(pid: string): bool {
-// //   let project = projectMap.get(pid);
-// //   return project != null && project.users.has(Context.sender);
-// // }
+// export function userExists(pid: string): bool {
+//   let project = projectMap.get(pid);
+//   return project != null && project.users.has(Context.sender);
+// }
 
 // export function getDatabaseAddress(pid: string, name: string): Database | null {
 //   let project = projectMap.get(pid);
