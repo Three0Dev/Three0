@@ -7,7 +7,6 @@ import {
   Pane,
   SearchInput
 } from 'evergreen-ui'
-import orbitLogo from '../../public/Orbit_round-02.png'
 
 export function Header () {
   const navigate = useNavigate();
@@ -42,9 +41,8 @@ export function Header () {
             flexDirection='row' 
             alignItems='center'
           >
-            <img alt="" src={orbitLogo} width={majorScale(5)}/>
-            <Heading size={800} fontFamily='Titillium Web' marginX={majorScale(2)}>
-            CONTROL CENTER
+            <Heading size={800}>
+            Database
             </Heading>
           </Link>
         </Pane>

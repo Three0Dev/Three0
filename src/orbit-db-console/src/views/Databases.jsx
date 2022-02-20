@@ -17,6 +17,9 @@ import {ProgramList} from '../components/DatabaseList'
 import {CreateDialog} from '../components/CreateDialog'
 import {AddDialog} from '../components/AddDialog'
 
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPlus} from "@fortawesome/free-solid-svg-icons";
+
 export function DatabasesView () {
   const [appState, dispatch] = useStateValue()
 
@@ -69,16 +72,6 @@ export function DatabasesView () {
   return (
     <>
     <Pane marginX={majorScale(6)}>
-      <Heading
-        fontFamily='Titillium Web'
-        color='#425A70'
-        size={700}
-        textTransform='uppercase'
-        marginTop={majorScale(3)}
-        marginBottom={majorScale(2)}
-      >
-        Databases
-      </Heading>
     </Pane>
     <Pane 
       display='flex' 
@@ -93,9 +86,10 @@ export function DatabasesView () {
         height={24}
         onClick={handleCreateDatabase}
       >
+        <div style={{marginRight: "8%"}}><FontAwesomeIcon icon={faPlus} /></div>
         Create
       </Button>
-      <Button
+      {/* <Button
         iconBefore='plus'
         appearance='default'
         height={24}
@@ -103,7 +97,7 @@ export function DatabasesView () {
         onClick={handleAddDatabase}
       >
         Open
-      </Button>
+      </Button> */}
     </Pane>
     <Pane display='flex' justifyContent='center' overflow='auto'>
       <CreateDialog onCreate={createDB}/>
