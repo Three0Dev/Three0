@@ -1,9 +1,8 @@
 import React from 'react'
 import { 
   majorScale,
-  minorScale,
   Button,
-  Heading,
+  PlusIcon,
   Pane,
   Spinner,
   Text
@@ -16,9 +15,6 @@ import { getAllDatabases, addDatabase, removeDatabase, createDatabase } from '..
 import {ProgramList} from '../components/DatabaseList'
 import {CreateDialog} from '../components/CreateDialog'
 import {AddDialog} from '../components/AddDialog'
-
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPlus} from "@fortawesome/free-solid-svg-icons";
 
 export function DatabasesView () {
   const [appState, dispatch] = useStateValue()
@@ -86,7 +82,7 @@ export function DatabasesView () {
         height={24}
         onClick={handleCreateDatabase}
       >
-        <div style={{marginRight: "8%"}}><FontAwesomeIcon icon={faPlus} /></div>
+        <div style={{marginRight: "8%"}}><PlusIcon /></div>
         Create
       </Button>
       {/* <Button

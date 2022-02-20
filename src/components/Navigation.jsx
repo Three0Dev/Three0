@@ -1,15 +1,13 @@
 import React from "react";
-import { Tablist, Tab } from 'evergreen-ui';
+import { Tablist, Tab, HomeIcon, DatabaseIcon, FolderOpenIcon, SettingsIcon, KeyIcon} from 'evergreen-ui';
 import {useParams, useNavigate, useLocation} from "react-router-dom";
 import { useEffect } from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faHouse, faUserLock, faDatabase, faFolderOpen, faGear} from "@fortawesome/free-solid-svg-icons";
 
 export function Navigation(props) {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
 
     const tabs = ['Auth', 'Database', 'Home', 'Storage', 'Settings']
-    const tabIcon = [faUserLock, faDatabase, faHouse, faFolderOpen, faGear]
+    const tabIcon = [<KeyIcon />, <DatabaseIcon />, <HomeIcon />, <FolderOpenIcon />, <SettingsIcon />]
 
     let navigate = useNavigate();
     let params = useParams().pid;
@@ -68,7 +66,7 @@ export function Navigation(props) {
                 isSelected={index === selectedIndex}
                 aria-controls={`panel-${tab}`}
             >
-                {<div style={{marginRight:"8%"}}><FontAwesomeIcon icon={tabIcon[index]} /></div>}
+            <div style={{marginRight:"8%"}}>{tabIcon[index]}</div>
                 {tab}
             </Tab>
             ))}
