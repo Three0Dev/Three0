@@ -37,7 +37,10 @@ export class Login extends React.Component {
         position: "relative",
         width: "100%",
         height: "13%",
-        top: "25%"
+        top: "25%",
+        // TODO remove when theme is complete
+        background: "#7B20A2",
+        color: "white",
       }
     }
   }
