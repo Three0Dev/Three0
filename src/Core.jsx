@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 // import App from "./App";
 import {Login, Dash, Auth, Storage, Settings, App, NotFound} from "./screens";
 import {DBView} from "../src/orbit-db-console/src/App";
@@ -7,13 +7,14 @@ import {Pane} from "evergreen-ui";
 import {ProgramView as DatabaseView} from '../src/orbit-db-console/src/views/Database.jsx'
 import {DatabasesView} from '../src/orbit-db-console/src/views/Databases.jsx'
 import {SearchResultsView} from '../src/orbit-db-console/src/views/SearchResults.jsx'
+import { RedirectToMain } from "./components/RedirectToMain";
 
 export function Core() {
   return (
     <Pane>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="https://three0.umso.co/" replace={true}/>}/>
+          <Route path="/" element={<RedirectToMain />}/>
           <Route path="/login" element={<Login />} />
           <Route path="/app" element={<App />}>
             <Route path=":pid" element={<Dash />}>
