@@ -96,6 +96,7 @@ export function getProjectDetails(pid: string): Project | null {
 
 @nearBindgen
 export class ProjectReturnSchema {
+    pid: string;
     name: string;
     numUsers: number;
     numDatabases: number;
@@ -110,6 +111,7 @@ export function getAllProjects(): Array<ProjectReturnSchema> {
     let project = PROJECT_MAP.get(pid);
     if (project) {
       let projectReturn: ProjectReturnSchema = {
+        pid: pid,
         name: project.name,
         numUsers: project.users.size,
         numDatabases: project.databases.length,
