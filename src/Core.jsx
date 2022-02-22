@@ -8,6 +8,7 @@ import {ProgramView as DatabaseView} from '../src/orbit-db-console/src/views/Dat
 import {DatabasesView} from '../src/orbit-db-console/src/views/Databases.jsx'
 import {SearchResultsView} from '../src/orbit-db-console/src/views/SearchResults.jsx'
 import { RedirectToMain } from "./components/RedirectToMain";
+import { ProjectsDash } from "./screens/ProjectsDash";
 
 export function Core() {
   return (
@@ -16,7 +17,8 @@ export function Core() {
         <Routes>
           <Route path="/" element={<RedirectToMain />}/>
           <Route path="/login" element={<Login />} />
-          <Route path="/app" element={<App />}>
+          <Route path="/app" element={<App />} >
+            <Route index element={<ProjectsDash />} />
             <Route path=":pid" element={<Dash />}>
               <Route path="auth" element={<Auth />} />
               <Route path="database" element={<DBView />}>
