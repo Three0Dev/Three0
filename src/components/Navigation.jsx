@@ -34,7 +34,8 @@ export function Navigation(props) {
                 url = `/app/${params}`;
                 break;
             case 3:
-                url =`/app/${params}/storage`;
+                // Disabled for Hackathon
+                // url =`/app/${params}/storage`;
                 break;
             case 4:
                 url = `/app/settings`;
