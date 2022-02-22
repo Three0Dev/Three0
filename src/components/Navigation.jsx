@@ -16,7 +16,8 @@ export function Navigation(props) {
 
     useEffect(() => {
         const path = location.pathname.split('/');
-        setSelectedIndex(tabs.map(tab => tab.toLowerCase()).indexOf(path[path.length-1]));
+        let index = tabs.map(tab => tab.toLowerCase()).indexOf(path[path.length-1]);
+        setSelectedIndex(index == -1 ? 2 : index);
     }, []);
 
 
