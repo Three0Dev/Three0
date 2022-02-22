@@ -46,6 +46,6 @@ export function login() {
   // user's behalf.
   // This works by creating a new access key for the user's account and storing
   // the private key in localStorage.
-
-  window.walletConnection.requestSignIn(nearConfig.contractName);
+  console.log('Logging In');
+  window.walletConnection.requestSignIn(nearConfig.contractName, "Three0", "http://localhost:1234/app", "http://localhost:1234/login");
 }
