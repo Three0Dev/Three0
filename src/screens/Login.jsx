@@ -1,6 +1,6 @@
 import React from "react";
 import {Button, Pane, Heading} from "evergreen-ui";
-import logo from '../logo.png'
+import logo from '../assets/logo.png'
 import {login} from '../utils'
 
 export class Login extends React.Component {
