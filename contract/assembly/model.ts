@@ -1,3 +1,4 @@
+@nearBindgen
 export class Project {
   creator: string;
   name: string;
@@ -22,6 +23,7 @@ export class Project {
   }
 }
 
+@nearBindgen
 export class Database {
   url: string;
   name: string;
@@ -34,6 +36,7 @@ export class Database {
   }
 }
 
+@nearBindgen
 export class User {
   private accountID: string;
 
