@@ -3,7 +3,7 @@ import { Tablist, Tab, HomeIcon, DatabaseIcon, FolderOpenIcon, SettingsIcon, Key
 import {useParams, useNavigate, useLocation} from "react-router-dom";
 import { useEffect } from "react";
 
-export function Navigation(props) {
+export function Navigation() {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
 
     const tabs = ['Auth', 'Database', 'Home', 'Storage', 'Settings']
@@ -20,8 +20,7 @@ export function Navigation(props) {
         setSelectedIndex(index == -1 ? 2 : index);
     }, []);
 
-
-    const switchLink = (index, load = false) => {
+    const switchLink = (index) => {
         let url = '';
         setSelectedIndex(index);
         switch (index) {
@@ -46,9 +45,7 @@ export function Navigation(props) {
                 break;
         }
 
-        if(!load){
-            navigate(url);
-        }
+        navigate(url);
     }
 
     return (
