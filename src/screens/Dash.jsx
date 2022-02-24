@@ -1,22 +1,34 @@
 import React from "react";
 import { Navigation } from "../components/Navigation";
-import { Outlet } from "react-router-dom";
+import { Outlet, useParams, useNavigate } from "react-router-dom";
 import {Pane} from 'evergreen-ui'
 
-export class Dash extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+export function Dash() {
+  let params = useParams();
+  let navigate = useNavigate();
+
+  React.useEffect(() => {
+    async function isValidProject(){
+      try{
+        const project = await window.contract.getProjectDetails({pid: params.pid});
+        if(!project){
+          navigate("/app");
+        }
+      } catch(e){
+        console.error(e);
+      }
+    }
+
+    isValidProject();
+  }, []);
 
 
-  render() {
-    return (
-      <Pane style={{display: "flex"}}>
-        <Navigation />
-        <div style={{width: "99%", marginLeft: "1%"}}>
-          <Outlet />
-        </div>
-      </Pane>
-    );
-  }
+  return (
+    <Pane style={{display: "flex"}}>
+      <Navigation />
+      <div style={{width: "99%", marginLeft: "1%"}}>
+        <Outlet />
+      </div>
+    </Pane>
+  );
 }

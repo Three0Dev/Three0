@@ -13,6 +13,7 @@ export function ProjectsDash() {
   return (
     <>
       <ProjectDisplayTable />
+      {/* TODO Change to sticky */}
       <Button appearance="primary" style={{
         borderRadius: "50px",
         position: "absolute",

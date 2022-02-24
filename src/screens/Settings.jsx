@@ -8,6 +8,9 @@ export function Settings(props){
   const [name, setName] = React.useState('');
   const [description, setDescription] = React.useState('');
 
+  const [updateLoading, setUpdateLoading] = React.useState(false);
+  const [deleteLoading, setDeleteLoading] = React.useState(false);
+
   let params = useParams();
 
   React.useEffect(() => {
@@ -39,12 +42,14 @@ export function Settings(props){
   }
 
   async function updateProject(){
+    setUpdateLoading(true);
     try{
         await window.contract.updateProject({
             pid: params.pid,
             name: name,
             description: description,
         });
+        setUpdateLoading(false);
     } catch(e){
         console.error(e);
     }
@@ -53,8 +58,10 @@ export function Settings(props){
   const navigate = useNavigate();
 
   async function deleteProject(){
+    setDeleteLoading(true);
       try{
           await window.contract.deleteProject({pid: params.pid});
+          setDeleteLoading(false);
           navigate('/app');
       } catch(e){
         console.error(e);
