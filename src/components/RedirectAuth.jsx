@@ -1,5 +1,4 @@
 import React from "react";
-import {Pane, Spinner} from "evergreen-ui";
 import {Navigate, useParams} from "react-router-dom";
 
 
