@@ -45,7 +45,7 @@ export function Navigation() {
     }
 
     return (
-        <Tablist style={{width: "20%"}}>
+        <Tablist style={{width: "25%"}}>
             {tabs.map((tab, index) => (
             <SidebarTab
                 key={tab}
@@ -56,7 +56,7 @@ export function Navigation() {
                 isSelected={index === selectedIndex}
                 aria-controls={`panel-${tab}`}
             >
-            <div style={{marginRight:"8%"}}>{tabIcon[index]}</div>
+            <div style={{marginRight:"15%"}}>{tabIcon[index]}</div>
                 {tab}
             </SidebarTab>
             ))}
