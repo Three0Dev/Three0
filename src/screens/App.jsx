@@ -1,12 +1,17 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import logo from '../assets/logo.png';
 import {IconButton, LogOutIcon} from 'evergreen-ui';
 import { useEffect } from "react";
 import { logout } from "../utils";
 
 export function App() {
+  let navigate = useNavigate();
   useEffect(() => {
+    if(!window.walletConnection.isSignedIn()){
+      navigate("/login");
+    }
+
     async function createDev(){
       try{
         let devExists = await window.contract.devExist({id: window.contract.account.accountId});
