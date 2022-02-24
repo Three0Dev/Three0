@@ -2,15 +2,15 @@
 export class Project {
   creator: string;
   name: string;
-  budget: number;
+  description: string;
   users: Map<string, User>;
   currentUsed: number = 0;
   databases: Array<Database> = [];
 
-  constructor(creator: string, name: string, budget: number = 100) {
+  constructor(creator: string, name: string, description: string) {
     this.creator = creator;
     this.name = name;
-    this.budget = budget;
+    this.description = description;
     this.users = new Map();
   }
 

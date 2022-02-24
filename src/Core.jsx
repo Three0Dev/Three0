@@ -9,7 +9,6 @@ import {DatabasesView} from '../src/orbit-db-console/src/views/Databases.jsx'
 import {SearchResultsView} from '../src/orbit-db-console/src/views/SearchResults.jsx'
 import { Redirect } from "./components/RedirectToMain";
 import "./global.css";
-import { ProjectDisplayTable } from "./components/ProjectDisplayTable";
 
 export function Core() {
   return (

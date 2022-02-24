@@ -24,6 +24,19 @@ export function CreateProjectModal(props){
         setBlockchainNetwork(e.target.value);
     }
 
+    async function createProject(){
+        try{
+            await window.contract.createProject({
+                name: name,
+                description: description,
+                // blockchainNetwork: blockchainNetwork
+            });
+            props.closeModal();
+        } catch(e){
+            console.error(e);
+        }
+    }
+
     return (
         <Dialog
             isShown={props.isShown}
@@ -31,6 +44,7 @@ export function CreateProjectModal(props){
             onCloseComplete={props.closeModal}
             preventBodyScrolling
             confirmLabel="Create"
+            onConfirm={createProject}
         >
             <form>
                 <FormField label='Name:'>
