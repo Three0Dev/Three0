@@ -1,5 +1,7 @@
 import React from 'react';
+
 import {FormField, TextInput, Textarea, Pane, DownloadIcon, DeleteIcon, SavedIcon, Button} from 'evergreen-ui';
+
 import {useParams, useNavigate} from 'react-router-dom';
 
 export function Settings(props){
@@ -61,7 +63,6 @@ export function Settings(props){
 
   return (
     <Pane style={{margin: "2%"}}>
-      <form>
         <FormField label='Name:'>
             <TextInput
                 onChange={handleNameChange}
@@ -87,7 +88,6 @@ export function Settings(props){
             <Button size="large" onClick={deleteProject}><DeleteIcon style={{marginRight: "4%"}}/> Delete</Button>
           </div>
         </div>
-      </form>
     </Pane>
   );
 }
