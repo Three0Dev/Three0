@@ -12,7 +12,5 @@
 //  *
 //  */
 
-import * as user from "./user";
-import * as dev from "./dev";
-
-export {dev, user};
+export * from './user'
+export * from './dev'

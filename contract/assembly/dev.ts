@@ -9,6 +9,10 @@ import {
 
 const DNA_DIGITS = 8; 
 
+export function getID(): string {
+  return Context.sender;
+}
+
 export function createDev(): void {
   assert(!DEV_PROJECT_MAP.contains(Context.sender));
   DEV_PROJECT_MAP.set(Context.sender, new Array<string>());
@@ -89,9 +93,10 @@ export function deleteDatabase(pid: string, name: string): void {
   logging.log(`Deleted database ${name} from project ${pid}`);
 }
 
-export function getProjectDetails(pid: string): Project | null {
-  logging.log(`Getting project details for ${pid}`);
-  return PROJECT_MAP.get(pid);
+export function getProjectDetails(pid: string): string | null {
+  // logging.log(`Getting project details for ${pid}`);
+  // return PROJECT_MAP.get(pid);
+  return "hello world";
 }
 
 @nearBindgen
