@@ -1,6 +1,6 @@
 import React from 'react';
-import {FormField, TextInput, Textarea, Pane} from 'evergreen-ui';
-import { ConfigFile } from '.';
+import {FormField, TextInput, Textarea, Pane, DownloadIcon, DeleteIcon, SavedIcon, Button} from 'evergreen-ui';
+
 
 export function Settings(props){
   const [name, setName] = React.useState('');
@@ -41,7 +41,13 @@ export function Settings(props){
                 value={description}
             />
         </FormField>
-        <ConfigFile></ConfigFile>
+        <div style = {{display: "flex", justifyContent: "space-between"}}>
+          <Button size="large" ><DownloadIcon style={{marginRight: "4%"}}/> Download Config File</Button>
+          <div>
+            <Button size="large" ><SavedIcon style={{marginRight: "4%"}}/> Save</Button>
+            <Button size="large" ><DeleteIcon style={{marginRight: "4%"}}/> Delete</Button>
+          </div>
+        </div>
       </form>
     </Pane>
   );

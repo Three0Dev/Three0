@@ -6,7 +6,6 @@ import {Dash} from './Dash';
 import {NotFound} from './NotFound';
 import {Auth} from './Auth';
 import {ProjectsDash} from './ProjectsDash';
-import {ConfigFile} from './ConfigFile';
 
 export {
     Login,
@@ -16,6 +15,5 @@ export {
     Storage,
     Settings,
     NotFound,
-    ProjectsDash,
-    ConfigFile
+    ProjectsDash
 }
