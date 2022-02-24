@@ -6,7 +6,7 @@ import { UserLog } from '../components/UserLog';
 export function Auth() {
   const options = [
     {
-      label: 'Active Users',value: 'activeUsers'
+      label: 'Users',value: 'activeUsers'
     },
     {
       label: 'User Log', value: 'userLog'

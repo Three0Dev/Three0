@@ -6,8 +6,8 @@ import { useEffect } from "react";
 export function Navigation() {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
 
-    const tabs = ['Home', 'Auth', 'Database',  'Storage', 'Settings']
-    const tabIcon = [<HomeIcon />, <KeyIcon />, <DatabaseIcon />, <FolderOpenIcon />, <SettingsIcon />]
+    const tabs = ['Auth', 'Database',  'Storage', 'Settings']
+    const tabIcon = [ <KeyIcon />, <DatabaseIcon />, <FolderOpenIcon />, <SettingsIcon />]
 
     let navigate = useNavigate();
     let params = useParams().pid;
@@ -24,23 +24,20 @@ export function Navigation() {
         let url = '';
         setSelectedIndex(index);
         switch (index) {
-            case 1:
+            case 0:
                 url = `/app/${params}/auth`;
                 break;
-            case 2:
+            case 1:
                 url = `/app/${params}/database`;
                 break;
-            case 0:
-                url = `/app/${params}`;
-                break;
-            case 3:
+            case 2:
                 url =`/app/${params}/storage`;
                 break;
-            case 4:
+            case 3:
                 url = `/app/${params}/settings`;
                 break;
             default:
-                url = `/app/${params}`;
+                url = `/app/${params}/auth`;
                 break;
         }
 

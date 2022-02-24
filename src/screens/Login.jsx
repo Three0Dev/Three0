@@ -9,15 +9,22 @@ export class Login extends React.Component {
     this.styles = {
       container: {
         height: "100vh",
-        background: "#7B20A2"
+        background: "ghostwhite"
       },
       loginContainer: {
         width: 300,
-        height: 440,
+        height: 400,
         borderRadius: "10px",
         margin: "0 auto",
         padding: "4%",
-        boxShadow: "2px 1px 19px -2px #000000",
+        boxShadow: `
+          0px 0px 2.2px rgba(0, 0, 0, 0.014),
+          0px 0px 5.3px rgba(0, 0, 0, 0.023),
+          0px 0px 10px rgba(0, 0, 0, 0.03),
+          0px 0px 17.9px rgba(0, 0, 0, 0.038),
+          0px 0px 33.4px rgba(0, 0, 0, 0.049),
+          0px 0px 80px rgba(0, 0, 0, 0.07)
+          `,
         background: "white",
         position: "relative",
         top: "10%"
@@ -27,8 +34,7 @@ export class Login extends React.Component {
         height: "auto",
         margin: "0 auto",
         display: "block",
-        marginBottom: "15%",
-        marginTop: "8%"
+        marginBottom: "15%"
       },
       heading: {
         textAlign: "center"
@@ -37,7 +43,7 @@ export class Login extends React.Component {
         position: "relative",
         width: "100%",
         height: "13%",
-        top: "25%",
+        top: "20%",
         // TODO remove when theme is complete
         background: "#7B20A2",
         color: "white",

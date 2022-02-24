@@ -1,5 +1,6 @@
 import React from 'react';
 import {FormField, TextInput, Textarea, Pane} from 'evergreen-ui';
+import { ConfigFile } from '.';
 
 export function Settings(props){
   const [name, setName] = React.useState('');
@@ -40,6 +41,7 @@ export function Settings(props){
                 value={description}
             />
         </FormField>
+        <ConfigFile></ConfigFile>
       </form>
     </Pane>
   );
