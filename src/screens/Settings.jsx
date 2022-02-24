@@ -79,9 +79,13 @@ export function Settings(props){
                 value={description}
             />
         </FormField>
-        <Button size="large" onClick={updateProject}>Update Project</Button>
-        <Button size="large" onClick={deleteProject}>Delete Project</Button>
-        <Button size="large"><DownloadIcon style={{marginRight: "4%"}}/> Download Config File</Button>
+        <div style = {{display: "flex", justifyContent: "space-between"}}>
+          <Button size="large" ><DownloadIcon style={{marginRight: "4%"}}/> Download Config File</Button>
+          <div>
+            <Button size="large" onClick={updateProject}><SavedIcon style={{marginRight: "4%"}}/> Save</Button>
+            <Button size="large" onClick={deleteProject}><DeleteIcon style={{marginRight: "4%"}}/> Delete</Button>
+          </div>
+        </div>
     </Pane>
   );
 }

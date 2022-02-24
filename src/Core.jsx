@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 // import App from "./App";
-import {Login, Dash, Auth, ProjectsDash, Storage, Settings, App, NotFound, ConfigFile} from "./screens";
+import {Login, Dash, Auth, ProjectsDash, Storage, Settings, App, NotFound} from "./screens";
 import {DBView} from "../src/orbit-db-console/src/App";
 import {Pane} from "evergreen-ui";
 import {ProgramView as DatabaseView} from '../src/orbit-db-console/src/views/Database.jsx'
