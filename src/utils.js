@@ -39,7 +39,7 @@ export function logout() {
   window.walletConnection.signOut();
   // reload page
   // window.location.replace(window.location.origin + window.location.pathname);
-  window.location.replace("http://localhost:1234/");
+  window.location.replace("http://localhost:1234/login");
 }
 
 export function login() {
