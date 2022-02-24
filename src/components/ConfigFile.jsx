@@ -32,7 +32,7 @@ function ConfigFileInner(){
 
     return (
         <Pane width={240} height={240} padding="3%" display="flex" alignItems="center" justifyContent="center" flexDirection="column">
-            <Code>{configCredentials}</Code>
+            <Code>{copyConfigText}</Code>
             <Group marginTop="8%">
                 <Button onClick={downloadConfig}>
                     Download
