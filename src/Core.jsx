@@ -9,7 +9,6 @@ import {DatabasesView} from '../src/orbit-db-console/src/views/Databases.jsx'
 import {SearchResultsView} from '../src/orbit-db-console/src/views/SearchResults.jsx'
 import { Redirect } from "./components/RedirectToMain";
 import "./global.css";
-import { ProjectDisplayTable } from "./components/ProjectDisplayTable";
 
 export function Core() {
   return (
@@ -21,8 +20,6 @@ export function Core() {
           <Route path="/app" element={<App />} >
             <Route index element={<ProjectsDash />} />
             <Route path=":pid" element={<Dash />}>
-              {/* <Route index element={<Navigate to= "/app/:pid/auth"/>} /> */}
-              {/* <Route index element = {<ConfigFile />}/> */}
               <Route path="auth" element={<Auth />} />
               <Route path="database" element={<DBView />}>
                 <Route index element={<DatabasesView />} />

@@ -1,11 +1,27 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import logo from '../assets/logo.png';
-import {IconButton, LogOutIcon, majorScale} from 'evergreen-ui';
-import {logout} from '../utils'
-
+import {IconButton, LogOutIcon} from 'evergreen-ui';
+import { useEffect } from "react";
+import { logout } from "../utils";
 
 export function App() {
+  useEffect(() => {
+    async function createDev(){
+      try{
+        let devExists = await window.contract.devExist({id: window.contract.account.accountId});
+        if(!devExists){
+          await window.contract.createDev();
+        }
+      }catch(e){
+        console.error(e);
+      }
+    }
+
+    createDev();
+  }, []);
+
+
   return (
     <>
       <div style={{
@@ -15,10 +31,11 @@ export function App() {
         display: "flex",
         alignItems: "center",
       }}>
-        <img style={{
+        {/* TODO Change URL on deploy */}
+        <a href="http://localhost:1234/app/"><img style={{
           width:"50px",
           margin: "5px"
-        }} src={logo}/>
+        }} src={logo}/></a>
         <IconButton style={{position: "absolute", right: "2%"}} icon={LogOutIcon} onClick = {logout}/>
       </div>
       <Outlet />
