@@ -1,12 +1,34 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import {Group, Button} from 'evergreen-ui';
+import { ActiveUsers } from '../components/ActiveUsers';
+import { UserLog } from '../components/UserLog';
 
-export class Auth extends React.Component {
+export function Auth() {
+  const options = [
+    {
+      label: 'Active Users',value: 'activeUsers'
+    },
+    {
+      label: 'User Log', value: 'userLog'
+    }
+  ]
+
+  const [optionType, setOptionType] = React.useState(options[0].value);
     
-  render() {
-    return (
-      <div>
-        <h1>Auth</h1>
-      </div>
-    );
-  }
+  return (
+    <>
+    <div style={{textAlign: "center", marginTop:"2%"}}>
+      <Group>
+        {
+          options.map(option => (
+            <Button appearance={optionType == option.value ? 'primary' : 'default'} key={option.value} onClick={() => setOptionType(option.value)}>{option.label}</Button>
+          ))
+        }
+        </Group>
+        </div>
+        {
+          optionType === 'activeUsers' ? <ActiveUsers /> : <UserLog />
+        }
+    </>
+  );
 }

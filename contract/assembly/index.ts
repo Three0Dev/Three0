@@ -12,19 +12,5 @@
 //  *
 //  */
 
-import {
-  Context,
-  logging,
-  base64,
-  math,
-} from "near-sdk-as";
-
-import * as user from "./user";
-import * as dev from "./dev";
-
-export {dev, user};
-
-// Delete later
-export function getID(): string {
-  return "hi" + '!';
-}
+export * from './user'
+export * from './dev'

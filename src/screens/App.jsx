@@ -1,6 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import logo from '../assets/logo.png';
+import {IconButton, LogOutIcon, majorScale} from 'evergreen-ui';
 
 export function App() {
 
@@ -20,15 +21,17 @@ export function App() {
   return (
     <>
       <div style={{
-        width:"100%",
+        width:"99%",
         background:"whitesmoke",
-        padding: "1%"
+        padding: "0.5%",
+        display: "flex",
+        alignItems: "center",
       }}>
         <img style={{
           width:"50px",
-          display: "block",
-          margin: "0 auto"
+          margin: "5px"
         }} src={logo}/>
+        <IconButton style={{position: "absolute", right: "2%"}} icon={LogOutIcon} />
       </div>
       <Outlet />
     </>
