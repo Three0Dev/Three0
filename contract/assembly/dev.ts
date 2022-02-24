@@ -40,6 +40,8 @@ export function updateProject(pid: string, name: string): void {
   logging.log(`Updated project ${name} by ${Context.sender}`);
 }
 
+
+
 export function deleteProject(pid: string): void {
   assert(DEV_PROJECT_MAP.contains(Context.sender));
 

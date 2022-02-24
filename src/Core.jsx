@@ -15,7 +15,7 @@ export function Core() {
     <Pane>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<RedirectToMain />}/>
+          {/* <Route path="/" element={<RedirectToMain />}/> */}
           <Route path="/login" element={<Login />} />
           <Route path="/app" element={<App />} >
             <Route index element={<ProjectsDash />} />
