@@ -1,10 +1,13 @@
 import React from 'react';
-import {FormField, TextInput, Textarea, Pane, Button, DownloadIcon} from 'evergreen-ui';
+import {FormField, TextInput, Textarea, Pane, Button, DownloadIcon, SavedIcon, DeleteIcon} from 'evergreen-ui';
 import {useParams, useNavigate} from 'react-router-dom';
 
 export function Settings(props){
   const [name, setName] = React.useState('');
   const [description, setDescription] = React.useState('');
+
+  const [updateLoading, setUpdateLoading] = React.useState(false);
+  const [deleteLoading, setDeleteLoading] = React.useState(false);
 
   let params = useParams();
 
@@ -37,12 +40,14 @@ export function Settings(props){
   }
   
   async function updateProject(){
+    setUpdateLoading(true);
     try{
         await window.contract.updateProject({
             pid: params.pid,
             name: name,
             description: description,
         });
+        setUpdateLoading(false);
     } catch(e){
         console.error(e);
     }
@@ -51,8 +56,10 @@ export function Settings(props){
   const navigate = useNavigate();
 
   async function deleteProject(){
+    setDeleteLoading(true);
       try{
           await window.contract.deleteProject({pid: params.pid});
+          setDeleteLoading(false);
           navigate('/app');
       } catch(e){
         console.error(e);
@@ -82,8 +89,8 @@ export function Settings(props){
         <div style = {{display: "flex", justifyContent: "space-between"}}>
           <Button size="large" ><DownloadIcon style={{marginRight: "4%"}}/> Download Config File</Button>
           <div>
-            <Button size="large" onClick={updateProject}><SavedIcon style={{marginRight: "4%"}}/> Save</Button>
-            <Button size="large" onClick={deleteProject}><DeleteIcon style={{marginRight: "4%"}}/> Delete</Button>
+            <Button size="large" isLoading={updateLoading} onClick={updateProject}><SavedIcon style={{marginRight: "4%"}}/> Save</Button>
+            <Button size="large" isLoading={deleteLoading} onClick={deleteProject}><DeleteIcon style={{marginRight: "4%"}}/> Delete</Button>
           </div>
         </div>
     </Pane>
