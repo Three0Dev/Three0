@@ -17,8 +17,10 @@ import {
     logging,
     base64,
     math,
-    PersistentMap
+    PersistentMap,
+    collections
   } from "near-sdk-as";
+import { list } from "ui-box";
   import { Database, Project, User } from "./model";
 
 const DNA_DIGITS = 8;
@@ -84,7 +86,9 @@ export function deleteProject(pid: string): void {
   DEV_PROJECT_MAP.set(Context.sender, devProjects);
   logging.log(`Deleted project ${pid}`);
 }
-
+export function postUser(name: string, description: string): string {
+  assert(DEV_PROJECT_MAP.contains(Context.sender));
+  let project = new Project(Context.sender, name, description);
 // @nearBindgen
 // export class DatabaseInfoSchema {
 //   url: string;
@@ -116,6 +120,33 @@ export function deleteProject(pid: string): void {
 export function getProjectDetails(pid: string): Project | null {
   logging.log(`Getting project details for ${pid}`);
   return PROJECT_MAP.get(pid);
+}
+
+@nearBindgen
+export class UserReturnSchema {
+    pid: string;
+    username: string;
+    // wallet_address: string;
+    // status: string;
+}
+
+export function getAllUsers(pid: string): Array<UserReturnSchema> {
+  logging.log(`Getting User for ${pid}`);
+  const project = PROJECT_MAP.get(pid);
+  let arr: Array<UserReturnSchema> = [];
+  if(!project) return arr;
+  for(let i  = 0; i < project.users.size; i++) {
+    let ret = project.users[i]
+    if(ret){
+      let userReturn: UserReturnSchema = {
+        pid: pid,
+        username: project.users[i],
+        
+      }
+      arr.push(userReturn);
+    }
+  }
+  return arr;
 }
 
 @nearBindgen
