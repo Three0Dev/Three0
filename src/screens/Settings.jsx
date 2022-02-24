@@ -89,7 +89,7 @@ export function Settings(props){
             />
         </FormField>
         <div style = {{display: "flex", justifyContent: "space-between"}}>
-          <Button appearance = "primary" size="large" ><DownloadIcon style={{marginRight: "4%"}}/> Download Config File</Button>
+          <Button size="large" ><DownloadIcon style={{marginRight: "4%"}}/> Download Config File</Button>
           <div>
             <Button appearance = "primary" size="large" intent='success' onClick={updateProject}><SavedIcon style={{marginRight: "4%"}}/> Save</Button>
             <Button appearance = "primary" size="large"  intent='danger' onClick={deleteProject}><DeleteIcon style={{marginRight: "4%"}}/> Delete</Button>
