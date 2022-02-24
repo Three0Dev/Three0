@@ -61,6 +61,7 @@ export function Settings(props){
 
   return (
     <Pane style={{margin: "2%"}}>
+      <form>
         <FormField label='Name:'>
             <TextInput
                 onChange={handleNameChange}
