@@ -40,7 +40,8 @@ export function createProject(name: string, description: string): string {
   assert(DEV_PROJECT_MAP.contains(Context.sender));
   let project = new Project(Context.sender, name, description);
 
-  const pid = base64.encode(math.randomBuffer(DNA_DIGITS));
+  // TODO remove equals sign from pid
+  const pid = base64.encode(math.randomBuffer(DNA_DIGITS)).replace("=", "");
 
   PROJECT_MAP.set(pid, project);
 

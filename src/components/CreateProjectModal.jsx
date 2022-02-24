@@ -31,17 +31,23 @@ export function CreateProjectModal(props){
     async function createProject(){
         try{
             setAddLoading(true);
-            await window.contract.createProject({
+            let id = await window.contract.createProject({
                 name: name,
                 description: description,
                 // blockchainNetwork: blockchainNetwork
             });
             setAddLoading(false);
             props.closeModal();
-            navigate('/app');
+            navigate(`/app/${id}`);
         } catch(e){
             console.error(e);
         }
+    }
+
+    function closeModal(){
+        setName('');
+        setDescription('');
+        props.closeModal();
     }
 
     return (
@@ -49,7 +55,7 @@ export function CreateProjectModal(props){
             isConfirmLoading={addLoading}
             isShown={props.isShown}
             title="Create Project"
-            onCloseComplete={props.closeModal}
+            onCloseComplete={closeModal}
             preventBodyScrolling
             confirmLabel="Create"
             onConfirm={createProject}

@@ -1,8 +1,7 @@
 import React from 'react';
-
-import {FormField, TextInput, Textarea, Pane, DownloadIcon, DeleteIcon, SavedIcon, Button} from 'evergreen-ui';
-
+import {FormField, TextInput, Textarea, Pane, DeleteIcon, SavedIcon, Button} from 'evergreen-ui';
 import {useParams, useNavigate} from 'react-router-dom';
+import { ConfigFile } from '../components/ConfigFile';
 
 export function Settings(props){
   const [name, setName] = React.useState('');
@@ -68,6 +67,10 @@ export function Settings(props){
       }
   }
 
+  function copyContractId(){
+    navigator.clipboard.writeText(params.pid);
+  }
+
   return (
     <Pane style={{margin: "2%"}}>
         <FormField label='Name:'>
@@ -89,10 +92,10 @@ export function Settings(props){
             />
         </FormField>
         <div style = {{display: "flex", justifyContent: "space-between"}}>
-          <Button appearance = "primary" size="large" ><DownloadIcon style={{marginRight: "4%"}}/> Download Config File</Button>
+          <ConfigFile />
           <div>
-            <Button appearance = "primary" size="large" intent='success' onClick={updateProject}><SavedIcon style={{marginRight: "4%"}}/> Save</Button>
-            <Button appearance = "primary" size="large"  intent='danger' onClick={deleteProject}><DeleteIcon style={{marginRight: "4%"}}/> Delete</Button>
+            <Button appearance="primary" size="large" intent='success' onClick={updateProject}><SavedIcon style={{marginRight: "4%"}}/> Save</Button>
+            <Button appearance="primary" size="large"  intent='danger' onClick={deleteProject}><DeleteIcon style={{marginRight: "4%"}}/> Delete</Button>
           </div>
         </div>
     </Pane>
