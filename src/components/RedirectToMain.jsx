@@ -1,9 +1,9 @@
 import React from "react";
 import {Pane, Spinner} from "evergreen-ui";
 
-export function RedirectToMain(){
+export function Redirect(props){
     React.useEffect(() => {
-        window.location.href = "https://three0.umso.co/";
+        window.location.href = props.url;
     }, []);
 
     return (

@@ -21,7 +21,7 @@ export function ProjectDisplayTable(){
             </Table.Head>
             <Table.Body>
             {projects.map((project) => (
-                <Table.Row key={project.pid} isSelectable onSelect={() => navigate(`/app/${project.pid}`)}>
+                <Table.Row key={project.pid} isSelectable onSelect={() => navigate(`/app/${project.pid}/auth`)}>
                 <Table.TextCell>{project.name}</Table.TextCell>
                 <Table.TextCell isNumber>{project.numUsers}</Table.TextCell>
                 <Table.TextCell isNumber>{project.numDatabases}</Table.TextCell>

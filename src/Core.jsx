@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 // import App from "./App";
 import {Login, Dash, Auth, ProjectsDash, Storage, Settings, App, NotFound, ConfigFile} from "./screens";
 import {DBView} from "../src/orbit-db-console/src/App";
@@ -7,20 +7,22 @@ import {Pane} from "evergreen-ui";
 import {ProgramView as DatabaseView} from '../src/orbit-db-console/src/views/Database.jsx'
 import {DatabasesView} from '../src/orbit-db-console/src/views/Databases.jsx'
 import {SearchResultsView} from '../src/orbit-db-console/src/views/SearchResults.jsx'
-import { RedirectToMain } from "./components/RedirectToMain";
+import { Redirect } from "./components/RedirectToMain";
 import "./global.css";
+import { ProjectDisplayTable } from "./components/ProjectDisplayTable";
 
 export function Core() {
   return (
     <Pane>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<RedirectToMain />}/>
+          <Route path="/" element={<Redirect url="https://three0.umso.co/" />}/>
           <Route path="/login" element={<Login />} />
           <Route path="/app" element={<App />} >
             <Route index element={<ProjectsDash />} />
             <Route path=":pid" element={<Dash />}>
-              <Route index element={<ConfigFile />} />
+              {/* <Route index element={<Navigate to= "/app/:pid/auth"/>} /> */}
+              {/* <Route index element = {<ConfigFile />}/> */}
               <Route path="auth" element={<Auth />} />
               <Route path="database" element={<DBView />}>
                 <Route index element={<DatabasesView />} />
