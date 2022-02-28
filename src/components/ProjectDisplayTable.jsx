@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import {Table, DatabaseIcon, UserIcon, Text, Button, PlusIcon} from "evergreen-ui"
+import {Table, DatabaseIcon, UserIcon, Text, PlusIcon} from "evergreen-ui"
 import { useEffect } from "react";
 
 export function ProjectDisplayTable(){

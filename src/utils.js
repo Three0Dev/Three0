@@ -27,7 +27,7 @@ export async function initContract() {
     nearConfig.contractName,
     {
       viewMethods: ["devExist", "getAllProjects", "getProjectDetails"],
-      changeMethods: ["createDev", "createProject", "updateProject", "deleteProject"],
+      changeMethods: ["createDev", "createProject", "updateProject", "deleteProject", "addDatabase", "deleteDatabase"],
       // // View methods are read only. They don't modify the state, but usually return some value.
       // // Change methods can modify the state. But you don't receive the returned value when called.
     }
@@ -37,8 +37,7 @@ export async function initContract() {
 export function logout() {
   window.walletConnection.signOut();
   // reload page
-  // window.location.replace(window.location.origin + window.location.pathname);
-  window.location.replace("http://localhost:1234/login");
+  window.location.replace(`${window.location.origin}/login`)
 }
 
 export function login() {
