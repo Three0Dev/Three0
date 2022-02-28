@@ -99,7 +99,7 @@ export function DBView (props) {
       <StateProvider initialState={initialState} reducer={reducer}>
         <Pane background='tint1' height='100%'>
           <Header />
-          {/* <Systems /> */}
+          <Systems />
           <Outlet />
         </Pane>
       </StateProvider>

@@ -23,7 +23,9 @@ export function CreateDialog ({ onCreate }) {
   }
 
   function handleNameChange (event) {
-    setName(event.target.value)
+    if(!event.target.value.includes(" ")){
+      setName(event.target.value)
+    }
   }
 
   function handleTypeChange (event) {
@@ -34,11 +36,16 @@ export function CreateDialog ({ onCreate }) {
     setPermissions(event.target.value)
   }
 
+  function handleClose(){
+    dispatch({ type: actions.DB.CLOSE_CREATEDB_DIALOG });
+    setName('');
+  }
+
   return (
     <Dialog
       isShown={appState.createDBDialogOpen}
       title='Create Database'
-      onCloseComplete={() => dispatch({ type: actions.DB.CLOSE_CREATEDB_DIALOG })}
+      onCloseComplete={handleClose}
       cancelLabel='Cancel'
       confirmLabel='Create'
       onConfirm={close => handleSubmit(null, close)}
@@ -48,6 +55,7 @@ export function CreateDialog ({ onCreate }) {
           <TextInput
             onChange={handleNameChange}
             name='name'
+            value={name}
             placeholder='Database name'
             width='100%'
           />

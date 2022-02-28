@@ -39,6 +39,7 @@
     "near-api-js": "~0.43.1",
     "near-sdk-as": "^3.2.3",
     "orbit-db": "^0.28.1",
+    "orbit-db-identity-provider": "^0.4.0",
     "react": "^17.0.2",
     "react-dom": "^16.14.0",
     "react-is": "^17.0.2",
