@@ -2,6 +2,8 @@ import * as IPFS from 'ipfs-core'
 import OrbitDB from 'orbit-db'
 import {config as Config} from '../config'
 
+let ipfs;
+
 // OrbitDB instance
 let orbitdb
 
@@ -10,22 +12,32 @@ let programs
 
 // Start IPFS
 export const initIPFS = async () => {
-  return await IPFS.create(Config.ipfs)
+  if(!ipfs){
+    ipfs = await IPFS.create(Config.ipfs)
+  }
+  return ipfs
 }
 
 // Start OrbitDB
 export const initOrbitDB = async (ipfs) => {
-  orbitdb = await OrbitDB.createInstance(ipfs)
+  if(!orbitdb){
+    orbitdb = await OrbitDB.createInstance(ipfs)
+  }
   return orbitdb
 }
 
-export const getAllDatabases = async () => {
+export const getAllDatabases = async (pid) => {
+  if(programs){
+    await programs.close();
+    programs = null;
+  }
   if (!programs && orbitdb) {
     // Load programs database
-    programs = await orbitdb.feed('network.programs', {
+    programs = await orbitdb.feed(`three0-${pid}`, {
       accessController: { write: [orbitdb.identity.id] },
       create: true
     })
+
     await programs.load()
   }
 

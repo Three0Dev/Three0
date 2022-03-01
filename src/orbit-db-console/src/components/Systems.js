@@ -9,11 +9,13 @@ import {
 
 import { initIPFS, initOrbitDB, getAllDatabases } from '../database'
 import { actions, useStateValue } from '../state'
+import { useParams } from 'react-router-dom'
 
 import { ConnectToWalletButton } from './ConnectToWalletButton'
 
 export function Systems () {
   const [appState, dispatch] = useStateValue()
+  const params = useParams()
 
   React.useEffect(() => {
     dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: true })
@@ -24,7 +26,7 @@ export function Systems () {
       initOrbitDB(ipfs).then(async (databases) => {
         dispatch({ type: actions.SYSTEMS.SET_ORBITDB, orbitdbStatus: 'Started' })
 
-        const programs = await getAllDatabases()
+        const programs = await getAllDatabases(params.pid)
         dispatch({ type: actions.PROGRAMS.SET_PROGRAMS, programs: programs.reverse() })
         dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: false })
       })

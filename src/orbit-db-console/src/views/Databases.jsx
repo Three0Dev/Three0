@@ -16,12 +16,16 @@ import {ProgramList} from '../components/DatabaseList'
 import {CreateDialog} from '../components/CreateDialog'
 import {AddDialog} from '../components/AddDialog'
 
+import { useParams } from 'react-router-dom'
+
 export function DatabasesView () {
   const [appState, dispatch] = useStateValue()
 
+  const params = useParams()
+
   async function fetchDatabases () {
     dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: true })
-    const programs = await getAllDatabases()
+    const programs = await getAllDatabases(params.pid)
     dispatch({ type: actions.PROGRAMS.SET_PROGRAMS, programs: programs.reverse() })
     dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: false })
     return programs

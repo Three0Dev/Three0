@@ -47,6 +47,4 @@ export function login() {
   // the private key in localStorage.
   console.log('Logging In');
   window.walletConnection.requestSignIn(nearConfig.contractName, "Three0", "http://localhost:1234/app", "http://localhost:1234/login");
-  console.log(window.accountId);
-  // window.contract.hello_you({})
 }

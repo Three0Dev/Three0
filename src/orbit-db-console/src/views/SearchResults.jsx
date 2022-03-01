@@ -1,11 +1,12 @@
 import React from 'react'
 import { majorScale, Heading, Pane, Spinner } from 'evergreen-ui'
-import { useLocation, Redirect } from 'react-router-dom'
+import { useLocation, Redirect, useParams } from 'react-router-dom'
 import { useStateValue, actions, loadingState } from '../state'
 
 import { getAllDatabases, removeDatabase } from '../database'
 
 import {ProgramList} from '../components/DatabaseList'
+
 
 function useQuery () {
   return new URLSearchParams(useLocation().search)
@@ -26,9 +27,11 @@ export function SearchResultsView () {
     )
   }
 
+  let params = useParams()
+
   async function fetchDatabases () {
     dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: true })
-    const programs = await getAllDatabases()
+    const programs = await getAllDatabases(params.pid)
     dispatch({ type: actions.PROGRAMS.SET_PROGRAMS, programs: programs.reverse() })
     dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: false })
     return programs
