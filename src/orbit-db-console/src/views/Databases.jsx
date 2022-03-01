@@ -5,6 +5,7 @@ import {
   PlusIcon,
   Pane,
   Spinner,
+  toaster,
   Text
 } from 'evergreen-ui'
 
@@ -37,11 +38,14 @@ export function DatabasesView () {
 
   const createDB = (args) => {
     console.log("Create database...", args)
-    createDatabase(args.name, args.type, args.permissions).then((hash) => {
+    createDatabase(args.name, args.type, args.permissions, params.pid, args.overwrite).then((hash) => {
       console.log("Created", hash)
       fetchDatabases().then((data) => {
         console.log("Loaded programs", data)
       })
+    }).catch((err) => {
+      console.error("Error", err)
+      toaster.danger(err.toString())
     })
   }
 
@@ -61,7 +65,7 @@ export function DatabasesView () {
 
   const handleRemoveDatabase = (hash, program) => {
     console.log("Remove database...", hash, program)
-    removeDatabase(hash).then(() => {
+    removeDatabase(hash, program, params.pid).then(() => {
       console.log("Removed")
       fetchDatabases().then((data) => {
         console.log("Loaded programs", data)

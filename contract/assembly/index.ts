@@ -56,6 +56,8 @@ export function createProject(name: string, description: string): string {
 
 export function updateProject(pid: string, name: string, description: string): void {
   assert(DEV_PROJECT_MAP.contains(Context.sender));
+  
+  // TODO check ownership of project
   let project = PROJECT_MAP.get(pid);
   if (!project) return;
   project.name = name;
@@ -66,6 +68,8 @@ export function updateProject(pid: string, name: string, description: string): v
 
 export function deleteProject(pid: string): void {
   assert(DEV_PROJECT_MAP.contains(Context.sender));
+
+  // TODO check ownership of project
 
   let devProjects = DEV_PROJECT_MAP.get(Context.sender);
   if (!devProjects) return;
@@ -87,6 +91,9 @@ export function deleteProject(pid: string): void {
 
 export function addDatabase(details: DatabaseInfoSchema, pid: string): void {
   assert(DEV_PROJECT_MAP.contains(Context.sender));
+  
+  // TODO check ownership of project
+
   let project = PROJECT_MAP.get(pid);
   if (!project) return;
   let database = new Database(details.address, details.name, details.type);
@@ -96,6 +103,9 @@ export function addDatabase(details: DatabaseInfoSchema, pid: string): void {
 
 export function deleteDatabase(pid: string, address: string): void {
   let project = PROJECT_MAP.get(pid);
+  
+  // TODO check ownership of project
+
   if (!project) return;
   project.databases.delete(address);
   logging.log(`Deleted database ${address} from project ${pid}`);
