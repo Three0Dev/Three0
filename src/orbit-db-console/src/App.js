@@ -108,7 +108,7 @@ export function DBView (props) {
         bottom: 0,
         width: '100%',
         textAlign: 'center',
-      }}><img alt="" src={orbitLogo} width={majorScale(2)}/><Paragraph>Powered by OrbitDB</Paragraph>
+      }}><img alt="orbit-logo" src={orbitLogo} width={majorScale(2)}/><Paragraph>Powered by OrbitDB</Paragraph>
       </footer>
     </>
   )

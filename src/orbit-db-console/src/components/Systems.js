@@ -15,6 +15,7 @@ import { ConnectToWalletButton } from './ConnectToWalletButton'
 
 export function Systems () {
   const [appState, dispatch] = useStateValue()
+  const params = useParams()
 
   let params = useParams()
 

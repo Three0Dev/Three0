@@ -5,8 +5,9 @@ import {
   PlusIcon,
   Pane,
   Spinner,
-  Text,
-  Overlay
+  Overlay,
+  toaster,
+  Text
 } from 'evergreen-ui'
 
 import { useStateValue, actions } from '../state'
@@ -21,16 +22,18 @@ import {CreateDialog} from '../components/CreateDialog'
 
 import { useParams } from 'react-router-dom'
 
+import { useParams } from 'react-router-dom'
+
 export function DatabasesView () {
   const [appState, dispatch] = useStateValue()
   const [loading, setLoading] = React.useState(false)
 
   let params = useParams();
 
+  const params = useParams()
+
   async function fetchDatabases () {
     dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: true })
-    console.log('fetching databases')
-    console.log(params.pid)
     const programs = await getAllDatabases(params.pid)
     dispatch({ type: actions.PROGRAMS.SET_PROGRAMS, programs: programs.reverse() })
     dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: false })
@@ -43,12 +46,16 @@ export function DatabasesView () {
 
   const createDB = (args) => {
     console.log("Create database...", args)
-    createDatabase(args.name, args.type, args.permissions, params.pid).then((hash) => {
-      console.log("Created", hash);
+    setLoading(true)
+    createDatabase(args.name, args.type, args.permissions, params.pid, args.overwrite).then((hash) => {
+      console.log("Created", hash)
       fetchDatabases().then((data) => {
         console.log("Loaded programs", data)
       })
-    })
+    }).catch((err) => {
+      console.error("Error", err)
+      toaster.danger(err.toString())
+    }).finally(() => setLoading(false))
   }
 
   const handleAddDatabase = (args) => {
@@ -70,11 +77,10 @@ export function DatabasesView () {
     setLoading(true)
     removeDatabase(hash, program, params.pid).then(() => {
       console.log("Removed")
-      setLoading(false)
       fetchDatabases().then((data) => {
         console.log("Loaded programs", data)
       })
-    })
+    }).finally(() => setLoading(false))
   }
 
   return (

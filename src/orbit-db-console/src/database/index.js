@@ -4,6 +4,8 @@ import {config as Config} from '../config'
 import {NearIdentityProvider} from './NearIdentityProvider'
 import IdentityProvider from "orbit-db-identity-provider";
 
+let ipfs;
+
 // OrbitDB instance
 let orbitdb
 
@@ -14,25 +16,34 @@ IdentityProvider.addIdentityProvider(NearIdentityProvider)
 
 // Start IPFS
 export const initIPFS = async () => {
-  return await IPFS.create(Config.ipfs)
+  if(!ipfs){
+    ipfs = await IPFS.create(Config.ipfs)
+  }
+  return ipfs
 }
 
 // Start OrbitDB
 export const initOrbitDB = async (ipfs) => {
-  const identity = await IdentityProvider.createIdentity({ type: `NearIdentity`})
-  orbitdb = await OrbitDB.createInstance(ipfs, {identity})
+  if(!orbitdb){
+    const identity = await IdentityProvider.createIdentity({ type: `NearIdentity`})
+    orbitdb = await OrbitDB.createInstance(ipfs, {identity})  }
   return orbitdb
 }
 
 export const getAllDatabases = async (pid) => {
   console.log('Getting all databases for project: ', pid)
+  if(programs){
+    await programs.close();
+    programs = null;
+  }
   if (!programs && orbitdb) {
     console.log(orbitdb.identity)
     // Load programs database
-    programs = await orbitdb.feed(pid, {
+    programs = await orbitdb.feed(`three0-${pid}`, {
       accessController: { write: [orbitdb.identity.id] },
       create: true
     })
+
     await programs.load()
   }
 
@@ -58,7 +69,7 @@ export const addDatabase = async (address) => {
   })
 }
 
-export const createDatabase = async (name, type, permissions, pid) => {
+export const createDatabase = async (name, type, permissions, pid, overwrite = false) => {
   let accessController
 
   console.log(orbitdb.identity.id)
@@ -72,34 +83,38 @@ export const createDatabase = async (name, type, permissions, pid) => {
       break
   }
 
-  // const db = await orbitdb.create(name, type, { accessController })
+  const db = await orbitdb.create(name, type, { accessController, overwrite })
   
-  // const dbDetails = {
-  //   name,
-  //   type,
-  //   address: db.address.toString(),
-  // }
+  const dbDetails = {
+    name,
+    type,
+    address: db.address.toString(),
+  }
 
-  // await window.contract.addDatabase({
-  //   details: dbDetails,
-  //   pid: pid
-  // });
+  console.log(dbDetails)
 
-  // return programs.add({
-  //   ...dbDetails,
-  //   added: Date.now()
-  // })
+  await window.contract.addDatabase({
+    details: dbDetails,
+    pid: pid
+  });
+
+  return programs.add({
+    ...dbDetails,
+    added: Date.now()
+  })
 }
 
 export const removeDatabase = async (hash, program, pid) => {
-  // await window.contract.deleteDatabase({
-  //   address: program.address,
-  //   pid: pid
-  // });
-  
+
+ await window.contract.deleteDatabase({
+    address: program.address,
+    pid: pid
+  });
+
   const db = await orbitdb.open(program.address)
   await db.drop()
   await db.close()
+
   return programs.remove(hash)
 }
 

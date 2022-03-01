@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, Link } from "react-router-dom";
 import logo from '../assets/logo.png';
 import {IconButton, LogOutIcon} from 'evergreen-ui';
 import { useEffect } from "react";
@@ -30,17 +30,16 @@ export function App() {
   return (
     <>
       <div style={{
-        width:"99%",
+        width:"100%",
         background:"whitesmoke",
         padding: "0.5%",
         display: "flex",
         alignItems: "center",
       }}>
-        {/* TODO Change URL on deploy */}
-        <a href="http://localhost:1234/app/"><img style={{
+        <Link to="/app"><img style={{
           width:"50px",
           margin: "5px"
-        }} src={logo}/></a>
+        }} src={logo}/></Link>
         <IconButton style={{position: "absolute", right: "2%"}} icon={LogOutIcon} onClick = {logout}/>
       </div>
       <Outlet />
