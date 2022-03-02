@@ -17,8 +17,6 @@ export function Systems () {
   const [appState, dispatch] = useStateValue()
   const params = useParams()
 
-  let params = useParams()
-
   React.useEffect(() => {
     dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: true })
 

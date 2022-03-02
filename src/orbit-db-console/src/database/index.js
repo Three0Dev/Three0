@@ -37,7 +37,6 @@ export const getAllDatabases = async (pid) => {
     programs = null;
   }
   if (!programs && orbitdb) {
-    console.log(orbitdb.identity)
     // Load programs database
     programs = await orbitdb.feed(`three0-${pid}`, {
       accessController: { write: [orbitdb.identity.id] },
@@ -71,8 +70,6 @@ export const addDatabase = async (address) => {
 
 export const createDatabase = async (name, type, permissions, pid, overwrite = false) => {
   let accessController
-
-  console.log(orbitdb.identity.id)
 
   switch (permissions) {
     case 'public':

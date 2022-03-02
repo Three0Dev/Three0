@@ -22,13 +22,9 @@ import {CreateDialog} from '../components/CreateDialog'
 
 import { useParams } from 'react-router-dom'
 
-import { useParams } from 'react-router-dom'
-
 export function DatabasesView () {
   const [appState, dispatch] = useStateValue()
   const [loading, setLoading] = React.useState(false)
-
-  let params = useParams();
 
   const params = useParams()
 
@@ -58,9 +54,9 @@ export function DatabasesView () {
     }).finally(() => setLoading(false))
   }
 
-  const handleAddDatabase = (args) => {
-    dispatch({ type: actions.DB.OPEN_ADDDB_DIALOG })
-  }
+  // const handleAddDatabase = (args) => {
+  //   dispatch({ type: actions.DB.OPEN_ADDDB_DIALOG })
+  // }
 
   // const addDB = (args) => {
   //   console.log("Add database...", args)

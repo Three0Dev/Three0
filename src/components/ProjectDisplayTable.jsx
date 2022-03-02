@@ -24,18 +24,18 @@ export function ProjectDisplayTable(){
     return (
         <Table>
             <Table.Head>
-            <Table.TextHeaderCell><Text>Name</Text></Table.TextHeaderCell>
-            <Table.TextHeaderCell><Text>Description</Text></Table.TextHeaderCell>
-            <Table.TextHeaderCell><Text><UserIcon /> Users</Text></Table.TextHeaderCell>
-            <Table.TextHeaderCell><Text><DatabaseIcon /> Databases</Text></Table.TextHeaderCell>
+                <Table.TextHeaderCell><Text>Name</Text></Table.TextHeaderCell>
+                <Table.TextHeaderCell><Text>Description</Text></Table.TextHeaderCell>
+                <Table.TextHeaderCell><Text><UserIcon /> Users</Text></Table.TextHeaderCell>
+                <Table.TextHeaderCell><Text><DatabaseIcon /> Databases</Text></Table.TextHeaderCell>
             </Table.Head>
             <Table.Body>
             {projects.map((project) => (
                 <Table.Row key={project.pid} isSelectable onSelect={() => navigate(`/app/${project.pid}/auth`)}>
-                <Table.TextCell><Text>{project.name}</Text></Table.TextCell>
-                <Table.TextCell>{project.description}</Table.TextCell>
-                <Table.TextCell isNumber>{project.numUsers}</Table.TextCell>
-                <Table.TextCell isNumber>{project.numDatabases}</Table.TextCell>
+                    <Table.TextCell><Text>{project.name}</Text></Table.TextCell>
+                    <Table.TextCell>{project.description}</Table.TextCell>
+                    <Table.TextCell isNumber>{project.numUsers}</Table.TextCell>
+                    <Table.TextCell isNumber>{project.numDatabases}</Table.TextCell>
                 </Table.Row>
             ))}
             </Table.Body>
