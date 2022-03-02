@@ -19,7 +19,7 @@ import {
     math,
     PersistentMap
   } from "near-sdk-as";
-  import { Database, Project, User, DatabaseInfoSchema, ProjectReturnSchema } from "./model";
+  import { Database, Project, User, DatabaseInfoSchema, ProjectReturnSchema, UserReturnSchema } from "./model";
 
 const DNA_DIGITS = 8;
 
@@ -137,6 +137,41 @@ export function getAllProjects(sender: string): Array<ProjectReturnSchema> {
   return projects;
 }
 
+// export function getAllUsers(pid: string): Array<UserReturnSchema> {
+//   let users: Array<UserReturnSchema> = [];
+//   // const project_ids = DEV_PROJECT_MAP.get(sender);
+//   // if (!project_ids) return users;
+//   // for(let i = 0; i < project_ids.length; i++) {
+//   //   const pid = project_ids[i];
+//   //   let user = PROJECT_MAP.get(pid);
+//   //   if (user) {
+//   //     let userReturn: UserReturnSchema = {
+//   //       pid: pid,
+//   //       name: user.name,
+//   //       co: user.co,
+//   //     }
+//   //     users.push(userReturn);
+//   //   }
+//   // }
+//   assert(DEV_PROJECT_MAP.contains(Context.sender));
+//   // TODO check ownership of project
+//   let devProjects = DEV_PROJECT_MAP.get(Context.sender);
+//   if (!devProjects) return;
+//   assert(devProjects.includes(pid));
+
+//   let project = PROJECT_MAP.get(pid);
+//   if (!project) return;
+//   project.users.forEach((value: User, key: string) => {
+//       let userReturn: UserReturnSchema = {
+//         pid: pid,
+//         name: key,
+//         co: value.getaccountID(),
+//       }
+//       users.push(userReturn);
+//   });
+//   return users;
+// }
+
 // export function createUser(pid: string): void {
 //     let project = PROJECT_MAP.get(pid);
 //     if (!project) return;
@@ -149,6 +184,8 @@ export function getAllProjects(sender: string): Array<ProjectReturnSchema> {
 //     let project = PROJECT_MAP.get(pid);
 //     return project != null && project.users.has(Context.sender);
 //   }
+
+
   
 //   export function getDatabaseAddress(pid: string, name: string): Database | null {
 //     let project = PROJECT_MAP.get(pid);

@@ -18,6 +18,20 @@ export function ActiveUsers(){
             name: '0x1',
         }
     ];
+    // let params = useParams();
+    // let [users, setUsers] = React.useState([]);
+
+    // useEffect(() => {
+    //     async function getUsers(){
+    //         try{
+    //             const users = await window.contract.getAllUsers({pid: params.pid});
+    //             setUsers(users);
+    //         }catch(e){
+    //             console.error(e);
+    //         }
+    //     }
+    //     getUsers();
+    // }, []);
 
     const cellWidth = "200px"
 

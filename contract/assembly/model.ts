@@ -11,6 +11,14 @@ export class Project {
     this.name = name;
     this.description = description;
     this.users = new Map();
+    this.users.set("sparsh",new User("1"));
+    // this.users = new Map([
+    //   ["dp", new User("12")],
+    //   ["kl", new User("13")],
+    // ]);
+    // this.users["sparsh"] = new User("12");
+    // this.users["harshit "] = new User("6");
+
     this.databases = new Map();
   }
 
@@ -47,6 +55,7 @@ export class User {
   getaccountID(): string {
     return this.accountID;
   }
+
 }
 
 @nearBindgen
@@ -63,4 +72,11 @@ export class ProjectReturnSchema {
     description: string;
     numUsers: number;
     numDatabases: number;
+}
+
+@nearBindgen
+export class UserReturnSchema {
+  pid: string;
+  name: string;
+  co: string;
 }
