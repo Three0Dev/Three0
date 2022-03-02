@@ -20,8 +20,8 @@ import {
     PersistentMap,
     collections
   } from "near-sdk-as";
-import { list } from "ui-box";
-  import { Database, Project, User } from "./model";
+// import { list } from "ui-box";
+import { Database, Project, User } from "./model";
 
 const DNA_DIGITS = 8;
 
@@ -86,9 +86,23 @@ export function deleteProject(pid: string): void {
   DEV_PROJECT_MAP.set(Context.sender, devProjects);
   logging.log(`Deleted project ${pid}`);
 }
-export function postUser(name: string, description: string): string {
-  assert(DEV_PROJECT_MAP.contains(Context.sender));
-  let project = new Project(Context.sender, name, description);
+// export function postUser(accountID: string): string {
+//   // assert(DEV_PROJECT_MAP.contains(Context.sender));
+//   let account = new User(accountID);
+
+//   // TODO remove equals sign from pid
+//   const pid = base64.encode(math.randomBuffer(DNA_DIGITS)).replace("=", "");
+
+//   PROJECT_MAP.get(pid).users.set
+
+//   let devProjects = DEV_PROJECT_MAP.get(Context.sender);
+//   devProjects = devProjects ? devProjects : new Array<string>();
+//   devProjects.push(pid);
+//   DEV_PROJECT_MAP.set(Context.sender, devProjects);
+
+//   logging.log(`Created project ${name} by ${Context.sender}`);
+//   return pid;
+// }
 // @nearBindgen
 // export class DatabaseInfoSchema {
 //   url: string;
@@ -122,32 +136,32 @@ export function getProjectDetails(pid: string): Project | null {
   return PROJECT_MAP.get(pid);
 }
 
-@nearBindgen
-export class UserReturnSchema {
-    pid: string;
-    username: string;
-    // wallet_address: string;
-    // status: string;
-}
+// @nearBindgen
+// export class UserReturnSchema {
+//     pid: string;
+//     username: string;
+//     // wallet_address: string;
+//     // status: string;
+// }
 
-export function getAllUsers(pid: string): Array<UserReturnSchema> {
-  logging.log(`Getting User for ${pid}`);
-  const project = PROJECT_MAP.get(pid);
-  let arr: Array<UserReturnSchema> = [];
-  if(!project) return arr;
-  for(let i  = 0; i < project.users.size; i++) {
-    let ret = project.users[i]
-    if(ret){
-      let userReturn: UserReturnSchema = {
-        pid: pid,
-        username: project.users[i],
+// export function getAllUsers(pid: string): Array<UserReturnSchema> {
+//   logging.log(`Getting User for ${pid}`);
+//   const project = PROJECT_MAP.get(pid);
+//   let arr: Array<UserReturnSchema> = [];
+//   if(!project) return arr;
+//   for(let i  = 0; i < project.users.size; i++) {
+//     let ret = project.users[i]
+//     if(ret){
+//       let userReturn: UserReturnSchema = {
+//         pid: pid,
+//         username: project.users[i],
         
-      }
-      arr.push(userReturn);
-    }
-  }
-  return arr;
-}
+//       }
+//       arr.push(userReturn);
+//     }
+//   }
+//   return arr;
+// }
 
 @nearBindgen
 export class ProjectReturnSchema {
@@ -179,28 +193,28 @@ export function getAllProjects(sender: string): Array<ProjectReturnSchema> {
   return projects;
 }
 
-// export function createUser(pid: string): void {
-//     let project = PROJECT_MAP.get(pid);
-//     if (!project) return;
-//     let user = new User(Context.sender);
-//     project.addUser(user);
-//     logging.log(`Created user ${Context.sender} in project ${pid}`);
-//   }
+export function createUser(pid: string): void {
+    let project = PROJECT_MAP.get(pid);
+    if (!project) return;
+    let user = new User(Context.sender);
+    project.addUser(user);
+    logging.log(`Created user ${Context.sender} in project ${pid}`);
+  }
   
-//   export function userExists(pid: string): bool {
-//     let project = PROJECT_MAP.get(pid);
-//     return project != null && project.users.has(Context.sender);
-//   }
-  
-//   export function getDatabaseAddress(pid: string, name: string): Database | null {
-//     let project = PROJECT_MAP.get(pid);
-//     logging.log(`Got databases for project ${pid}`);
-//     if (!project) return null;
-//     for (let i = 0; i < project.databases.length; i++) {
-//       let database = project.databases[i];
-//       if (database.name == name) {
-//         return database;
-//       }
-//     }
-//     return null;
-//   }
+export function userExists(pid: string): bool {
+  let project = PROJECT_MAP.get(pid);
+  return project != null && project.users.has(Context.sender);
+}
+
+export function getDatabaseAddress(pid: string, name: string): Database | null {
+  let project = PROJECT_MAP.get(pid);
+  logging.log(`Got databases for project ${pid}`);
+  if (!project) return null;
+  for (let i = 0; i < project.databases.length; i++) {
+    let database = project.databases[i];
+    if (database.name == name) {
+      return database;
+    }
+  }
+  return null;
+}
