@@ -13,12 +13,13 @@ export function CreateDialog ({ onCreate }) {
   const [name, setName] = React.useState('')
   const [type, setType] = React.useState('eventlog')
   const [permissions, setPermissions] = React.useState('creator')
+  const [overwrite, setOverwrite] = React.useState(false)
 
   function handleSubmit (event) {
     if (event) event.preventDefault()
     if (name.length === 0) return
     console.log('Create:', name, type, permissions)
-    onCreate({ name, type, permissions })
+    onCreate({ name, type, permissions, overwrite })
     dispatch({ type: actions.DB.CLOSE_CREATEDB_DIALOG })
   }
 
@@ -32,6 +33,10 @@ export function CreateDialog ({ onCreate }) {
 
   function handlePermissionsChange (event) {
     setPermissions(event.target.value)
+  }
+
+  function handleOverwriteChange(event){
+    setOverwrite(event.target.value === 'true')
   }
 
   return (
@@ -65,6 +70,12 @@ export function CreateDialog ({ onCreate }) {
           <Select onChange={handlePermissionsChange}>
             <option value='creator'>Creator-only: Only you can write, public read</option>
             <option value='public'>Public: Anybody can write and write</option>
+          </Select>
+        </FormField>
+        <FormField label='Overwrite'>
+          <Select onChange={handleOverwriteChange}>
+            <option value='false'>No</option>
+            <option value='true'>Yes</option>
           </Select>
         </FormField>
       </form>

@@ -5,6 +5,7 @@ import {
   PlusIcon,
   Pane,
   Spinner,
+  toaster,
   Text
 } from 'evergreen-ui'
 
@@ -16,12 +17,16 @@ import {ProgramList} from '../components/DatabaseList'
 import {CreateDialog} from '../components/CreateDialog'
 import {AddDialog} from '../components/AddDialog'
 
+import { useParams } from 'react-router-dom'
+
 export function DatabasesView () {
   const [appState, dispatch] = useStateValue()
 
+  const params = useParams()
+
   async function fetchDatabases () {
     dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: true })
-    const programs = await getAllDatabases()
+    const programs = await getAllDatabases(params.pid)
     dispatch({ type: actions.PROGRAMS.SET_PROGRAMS, programs: programs.reverse() })
     dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: false })
     return programs
@@ -33,11 +38,14 @@ export function DatabasesView () {
 
   const createDB = (args) => {
     console.log("Create database...", args)
-    createDatabase(args.name, args.type, args.permissions).then((hash) => {
+    createDatabase(args.name, args.type, args.permissions, params.pid, args.overwrite).then((hash) => {
       console.log("Created", hash)
       fetchDatabases().then((data) => {
         console.log("Loaded programs", data)
       })
+    }).catch((err) => {
+      console.error("Error", err)
+      toaster.danger(err.toString())
     })
   }
 
@@ -57,7 +65,7 @@ export function DatabasesView () {
 
   const handleRemoveDatabase = (hash, program) => {
     console.log("Remove database...", hash, program)
-    removeDatabase(hash).then(() => {
+    removeDatabase(hash, program, params.pid).then(() => {
       console.log("Removed")
       fetchDatabases().then((data) => {
         console.log("Loaded programs", data)

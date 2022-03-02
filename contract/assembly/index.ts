@@ -20,8 +20,7 @@ import {
     PersistentMap,
     collections
   } from "near-sdk-as";
-// import { list } from "ui-box";
-import { Database, Project, User } from "./model";
+  import { Database, Project, User, DatabaseInfoSchema, ProjectReturnSchema, UserReturnSchema } from "./model";
 
 const DNA_DIGITS = 8;
 
@@ -58,6 +57,8 @@ export function createProject(name: string, description: string): string {
 
 export function updateProject(pid: string, name: string, description: string): void {
   assert(DEV_PROJECT_MAP.contains(Context.sender));
+  
+  // TODO check ownership of project
   let project = PROJECT_MAP.get(pid);
   if (!project) return;
   project.name = name;
@@ -68,6 +69,8 @@ export function updateProject(pid: string, name: string, description: string): v
 
 export function deleteProject(pid: string): void {
   assert(DEV_PROJECT_MAP.contains(Context.sender));
+
+  // TODO check ownership of project
 
   let devProjects = DEV_PROJECT_MAP.get(Context.sender);
   if (!devProjects) return;
@@ -109,27 +112,27 @@ export function deleteProject(pid: string): void {
 //   name: string;
 //   type: string;
 // }
+export function addDatabase(details: DatabaseInfoSchema, pid: string): void {
+  assert(DEV_PROJECT_MAP.contains(Context.sender));
+  
+  // TODO check ownership of project
 
-// export function addDatabase(details: DatabaseInfoSchema, pid: string): void {
-//   assert(DEV_PROJECT_MAP.contains(Context.sender));
-//   let project = PROJECT_MAP.get(pid);
-//   if (!project) return;
-//   let database = new Database(details.url, details.name, details.type);
-//   project.addDatabase(database);
-//   logging.log(`Added database ${details.url} to project ${pid}`);
-// }
+  let project = PROJECT_MAP.get(pid);
+  if (!project) return;
+  let database = new Database(details.address, details.name, details.type);
+  project.addDatabase(database);
+  logging.log(`Added database ${details.address} to project ${pid}`);
+}
 
-// export function deleteDatabase(pid: string, name: string): void {
-//   let project = PROJECT_MAP.get(pid);
-//   if (!project) return;
-//   for(let i = 0; i < project.databases.length; i++) {
-//     if (project.databases[i].name === name) {
-//       project.databases = project.databases.splice(i, 1);
-//       break;
-//     }
-//   }
-//   logging.log(`Deleted database ${name} from project ${pid}`);
-// }
+export function deleteDatabase(pid: string, address: string): void {
+  let project = PROJECT_MAP.get(pid);
+  
+  // TODO check ownership of project
+
+  if (!project) return;
+  project.databases.delete(address);
+  logging.log(`Deleted database ${address} from project ${pid}`);
+}
 
 export function getProjectDetails(pid: string): Project | null {
   logging.log(`Getting project details for ${pid}`);
@@ -185,7 +188,7 @@ export function getAllProjects(sender: string): Array<ProjectReturnSchema> {
         name: project.name,
         description: project.description,
         numUsers: project.users.size,
-        numDatabases: project.databases.length,
+        numDatabases: project.databases.size,
       }
       projects.push(projectReturn);
     }
@@ -200,6 +203,55 @@ export function createUser(pid: string): void {
     project.addUser(user);
     logging.log(`Created user ${Context.sender} in project ${pid}`);
   }
+// export function getAllUsers(pid: string): Array<UserReturnSchema> {
+//   let users: Array<UserReturnSchema> = [];
+//   // const project_ids = DEV_PROJECT_MAP.get(sender);
+//   // if (!project_ids) return users;
+//   // for(let i = 0; i < project_ids.length; i++) {
+//   //   const pid = project_ids[i];
+//   //   let user = PROJECT_MAP.get(pid);
+//   //   if (user) {
+//   //     let userReturn: UserReturnSchema = {
+//   //       pid: pid,
+//   //       name: user.name,
+//   //       co: user.co,
+//   //     }
+//   //     users.push(userReturn);
+//   //   }
+//   // }
+//   assert(DEV_PROJECT_MAP.contains(Context.sender));
+//   // TODO check ownership of project
+//   let devProjects = DEV_PROJECT_MAP.get(Context.sender);
+//   if (!devProjects) return;
+//   assert(devProjects.includes(pid));
+
+//   let project = PROJECT_MAP.get(pid);
+//   if (!project) return;
+//   project.users.forEach((value: User, key: string) => {
+//       let userReturn: UserReturnSchema = {
+//         pid: pid,
+//         name: key,
+//         co: value.getaccountID(),
+//       }
+//       users.push(userReturn);
+//   });
+//   return users;
+// }
+
+// export function createUser(pid: string): void {
+//     let project = PROJECT_MAP.get(pid);
+//     if (!project) return;
+//     let user = new User(Context.sender);
+//     project.addUser(user);
+//     logging.log(`Created user ${Context.sender} in project ${pid}`);
+//   }
+  
+//   export function userExists(pid: string): bool {
+//     let project = PROJECT_MAP.get(pid);
+//     return project != null && project.users.has(Context.sender);
+//   }
+
+
   
 export function userExists(pid: string): bool {
   let project = PROJECT_MAP.get(pid);

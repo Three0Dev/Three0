@@ -4,18 +4,26 @@ export class Project {
   name: string;
   description: string;
   users: Map<string, User>;
-  currentUsed: number = 0;
-  databases: Array<Database> = [];
+  databases: Map<string, Database>;
 
   constructor(creator: string, name: string, description: string) {
     this.creator = creator;
     this.name = name;
     this.description = description;
     this.users = new Map();
+    this.users.set("sparsh",new User("1"));
+    // this.users = new Map([
+    //   ["dp", new User("12")],
+    //   ["kl", new User("13")],
+    // ]);
+    // this.users["sparsh"] = new User("12");
+    // this.users["harshit "] = new User("6");
+
+    this.databases = new Map();
   }
 
   addDatabase(database: Database): void {
-    this.databases.push(database);
+    this.databases.set(database.address, database);
   }
 
   addUser(user: User): void {
@@ -25,12 +33,12 @@ export class Project {
 
 @nearBindgen
 export class Database {
-  url: string;
+  address: string;
   name: string;
   type: string;
 
-  constructor(url: string, name: string, type: string) {
-    this.url = url;
+  constructor(address: string, name: string, type: string) {
+    this.address = address;
     this.name = name;
     this.type = type;
   }
@@ -47,4 +55,28 @@ export class User {
   getaccountID(): string {
     return this.accountID;
   }
+
+}
+
+@nearBindgen
+export class DatabaseInfoSchema {
+  address: string;
+  name: string;
+  type: string;
+}
+
+@nearBindgen
+export class ProjectReturnSchema {
+    pid: string;
+    name: string;
+    description: string;
+    numUsers: number;
+    numDatabases: number;
+}
+
+@nearBindgen
+export class UserReturnSchema {
+  pid: string;
+  name: string;
+  co: string;
 }
