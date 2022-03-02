@@ -1,4 +1,3 @@
-import { ConsoleIcon } from "evergreen-ui";
 import { connect, Contract, keyStores, WalletConnection } from "near-api-js";
 import getConfig from "./config";
 
@@ -27,7 +26,7 @@ export async function initContract() {
     nearConfig.contractName,
     {
       viewMethods: ["devExist", "getAllProjects", "getProjectDetails", "getAllUsers"],
-      changeMethods: ["createDev", "createProject", "updateProject", "deleteProject", "addDatabase", "deleteDatabase"],
+      changeMethods: ["createDev", "createProject", "updateProject", "deleteProject", "addDatabase", "deleteDatabase", "postUser"],
       // // View methods are read only. They don't modify the state, but usually return some value.
       // // Change methods can modify the state. But you don't receive the returned value when called.
     }
@@ -45,6 +44,6 @@ export function login() {
   // user's behalf.
   // This works by creating a new access key for the user's account and storing
   // the private key in localStorage.
-  console.log('Logging In');
-  window.walletConnection.requestSignIn(nearConfig.contractName, "Three0", "http://localhost:1234/app", "http://localhost:1234/login");
+  const starter = window.location.origin
+  window.walletConnection.requestSignIn(nearConfig.contractName, "Three0", `${starter}/app`, `${starter}/login`);
 }

@@ -3,6 +3,7 @@ import {Group, Button} from 'evergreen-ui';
 import { ActiveUsers } from '../components/ActiveUsers';
 import { UserLog } from '../components/UserLog';
 
+
 export function Auth() {
   const options = [
     {
@@ -14,7 +15,18 @@ export function Auth() {
   ]
 
   const [optionType, setOptionType] = React.useState(options[0].value);
-    
+
+  React.useEffect(() => {
+    async function getUsers(){
+      try{
+        const project = await window.contract.getAllUsers({pid: params.pid});
+      } catch(e){
+        console.error(e);
+      }
+    }
+
+    getUsers();
+  }, []);  
   return (
     <>
     <div style={{textAlign: "center", marginTop:"2%"}}>

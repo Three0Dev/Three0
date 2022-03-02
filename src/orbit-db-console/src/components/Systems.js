@@ -9,7 +9,7 @@ import {
 
 import { initIPFS, initOrbitDB, getAllDatabases } from '../database'
 import { actions, useStateValue } from '../state'
-import { useParams } from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 
 import { ConnectToWalletButton } from './ConnectToWalletButton'
 

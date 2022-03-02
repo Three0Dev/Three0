@@ -201,16 +201,15 @@ export function ProgramView () {
         appearance='minimal'
         onClick={handleBack}
       />
-      <Heading
+      {/* <Heading
         marginLeft={majorScale(1)}
         display='flex'
-        fontFamily='Titillium Web'
         color='#425A70'
         size={700}
         textTransform='uppercase'
       >
         DATABASE
-      </Heading>
+      </Heading> */}
     </Pane>
     <Pane display='flex' justifyContent='center'>
       <Pane
