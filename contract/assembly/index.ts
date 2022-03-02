@@ -226,20 +226,20 @@ export function getAllProjects(sender: string): Array<ProjectReturnSchema> {
 //     logging.log(`Created user ${Context.sender} in project ${pid}`);
 //   }
   
-export function userExists(pid: string): bool {
-  let project = PROJECT_MAP.get(pid);
-  return project != null && project.users.has(Context.sender);
-}
+// export function userExists(pid: string): bool {
+//   let project = PROJECT_MAP.get(pid);
+//   return project != null && project.users.has(Context.sender);
+// }
 
-export function getDatabaseAddress(pid: string, name: string): Database | null {
-  let project = PROJECT_MAP.get(pid);
-  logging.log(`Got databases for project ${pid}`);
-  if (!project) return null;
-  for (let i = 0; i < project.databases.length; i++) {
-    let database = project.databases[i];
-    if (database.name == name) {
-      return database;
-    }
-  }
-  return null;
-}
+// export function getDatabaseAddress(pid: string, name: string): Database | null {
+//   let project = PROJECT_MAP.get(pid);
+//   logging.log(`Got databases for project ${pid}`);
+//   if (!project) return null;
+//   for (let i = 0; i < project.databases.length; i++) {
+//     let database = project.databases[i];
+//     if (database.name == name) {
+//       return database;
+//     }
+//   }
+//   return null;
+// }
