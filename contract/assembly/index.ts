@@ -144,12 +144,12 @@ export function getAllUsers(pid: string): Array<UserReturnSchema> {
   // assert(devProject.includes(pid));
 
   let project = PROJECT_MAP.get(pid);
-  let keys = Array.from(project.users.keys())
+  // let keys = Array.from(project.users.keys())
   // if (!project) return null;
 
-  for (let i = 0; i < keys.; i++){
-    console.log(keys[i]);
-  }
+  // for (let i = 0; i < keys.; i++){
+  //   console.log(keys[i]);
+  // }
   
   // console.log(keys[0]);
   // console.log(keys);
