@@ -43,7 +43,8 @@ export function createProject(name: string, description: string): string {
   let project = new Project(Context.sender, name, description);
 
   // TODO remove equals sign from pid
-  const pid = base64.encode(math.randomBuffer(DNA_DIGITS)).replace("=", "");
+  let buf = math.randomBuffer(DNA_DIGITS)
+  const pid = base64.encode(buf).replace("=", "");
 
   PROJECT_MAP.set(pid, project);
 
@@ -193,13 +194,13 @@ export function getAllProjects(sender: string): Array<ProjectReturnSchema> {
   return projects;
 }
 
-export function createUser(pid: string): void {
-    let project = PROJECT_MAP.get(pid);
-    if (!project) return;
-    let user = new User(Context.sender);
-    project.addUser(user);
-    logging.log(`Created user ${Context.sender} in project ${pid}`);
-  }
+// export function createUser(pid: string): void {
+//     let project = PROJECT_MAP.get(pid);
+//     if (!project) return;
+//     let user = new User(Context.sender);
+//     project.addUser(user);
+//     logging.log(`Created user ${Context.sender} in project ${pid}`);
+//   }
   
 export function userExists(pid: string): bool {
   let project = PROJECT_MAP.get(pid);
