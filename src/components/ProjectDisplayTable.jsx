@@ -37,34 +37,25 @@ export function ProjectDisplayTable(){
       }
 
     return (
-        <div>
-            <Table>
+        
+        <Table>
             <Table.Head>
             <Table.TextHeaderCell><Text>Name</Text></Table.TextHeaderCell>
             <Table.TextHeaderCell><Text>Description</Text></Table.TextHeaderCell>
             <Table.TextHeaderCell><Text> Users</Text></Table.TextHeaderCell>
             <Table.TextHeaderCell><Text> Databases</Text></Table.TextHeaderCell>
-            <Table.TextHeaderCell><Text> Edit</Text></Table.TextHeaderCell>
-            <Table.TextHeaderCell><Text> Delete</Text></Table.TextHeaderCell>
             </Table.Head>
             <Table.Body>
-            {projects.map((project) => (
-                // isSelectable onSelect={() => navigate(`/app/${project.pid}/auth`)}
-                <Table.Row key={project.pid}>
+            {projects.map((project) => ( 
+                <Table.Row key={project.pid} isSelectable onSelect={() => navigate(`/app/${project.pid}/auth`)}>
                 <Table.TextCell><Text>{project.name}</Text></Table.TextCell>
                 <Table.TextCell>{project.description}</Table.TextCell>
                 <Table.TextCell isNumber>{project.numUsers}</Table.TextCell>
                 <Table.TextCell isNumber>{project.numDatabases}</Table.TextCell>
-                <Table.TextCell>
-                    <Button size="small" appearance="primary" onClick={() => navigate(`/app/${project.pid}/auth`)}><EditIcon style={{marginRight: "4%"}}/></Button>
-                </Table.TextCell>
-                <Table.TextCell>
-                    <Button size="small" intent = "danger" appearance="primary" onClick={() => deleteProject(project.pid)}><DeleteIcon style={{marginRight: "4%"}}/></Button>
-                </Table.TextCell>
                 </Table.Row>
             ))}
             </Table.Body>
-            </Table>
-        </div>
+        </Table>
+        
     )
 }
