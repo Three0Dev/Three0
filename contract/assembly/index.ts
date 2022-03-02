@@ -41,9 +41,7 @@ export function createProject(name: string, description: string): string {
   assert(DEV_PROJECT_MAP.contains(Context.sender));
   let project = new Project(Context.sender, name, description);
 
-  // TODO remove equals sign from pid
-  let buf = math.randomBuffer(DNA_DIGITS)
-  const pid = base64.encode(buf).replace("=", "");
+  const pid = _randomNum().toString();
 
   PROJECT_MAP.set(pid, project);
 
@@ -54,6 +52,16 @@ export function createProject(name: string, description: string): string {
 
   logging.log(`Created project ${name} by ${Context.sender}`);
   return pid;
+}
+
+function _randomNum(): u32 {
+  let buf = math.randomBuffer(4);
+  return (
+    (((0xff & buf[0]) << 24) |
+      ((0xff & buf[1]) << 16) |
+      ((0xff & buf[2]) << 8) |
+      ((0xff & buf[3]) << 0))
+  );
 }
 
 export function updateProject(pid: string, name: string, description: string): void {
@@ -226,20 +234,7 @@ export function getAllProjects(sender: string): Array<ProjectReturnSchema> {
 //     logging.log(`Created user ${Context.sender} in project ${pid}`);
 //   }
   
-// export function userExists(pid: string): bool {
-//   let project = PROJECT_MAP.get(pid);
-//   return project != null && project.users.has(Context.sender);
-// }
-
-// export function getDatabaseAddress(pid: string, name: string): Database | null {
-//   let project = PROJECT_MAP.get(pid);
-//   logging.log(`Got databases for project ${pid}`);
-//   if (!project) return null;
-//   for (let i = 0; i < project.databases.length; i++) {
-//     let database = project.databases[i];
-//     if (database.name == name) {
-//       return database;
-//     }
+//   export function userExists(pid: string): bool {
+//     let project = PROJECT_MAP.get(pid);
+//     return project != null && project.users.has(Context.sender);
 //   }
-//   return null;
-// }

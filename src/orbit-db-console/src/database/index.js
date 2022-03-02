@@ -1,6 +1,8 @@
 import * as IPFS from 'ipfs-core'
 import OrbitDB from 'orbit-db'
 import {config as Config} from '../config'
+import {NearIdentityProvider} from './NearIdentityProvider'
+import IdentityProvider from "orbit-db-identity-provider";
 
 let ipfs;
 
@@ -9,6 +11,8 @@ let orbitdb
 
 // Databases
 let programs
+
+IdentityProvider.addIdentityProvider(NearIdentityProvider)
 
 // Start IPFS
 export const initIPFS = async () => {
@@ -21,12 +25,13 @@ export const initIPFS = async () => {
 // Start OrbitDB
 export const initOrbitDB = async (ipfs) => {
   if(!orbitdb){
-    orbitdb = await OrbitDB.createInstance(ipfs)
-  }
+    const identity = await IdentityProvider.createIdentity({ type: `NearIdentity`})
+    orbitdb = await OrbitDB.createInstance(ipfs, {identity})  }
   return orbitdb
 }
 
 export const getAllDatabases = async (pid) => {
+  console.log('Getting all databases for project: ', pid)
   if(programs){
     await programs.close();
     programs = null;
@@ -41,9 +46,7 @@ export const getAllDatabases = async (pid) => {
     await programs.load()
   }
 
-  return programs
-    ? programs.iterator({ limit: -1 }).collect()
-    : []
+  return programs ? programs.iterator({ limit: -1 }).collect() : []
 }
 
 export const getDB = async (address) => {
@@ -111,3 +114,4 @@ export const removeDatabase = async (hash, program, pid) => {
 
   return programs.remove(hash)
 }
+

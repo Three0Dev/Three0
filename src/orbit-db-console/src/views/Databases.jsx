@@ -5,22 +5,26 @@ import {
   PlusIcon,
   Pane,
   Spinner,
+  Overlay,
   toaster,
   Text
 } from 'evergreen-ui'
 
 import { useStateValue, actions } from '../state'
 
-import { getAllDatabases, addDatabase, removeDatabase, createDatabase } from '../database'
+import { getAllDatabases, 
+  // addDatabase, 
+  removeDatabase, createDatabase } from '../database'
 
 import {ProgramList} from '../components/DatabaseList'
 import {CreateDialog} from '../components/CreateDialog'
-import {AddDialog} from '../components/AddDialog'
+// import {AddDialog} from '../components/AddDialog'
 
 import { useParams } from 'react-router-dom'
 
 export function DatabasesView () {
   const [appState, dispatch] = useStateValue()
+  const [loading, setLoading] = React.useState(false)
 
   const params = useParams()
 
@@ -38,6 +42,7 @@ export function DatabasesView () {
 
   const createDB = (args) => {
     console.log("Create database...", args)
+    setLoading(true)
     createDatabase(args.name, args.type, args.permissions, params.pid, args.overwrite).then((hash) => {
       console.log("Created", hash)
       fetchDatabases().then((data) => {
@@ -46,31 +51,32 @@ export function DatabasesView () {
     }).catch((err) => {
       console.error("Error", err)
       toaster.danger(err.toString())
-    })
+    }).finally(() => setLoading(false))
   }
 
-  const handleAddDatabase = (args) => {
-    dispatch({ type: actions.DB.OPEN_ADDDB_DIALOG })
-  }
+  // const handleAddDatabase = (args) => {
+  //   dispatch({ type: actions.DB.OPEN_ADDDB_DIALOG })
+  // }
 
-  const addDB = (args) => {
-    console.log("Add database...", args)
-    addDatabase(args.address).then((hash) => {
-      console.log("Added", args.address)
-      fetchDatabases().then((data) => {
-        console.log("Loaded programs", data)
-      })
-    })
-  }
+  // const addDB = (args) => {
+  //   console.log("Add database...", args)
+  //   addDatabase(args.address).then((hash) => {
+  //     console.log("Added", args.address)
+  //     fetchDatabases().then((data) => {
+  //       console.log("Loaded programs", data)
+  //     })
+  //   })
+  // }
 
   const handleRemoveDatabase = (hash, program) => {
     console.log("Remove database...", hash, program)
+    setLoading(true)
     removeDatabase(hash, program, params.pid).then(() => {
       console.log("Removed")
       fetchDatabases().then((data) => {
         console.log("Loaded programs", data)
       })
-    })
+    }).finally(() => setLoading(false))
   }
 
   return (
@@ -88,6 +94,7 @@ export function DatabasesView () {
         iconBefore='document'
         appearance='default'
         height={24}
+        isLoading={loading}
         onClick={handleCreateDatabase}
       >
         <div style={{marginRight: "8%"}}><PlusIcon /></div>
@@ -105,7 +112,7 @@ export function DatabasesView () {
     </Pane>
     <Pane display='flex' justifyContent='center' overflow='auto'>
       <CreateDialog onCreate={createDB}/>
-      <AddDialog onAdd={addDB}/>
+      {/* <AddDialog onAdd={addDB}/> */}
       <Pane
         flex='1'
         overflow='auto'
@@ -129,8 +136,14 @@ export function DatabasesView () {
               <Text marginY={majorScale(1)}>Loading...</Text>
             </Pane>)
         }
+
       </Pane>
     </Pane>
+    <Overlay isShown={loading}>
+      <Pane display="flex" alignItems="center" justifyContent="center" height={400}>
+        <Spinner />
+      </Pane>
+    </Overlay>
     </>
   )
 }

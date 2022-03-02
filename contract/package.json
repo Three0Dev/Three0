@@ -9,6 +9,7 @@
     "test": "asp --nologo"
   },
   "dependencies": {
+    "as-uuid": "^0.0.4",
     "near-sdk-as": "3.1.0"
   },
   "devDependencies": {
