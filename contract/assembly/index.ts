@@ -23,8 +23,8 @@ import {
 
 const DNA_DIGITS = 8;
 
-export const DEV_PROJECT_MAP = new PersistentMap<string, Array<string>>("devProjectMap");
-export const PROJECT_MAP = new PersistentMap<string, Project>("projectMap");
+export const DEV_PROJECT_MAP = new PersistentMap<string, Array<string>>("devProjectMap"); //senderkey =  array of strings that holds projectID
+export const PROJECT_MAP = new PersistentMap<string, Project>("projectMap"); //projectID to actualProject
 
 export function devExist(id: string): bool {
   return DEV_PROJECT_MAP.contains(id);
@@ -137,40 +137,59 @@ export function getAllProjects(sender: string): Array<ProjectReturnSchema> {
   return projects;
 }
 
-// export function getAllUsers(pid: string): Array<UserReturnSchema> {
-//   let users: Array<UserReturnSchema> = [];
-//   // const project_ids = DEV_PROJECT_MAP.get(sender);
-//   // if (!project_ids) return users;
-//   // for(let i = 0; i < project_ids.length; i++) {
-//   //   const pid = project_ids[i];
-//   //   let user = PROJECT_MAP.get(pid);
-//   //   if (user) {
-//   //     let userReturn: UserReturnSchema = {
-//   //       pid: pid,
-//   //       name: user.name,
-//   //       co: user.co,
-//   //     }
-//   //     users.push(userReturn);
-//   //   }
-//   // }
-//   assert(DEV_PROJECT_MAP.contains(Context.sender));
-//   // TODO check ownership of project
-//   let devProjects = DEV_PROJECT_MAP.get(Context.sender);
-//   if (!devProjects) return;
-//   assert(devProjects.includes(pid));
+export function getAllUsers(pid: string): Array<UserReturnSchema> {
+  let users: Array<UserReturnSchema> = [];
+  // assert(PROJECT_MAP.contains(pid));
+  // TODO check ownership of project
+  // assert(devProject.includes(pid));
 
-//   let project = PROJECT_MAP.get(pid);
-//   if (!project) return;
-//   project.users.forEach((value: User, key: string) => {
-//       let userReturn: UserReturnSchema = {
-//         pid: pid,
-//         name: key,
-//         co: value.getaccountID(),
-//       }
-//       users.push(userReturn);
-//   });
-//   return users;
-// }
+  let project = PROJECT_MAP.get(pid);
+  let keys = Array.from(project.users.keys())
+  // if (!project) return null;
+
+  for (let i = 0; i < keys.; i++){
+    console.log(keys[i]);
+  }
+  
+  // console.log(keys[0]);
+  // console.log(keys);
+
+  // for (let key of project.users.keys()){
+  //   console.log(key)
+  // }
+
+  // console.log(project.users);
+  // project.users(console.log)
+
+  // for (let value of project.users.)
+  // console.log(project.users.get("sparsh"));
+
+  // project.users.forEach((value: User, key: string) => {
+  //     let userReturn: UserReturnSchema = {
+  //       pid: pid,
+  //       walletID: key,
+  //       co: value.getaccountID(),
+  //       active: value.getActive()
+  //     }
+  //     users.push(userReturn);
+  // });
+  return users;
+}
+
+// const project_ids = DEV_PROJECT_MAP.get(sender);
+  // if (!project_ids) return users;
+  // for(let i = 0; i < project_ids.length; i++) {
+  //   const pid = project_ids[i];
+  //   let user = PROJECT_MAP.get(pid);
+  //   if (user) {
+  //     let userReturn: UserReturnSchema = {
+  //       pid: pid,
+  //       name: user.name,
+  //       co: user.co,
+  //     }
+  //     users.push(userReturn);
+  //   }
+  // }
 
 // export function createUser(pid: string): void {
 //     let project = PROJECT_MAP.get(pid);

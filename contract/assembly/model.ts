@@ -1,3 +1,5 @@
+// import { stringifyJsonOrBytes } from "near-api-js/lib/transaction";
+
 @nearBindgen
 export class Project {
   creator: string;
@@ -10,7 +12,7 @@ export class Project {
     this.creator = creator;
     this.name = name;
     this.description = description;
-    this.users = new Map();
+    this.users = new Map<string, User>();
     this.users.set("sparsh",new User("1"));
     // this.users = new Map([
     //   ["dp", new User("12")],
@@ -47,13 +49,23 @@ export class Database {
 @nearBindgen
 export class User {
   private accountID: string;
+  active: boolean;
 
   constructor(accountID: string) {
     this.accountID = accountID;
+    this.active = false;
   }
 
   getaccountID(): string {
     return this.accountID;
+  }
+
+  setActive(status: boolean): void{
+      this.active = status;
+  }
+
+  getActive():boolean{
+    return this.active;
   }
 
 }
@@ -77,6 +89,7 @@ export class ProjectReturnSchema {
 @nearBindgen
 export class UserReturnSchema {
   pid: string;
-  name: string;
+  walletID: string;
   co: string;
+  active: boolean;
 }
