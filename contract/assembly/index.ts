@@ -20,8 +20,7 @@ import {
     PersistentMap,
     collections
   } from "near-sdk-as";
-// import { list } from "ui-box";
-import { Database, Project, User } from "./model";
+  import { Database, Project, User, DatabaseInfoSchema, ProjectReturnSchema } from "./model";
 
 const DNA_DIGITS = 8;
 
@@ -59,6 +58,8 @@ export function createProject(name: string, description: string): string {
 
 export function updateProject(pid: string, name: string, description: string): void {
   assert(DEV_PROJECT_MAP.contains(Context.sender));
+  
+  // TODO check ownership of project
   let project = PROJECT_MAP.get(pid);
   if (!project) return;
   project.name = name;
@@ -69,6 +70,8 @@ export function updateProject(pid: string, name: string, description: string): v
 
 export function deleteProject(pid: string): void {
   assert(DEV_PROJECT_MAP.contains(Context.sender));
+
+  // TODO check ownership of project
 
   let devProjects = DEV_PROJECT_MAP.get(Context.sender);
   if (!devProjects) return;
@@ -131,6 +134,27 @@ export function deleteProject(pid: string): void {
 //   }
 //   logging.log(`Deleted database ${name} from project ${pid}`);
 // }
+export function addDatabase(details: DatabaseInfoSchema, pid: string): void {
+  assert(DEV_PROJECT_MAP.contains(Context.sender));
+  
+  // TODO check ownership of project
+
+  let project = PROJECT_MAP.get(pid);
+  if (!project) return;
+  let database = new Database(details.address, details.name, details.type);
+  project.addDatabase(database);
+  logging.log(`Added database ${details.address} to project ${pid}`);
+}
+
+export function deleteDatabase(pid: string, address: string): void {
+  let project = PROJECT_MAP.get(pid);
+  
+  // TODO check ownership of project
+
+  if (!project) return;
+  project.databases.delete(address);
+  logging.log(`Deleted database ${address} from project ${pid}`);
+}
 
 export function getProjectDetails(pid: string): Project | null {
   logging.log(`Getting project details for ${pid}`);
@@ -164,14 +188,14 @@ export function getProjectDetails(pid: string): Project | null {
 //   return arr;
 // }
 
-@nearBindgen
-export class ProjectReturnSchema {
-    pid: string;
-    name: string;
-    description: string;
-    numUsers: number;
-    numDatabases: number;
-}
+// @nearBindgen
+// export class ProjectReturnSchema {
+//     pid: string;
+//     name: string;
+//     description: string;
+//     numUsers: number;
+//     numDatabases: number;
+// }
 
 export function getAllProjects(sender: string): Array<ProjectReturnSchema> {
   let projects: Array<ProjectReturnSchema> = [];
@@ -186,7 +210,7 @@ export function getAllProjects(sender: string): Array<ProjectReturnSchema> {
         name: project.name,
         description: project.description,
         numUsers: project.users.size,
-        numDatabases: project.databases.length,
+        numDatabases: project.databases.size,
       }
       projects.push(projectReturn);
     }

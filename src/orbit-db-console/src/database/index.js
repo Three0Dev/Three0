@@ -2,6 +2,8 @@ import * as IPFS from 'ipfs-core'
 import OrbitDB from 'orbit-db'
 import {config as Config} from '../config'
 
+let ipfs;
+
 // OrbitDB instance
 let orbitdb
 
@@ -10,22 +12,32 @@ let programs
 
 // Start IPFS
 export const initIPFS = async () => {
-  return await IPFS.create(Config.ipfs)
+  if(!ipfs){
+    ipfs = await IPFS.create(Config.ipfs)
+  }
+  return ipfs
 }
 
 // Start OrbitDB
 export const initOrbitDB = async (ipfs) => {
-  orbitdb = await OrbitDB.createInstance(ipfs)
+  if(!orbitdb){
+    orbitdb = await OrbitDB.createInstance(ipfs)
+  }
   return orbitdb
 }
 
-export const getAllDatabases = async () => {
+export const getAllDatabases = async (pid) => {
+  if(programs){
+    await programs.close();
+    programs = null;
+  }
   if (!programs && orbitdb) {
     // Load programs database
-    programs = await orbitdb.feed('network.programs', {
+    programs = await orbitdb.feed(`three0-${pid}`, {
       accessController: { write: [orbitdb.identity.id] },
       create: true
     })
+
     await programs.load()
   }
 
@@ -53,7 +65,7 @@ export const addDatabase = async (address) => {
   })
 }
 
-export const createDatabase = async (name, type, permissions) => {
+export const createDatabase = async (name, type, permissions, pid, overwrite = false) => {
   let accessController
 
   switch (permissions) {
@@ -65,16 +77,37 @@ export const createDatabase = async (name, type, permissions) => {
       break
   }
 
-  const db = await orbitdb.create(name, type, { accessController })
-
-  return programs.add({
+  const db = await orbitdb.create(name, type, { accessController, overwrite })
+  
+  const dbDetails = {
     name,
     type,
     address: db.address.toString(),
+  }
+
+  console.log(dbDetails)
+
+  await window.contract.addDatabase({
+    details: dbDetails,
+    pid: pid
+  });
+
+  return programs.add({
+    ...dbDetails,
     added: Date.now()
   })
 }
 
-export const removeDatabase = async (hash) => {
+export const removeDatabase = async (hash, program, pid) => {
+
+ await window.contract.deleteDatabase({
+    address: program.address,
+    pid: pid
+  });
+
+  const db = await orbitdb.open(program.address)
+  await db.drop()
+  await db.close()
+
   return programs.remove(hash)
 }

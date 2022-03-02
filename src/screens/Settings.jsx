@@ -2,6 +2,7 @@ import React from 'react';
 import {FormField, TextInput, Textarea, Pane, DeleteIcon, SavedIcon, Button} from 'evergreen-ui';
 import {useParams, useNavigate} from 'react-router-dom';
 import { ConfigFile } from '../components/ConfigFile';
+import {ProjectDetailsContext} from '../ProjectDetailsContext';
 
 export function Settings(props){
   const [name, setName] = React.useState('');
@@ -11,20 +12,12 @@ export function Settings(props){
   const [deleteLoading, setDeleteLoading] = React.useState(false);
 
   let params = useParams();
+  let projectDetails = React.useContext(ProjectDetailsContext);
 
   React.useEffect(() => {
-    async function getProject(){
-      try{
-        const project = await window.contract.getProjectDetails({pid: params.pid});
-        setName(project.name || "");
-        setDescription(project.description || "");
-      } catch(e){
-        console.error(e);
-      }
-    }
-
-    getProject();
-  }, []);
+    setName(projectDetails.name);
+    setDescription(projectDetails.description);
+  }, [projectDetails]);
 
   function handleNameChange(e){
     const name = e.target.value;
@@ -67,10 +60,6 @@ export function Settings(props){
       }
   }
 
-  function copyContractId(){
-    navigator.clipboard.writeText(params.pid);
-  }
-
   return (
     <Pane style={{margin: "2%"}}>
         <FormField label='Name:'>
@@ -94,8 +83,8 @@ export function Settings(props){
         <div style = {{display: "flex", justifyContent: "space-between"}}>
           <ConfigFile />
           <div>
-            <Button appearance="primary" size="large" intent='success' onClick={updateProject}><SavedIcon style={{marginRight: "4%"}}/> Save</Button>
-            <Button appearance="primary" size="large"  intent='danger' onClick={deleteProject}><DeleteIcon style={{marginRight: "4%"}}/> Delete</Button>
+            <Button isLoading={updateLoading} appearance="primary" size="large" intent='success' onClick={updateProject}><SavedIcon style={{marginRight: "4%"}}/> Save</Button>
+            <Button isLoading={deleteLoading} appearance="primary" size="large"  intent='danger' onClick={deleteProject}><DeleteIcon style={{marginRight: "4%"}}/> Delete</Button>
           </div>
         </div>
     </Pane>
