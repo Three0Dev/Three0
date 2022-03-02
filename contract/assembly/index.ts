@@ -15,10 +15,8 @@
 import {
     Context,
     logging,
-    base64,
     math,
     PersistentMap,
-    collections
   } from "near-sdk-as";
   import { Database, Project, User, DatabaseInfoSchema, ProjectReturnSchema } from "./model";
 
@@ -98,50 +96,7 @@ export function deleteProject(pid: string): void {
   DEV_PROJECT_MAP.set(Context.sender, devProjects);
   logging.log(`Deleted project ${pid}`);
 }
-// export function postUser(accountID: string): string {
-//   // assert(DEV_PROJECT_MAP.contains(Context.sender));
-//   let account = new User(accountID);
 
-//   // TODO remove equals sign from pid
-//   const pid = base64.encode(math.randomBuffer(DNA_DIGITS)).replace("=", "");
-
-//   PROJECT_MAP.get(pid).users.set
-
-//   let devProjects = DEV_PROJECT_MAP.get(Context.sender);
-//   devProjects = devProjects ? devProjects : new Array<string>();
-//   devProjects.push(pid);
-//   DEV_PROJECT_MAP.set(Context.sender, devProjects);
-
-//   logging.log(`Created project ${name} by ${Context.sender}`);
-//   return pid;
-// }
-// @nearBindgen
-// export class DatabaseInfoSchema {
-//   url: string;
-//   name: string;
-//   type: string;
-// }
-
-// export function addDatabase(details: DatabaseInfoSchema, pid: string): void {
-//   assert(DEV_PROJECT_MAP.contains(Context.sender));
-//   let project = PROJECT_MAP.get(pid);
-//   if (!project) return;
-//   let database = new Database(details.url, details.name, details.type);
-//   project.addDatabase(database);
-//   logging.log(`Added database ${details.url} to project ${pid}`);
-// }
-
-// export function deleteDatabase(pid: string, name: string): void {
-//   let project = PROJECT_MAP.get(pid);
-//   if (!project) return;
-//   for(let i = 0; i < project.databases.length; i++) {
-//     if (project.databases[i].name === name) {
-//       project.databases = project.databases.splice(i, 1);
-//       break;
-//     }
-//   }
-//   logging.log(`Deleted database ${name} from project ${pid}`);
-// }
 export function addDatabase(details: DatabaseInfoSchema, pid: string): void {
   assert(DEV_PROJECT_MAP.contains(Context.sender));
   
@@ -151,6 +106,7 @@ export function addDatabase(details: DatabaseInfoSchema, pid: string): void {
   if (!project) return;
   let database = new Database(details.address, details.name, details.type);
   project.addDatabase(database);
+  PROJECT_MAP.set(pid, project);
   logging.log(`Added database ${details.address} to project ${pid}`);
 }
 
@@ -161,6 +117,7 @@ export function deleteDatabase(pid: string, address: string): void {
 
   if (!project) return;
   project.databases.delete(address);
+  PROJECT_MAP.set(pid, project);
   logging.log(`Deleted database ${address} from project ${pid}`);
 }
 
@@ -168,42 +125,6 @@ export function getProjectDetails(pid: string): Project | null {
   logging.log(`Getting project details for ${pid}`);
   return PROJECT_MAP.get(pid);
 }
-
-// @nearBindgen
-// export class UserReturnSchema {
-//     pid: string;
-//     username: string;
-//     // wallet_address: string;
-//     // status: string;
-// }
-
-// export function getAllUsers(pid: string): Array<UserReturnSchema> {
-//   logging.log(`Getting User for ${pid}`);
-//   const project = PROJECT_MAP.get(pid);
-//   let arr: Array<UserReturnSchema> = [];
-//   if(!project) return arr;
-//   for(let i  = 0; i < project.users.size; i++) {
-//     let ret = project.users[i]
-//     if(ret){
-//       let userReturn: UserReturnSchema = {
-//         pid: pid,
-//         username: project.users[i],
-        
-//       }
-//       arr.push(userReturn);
-//     }
-//   }
-//   return arr;
-// }
-
-// @nearBindgen
-// export class ProjectReturnSchema {
-//     pid: string;
-//     name: string;
-//     description: string;
-//     numUsers: number;
-//     numDatabases: number;
-// }
 
 export function getAllProjects(sender: string): Array<ProjectReturnSchema> {
   let projects: Array<ProjectReturnSchema> = [];
