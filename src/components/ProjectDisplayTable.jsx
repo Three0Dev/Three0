@@ -42,8 +42,8 @@ export function ProjectDisplayTable(){
             <Table.Head>
             <Table.TextHeaderCell><Text>Name</Text></Table.TextHeaderCell>
             <Table.TextHeaderCell><Text>Description</Text></Table.TextHeaderCell>
-            <Table.TextHeaderCell><Text><UserIcon /> Users</Text></Table.TextHeaderCell>
-            <Table.TextHeaderCell><Text><DatabaseIcon /> Databases</Text></Table.TextHeaderCell>
+            <Table.TextHeaderCell><Text> Users</Text></Table.TextHeaderCell>
+            <Table.TextHeaderCell><Text> Databases</Text></Table.TextHeaderCell>
             <Table.TextHeaderCell><Text> Edit</Text></Table.TextHeaderCell>
             <Table.TextHeaderCell><Text> Delete</Text></Table.TextHeaderCell>
             </Table.Head>
