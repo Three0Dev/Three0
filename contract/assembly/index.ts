@@ -103,6 +103,7 @@ export function addDatabase(details: DatabaseInfoSchema, pid: string): void {
   if (!project) return;
   let database = new Database(details.address, details.name, details.type);
   project.addDatabase(database);
+  PROJECT_MAP.set(pid, project);
   logging.log(`Added database ${details.address} to project ${pid}`);
 }
 
@@ -113,6 +114,7 @@ export function deleteDatabase(pid: string, address: string): void {
 
   if (!project) return;
   project.databases.delete(address);
+  PROJECT_MAP.set(pid, project);
   logging.log(`Deleted database ${address} from project ${pid}`);
 }
 

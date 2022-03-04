@@ -1,9 +1,7 @@
 import { keyStores } from 'near-api-js';
 import IdentityProvider  from "orbit-db-identity-provider";
 import { nearConfig as NEAR_CONFIG } from '../../../utils';
-const borsh = require('borsh');
 const js_sha256 = require("js-sha256")
-
 
 export class NearIdentityProvider extends IdentityProvider {
     // return type
