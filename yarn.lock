@@ -3357,15 +3357,6 @@
     "bs58" "^4.0.0"
     "text-encoding-utf-8" "^1.0.2"
 
-"borsh@^0.7.0":
-  "integrity" "sha512-CLCsZGIBCFnPtkNnieW/a8wmreDmfUtjU2m9yHrzPXIlNbqVs0AQrSatSG6vdNYUqdc83tkQi2eHfF98ubzQLA=="
-  "resolved" "https://registry.npmjs.org/borsh/-/borsh-0.7.0.tgz"
-  "version" "0.7.0"
-  dependencies:
-    "bn.js" "^5.2.0"
-    "bs58" "^4.0.0"
-    "text-encoding-utf-8" "^1.0.2"
-
 "bowser@^1.7.3":
   "integrity" "sha512-9IdMmj2KjigRq6oWhmwv1W36pDuA4STQZ8q6YO9um+x07xgYNCD3Oou+WP/3L1HNz7iqythGet3/p4wvc8AAwQ=="
   "resolved" "https://registry.npmjs.org/bowser/-/bowser-1.9.4.tgz"
