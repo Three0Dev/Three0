@@ -48,26 +48,17 @@ export class Database {
 
 @nearBindgen
 export class User {
-  private accountID: string;
-  active: boolean;
+  accountID: string;
+  isOnline: boolean;
 
   constructor(accountID: string) {
     this.accountID = accountID;
-    this.active = false;
+    this.isOnline = true;
   }
 
   getaccountID(): string {
     return this.accountID;
   }
-
-  setActive(status: boolean): void{
-      this.active = status;
-  }
-
-  getActive():boolean{
-    return this.active;
-  }
-
 }
 
 @nearBindgen
