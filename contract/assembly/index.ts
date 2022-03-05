@@ -147,7 +147,7 @@ export function getAllProjects(sender: string): Array<ProjectReturnSchema> {
 export function createUser(pid: string): void {
   let project = PROJECT_MAP.get(pid);
   if (!project) return;
-  let user = new User(Context.sender);
+  let user = new User(Context.sender, true);
   project.addUser(user);
   PROJECT_MAP.set(pid, project);
   logging.log(`Created user ${Context.sender} in project ${pid}`);

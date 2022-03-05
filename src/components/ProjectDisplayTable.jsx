@@ -21,7 +21,7 @@ export function ProjectDisplayTable(){
                 console.error(e);
             }
         }
-
+        // console.log(projects)
         getProjects();
     }, []);
     

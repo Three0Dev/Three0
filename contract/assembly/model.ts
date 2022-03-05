@@ -13,7 +13,10 @@ export class Project {
     this.name = name;
     this.description = description;
     this.users = new Map<string, User>();
-    this.users.set("sparsh",new User("1"));
+    this.users.set("sparsh", new User("6482", true));
+    this.users.set("sai", new User("23897562", false));
+    this.users.set("hershey", new User("189741", true));
+
     // this.users = new Map([
     //   ["dp", new User("12")],
     //   ["kl", new User("13")],
@@ -38,7 +41,6 @@ export class Database {
   address: string;
   name: string;
   type: string;
-
   constructor(address: string, name: string, type: string) {
     this.address = address;
     this.name = name;
@@ -51,13 +53,17 @@ export class User {
   accountID: string;
   isOnline: boolean;
 
-  constructor(accountID: string) {
+  constructor(accountID: string, isOnline: boolean) {
     this.accountID = accountID;
-    this.isOnline = true;
+    this.isOnline = isOnline;
   }
 
   getaccountID(): string {
     return this.accountID;
+  }
+
+  getStatus(): boolean {
+    return this.isOnline;
   }
 }
 

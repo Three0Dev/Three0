@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet, useNavigate, Link } from "react-router-dom";
 import logo from '../assets/logo.png';
-import {IconButton, LogOutIcon} from 'evergreen-ui';
+import {IconButton, LogOutIcon, Heading} from 'evergreen-ui';
 import { useEffect } from "react";
 import { logout } from "../utils";
 
@@ -39,7 +39,11 @@ export function App() {
         <Link to="/app"><img style={{
           width:"50px",
           margin: "5px"
-        }} src={logo}/></Link>
+        }} src={logo}/> </Link>
+        <Heading size = {1000} style = {{}} color = "#7b1fa2">Three0</Heading>
+        {/* <div>
+            <Text style={{position: "absolute", right: "50%"}} />
+        </div> */}
         <IconButton style={{position: "absolute", right: "2%"}} icon={LogOutIcon} onClick = {logout}/>
       </div>
       <Outlet />
