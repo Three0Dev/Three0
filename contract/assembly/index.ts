@@ -153,9 +153,10 @@ export function createUser(pid: string): void {
   logging.log(`Created user ${Context.sender} in project ${pid}`);
 }
   
-export function userExists(pid: string): bool {
+export function userExists(pid: string, id: string): bool {
   let project = PROJECT_MAP.get(pid);
-  return project != null && project.users.has(Context.sender);
+  logging.log(`Checking if user ${id} exists in project ${pid}`);
+  return project != null && project.users.has(id);
 }
 
 export function userLogin(pid: string): void {
