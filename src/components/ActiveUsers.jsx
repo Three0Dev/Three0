@@ -1,7 +1,6 @@
 import React from 'react'
 import {Table, StatusIndicator, Tooltip, InfoSignIcon, Heading, UserIcon} from 'evergreen-ui'
 import {ProjectDetailsContext} from '../ProjectDetailsContext';
-// import {User} from '../Three0/contract/assembly/model';
 
 function StatusExplanation(){
     return (
@@ -19,8 +18,7 @@ export function ActiveUsers(props){
     let projectDetails = React.useContext(ProjectDetailsContext);
     React.useEffect(() => {
         if(projectDetails.users){
-            const profiles = Object.entries(projectDetails.users);
-            setProfiles(profiles);
+            setProfiles(Object.values(projectDetails.users));
         }
     }, [projectDetails]);
 
