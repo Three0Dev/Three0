@@ -23,6 +23,3 @@ overflow-checks = true
 
 [workspace]
 members = []
-
-[target.wasm32-unknown-unknown]
-rustflags = ["-C", "link-arg=-s"]

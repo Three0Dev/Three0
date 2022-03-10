@@ -16,6 +16,7 @@ use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::{env, near_bindgen, setup_alloc, AccountId};
 use near_sdk::collections::{UnorderedMap, LookupMap, Vector};
 use uuid::Uuid;
+use near_sdk::serde::{Serialize, Deserialize};
 
 
 setup_alloc!();
@@ -48,7 +49,8 @@ pub struct Project {
     databases: UnorderedMap<String, Database>
 }
 
-#[derive(BorshDeserialize, BorshSerialize)]
+#[derive(Serialize, Deserialize, BorshDeserialize, BorshSerialize)]
+#[serde(crate = "near_sdk::serde")]
 pub struct ProjectReturnSchema {
     pub pid: String,
     pub name: String,
@@ -98,7 +100,8 @@ impl Project {
     }
 }
 
-#[derive(BorshDeserialize, BorshSerialize)]
+#[derive(Serialize, Deserialize, BorshDeserialize, BorshSerialize)]
+#[serde(crate = "near_sdk::serde")]
 pub struct Database {
     pub address: String,
     pub name: String,
@@ -183,6 +186,19 @@ impl Three0 {
         }
     }
 
+    pub fn get_project_users(&self, project_id: String) -> Vec<User> {
+        let project = self.project_map.get(&project_id);
+        match project {
+            Some(project) => {
+                let mut users = Vec::new();
+                for user in project.users.values() {
+                    users.push(user);
+                }
+                users
+            },
+            None => Vec::new()
+        }
+    }
 
     pub fn update_project(&mut self, project_id: String, project_name: String, project_description: String) -> bool{
         let project_ref = self.project_map.get(&project_id);
@@ -471,6 +487,9 @@ mod tests {
 
         let success_login = contract.user_login(pid.clone());
         assert!(success_login);
+
+        let all_users = contract.get_project_users(pid.clone());
+        assert_eq!(all_users.len(), 1);
     }
 
     #[test]
