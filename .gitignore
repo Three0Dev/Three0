@@ -47,3 +47,5 @@ target/
 
 # MSVC Windows builds of rustc generate these, which store debugging information
 *.pdb
+.vscode/launch.json
+contract_copy/.vscode/launch.json
