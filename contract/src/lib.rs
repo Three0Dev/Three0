@@ -136,7 +136,8 @@ impl Clone for Database {
     }
 }
 
-#[derive(BorshDeserialize, BorshSerialize)]
+#[derive(Serialize, Deserialize, BorshDeserialize, BorshSerialize)]
+#[serde(crate = "near_sdk::serde")]
 pub struct User {
     account_id: AccountId,
     is_online: bool,
