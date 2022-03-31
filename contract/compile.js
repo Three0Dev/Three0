@@ -27,9 +27,7 @@ const debug = process.argv.pop() === '--debug'
 // Let's set a variable to track whether `--debug` was used.
 // Note: see other flags in ./cargo/config. Unfortunately, you cannot set the
 // `--target option` in Cargo.toml.
-const buildCmd = debug
-  ? 'cargo build --target wasm32-unknown-unknown'
-  : 'cargo build --target wasm32-unknown-unknown --release'
+const buildCmd = `cargo build --target wasm32-unknown-unknown ${debug ? '' : '--release'}`;
 
 // Execute the build command, storing exit code for later use
 const { code } = sh.exec(buildCmd)
@@ -47,6 +45,7 @@ if (code === 0 && calledFromDir !== __dirname) {
   sh.rm('-f', link)
   //fixes #831: copy-update instead of linking .- sometimes sh.ln does not work on Windows
   sh.cp('-u',outFile,link)
+  sh.cp('-u', outFile, `${calledFromDir}/src/wasms/main.wasm`)
 }
 
 // exit script with the same code as the build command

@@ -31,15 +31,17 @@ export function CreateProjectModal(props){
     async function createProject(){
         try{
             setAddLoading(true);
-            let id = await window.contract.createProject({
-                name: name,
-                description: description,
+            let id = await window.contract.create_project({
+                project_name: name,
+                project_description: description,
                 // blockchainNetwork: blockchainNetwork
             });
             setAddLoading(false);
             props.closeModal();
             navigate(`/app/${id}`);
         } catch(e){
+            setAddLoading(false);
+            props.closeModal();
             console.error(e);
         }
     }

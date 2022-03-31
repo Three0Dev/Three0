@@ -11,20 +11,21 @@ export function App() {
     if(!window.walletConnection.isSignedIn()){
       navigate("/login");
     }
-
-    async function createDev(){
-      try{
-        let devExists = await window.contract.devExist({id: window.contract.account.accountId});
-        if(!devExists){
-          await window.contract.createDev();
-        }
-      }catch(e){
-        console.error(e);
-      }
-    }
-
-    createDev();
   }, []);
+
+  const deleteAccount = async () => {
+    // const account = await window.near.account("three0develop." + window.walletConnection.getAccountId());
+    // console.log(await window.subaccount.deleteAccount(window.walletConnection.getAccountId()));
+    // logout();
+     try{
+      const file = await fetch('./src/wasms/main.wasm');
+      const buf = await file.arrayBuffer();
+      await window.subaccount.deployContract(new Uint8Array(buf));
+      console.log('Contract Deployed');
+    } catch(e) { 
+      console.log(e);
+    }
+  };
 
 
   return (
@@ -44,7 +45,9 @@ export function App() {
         {/* <div>
             <Text style={{position: "absolute", right: "50%"}} />
         </div> */}
-        <IconButton style={{position: "absolute", right: "2%"}} icon={LogOutIcon} onClick = {logout}/>
+
+        <IconButton style={{position: "absolute", right: "2%"}} icon={LogOutIcon} onClick = {deleteAccount}/>
+        {/* <IconButton style={{position: "absolute", right: "2%"}} icon={LogOutIcon} onClick = {logout}/> */}
       </div>
       <Outlet />
     </>

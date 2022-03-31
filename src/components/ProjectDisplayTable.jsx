@@ -15,13 +15,13 @@ export function ProjectDisplayTable(){
     useEffect(() => {
         async function getProjects(){
             try{
-                const projects = await window.contract.getAllProjects({sender: window.contract.account.accountId});
+                const projects = await window.contract.get_all_projects({sender: window.contract.account.accountId});
                 setProjects(projects);
             }catch(e){
                 console.error(e);
             }
         }
-        // console.log(projects)
+
         getProjects();
     }, []);
     
