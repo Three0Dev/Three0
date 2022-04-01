@@ -45,30 +45,21 @@ export function Navigation() {
     }
 
     return (
-        // <div class = "container">
-        //     <div class = "panel" style = {{width: "99%", float:"left"}}>
-                <Tablist style={{width: "15%"}}>
-                    {tabs.map((tab, index) => (
-                    <SidebarTab
-                        key={tab}
-                        id={tab}
-                        onSelect={() => {
-                            switchLink(index);
-                        }}
-                        isSelected={index === selectedIndex}
-                        aria-controls={`panel-${tab}`}
-                    >
-                    <div style={{marginRight:"15%"}}>{tabIcon[index]}</div>
-                        {tab}
-                    </SidebarTab>
-                    ))}
-                </Tablist>
-        //      </div>
-        //     <div style = {{width: "1%", float: "left"}}>
-        //         <div style = {{borderRight: "1px solid purple", height: "550px"}} class = "v1"></div>
-        //     </div>  
-        // </div> 
-
-        
+        <Tablist style={{width: "15%"}}>
+            {tabs.map((tab, index) => (
+            <SidebarTab
+                key={tab}
+                id={tab}
+                onSelect={() => {
+                    switchLink(index);
+                }}
+                isSelected={index === selectedIndex}
+                aria-controls={`panel-${tab}`}
+            >
+            <div style={{marginRight:"15%"}}>{tabIcon[index]}</div>
+                {tab}
+            </SidebarTab>
+            ))}
+        </Tablist>
     );
 }

@@ -18,7 +18,16 @@ export function ActiveUsers(){
     let projectDetails = React.useContext(ProjectDetailsContext);
     React.useEffect(() => {
         if(projectDetails.users){
-            setProfiles(Object.values(projectDetails.users));
+            async function getUsers(){
+                try{
+                    let users = await window.contract.get_users({project_id: projectDetails.id});
+                    setProfiles(users);
+                } catch(e){
+                    console.error(e);
+                }
+            }
+
+            getUsers();
         }
     }, [projectDetails]);
 
