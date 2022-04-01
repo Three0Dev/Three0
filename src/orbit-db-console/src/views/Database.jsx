@@ -1,15 +1,33 @@
 import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import {
-  majorScale,
-  ArrowLeftIcon,
-  Heading,
-  IconButton,
-  Pane,
-  Pre,
-  Spinner,
-  Text
-} from 'evergreen-ui'
+// import {
+//   majorScale,
+//   ArrowLeftIcon,
+//   Heading,
+//   IconButton,
+//   Pane,
+//   Pre,
+//   Spinner,
+//   Text
+// } from 'evergreen-ui'
+
+import {Typography, CircularProgress, Button, Box } from '@mui/material'
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+// import CircularProgress from '@mui/material/CircularProgress';
+import { ThemeProvider, createTheme } from '@material-ui/core/styles';
+// import { Typography } from "@material-ui/core";
+
+const theme = createTheme({
+  typography: {
+    fontFamily: [
+      "Nunito",
+      "Roboto",
+      "Helvetica Neue",
+      "Arial",
+      "sans-serif"
+    ].join(",")
+  }
+});
 
 import {LogStoreControls} from '../components/LogStoreControls'
 import {FeedStoreControls} from '../components/FeedStoreControls'
@@ -93,78 +111,69 @@ export function ProgramView () {
     else if (db.type === 'counter')
       return "Count"
     else
-      return <Text intent='danger'>No input controls found for '{db.type}'</Text>
+      // return <Text intent='danger'>No input controls found for '{db.type}'</Text>
+      return <Typography variant="body2" color="textSecondary">No input controls found for '{db.type}'</Typography>
   }
 
   function renderProgram () {
     const program = appState.program ? appState.program.payload.value : null
     return (
-      <Pane marginTop={majorScale(2)}>
-        <Pane flex='1' >
-          <Text>Name: {program ? program.name : '-'}</Text>
-        </Pane>
-        <Pane flex='1' >
-          <Text>Type: </Text>
-          {program
-            ? <Text color={colors[program.type]}>{program.type}</Text>
-            : <Text>-</Text>
-          }
-        </Pane>
-        <Pane flex='1'>
-          <Text>Permissions:</Text>
-          {appState.db
-            ? <pre>{appState.db.access.write}</pre>
-            : <Text>-</Text>
-          }
-        </Pane>
-        <Pane flex='1' flexDirection='row'>
-          <Text>Entries: </Text>
-          {appState.db
-            ? <Text>{appState.db._oplog?.length}</Text>
-            : <Text>-</Text>
-          }
-        </Pane>
-        <Pane
-          flex='1'
-          marginBottom={majorScale(2)}
-        >
-          <Heading size={500}
-            marginTop={majorScale(2)}
-            marginBottom={majorScale(1)}
-          >
-            {getValuesTitle()}
-          </Heading>
-          {loading
-            ? <Spinner
-                size={majorScale(2)}
-                delay={100}
-                marginY={majorScale(2)}
-              />
-            : appState.entries.map((e, idx) => {
-                idx += 1
-                return (
-                  <div key={idx}>
-                    <Pane>
-                      <Text userSelect='none' cursor='pointer' onClick={() => handleSelect(idx)}>{JSON.stringify(e.payload.value, null, 2)}</Text>
-                    </Pane>
-                    <Pane>
-                      {index && idx === index
-                        ? <Pre
-                            maxWidth={majorScale(96)}
-                            overflow='auto'
-                            fontFamily='Source Code Pro'
-                            marginY={majorScale(1)}
-                            paddingY={majorScale(1)}
-                            backgroundColor='#FEF8E7'
-                          >{JSON.stringify(e, null, 2)}</Pre>
-                        : ''}
-                    </Pane>
-                  </div>
-                )
-              })
-          }
-        </Pane>
-      </Pane>
+        <Box marginTop={2}>
+          <Box flex='1' >
+            <Typography variant="h7" color="textPrimary">Name: {program ? program.name : '-'}</Typography>
+          </Box>
+
+          <Box flex='1' >
+            <Typography variant="h7" color="textPrimary">Type: </Typography>
+            {program
+              ? <Typography variant="h8" color={colors[program.type]}>{program.type}</Typography>
+              : <Typography variant="h8" color="textSecondary">-</Typography>
+            }
+          </Box>
+
+          <Box flex='1'>
+            <Typography variant="h7" color="textPrimary">Permissions: </Typography>
+            {appState.db
+              ? <Typography variant="h8" color="textSecondary">{appState.db.access.write}</Typography>
+              : <Typography variant="h8" color="textSecondary">-</Typography>
+            }
+          </Box>
+
+          <Box flex='1' flexDirection='row'>
+            <Typography variant="h7" color="textPrimary">Entries: </Typography>
+            {appState.db
+              ? <Typography variant="h8" color="textSecondary">{appState.db._oplog?.length}</Typography>
+              : <Typography variant="h8" color="textSecondary">-</Typography>
+            }
+          </Box>
+
+          <Box flex='1' marginBottom={2}>
+              <Typography sx={{ fontWeight: 'bold' }} variant="h7" color="textPrimary">{getValuesTitle()}</Typography>
+            {loading
+              ? <CircularProgress
+                  size={2}
+                  delay={100}
+                  marginY={2}
+                />
+              : appState.entries.map((e, idx) => {
+                  idx += 1
+                  return (
+                    <div key={idx}>
+                      <Box>
+                        <Typography userSelect='none' cursor='pointer' onClick={() => handleSelect(idx)}>{JSON.stringify(e.payload.value, null, 2)}</Typography>
+                      </Box>
+                      <Box>
+                        {index && idx === index
+                          ? 
+                          <Typography variant="body" color="textSecondary">{JSON.stringify(e, null, 2)}</Typography>
+                          : ''}
+                      </Box>
+                    </div>
+                  )
+                })
+            }
+          </Box>
+        </Box>
     )
   }
 
@@ -183,56 +192,49 @@ export function ProgramView () {
     else if (db.type === 'counter')
       return <CounterStoreControls />
     else
-      return <Text intent='danger'>No input controls found for '{db.type}'</Text>
+      // return <Text intent='danger'>No input controls found for '{db.type}'</Text>
+      return <Typography variant="body2" color="textSecondary">No input controls found for '{db.type}'</Typography>
   }
 
   return (
-    <>
-    <Pane
-      marginTop={majorScale(3)}
-      marginBottom={majorScale(2)}
-      marginX={majorScale(1)}
+  <>
+    <Box
+      marginTop={3}
+      marginBottom={2}
+      marginX={1}
       display='flex'
       flexDirection='row'
       alignItems='baseline'
     >
-      <IconButton
-        icon={ArrowLeftIcon}
-        appearance='minimal'
-        onClick={handleBack}
-      />
-      {/* <Heading
-        marginLeft={majorScale(1)}
-        display='flex'
-        color='#425A70'
-        size={700}
-        textTransform='uppercase'
-      >
-        DATABASE
-      </Heading> */}
-    </Pane>
-    <Pane display='flex' justifyContent='center'>
-      <Pane
+      
+      <Button>  
+        <KeyboardBackspaceIcon onClick={handleBack}/>
+      </Button>
+
+    </Box>
+    <Box display='flex' justifyContent='center'>
+      <Box
         flex='1'
         overflow='auto'
         elevation={1}
         background='white'
-        marginX={majorScale(6)}
-        padding={majorScale(4)}
+        marginX={6}
+        padding={4}
+        sx={{borderColor: 'black', bgcolor: 'white'}}
       >
-        <Pane borderBottom='default'>
-          <Heading size={500} marginBottom={majorScale(1)} borderBottom='default' overflow='auto'>
-            /orbitdb/{programName}/{dbName}
-          </Heading>
-        </Pane>
-        <Pane>
+        <Box borderBottom='default'>
+            <Typography sx={{ fontWeight: 'bold' }} size={500} marginBottom={1} borderBottom='default' overflow='auto'>
+              /orbitdb/{programName}/{dbName}
+            </Typography>
+        </Box>
+        <Box>
           {renderProgram()}
-        </Pane>
-        <Pane>
+        </Box>
+        <Box>
           {appState.program ? (renderDatabaseControls()) : ''}
-        </Pane>
-      </Pane>
-    </Pane>
+        </Box>
+      </Box>
+    </Box>
   </>
   )
 }

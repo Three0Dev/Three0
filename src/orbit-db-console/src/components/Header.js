@@ -1,12 +1,18 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
-  majorScale,
   Heading,
   Link,
   Pane,
   SearchInput
 } from 'evergreen-ui'
+
+// import {
+  // Heading,
+  // Link,
+  // Pane,
+  // SearchInput
+// } from '@mui/material'
 
 export function Header () {
   const navigate = useNavigate();
