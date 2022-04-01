@@ -2,17 +2,19 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   Heading,
-  Link,
-  Pane,
+  // Link,
+  // Pane,
   SearchInput
 } from 'evergreen-ui'
 
-// import {
+import {
+  // majorScale,
   // Heading,
-  // Link,
-  // Pane,
+   Link,
+   Box,
+   Typography
   // SearchInput
-// } from '@mui/material'
+} from '@mui/material'
 
 export function Header () {
   const navigate = useNavigate();
@@ -25,34 +27,36 @@ export function Header () {
       }else{
         navigate('./');
       }
-    } 
+    }
   }
 
   return (
-    <Pane background='white' elevation={1}>
-      <Pane 
+    <Box background='white' elevation={1}>
+      <Box
         className='row-wrap'
         display='flex'
         borderBottom='default'
       >
-        <Pane
+        <Box
           className='align title'
           display='flex'
           flex='1 1 60%'
         >
-          <Link 
-            href='#/' 
-            textDecoration='none' 
-            display='flex' 
-            flexDirection='row' 
+          <Link
+            href='#/'
+            textDecoration='none'
+            display='flex'
+            flexDirection='row'
             alignItems='center'
+            underline='none'
+            color = "black"
           >
-            <Heading size={800}>
+            <Typography variant = "h4" color = "black" size={800}>
             Database
-            </Heading>
+            </Typography>
           </Link>
-        </Pane>
-        <Pane
+        </Box>
+        <Box
           className='align search'
           display='flex'
           alignItems='center'
@@ -65,8 +69,8 @@ export function Header () {
             height={24}
             onKeyUp={handleKeyUp}
           />
-        </Pane>
-      </Pane>
-    </Pane>
+        </Box>
+      </Box>
+    </Box>
   )
 }
