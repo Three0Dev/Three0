@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
-  Heading,
+  // Heading,
   // Link,
   // Pane,
   SearchInput
@@ -15,6 +15,8 @@ import {
    Typography
   // SearchInput
 } from '@mui/material'
+import SearchBar from "material-ui-search-bar";
+
 
 export function Header () {
   const navigate = useNavigate();
@@ -42,19 +44,10 @@ export function Header () {
           display='flex'
           flex='1 1 60%'
         >
-          <Link
-            href='#/'
-            textDecoration='none'
-            display='flex'
-            flexDirection='row'
-            alignItems='center'
-            underline='none'
-            color = "black"
-          >
-            <Typography variant = "h4" color = "black" size={800}>
+          
+          <Typography variant = "h4" color = "black" size={800}>
             Database
-            </Typography>
-          </Link>
+          </Typography>
         </Box>
         <Box
           className='align search'
