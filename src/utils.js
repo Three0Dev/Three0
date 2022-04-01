@@ -1,4 +1,4 @@
-import { connect, Contract, keyStores, KeyPair, WalletConnection } from "near-api-js";
+import { connect, Contract, keyStores, KeyPair, WalletConnection, utils } from "near-api-js";
 import getConfig from "./config";
 
 export const nearConfig = getConfig(process.env.NODE_ENV || "development");
@@ -24,7 +24,7 @@ export async function initContract() {
 
 
   // gets the state of the account
-  const newDevID = `three0d.${window.accountId}`;
+  // const newDevID = `three0d.${window.accountId}`;
 
   // try{
   //   await account.deployContract(require('fs').readFileSync('./src/wasms/main.wasm'));
@@ -32,30 +32,30 @@ export async function initContract() {
   //   console.log(e);
   // }
 
-  if(window.accountId) {
-    try {
-      const account = await near.account(newDevID);
-      await account.state();
-      window.subaccount = account;
-    }catch(e){
-      console.log(e);
-      const keyPair = KeyPair.fromRandom("ed25519");
-      const publicKey = keyPair.publicKey.toString();
-      const keyStore = new keyStores.BrowserLocalStorageKeyStore();
-      await keyStore.setKey(nearConfig.networkId, newDevID, keyPair);
+  // if(window.accountId) {
+  //   try {
+  //     const account = await near.account(newDevID);
+  //     await account.state();
+  //     window.subaccount = account;
+  //   }catch(e){
+  //     console.log(e);
+  //     const keyPair = KeyPair.fromRandom("ed25519");
+  //     const publicKey = keyPair.publicKey.toString();
+  //     const keyStore = new keyStores.BrowserLocalStorageKeyStore();
+  //     await keyStore.setKey(nearConfig.networkId, newDevID, keyPair);
 
-      window.subaccount = await window.walletConnection.account().createAccount(
-        newDevID, // new account name
-        publicKey, // public key for new account
-        "181000000000000000000000" // initial balance for new account in yoctoNEAR
-      );
-    }
-  }
+  //     window.subaccount = await window.walletConnection.account().createAccount(
+  //       newDevID, // new account name
+  //       publicKey, // public key for new account
+  //       utils.format.parseNearAmount("0.181") // initial balance for new account in yoctoNEAR
+  //     );
+  //   }
+  // }
 
   // Initializing our contract APIs by contract name and configuration
   window.contract = await new Contract(
-    window.subaccount,
-    newDevID,
+    window.walletConnection.account(),
+    nearConfig.contractName,
     {
       viewMethods: ["get_all_projects", "get_project", "get_project_users"],
       changeMethods: ["create_project", "update_project", "delete_project", "add_database", "delete_database"],

@@ -3,6 +3,7 @@ import OrbitDB from 'orbit-db'
 import {config as Config} from '../config'
 import {NearIdentityProvider} from './NearIdentityProvider'
 import IdentityProvider from "orbit-db-identity-provider";
+import * as borsh from 'borsh';
 
 let ipfs;
 
@@ -13,6 +14,16 @@ let orbitdb
 let programs
 
 IdentityProvider.addIdentityProvider(NearIdentityProvider)
+
+class DBDetails {
+  constructor(address, name, db_type) {
+    this.address = address
+    this.name = name
+    this.db_type = db_type
+  }
+}
+
+const schema = new Map([[DBDetails, {kind: 'struct', fields: [['address', 'string'], ['name', 'string'], ['db_type', 'string']]}]]);
 
 // Start IPFS
 export const initIPFS = async () => {
@@ -82,30 +93,28 @@ export const createDatabase = async (name, type, permissions, pid, overwrite = f
 
   const db = await orbitdb.create(name, type, { accessController, overwrite })
   
-  const dbDetails = {
-    name,
-    type,
-    address: db.address.toString(),
-  }
+  const dbDetails = new DBDetails(db.address, name, type);
 
   console.log(dbDetails)
 
-  await window.contract.addDatabase({
-    details: dbDetails,
-    pid: pid
+  await window.contract.add_database({
+    database_details: borsh.serialize(schema, dbDetails),
+    project_id: borsh.serialize(new Map([[String, {kind: 'string'}]]), pid),
   });
 
   return programs.add({
-    ...dbDetails,
-    added: Date.now()
+      name,
+      type,
+      address: db.address.toString(),
+      added: Date.now()
   })
 }
 
 export const removeDatabase = async (hash, program, pid) => {
 
- await window.contract.deleteDatabase({
-    address: program.address,
-    pid: pid
+ await window.contract.delete_database({
+    database_name: program.address,
+    project_id: pid
   });
 
   const db = await orbitdb.open(program.address)

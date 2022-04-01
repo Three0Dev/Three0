@@ -9,7 +9,6 @@ crate-type = ["cdylib"]
 
 [dependencies]
 near-sdk = "3.1.0"
-uuid = { version = "0.8", features = ["serde", "v4", "wasm-bindgen"] }
 
 [profile.release]
 codegen-units = 1

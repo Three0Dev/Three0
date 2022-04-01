@@ -35,11 +35,12 @@ export function Settings(props){
 
   async function updateProject(){
     setUpdateLoading(true);
+    
     try{
-        await window.contract.updateProject({
-            pid: params.pid,
-            name: name,
-            description: description,
+        await window.contract.update_project({
+            project_id: params.pid,
+            project_name: name,
+            project_description: description,
         });
         setUpdateLoading(false);
     } catch(e){
@@ -52,7 +53,7 @@ export function Settings(props){
   async function deleteProject(){
     setDeleteLoading(true);
       try{
-          await window.contract.deleteProject({pid: params.pid});
+          await window.contract.delete_project({project_id: params.pid});
           setDeleteLoading(false);
           navigate('/app');
       } catch(e){

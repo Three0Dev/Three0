@@ -5,12 +5,8 @@ import { useEffect } from "react";
 // import {useParams, useNavigate} from 'react-router-dom';
 
 export function ProjectDisplayTable(){
-    const [deleteLoading, setDeleteLoading] = React.useState(false);
-
     let navigate = useNavigate();
     let [projects, setProjects] = React.useState([]);
-    let params = useParams();
-
 
     useEffect(() => {
         async function getProjects(){
@@ -24,17 +20,6 @@ export function ProjectDisplayTable(){
 
         getProjects();
     }, []);
-    
-    async function deleteProject(pid){
-        setDeleteLoading(true);
-          try{
-              await window.contract.deleteProject({pid: pid});
-              setDeleteLoading(false);
-              navigate('/app');
-          } catch(e){
-            console.error(e);
-          }
-      }
 
     return (
         
@@ -50,8 +35,8 @@ export function ProjectDisplayTable(){
                 <Table.Row key={project.pid} isSelectable onSelect={() => navigate(`/app/${project.pid}/auth`)}>
                     <Table.TextCell><Text>{project.name}</Text></Table.TextCell>
                     <Table.TextCell>{project.description}</Table.TextCell>
-                    <Table.TextCell isNumber>{project.numUsers}</Table.TextCell>
-                    <Table.TextCell isNumber>{project.numDatabases}</Table.TextCell>
+                    <Table.TextCell isNumber>{project.num_users}</Table.TextCell>
+                    <Table.TextCell isNumber>{project.num_databases}</Table.TextCell>
                 </Table.Row>
             ))}
             </Table.Body>

@@ -32,10 +32,9 @@ export function CreateProjectModal(props){
         try{
             setAddLoading(true);
             let id = await window.contract.create_project({
-                project_name: name,
-                project_description: description,
-                // blockchainNetwork: blockchainNetwork
-            });
+                name,
+                description,
+           });
             setAddLoading(false);
             props.closeModal();
             navigate(`/app/${id}`);
