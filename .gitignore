@@ -49,3 +49,4 @@ target/
 *.pdb
 .vscode/launch.json
 contract_copy/.vscode/launch.json
+contracts.sh

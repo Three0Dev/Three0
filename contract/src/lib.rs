@@ -93,16 +93,15 @@ impl Three0 {
         projects
     }
 
-    pub fn add_database(&mut self, #[serializer(borsh)] project_id: String, #[serializer(borsh)] database_details: Database){
+    pub fn add_database(&mut self, project_id: String, database_details: Database){
         let project_ref = self.project_map.get(&project_id);
         if project_ref.is_none() {
             env::panic(b"Project not found");
         }
         let mut project = project_ref.unwrap();
         project.databases.insert(&database_details.address, &database_details);
-        if self.project_map.insert(&project_id, &project).is_some() {
-            project.num_databases += 1;
-        }
+        project.num_databases += 1;
+        self.project_map.insert(&project_id, &project);
     }
 
     pub fn get_database(&self, project_id: String, address: String) -> Database {
@@ -117,10 +116,10 @@ impl Three0 {
         let project_ref = self.project_map.get(&project_id);
         let mut project = project_ref.unwrap_or_else(|| env::panic(b"Project not found"));
         let success = project.databases.remove(&database_name);
-        self.project_map.insert(&project_id, &project);
         if success.is_some() {
             project.num_databases -= 1;
         }
+        self.project_map.insert(&project_id, &project);
     }
 
     pub fn create_user(&mut self, project_id: String){

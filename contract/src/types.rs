@@ -1,7 +1,7 @@
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::{AccountId};
 use near_sdk::collections::{UnorderedMap, LookupMap};
-use near_sdk::serde::{Serialize};
+use near_sdk::serde::{Serialize, Deserialize};
 
 #[derive(BorshDeserialize, BorshSerialize, Serialize)]
 #[serde(crate = "near_sdk::serde")]
@@ -76,7 +76,7 @@ impl ProjectReturnSchema {
     }
 }
 
-#[derive(BorshDeserialize, BorshSerialize, Serialize, Clone)]
+#[derive(BorshDeserialize, BorshSerialize, Serialize, Clone, Deserialize)]
 #[serde(crate = "near_sdk::serde")]
 pub struct Database {
     pub address: String,

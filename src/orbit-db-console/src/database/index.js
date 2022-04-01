@@ -3,7 +3,6 @@ import OrbitDB from 'orbit-db'
 import {config as Config} from '../config'
 import {NearIdentityProvider} from './NearIdentityProvider'
 import IdentityProvider from "orbit-db-identity-provider";
-import * as borsh from 'borsh';
 
 let ipfs;
 
@@ -14,16 +13,6 @@ let orbitdb
 let programs
 
 IdentityProvider.addIdentityProvider(NearIdentityProvider)
-
-class DBDetails {
-  constructor(address, name, db_type) {
-    this.address = address
-    this.name = name
-    this.db_type = db_type
-  }
-}
-
-const schema = new Map([[DBDetails, {kind: 'struct', fields: [['address', 'string'], ['name', 'string'], ['db_type', 'string']]}]]);
 
 // Start IPFS
 export const initIPFS = async () => {
@@ -93,13 +82,17 @@ export const createDatabase = async (name, type, permissions, pid, overwrite = f
 
   const db = await orbitdb.create(name, type, { accessController, overwrite })
   
-  const dbDetails = new DBDetails(db.address, name, type);
+  const dbDetails = {
+    name,
+    address: db.address.toString(),
+    db_type: type
+  };
 
-  console.log(dbDetails)
+  console.log(dbDetails);
 
   await window.contract.add_database({
-    database_details: borsh.serialize(schema, dbDetails),
-    project_id: borsh.serialize(new Map([[String, {kind: 'string'}]]), pid),
+    database_details: dbDetails,
+    project_id: pid,
   });
 
   return programs.add({

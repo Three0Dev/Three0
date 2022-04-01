@@ -13,11 +13,16 @@ export function App() {
     }
   }, []);
 
+  // ALERT temporary function
   const deleteAccount = async () => {
-    // const account = await window.near.account("three0develop." + window.walletConnection.getAccountId());
-    // console.log(await window.subaccount.deleteAccount(window.walletConnection.getAccountId()));
-    // logout();
-     try{
+    console.log(await window.subaccount.deleteAccount(window.walletConnection.getAccountId()));
+    window.walletConnection.account().
+    logout();
+  };
+
+  // ALERT temporary function
+  const deployContract = async () => {
+    try{
       const file = await fetch('./src/wasms/main.wasm');
       const buf = await file.arrayBuffer();
       await window.subaccount.deployContract(new Uint8Array(buf));
@@ -47,7 +52,7 @@ export function App() {
         </div> */}
 
         <IconButton style={{position: "absolute", right: "2%"}} icon={LogOutIcon} onClick = {deleteAccount}/>
-        {/* <IconButton style={{position: "absolute", right: "2%"}} icon={LogOutIcon} onClick = {logout}/> */}
+        <IconButton style={{position: "absolute", right: "5%"}} icon={LogOutIcon} onClick = {deployContract}/>
       </div>
       <Outlet />
     </>

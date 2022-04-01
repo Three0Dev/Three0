@@ -26,12 +26,6 @@ export async function initContract() {
   // gets the state of the account
   // const newDevID = `three0d.${window.accountId}`;
 
-  // try{
-  //   await account.deployContract(require('fs').readFileSync('./src/wasms/main.wasm'));
-  // } catch(e){
-  //   console.log(e);
-  // }
-
   // if(window.accountId) {
   //   try {
   //     const account = await near.account(newDevID);
@@ -39,6 +33,7 @@ export async function initContract() {
   //     window.subaccount = account;
   //   }catch(e){
   //     console.log(e);
+  //     // TODO make function access key
   //     const keyPair = KeyPair.fromRandom("ed25519");
   //     const publicKey = keyPair.publicKey.toString();
   //     const keyStore = new keyStores.BrowserLocalStorageKeyStore();
