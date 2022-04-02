@@ -13,13 +13,10 @@ export function Dash() {
   async function isValidProject(){
     try{
       let project = await window.contract.get_project({project_id: params.pid});
-      if(!project){
-        navigate("/app");
-      }else{
-       setProjectDetails(project);
-      }
-    } catch(e){
+      setProjectDetails(project);
+    } catch(e) {
       console.error(e);
+      navigate("/app");
     }
   }
 
