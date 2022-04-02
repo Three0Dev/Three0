@@ -1,14 +1,22 @@
 import React from 'react'
 import { 
-  majorScale,
-  Button,
-  PlusIcon,
-  Pane,
-  Spinner,
-  Overlay,
-  toaster,
-  Text
+  // majorScale,
+  // Button,
+  // PlusIcon,
+  // Pane,
+  // Spinner,
+  // Overlay,
+  // toaster,
+  // Text
 } from 'evergreen-ui'
+import Swal from 'sweetalert'
+import withReactContent from 'sweetalert2-react-content';
+
+
+import {Typography, Container, Progress, Box, Snackbar, IconButton, CloseIcon, Button, Backdrop} from '@mui/material'
+import CircularProgress from '@mui/material/CircularProgress';
+import { ThemeProvider, createTheme } from '@material-ui/core/styles';
+import AddIcon from '@mui/icons-material/Add';
 
 import { useStateValue, actions } from '../state'
 
@@ -27,6 +35,13 @@ export function DatabasesView () {
   const [loading, setLoading] = React.useState(false)
 
   const params = useParams()
+  const [open, setOpen] = React.useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  }
+  const handleToggle = () => {
+    setOpen(!open);
+  }
 
   async function fetchDatabases () {
     dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: true })
@@ -48,9 +63,12 @@ export function DatabasesView () {
       fetchDatabases().then((data) => {
         console.log("Loaded programs", data)
       })
+      Swal("Database  Created!", "You can now access the database", {
+        button: "OK!",
+        });
     }).catch((err) => {
       console.error("Error", err)
-      toaster.danger(err.toString())
+      Swal("Oops...", "Something went wrong!", "error");
     }).finally(() => setLoading(false))
   }
 
@@ -76,30 +94,37 @@ export function DatabasesView () {
       fetchDatabases().then((data) => {
         console.log("Loaded programs", data)
       })
+      Swal("Database  Deleted!",{
+        button: "OK!",
+        });
+    }).catch((err) => {
+      console.error("Error", err)
+      Swal("Oops...", "Something went wrong!", "error");
     }).finally(() => setLoading(false))
   }
 
   return (
-    <>
-    <Pane marginX={majorScale(6)}>
-    </Pane>
-    <Pane 
+  <>
+    {/* <Pane marginX={6}></Pane> */}
+    <Box 
       display='flex' 
       flexDirection='row'
-      marginX={majorScale(6)}
-      marginTop={majorScale(2)}
-      marginBottom={majorScale(1)}
+      marginX={6}
+      marginTop={2}
+      marginBottom={1}
     >
       <Button
+        variant="outlined" startIcon={<AddIcon fontSize='small'/>}
         iconBefore='document'
         appearance='default'
         height={24}
         isLoading={loading}
         onClick={handleCreateDatabase}
       >
-        <div style={{marginRight: "8%"}}><PlusIcon /></div>
+        {/* <div style={{marginRight: "8%"}}></div> */}
         Create
       </Button>
+
       {/* <Button
         iconBefore='plus'
         appearance='default'
@@ -109,41 +134,43 @@ export function DatabasesView () {
       >
         Open
       </Button> */}
-    </Pane>
-    <Pane display='flex' justifyContent='center' overflow='auto'>
+    </Box>
+    <Box display='flex' justifyContent='center' overflow='auto'>
       <CreateDialog onCreate={createDB}/>
       {/* <AddDialog onAdd={addDB}/> */}
-      <Pane
+      <Box
         flex='1'
         overflow='auto'
         elevation={1}
         background='white'
-        marginX={majorScale(6)}
+        marginX={6}
       >
         {!appState.loading.programs 
           ? (<ProgramList
               programs={appState.programs}
               onRemove={handleRemoveDatabase}
             />)
-          : (<Pane
+          : (<Box
               display='flex' 
               flexDirection='column' 
               alignItems='center' 
-              marginTop={majorScale(3)}
-              marginBottom={majorScale(1)}
+              marginTop={3}
+              marginBottom={1}
             >
-              <Spinner size={24}/>
-              <Text marginY={majorScale(1)}>Loading...</Text>
-            </Pane>)
+              <CircularProgress size={24}/>
+              {/* <Text marginY={1}>Loading...</Text> */}
+              <Typography variant='body1' color='textSecondary'>Loading...</Typography>
+            </Box>)
         }
 
-      </Pane>
-    </Pane>
-    <Overlay isShown={loading}>
-      <Pane display="flex" alignItems="center" justifyContent="center" height={400}>
-        <Spinner />
-      </Pane>
-    </Overlay>
-    </>
+      </Box>
+    </Box>
+    <Backdrop open={loading}>
+      <Box display="flex" alignItems="center" justifyContent="center" height={400}>
+        <CircularProgress color='inherit'/>
+        
+      </Box>
+    </Backdrop>
+  </>
   )
 }

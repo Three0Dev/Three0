@@ -1,5 +1,7 @@
 import React from 'react'
-import { majorScale, Heading, Pane, Spinner } from 'evergreen-ui'
+// import { majorScale, Heading, Pane, Spinner } from 'evergreen-ui'
+import {Typography, CircularProgress, Button, Box } from '@mui/material'
+
 import { useLocation, Redirect, useParams } from 'react-router-dom'
 import { useStateValue, actions, loadingState } from '../state'
 
@@ -19,7 +21,7 @@ export function SearchResultsView () {
   const queryOk = query.length >= 1
 
   if (!queryOk) return <Redirect to='/' />
-
+  
   let programs = appState.programs
   if (query) {
     programs = programs.filter(({ payload: { value: { name, type, address } } }) =>
@@ -48,23 +50,23 @@ export function SearchResultsView () {
   }
 
   return (
-    <Pane display='flex' justifyContent='center'>
-      <Pane
+    <Box display='flex' justifyContent='center'>
+      <Box
         flex='1'
         elevation={1}
         background='white'
-        margin={majorScale(6)}
-        padding={majorScale(4)}
+        margin={6}
+        padding={4}
       >
-        <Pane borderBottom='default'>
-          <Heading size={600} marginBottom={majorScale(1)}>
+        <Box borderBottom='default'>
+          <Typography variant='body1' align='left'>
             {programs.length} programs found
-          </Heading>
-        </Pane>
+          </Typography>
+        </Box>
         {programs !== loadingState
           ? <ProgramList programs={programs} onRemove={handleRemoveDatabase} />
-          : <Spinner marginX='auto' marginY={120} />}
-      </Pane>
-    </Pane>
+          : <CircularProgress marginX='auto' marginY={120} />}
+      </Box>
+    </Box>
   )
 }
