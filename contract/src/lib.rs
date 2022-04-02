@@ -84,32 +84,23 @@ impl Three0 {
         self.project_map.remove(&project_id);
     }
 
-    pub fn get_all_projects(&self) -> Vec<ProjectReturnSchema> {
-        let mut projects = Vec::<ProjectReturnSchema>::new();
-        for (_key, value) in self.project_map.iter() {
-            let project = value.get_project_return();
-            projects.push(project);
+    pub fn get_all_projects(&self, offset: usize, limit: usize) -> AllSchema<ProjectReturnSchema> {
+        AllSchema {
+            entries: self.project_map.values()
+            .skip(offset)
+            .take(limit)
+            .map(|project| project.get_project_return())
+            .collect(),
+            num: self.project_map.len() as u16,
         }
-        projects
     }
 
     pub fn add_database(&mut self, project_id: String, database_details: Database){
         let project_ref = self.project_map.get(&project_id);
-        if project_ref.is_none() {
-            env::panic(b"Project not found");
-        }
-        let mut project = project_ref.unwrap();
+        let mut project = project_ref.unwrap_or_else( || env::panic(b"Project not found"));
         project.databases.insert(&database_details.address, &database_details);
         project.num_databases += 1;
         self.project_map.insert(&project_id, &project);
-    }
-
-    pub fn get_database(&self, project_id: String, address: String) -> Database {
-        let project = self.project_map.get(&project_id);
-        match project {
-            Some(project) => project.databases.get(&address).unwrap_or_else(|| env::panic(b"Database not found")),
-            None => env::panic(b"Project not found")
-        }
     }
 
     pub fn delete_database(&mut self, project_id: String, database_name: String){
@@ -137,24 +128,17 @@ impl Three0 {
         }
     }
 
-    pub fn user_login(&mut self, project_id: String) {
-        let project_ref = self.project_map.get(&project_id);
-        if project_ref.is_none() {
-            env::panic(b"Project not found")
-        }
-        let mut project = project_ref.unwrap();
-        let mut user = project.users.get(&env::signer_account_id()).unwrap_or_else(|| User::new(env::signer_account_id()));
-        user.login();
-        project.users.insert(&env::signer_account_id(), &user);
-        self.project_map.insert(&project_id, &project);
-    }
-
-    pub fn user_logout(&mut self, project_id: String) {
+    pub fn user_action(&mut self, project_id: String, action: String) {
         let project_ref = self.project_map.get(&project_id);
         let mut project = project_ref.unwrap_or_else(|| env::panic(b"Project not found"));
-        let user_ref = project.users.get(&env::signer_account_id());
-        let mut user = user_ref.unwrap_or_else(|| env::panic(b"User not found"));
-        user.logout();
+        let mut user = project.users.get(&env::signer_account_id()).unwrap_or_else(|| User::new(env::signer_account_id()));
+        
+        match action.as_str() {
+            "LOGIN" => user.login(),
+            "LOGOUT" => user.logout(),
+            _ => env::panic(b"Invalid action")
+        }
+
         project.users.insert(&env::signer_account_id(), &user);
         self.project_map.insert(&project_id, &project);
     }
