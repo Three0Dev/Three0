@@ -9,7 +9,7 @@ export function ProjectDisplayTable(){
     let navigate = useNavigate();
     let [projects, setProjects] = React.useState([]);
 
-    let [page, setPage] = React.useState(1);
+    let [offset, setPage] = React.useState(1);
     let updatePage = (e, val) => setPage((val-1)*10);
 
     
@@ -17,7 +17,7 @@ export function ProjectDisplayTable(){
     useEffect(() => {
         async function getProjects(){
             try{
-                const projects = await window.contract.get_all_projects({sender: window.contract.account.accountId});
+                const projects = await window.contract.get_all_projects({sender: window.contract.account.accountId, offset: offset, limit: 10});
                 setProjects(projects);
             }catch(e){
                 console.error(e);
