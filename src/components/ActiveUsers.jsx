@@ -49,13 +49,14 @@ export function ActiveUsers(){
                     <Table.TextHeaderCell><UserIcon size={12} ></UserIcon>  Account Identifier</Table.TextHeaderCell>
                 </Table.Head>
                 <Table.Body>
-                    {profiles.map((profile) => (
+                    {profiles && profiles.map((profile) => (
                         <Table.Row key={profile.accountID}>
                             <Table.Cell flexBasis={cellWidth} flexShrink={0} flexGrow={0} style={{justifyContent: "center"}}>
-                                <StatusIndicator color={profile[1].isOnline ? 'success' : 'danger'} /> 
+                                <StatusIndicator color={profile.isOnline ? 'success' : 'danger'} /> 
                             </Table.Cell>
-                            <Table.TextCell >{profile[1].accountID}</Table.TextCell>
+                            <Table.TextCell >{profile.accountID}</Table.TextCell>
                         </Table.Row>
+                        // <></>
                     ))}
                 </Table.Body>
             </Table>

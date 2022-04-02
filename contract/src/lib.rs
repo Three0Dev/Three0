@@ -58,14 +58,6 @@ impl Three0 {
         }
     }
 
-    pub fn get_project_users(&self, project_id: String) -> Vec<User> {
-        let project = self.project_map.get(&project_id);
-        match project {
-            Some(project) => project.users.values().collect(),
-            None => env::panic(b"Project not found")
-        }
-    }
-
     pub fn update_project(&mut self, project_id: String, project_name: String, project_description: String){
         let project_ref = self.project_map.get(&project_id);
         let mut project = project_ref.unwrap_or_else( || env::panic(b"Project not found"));
@@ -76,10 +68,7 @@ impl Three0 {
 
     pub fn delete_project(&mut self, project_id: String){
         let project_ref = self.project_map.get(&project_id);
-        if project_ref.is_none() {
-            env::panic(b"Project not found");
-        }
-        let mut project = project_ref.unwrap();
+        let mut project = project_ref.unwrap_or_else( || env::panic(b"Project not found"));
         project.users.clear();
         self.project_map.remove(&project_id);
     }
@@ -111,6 +100,14 @@ impl Three0 {
             project.num_databases -= 1;
         }
         self.project_map.insert(&project_id, &project);
+    }
+
+    pub fn get_project_users(&self, project_id: String, offset: u16, limit: u16) -> Vec<User> {
+        let project = self.project_map.get(&project_id);
+        match project {
+            Some(project) => project.users.values().skip(offset as usize).take(limit as usize).collect(),
+            None => env::panic(b"Project not found")
+        }
     }
 
     pub fn create_user(&mut self, project_id: String){
