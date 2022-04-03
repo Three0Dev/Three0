@@ -93,3 +93,10 @@ impl Database {
         }
     }
 }
+
+#[derive(BorshDeserialize, BorshSerialize, Serialize)]
+#[serde(crate = "near_sdk::serde")]
+pub struct AllSchema<T> {
+    pub num: u16,
+    pub entries: Vec<T>, 
+}
