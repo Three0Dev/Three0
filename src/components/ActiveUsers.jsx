@@ -36,8 +36,6 @@ export function ActiveUsers(){
         }
     }, [projectDetails]);
 
-    // Object.values
-
     React.useEffect(() => {
         let tempNum = 0;
         profiles.map((num) => (tempNum = tempNum + 1));
