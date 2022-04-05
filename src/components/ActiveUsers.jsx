@@ -2,7 +2,7 @@ import React from 'react'
 // import ReactDOM from 'react-dom';
 import { Table, StatusIndicator, Tooltip, InfoSignIcon, Heading, UserIcon } from 'evergreen-ui'
 import { Pagination, CircleIcon } from '@mui/material'
-import SearchBar from 'material-ui-search-bar';
+// import SearchBar from 'material-ui-search-bar';
 import { ProjectDetailsContext } from '../ProjectDetailsContext';
 
 function StatusExplanation(){
@@ -49,9 +49,9 @@ export function ActiveUsers(){
     return (
         <div>
         <Heading size = {800} style={{width: "20%", marginLeft:"5%"}}>Authentication </Heading>
-        <SearchBar
+        {/* <SearchBar
             
-        />
+        /> */}
             <Table style={{margin: "2%"}}>
                 <Table.Head>
                     <Table.HeaderCell flexBasis={cellWidth} flexShrink={0} flexGrow={0} style={{justifyContent: "center"}}> Online Status

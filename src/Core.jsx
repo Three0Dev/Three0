@@ -9,6 +9,7 @@ import {DatabasesView} from '../src/orbit-db-console/src/views/Databases.jsx'
 import {SearchResultsView} from '../src/orbit-db-console/src/views/SearchResults.jsx'
 import { Redirect } from "./components/RedirectToMain";
 import { RedirectAuth } from "./components/RedirectAuth";
+import { RedirectLogin } from "./components/RedirectLogin";
 
 import "./global.css";
 
@@ -17,7 +18,7 @@ export function Core() {
     <Pane>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Redirect url="https://three0.umso.co/" />}/>
+          <Route path="/" element={<RedirectLogin/>}/>
           <Route path="/login" element={<Login />} />
           <Route path="/app" element={<App />} >
             <Route index element={<ProjectsDash />} />
