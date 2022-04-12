@@ -48,13 +48,6 @@ export function Header () {
           alignItems='center'
           justifyContent='center'
         >
-          {/* <SearchInput
-            width='100%'
-            flex='1 1 100%'
-            placeholder='Search...'
-            height={24}
-            onKeyUp={handleKeyUp}
-          /> */}
           <TextField
             InputProps={{
               endAdornment: (

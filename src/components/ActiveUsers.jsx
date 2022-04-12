@@ -1,11 +1,16 @@
 import React from 'react'
 // import ReactDOM from 'react-dom';
-import {Tooltip, Pagination, CircleIcon, Badge, Table, TableCell, TableHead, TableBody, TableContainer, Typography, Paper } from '@mui/material'
-import { makeStyles } from "@material-ui/core";
+import {Tooltip, Pagination, CircleIcon, Badge, Table, TableCell, TableHead, TableBody, TableContainer, Typography, Paper, Box, TextField} from '@mui/material'
+import { makeStyles, Button } from "@material-ui/core";
 import InfoIcon from '@mui/icons-material/Info';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 // import SearchBar from 'material-ui-search-bar';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import { ProjectDetailsContext } from '../ProjectDetailsContext';
+import InputAdornment from "@material-ui/core/InputAdornment";
+import SearchIcon from '@mui/icons-material/Search';
+import IconButton from "@material-ui/core/IconButton";
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -55,18 +60,18 @@ export function ActiveUsers(){
     let [page, setPage] = React.useState(1);
 
     let updatePage = (e, val) => setPage((val-1)*20);
-
+    async function getUsers(){
+        try{
+        let users = await window.contract.get_users({project_id: projectDetails.id});
+        setProfiles(users);
+        } catch(e){
+            console.error(e);
+        }
+    }
     let projectDetails = React.useContext(ProjectDetailsContext);
     React.useEffect(() => {
         if(projectDetails.users){
-            async function getUsers(){
-                try{
-                let users = await window.contract.get_users({project_id: projectDetails.id});
-                setProfiles(users);
-                } catch(e){
-                    console.error(e);
-                }
-            }
+            getUsers();
         }
     }, [projectDetails]);
 
@@ -82,7 +87,44 @@ export function ActiveUsers(){
 
     return (
         <div>
-        <Typography variant = "h4" style={{width: "20%", marginLeft:"0%"}}>Active Users</Typography>
+        <Box
+        //   className='align title'
+          display='flex'
+          flex='1 1 60%'
+        >
+          <Typography variant = "h4" style={{width: "20%", marginLeft:"0%"}}>
+            Active Users
+            {/* get active users refresh button */}
+            <Tooltip title="Refresh">
+                <Button
+                    size='large'
+                    onClick={() => {
+                        getUsers();
+                    }}
+                    startIcon={<RefreshIcon />}
+                >
+                </Button>
+            </Tooltip>
+        </Typography>
+            <Box
+              className='align search'
+            display='flex'
+            alignItems='right'
+            justifyContent='right'
+            >
+            <TextField
+                InputProps={{
+                endAdornment: (
+                    <InputAdornment>
+                    <IconButton>
+                        <SearchIcon />
+                    </IconButton>
+                    </InputAdornment>
+                )
+                }}
+            />
+            </Box>
+        </Box>
         <TableContainer component ={Paper}className={classes.root}>
             <Table style={{margin: "2%"}}>
                 <TableHead>
