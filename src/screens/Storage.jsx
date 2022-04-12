@@ -1,11 +1,11 @@
 import React from 'react';
-import {Heading} from 'evergreen-ui'
+import { Typography } from '@mui/material';
 
 export class Storage extends React.Component {
     
   render() {
     return (
-      <Heading size={800} style={{textAlign: "center"}}>To Be Implemented!</Heading>
+      <Typography variant="h5" style={{textAlign: "center"}}>To Be Implemented!</Typography>
     );
   }
 }

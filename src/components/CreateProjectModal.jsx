@@ -1,6 +1,7 @@
-import {Dialog, FormField, TextInput, Textarea, Combobox} from 'evergreen-ui';
 import React from 'react';
 import {useNavigate} from 'react-router-dom';
+import {FormControl, FormLabel, TextField, FormControlLabel, MenuItem, Menu, Button, Grid, Typography} from "@material-ui/core"
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@mui/material'
 
 export function CreateProjectModal(props){
     const [name, setName] = React.useState('');
@@ -51,43 +52,61 @@ export function CreateProjectModal(props){
         props.closeModal();
     }
 
-    return (
+    return (   
         <Dialog
-            isConfirmLoading={addLoading}
-            isShown={props.isShown}
-            title="Create Project"
-            onCloseComplete={closeModal}
+            open = {props.isShown}
+            aria-labelledby="form-dialog-title"
             preventBodyScrolling
-            confirmLabel="Create"
-            onConfirm={createProject}
         >
-            <FormField label='Name:'>
-                <TextInput
-                    onChange={handleNameChange}
-                    name='name'
-                    placeholder='Project name'
-                    width='100%'
-                    value={name}
-                />
-            </FormField>
-            <FormField label='Description:'>
-                <Textarea
-                    onChange={handleDescriptionChange}
-                    name='name'
-                    placeholder='Project desc'
-                    width='100%'
-                    value={description}
-                />
-            </FormField>
-            <FormField label='Blockchain Network:'>
-            <Combobox
-                initialSelectedItem={'NEAR'}
-                items={['NEAR']}
-                width='100%'
-                onChange={handleBlockchainNetworkChange}
-            />
-            </FormField>
+            <DialogTitle>Create Project</DialogTitle>
+            <DialogContent>
+                <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <TextField
+
+                            label="Name"
+                            variant="outlined"
+                            fullWidth
+                            value={name}
+                            onChange={handleNameChange}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            label="Description"
+                            variant="outlined"
+                            fullWidth
+                            value={description}
+                            onChange={handleDescriptionChange}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <FormControl fullWidth>
+                            <FormLabel>Blockchain Network</FormLabel>
+                            <TextField
+
+                                select
+                                // label="Blockchain Network"
+                                variant="outlined"
+                                fullWidth
+                                value={blockchainNetwork}
+                                onChange={handleBlockchainNetworkChange}
+                            >
+                                <MenuItem value={false}>
+                                    <em>None</em>
+                                </MenuItem>
+                                <MenuItem value={true}>
+                                    NEAR
+                                </MenuItem>
+                            </TextField>
+                        </FormControl>
+                    </Grid>
+                </Grid>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={closeModal} disabled={addLoading}>Cancel</Button>
+                <Button onClick={createProject}disabled={addLoading}>Create</Button>
+            </DialogActions>
         </Dialog>
     )
-
 }

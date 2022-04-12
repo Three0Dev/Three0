@@ -1,21 +1,14 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  // Heading,
-  // Link,
-  // Pane,
-  SearchInput
-} from 'evergreen-ui'
 
 import {
-  // majorScale,
-  // Heading,
-   Link,
    Box,
-   Typography
-  // SearchInput
+   Typography, 
+   TextField
 } from '@mui/material'
-// import SearchBar from "material-ui-search-bar";
+import IconButton from "@material-ui/core/IconButton";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import SearchIcon from '@mui/icons-material/Search';
 
 
 export function Header () {
@@ -55,12 +48,23 @@ export function Header () {
           alignItems='center'
           justifyContent='center'
         >
-          <SearchInput
+          {/* <SearchInput
             width='100%'
             flex='1 1 100%'
             placeholder='Search...'
             height={24}
             onKeyUp={handleKeyUp}
+          /> */}
+          <TextField
+            InputProps={{
+              endAdornment: (
+                <InputAdornment>
+                  <IconButton>
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}
           />
         </Box>
       </Box>

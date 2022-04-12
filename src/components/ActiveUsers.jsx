@@ -1,16 +1,31 @@
 import React from 'react'
 // import ReactDOM from 'react-dom';
-import { Table, StatusIndicator, Tooltip, InfoSignIcon, Heading, UserIcon } from 'evergreen-ui'
-import { Pagination, CircleIcon } from '@mui/material'
+import {Tooltip, Pagination, CircleIcon, Badge, Table, TableCell, TableHead, TableBody, TableContainer, Typography } from '@mui/material'
+import InfoIcon from '@mui/icons-material/Info';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 // import SearchBar from 'material-ui-search-bar';
 import { ProjectDetailsContext } from '../ProjectDetailsContext';
 
 function StatusExplanation(){
     return (
         <>
-            <StatusIndicator color="success">Online</StatusIndicator>
-            <StatusIndicator color="warning">Unknown</StatusIndicator>
-            <StatusIndicator color="danger">Offline</StatusIndicator>
+            <Badge 
+                anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+            }} color="success" variant="dot">Online</Badge>
+            <Badge 
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }} 
+                color="warning" variant="dot">Unknown</Badge>
+            <Badge 
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }} 
+                color="error"  variant="dot"> Offline</Badge>
         </>
     )
 }
@@ -48,36 +63,38 @@ export function ActiveUsers(){
 
     return (
         <div>
-        <Heading size = {800} style={{width: "20%", marginLeft:"5%"}}>Authentication </Heading>
+        {/* <Heading size = {800} style={{width: "20%", marginLeft:"5%"}}>Authentication </Heading> */}
+        <Typography variant = "h3">Active Users</Typography>
         {/* <SearchBar
             
         /> */}
             <Table style={{margin: "2%"}}>
-                <Table.Head>
-                    <Table.HeaderCell flexBasis={cellWidth} flexShrink={0} flexGrow={0} style={{justifyContent: "center"}}> Online Status
+                <TableHead>
+                    <TableCell flexBasis={cellWidth} flexShrink={0} flexGrow={0} style={{justifyContent: "center"}}> Online Status
                         <Tooltip
                             content={<StatusExplanation/>}
                             appearance="card"
                         >
-                            <InfoSignIcon style={{marginLeft: "15px"}} />
+                            <InfoIcon style={{marginLeft: "15px"}} />
                         </Tooltip>
-                    </Table.HeaderCell>
-                    <Table.TextHeaderCell><UserIcon size={12} ></UserIcon>  Public Identifier</Table.TextHeaderCell>
-                    <Table.TextHeaderCell>Account Created</Table.TextHeaderCell>
-                    <Table.TextHeaderCell>Last Signed In</Table.TextHeaderCell>
-                </Table.Head>
-                <Table.Body>
+                    </TableCell>
+                    <TableCell><AccountCircleIcon size={12} ></AccountCircleIcon> <Typography>Public Identifier</Typography></TableCell>
+                    <TableCell><Typography>Account Created</Typography></TableCell>
+                    <TableCell><Typography>Last Signed In</Typography></TableCell>
+                </TableHead>
+                <TableBody>
                     {profiles && profiles.map((profile) => (
-                        <Table.Row key={profile.accountID}>
-                            <Table.Cell flexBasis={cellWidth} flexShrink={0} flexGrow={0} style={{justifyContent: "center"}}>
-                                <StatusIndicator color={profile.isOnline ? 'success' : 'danger'} /> 
-                            </Table.Cell>
-                            <Table.TextCell >{profile.accountID}</Table.TextCell>
-                            <Table.TextCell >Date</Table.TextCell>
-                            <Table.TextCell >Date</Table.TextCell>
-                        </Table.Row>
+                        <TableRow key={profile.accountID}>
+                            <TableCell flexBasis={cellWidth} flexShrink={0} flexGrow={0} style={{justifyContent: "center"}}>
+                                {/* <StatusIndicator color={profile.isOnline ? 'success' : 'danger'} />  */}
+                                <Badge color={profile.isOnline ? 'success' : 'danger'}/>
+                            </TableCell>
+                            <TableCell >{profile.accountID}</TableCell>
+                            <TableCell > <Typography> Date </Typography></TableCell>
+                            <TableCell ><Typography>Date</Typography></TableCell>
+                        </TableRow>
                     ))}
-                </Table.Body>
+                </TableBody>
             </Table>
             <Pagination defaultPage={1} count={Math.floor(userNumber/6)+1} boundaryCount={2} onChange={updatePage} variant='outlined'> </Pagination>
             

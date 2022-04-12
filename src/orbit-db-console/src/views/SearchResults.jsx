@@ -1,5 +1,4 @@
 import React from 'react'
-// import { majorScale, Heading, Pane, Spinner } from 'evergreen-ui'
 import {Typography, CircularProgress, Button, Box } from '@mui/material'
 
 import { useLocation, Redirect, useParams } from 'react-router-dom'

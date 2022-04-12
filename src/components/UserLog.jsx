@@ -1,21 +1,21 @@
 import React from 'react'
-import {Table} from 'evergreen-ui'
+import {Table, TableHead, TableCell, TableRow, TableBody} from '@mui/material'
 
 export function UserLog(){
     const profiles = [];
 
     return (
         <Table style={{margin: "2%"}}>
-            <Table.Head>
-                <Table.TextHeaderCell>Wallet Address</Table.TextHeaderCell>
-            </Table.Head>
-            <Table.Body>
+            <TableHead>
+                <TableCell>Wallet Address</TableCell>
+            </TableHead>
+            <TableBody>
                 {profiles.map((profile) => (
-                    <Table.Row key={profile.id}>
-                        <Table.TextCell>{profile.name}</Table.TextCell>
-                    </Table.Row>
+                    <TableRow key={profile.id}>
+                        <TableCell>{profile.name}</TableCell>
+                    </TableRow>
                 ))}
-            </Table.Body>
+            </TableBody>
         </Table>
     );
 }

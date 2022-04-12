@@ -1,5 +1,7 @@
 import React from 'react';
-import {FormField, TextInput, Textarea, Pane, DeleteIcon, SavedIcon, Button} from 'evergreen-ui';
+import {FormControl, FormLabel, TextField, FormControlLabel, MenuItem, Menu, Button, Grid, Typography, Box} from "@material-ui/core"
+import SaveIcon from '@mui/icons-material/Save';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {useParams, useNavigate} from 'react-router-dom';
 import { ConfigFile } from '../components/ConfigFile';
 import {ProjectDetailsContext} from '../ProjectDetailsContext';
@@ -62,32 +64,34 @@ export function Settings(props){
   }
 
   return (
-    <Pane style={{margin: "2%"}}>
-        <FormField label='Name:'>
-            <TextInput
+    <Box style={{margin: "2%"}}>
+        <FormControl fullWidth>
+            <FormLabel>Name</FormLabel>
+            <TextField
                 onChange={handleNameChange}
                 name='name'
                 placeholder='Project name'
                 width='100%'
                 value={name}
             />
-        </FormField>
-        <FormField label='Description:'>
-            <Textarea
+        </FormControl>
+        <FormControl fullWidth>
+            <FormLabel>Description</FormLabel>
+            <TextField
                 onChange={handleDescriptionChange}
                 name='name'
                 placeholder='Project desc'
                 width='100%'
                 value={description}
             />
-        </FormField>
+        </FormControl>
         <div style = {{display: "flex", justifyContent: "space-between"}}>
           <ConfigFile />
           <div>
-            <Button isLoading={updateLoading} appearance="primary" size="large" intent='success' onClick={updateProject}><SavedIcon style={{marginRight: "4%"}}/> Save</Button>
-            <Button isLoading={deleteLoading} appearance="primary" size="large"  intent='danger' onClick={deleteProject}><DeleteIcon style={{marginRight: "4%"}}/> Delete</Button>
+            <Button isLoading={updateLoading}  size="large"  color='success' onClick={updateProject}><SaveIcon style={{marginRight: "4%"}}/> Save</Button>
+            <Button isLoading={deleteLoading}  size="large"  color='error' onClick={deleteProject}><DeleteIcon style={{marginRight: "4%"}}/> Delete</Button>
           </div>
         </div>
-    </Pane>
+    </Box>
   );
 }

@@ -1,13 +1,17 @@
 import React from "react";
-import { Tablist, SidebarTab, Tab, HomeIcon, DatabaseIcon, FolderOpenIcon, SettingsIcon, KeyIcon} from 'evergreen-ui';
 import {useParams, useNavigate, useLocation} from "react-router-dom";
 import { useEffect } from "react";
+import SettingsIcon from '@mui/icons-material/Settings';
+import FolderIcon from '@mui/icons-material/Folder';
+import StorageIcon from '@mui/icons-material/Storage';
+import KeyIcon from '@mui/icons-material/Key';
+import {Tabs, Tab, Box} from '@mui/material'
 
 export function Navigation() {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
 
     const tabs = ['Auth', 'Database',  'Storage', 'Settings']
-    const tabIcon = [ <KeyIcon />, <DatabaseIcon />, <FolderOpenIcon />, <SettingsIcon />]
+    const tabIcon = [ <KeyIcon />, <StorageIcon />, <FolderIcon />, <SettingsIcon />]
 
     let navigate = useNavigate();
     let params = useParams().pid;
@@ -43,23 +47,38 @@ export function Navigation() {
 
         navigate(url);
     }
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
     return (
-        <Tablist style={{width: "15%"}}>
-            {tabs.map((tab, index) => (
-            <SidebarTab
-                key={tab}
-                id={tab}
-                onSelect={() => {
-                    switchLink(index);
-                }}
-                isSelected={index === selectedIndex}
-                aria-controls={`panel-${tab}`}
+        <Box
+        sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex'}}
+      >
+            <Tabs
+            orientation="vertical"
+            sx={{ borderRight: 1, borderColor: 'divider' }}
             >
-            <div style={{marginRight:"15%"}}>{tabIcon[index]}</div>
-                {tab}
-            </SidebarTab>
-            ))}
-        </Tablist>
+                {tabs.map((tab, index) => (
+                    <Tab
+                        label={tab}
+                        icon={tabIcon[index]}
+                        value={value}
+                        onChange={handleChange}
+                        onClick={() => {
+                            switchLink(index);
+                        }}
+                        isSelected={index === selectedIndex}
+                        aria-controls={`panel-${tab}`}
+                    >
+                    <div style={{marginRight:"15%"}}>{tabIcon[index]}</div>
+                    {tab}
+                    </Tab>
+                ))}
+            </Tabs>
+        </Box>
+
     );
 }

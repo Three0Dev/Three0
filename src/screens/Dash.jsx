@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigation } from "../components/Navigation";
 import { Outlet, useParams, useNavigate } from "react-router-dom";
-import {Pane} from 'evergreen-ui'
+import { Box } from "@mui/material";
 import {ProjectDetailsContext} from '../ProjectDetailsContext'
 
 export function Dash() {
@@ -26,13 +26,13 @@ export function Dash() {
 
 
   return (
-    <Pane style={{display: "flex"}}>
+    <Box style={{display: "flex"}}>
       <Navigation />
       <ProjectDetailsContext.Provider value={projectDetails}>
         <div style={{width: "99%", marginLeft: "1%"}}>
           <Outlet />
         </div>
       </ProjectDetailsContext.Provider>
-    </Pane>
+    </Box>
   );
 }

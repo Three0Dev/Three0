@@ -1,5 +1,5 @@
 import React from "react";
-import {Pane, Spinner} from "evergreen-ui";
+import {Box, CircularProgress} from "@material-ui/core";
 
 export function Redirect(props){
     React.useEffect(() => {
@@ -7,8 +7,8 @@ export function Redirect(props){
     }, []);
 
     return (
-        <Pane display="flex" alignItems="center" justifyContent="center" height={400}>
-            <Spinner />
-        </Pane>
+        <Box display="flex" alignItems="center" justifyContent="center" height={400}>
+            <CircularProgress />
+        </Box>
     );
 }

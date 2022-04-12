@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Pane, Heading} from "evergreen-ui";
+import {Button, Box, Typography} from "@mui/material"
 import logo from '../assets/logo.png'
 import {login} from '../utils'
 
@@ -53,15 +53,16 @@ export class Login extends React.Component {
     
   render() {
     return (
-      <Pane style={this.styles.container}>
-        <Pane style={this.styles.loginContainer}>
+      <Box style={this.styles.container}>
+        <Box style={this.styles.loginContainer}>
           <img src={logo} style={this.styles.logo} />
-          <Heading size={900} style={this.styles.heading}>Three0</Heading>
+          {/* <Heading size={900} style={this.styles.heading}>Three0</Heading> */}
+          <Typography color="#7b1fa2" variant="h5" style={this.styles.heading}>Three0</Typography>
           <Button style={this.styles.button}
           onClick={login}
           >Log In</Button>
-        </Pane>
-      </Pane>
+        </Box>
+      </Box>
     );
   }
 }

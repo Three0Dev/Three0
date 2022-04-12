@@ -1,14 +1,4 @@
 import React from 'react'
-import { 
-  // majorScale,
-  // Button,
-  // PlusIcon,
-  // Pane,
-  // Spinner,
-  // Overlay,
-  // toaster,
-  // Text
-} from 'evergreen-ui'
 import Swal from 'sweetalert'
 import withReactContent from 'sweetalert2-react-content';
 
@@ -64,11 +54,12 @@ export function DatabasesView () {
         console.log("Loaded programs", data)
       })
       Swal("Database  Created!", "You can now access the database", {
-        button: "OK!",
+        timer: 1000,buttons: false
         });
     }).catch((err) => {
       console.error("Error", err)
-      Swal("Oops...", "Something went wrong!", "error");
+      Swal("Oops...", "Something went wrong!",{timer: 1000,buttons: false}
+      );
     }).finally(() => setLoading(false))
   }
 
@@ -95,11 +86,13 @@ export function DatabasesView () {
         console.log("Loaded programs", data)
       })
       Swal("Database  Deleted!",{
-        button: "OK!",
+        timer: 1000,buttons: false
         });
     }).catch((err) => {
       console.error("Error", err)
-      Swal("Oops...", "Something went wrong!", "error");
+      Swal("Oops...", "Something went wrong!",{
+        timer: 1000,buttons: false
+        });
     }).finally(() => setLoading(false))
   }
 
@@ -121,7 +114,6 @@ export function DatabasesView () {
         isLoading={loading}
         onClick={handleCreateDatabase}
       >
-        {/* <div style={{marginRight: "8%"}}></div> */}
         Create
       </Button>
 
@@ -168,7 +160,6 @@ export function DatabasesView () {
     <Backdrop open={loading}>
       <Box display="flex" alignItems="center" justifyContent="center" height={400}>
         <CircularProgress color='inherit'/>
-        
       </Box>
     </Backdrop>
   </>

@@ -1,7 +1,10 @@
 import React from "react";
 import { Outlet, useNavigate, Link } from "react-router-dom";
 import logo from '../assets/logo.png';
-import {IconButton, LogOutIcon, Heading} from 'evergreen-ui';
+import { Typography, IconButton, Button } from "@mui/material";
+import LogoutIcon from '@mui/icons-material/Logout';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import PublishIcon from '@mui/icons-material/Publish';
 import { useEffect } from "react";
 import { logout } from "../utils";
 
@@ -46,13 +49,17 @@ export function App() {
           width:"50px",
           margin: "5px"
         }} src={logo}/> </Link>
-        <Heading size = {1000} style = {{}} color = "#7b1fa2">Three0</Heading>
-        {/* <div>
-            <Text style={{position: "absolute", right: "50%"}} />
-        </div> */}
-
-        <IconButton style={{position: "absolute", right: "2%"}} icon={LogOutIcon} onClick = {deleteAccount}/>
-        <IconButton style={{position: "absolute", right: "5%"}} icon={LogOutIcon} onClick = {deployContract}/>
+        <Typography variant="h5" color="#7b1fa2">Three0</Typography>
+        
+        <IconButton style={{position: "absolute", right: "8%"}} aria-label="delete" onClick={deleteAccount}>
+          <DeleteForeverIcon />
+        </IconButton>
+        <IconButton style={{position: "absolute", right: "5%"}} aria-label="deploy" onClick={deployContract}>
+          <PublishIcon />
+        </IconButton>
+        <IconButton style={{position: "absolute", right: "2%"}} aria-label="logout" onClick={logout}>
+          <LogoutIcon />
+        </IconButton>
       </div>
       <Outlet />
     </>

@@ -1,21 +1,8 @@
 import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-// import {
-//   majorScale,
-//   ArrowLeftIcon,
-//   Heading,
-//   IconButton,
-//   Pane,
-//   Pre,
-//   Spinner,
-//   Text
-// } from 'evergreen-ui'
-
 import {Typography, CircularProgress, Button, Box } from '@mui/material'
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
-// import CircularProgress from '@mui/material/CircularProgress';
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
-// import { Typography } from "@material-ui/core";
 
 const theme = createTheme({
   typography: {
