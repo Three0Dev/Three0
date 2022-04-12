@@ -49,7 +49,7 @@ export function App() {
           width:"50px",
           margin: "5px"
         }} src={logo}/> </Link>
-        <Typography variant="h5" color="#7b1fa2">Three0</Typography>
+        <Typography fontWeight={'bold'} variant="h5" color="#7b1fa2">Three0</Typography>
         
         <IconButton style={{position: "absolute", right: "8%"}} aria-label="delete" onClick={deleteAccount}>
           <DeleteForeverIcon />

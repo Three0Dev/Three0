@@ -6,6 +6,15 @@ import Swal from 'sweetalert'
 import withReactContent from 'sweetalert2-react-content';
 import {Box, Button} from "@mui/material"
 import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
+import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
+
+const theme = createTheme({
+    palette: {
+      secondary: {
+        main: '#7b1fa2'
+      }
+    }
+  });
 
 function ConfigFileInner(){
     let params = useParams();
@@ -69,10 +78,13 @@ export function ConfigFile(){
     return (
         <Popover content={<ConfigFileInner />} >
             <Button
-                variant="outlined" startIcon={<FileDownloadRoundedIcon fontSize='small'/>}
+                theme={theme}
+                // variant="outlined" 
+                startIcon={<FileDownloadRoundedIcon/>}
                 iconBefore='document'
                 appearance='default'
                 height={24}
+                color="secondary"
             >
                 Get Config
             </Button>
