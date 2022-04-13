@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
         maxHeight: '100%',
         borderRadius: '10px',
     },
+    Heading: {
+        marginTop: theme.spacing(1),
+    },
 }));
 function StatusExplanation(){
     return (
@@ -87,104 +90,102 @@ export function ActiveUsers(){
 
     return (
         <div>
-        <Box
-        //   className='align title'
-          display='flex'
-          flex='1 1 60%'
-        >
-          <Typography variant = "h4" style={{width: "20%", marginLeft:"0%"}}>
-            Active Users
-            {/* get active users refresh button */}
-            <Tooltip title="Refresh">
-                <Button
-                    size='large'
-                    onClick={() => {
-                        getUsers();
-                    }}
-                    startIcon={<RefreshIcon />}
-                >
-                </Button>
-            </Tooltip>
-        </Typography>
             <Box
-              className='align search'
-            display='flex'
-            alignItems='right'
-            justifyContent='right'
+                display='flex'
+                flex='1 1 60%'
             >
-            <TextField
-                InputProps={{
-                endAdornment: (
-                    <InputAdornment>
-                    <IconButton>
-                        <SearchIcon />
-                    </IconButton>
-                    </InputAdornment>
-                )
-                }}
-            />
+            <Typography className={classes.Heading} variant = "h4" style={{width: "20%", marginLeft:"0%"}}>
+                Active Users
+                {/* get active users refresh button */}
+                <Tooltip title="Refresh">
+                    <Button
+                        size='large'
+                        onClick={() => {
+                            getUsers();
+                        }}
+                        startIcon={<RefreshIcon />}
+                    >
+                    </Button>
+                </Tooltip>
+            </Typography>
+                <Box
+                    className='align search'
+                    display='flex'
+                    alignItems='right'
+                    justifyContent='right'
+                >
+                <TextField
+                    InputProps={{
+                    endAdornment: (
+                        <InputAdornment>
+                        <IconButton>
+                            <SearchIcon />
+                        </IconButton>
+                        </InputAdornment>
+                    )
+                    }}
+                />
+                </Box>
             </Box>
-        </Box>
-        <TableContainer component ={Paper}className={classes.root}>
-            <Table style={{margin: "2%"}}>
-                <TableHead>
-                    <TableCell  
-                            style={{
-                                // display: 'flex',
-                                alignItems: 'center',
-                                flexWrap: 'wrap',
-                            }} 
-                            flexBasis={cellWidth} flexShrink={0} flexGrow={0} > 
-                        <div style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', width: '100%'}}>
-                            <Tooltip
-                                content={<StatusExplanation/>}
-                                appearance="card"
-                            >
-                                <InfoIcon style={{marginLeft: "15px"}} />
-                            </Tooltip>
-                            <Typography fontWeight={'bold'}>Online Status</Typography>
-                        </div>
-                        
-                    </TableCell>
-                    <TableCell style={{
-                                // display: 'flex',
-                                alignItems: 'center',
-                                flexWrap: 'wrap',
-                            }}>
-                        <div style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', width: '100%'}}>
-                            <AccountCircleIcon size={12} ></AccountCircleIcon> 
-                            <Typography fontWeight={'bold'}>Public Identifier</Typography>
-                        </div>
-                    </TableCell>
-                    <TableCell style={{
-                                alignItems: 'center',
-                                flexWrap: 'wrap',
-                            }}>
-                        <Typography fontWeight={'bold'}>Account Created</Typography>
-                    </TableCell>
-                    <TableCell style={{
-                                alignItems: 'center',
-                                flexWrap: 'wrap',
-                            }}>
-                        <Typography fontWeight={'bold'}>Last Signed In</Typography>
-                    </TableCell>
-                </TableHead>
-                <TableBody>
-                    {profiles && profiles.map((profile) => (
-                        <TableRow key={profile.accountID}>
-                            <TableCell flexBasis={cellWidth} flexShrink={0} flexGrow={0} style={{justifyContent: "center"}}>
-                                <Badge color={profile.isOnline ? 'success' : 'danger'}/>
-                            </TableCell>
-                            <TableCell >{profile.accountID}</TableCell>
-                            <TableCell > <Typography> Date </Typography></TableCell>
-                            <TableCell ><Typography>Date</Typography></TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>    
-        <Pagination className = {classes.root} defaultPage={1} count={Math.floor(userNumber/6)+1} boundaryCount={2} onChange={updatePage} variant='outlined' shape='rounded'> </Pagination>
-
+            <TableContainer component ={Paper}className={classes.root}>
+                <Table style={{margin: "2%"}}>
+                    <TableHead>
+                        <TableCell  
+                                style={{
+                                    // display: 'flex',
+                                    alignItems: 'center',
+                                    flexWrap: 'wrap',
+                                }} 
+                                flexBasis={cellWidth} flexShrink={0} flexGrow={0} > 
+                            <div style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', width: '100%'}}>
+                                <Tooltip
+                                    content={<StatusExplanation/>}
+                                    appearance="card"
+                                >
+                                    <InfoIcon style={{marginLeft: "15px"}} />
+                                </Tooltip>
+                                <Typography fontWeight={'bold'}>Online Status</Typography>
+                            </div>
+                            
+                        </TableCell>
+                        <TableCell style={{
+                                    // display: 'flex',
+                                    alignItems: 'center',
+                                    flexWrap: 'wrap',
+                                }}>
+                            <div style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', width: '100%'}}>
+                                <AccountCircleIcon size={12} ></AccountCircleIcon> 
+                                <Typography fontWeight={'bold'}>Public Identifier</Typography>
+                            </div>
+                        </TableCell>
+                        <TableCell style={{
+                                    alignItems: 'center',
+                                    flexWrap: 'wrap',
+                                }}>
+                            <Typography fontWeight={'bold'}>Account Created</Typography>
+                        </TableCell>
+                        <TableCell style={{
+                                    alignItems: 'center',
+                                    flexWrap: 'wrap',
+                                }}>
+                            <Typography fontWeight={'bold'}>Last Signed In</Typography>
+                        </TableCell>
+                    </TableHead>
+                    <TableBody>
+                        {profiles && profiles.map((profile) => (
+                            <TableRow key={profile.accountID}>
+                                <TableCell flexBasis={cellWidth} flexShrink={0} flexGrow={0} style={{justifyContent: "center"}}>
+                                    <Badge color={profile.isOnline ? 'success' : 'danger'}/>
+                                </TableCell>
+                                <TableCell >{profile.accountID}</TableCell>
+                                <TableCell > <Typography> Date </Typography></TableCell>
+                                <TableCell ><Typography>Date</Typography></TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>    
+            <Pagination className = {classes.root} defaultPage={1} count={Math.floor(userNumber/6)+1} boundaryCount={2} onChange={updatePage} variant='outlined' shape='rounded'> </Pagination>
         </div>
     );
 }
