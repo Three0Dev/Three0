@@ -30,28 +30,42 @@ const useStyles = makeStyles((theme) => ({
     Heading: {
         marginTop: theme.spacing(1),
     },
+    Badge: {
+        margin: theme.spacing(1),
+        borderRadius: '1px',
+    },
 }));
 function StatusExplanation(){
+    const classes = useStyles();
     return (
-        <>
+        <Box>
             <Badge 
+                className={classes.Badge}
                 anchorOrigin={{
                 vertical: 'top',
                 horizontal: 'left',
-            }} color="success" variant="dot">Online</Badge>
+            }} color="success" variant="dot">
+                Online
+            </Badge>
             <Badge 
+                className={classes.Badge}
                 anchorOrigin={{
                     vertical: 'top',
                     horizontal: 'left',
                 }} 
-                color="warning" variant="dot">Unknown</Badge>
+                color="warning" variant="dot">
+                    Unknown
+                </Badge>
             <Badge 
+                className={classes.Badge}
                 anchorOrigin={{
                     vertical: 'top',
                     horizontal: 'left',
                 }} 
-                color="error"  variant="dot"> Offline</Badge>
-        </>
+                color="error"  variant="dot"> 
+                Offline
+            </Badge>
+        </Box>
     )
 }
 
@@ -89,6 +103,7 @@ export function ActiveUsers(){
 
     return (
         <div>
+            {/* <StatusExplanation/> */}
             <Box
                 display='flex'
                 flex='1 1 60%'
@@ -138,8 +153,14 @@ export function ActiveUsers(){
                                 flexBasis={cellWidth} flexShrink={0} flexGrow={0} > 
                             <div style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', width: '100%'}}>
                                 <Tooltip
-                                    content={<StatusExplanation/>}
+                                    // title="User ID"
+                                    title={<StatusExplanation/>}
                                     appearance="card"
+                                    onOpen={() => {
+                                        console.log("open")
+                                    }}
+
+                                    
                                 >
                                     <InfoIcon style={{marginLeft: "15px"}} />
                                 </Tooltip>
