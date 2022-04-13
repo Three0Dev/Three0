@@ -6,11 +6,21 @@ import FolderIcon from '@mui/icons-material/Folder';
 import StorageIcon from '@mui/icons-material/Storage';
 import KeyIcon from '@mui/icons-material/Key';
 import {Tabs, Tab, Box} from '@mui/material'
+import Drawer from '@mui/material/Drawer';
+import AppBar from '@mui/material/AppBar';
+import CssBaseline from '@mui/material/CssBaseline';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 
 export function Navigation() {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
 
-    const tabs = ['Auth', 'Database',  'Storage', 'Settings']
+    const tabs = ['Authentication', 'Database',  'Storage', 'Settings']
     const tabIcon = [ <KeyIcon />, <StorageIcon />, <FolderIcon />, <SettingsIcon />]
 
     let navigate = useNavigate();
@@ -54,7 +64,8 @@ export function Navigation() {
   };
 
     return (
-        <Box
+        <>
+        {/* <Box
         sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex'}}
       >
             <Tabs
@@ -78,7 +89,39 @@ export function Navigation() {
                     </Tab>
                 ))}
             </Tabs>
+        </Box> */}
+
+        <Box sx={{ flexGrow: 1, bgcolor: 'background.paper' }}>
+            <CssBaseline />
+            <AppBar position="fixed" sx={{ bgcolor: 'background.paper' }}>
+                <Toolbar>
+                    <Typography variant="h6" noWrap>
+                        {tabs[selectedIndex]}
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <Drawer anchor="left" 
+                variant="permanent"
+                sx={{ bgcolor: 'background.paper', flexShrink: 0, width: 240,[`& .MuiDrawer-paper`]: { width: 240, boxSizing: 'border-box', background:'#9763ad' }, }}
+            >
+                <Toolbar />
+                <Box sx={{ bgcolor: '#9763ad', overflow:'auto' }}>
+                    <List>
+                        {tabs.map((tab, index) => (
+                            <ListItem button key={tab} style={{color: 'white'}} onClick={() => {
+                                switchLink(index);
+                            }}>
+                                <ListItemIcon  style={{color: 'white'}} >{tabIcon[index]}</ListItemIcon>
+                                <ListItemText primary={tab}/>
+                            </ListItem>
+                        ))}
+                    </List>
+                    <Divider />
+                </Box>
+            </Drawer>
         </Box>
 
+
+      </>                  
     );
 }

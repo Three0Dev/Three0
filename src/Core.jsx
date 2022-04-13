@@ -10,6 +10,7 @@ import {SearchResultsView} from '../src/orbit-db-console/src/views/SearchResults
 import { Redirect } from "./components/RedirectToMain";
 import { RedirectAuth } from "./components/RedirectAuth";
 import { RedirectLogin } from "./components/RedirectLogin";
+import Navigation from "./components/Navigation";
 
 import "./global.css";
 

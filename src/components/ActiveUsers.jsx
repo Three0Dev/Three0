@@ -1,6 +1,6 @@
 import React from 'react'
 // import ReactDOM from 'react-dom';
-import {Tooltip, Pagination, CircleIcon, Badge, Table, TableCell, TableHead, TableBody, TableContainer, Typography, Paper, Box, TextField} from '@mui/material'
+import {Tooltip, Pagination, CircleIcon, Badge, Table, TableCell, TableHead, TableBody, TableContainer, Typography, Paper, TextField,Toolbar, Box, Divider, AppBar, IconButton, styled, alpha, CssBaseline, InputBase } from '@mui/material'
 import { makeStyles, Button } from "@material-ui/core";
 import InfoIcon from '@mui/icons-material/Info';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -8,9 +8,60 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import { ProjectDetailsContext } from '../ProjectDetailsContext';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from '@mui/icons-material/Search';
-import IconButton from "@material-ui/core/IconButton";
+import { createTheme } from "@material-ui/core";
 
 
+const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#707070'
+      },
+      secondary: {
+        main: '#7b1fa2'
+      }
+    }
+  });
+  const Search = styled('div')(({ theme }) => ({
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: alpha(theme.palette.common.white, 0.25),
+    },
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(1),
+      width: 'auto',
+    },
+  }));
+  
+  const SearchIconWrapper = styled('div')(({ theme }) => ({
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }));
+  
+  const StyledInputBase = styled(InputBase)(({ theme }) => ({
+    color: 'inherit',
+    '& .MuiInputBase-input': {
+      padding: theme.spacing(1, 1, 1, 0),
+      // vertical padding + font size from searchIcon
+      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+      transition: theme.transitions.create('width'),
+      width: '100%',
+      [theme.breakpoints.up('sm')]: {
+        width: '12ch',
+        '&:focus': {
+          width: '20ch',
+        },
+      },
+    },
+  }));
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
@@ -107,39 +158,44 @@ export function ActiveUsers(){
             <Box
                 display='flex'
                 flex='1 1 60%'
+                
             >
-            <Typography className={classes.Heading} variant = "h4" style={{width: "20%", marginLeft:"0%"}}>
-                Active Users
-                {/* get active users refresh button */}
-                <Tooltip title="Refresh">
-                    <Button
-                        size='large'
-                        onClick={() => {
-                            getUsers();
-                        }}
-                        startIcon={<RefreshIcon />}
-                    >
-                    </Button>
-                </Tooltip>
-            </Typography>
-                <Box
-                    className='align search'
-                    display='flex'
-                    alignItems='right'
-                    justifyContent='right'
-                >
-                <TextField
-                    InputProps={{
-                    endAdornment: (
-                        <InputAdornment>
-                        <IconButton>
+                <Box sx={{ flexGrow: 1 }}>
+                    <AppBar theme={theme} color="secondary" position="static">
+                        <Toolbar>
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="div"
+                            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                            align="left"
+                        >
+                            Active Users
+                        </Typography>
+                        <Tooltip title="Refresh">
+                            <Button
+                                color="inherit"
+                                size='large'
+                                onClick={() => {
+                                    getUsers();
+                                }}
+                                startIcon={<RefreshIcon />}
+                            >
+                            </Button>
+                        </Tooltip>
+                        <Search>
+                            <SearchIconWrapper>
                             <SearchIcon />
-                        </IconButton>
-                        </InputAdornment>
-                    )
-                    }}
-                />
+                            </SearchIconWrapper>
+                            <StyledInputBase
+                            placeholder="Search…"
+                            inputProps={{ 'aria-label': 'search' }}
+                            />
+                        </Search>
+                        </Toolbar>
+                    </AppBar>
                 </Box>
+                
             </Box>
             <TableContainer component ={Paper}className={classes.root}>
                 <Table style={{margin: "2%"}}>

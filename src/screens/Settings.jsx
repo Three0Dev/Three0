@@ -1,6 +1,6 @@
 import React from 'react';
-import {FormControl, FormLabel, TextField, FormControlLabel, MenuItem, Menu, Grid, Typography, Box, makeStyles, createTheme} from "@material-ui/core"
-import { Paper, Button } from '@mui/material';
+import {FormControl, FormLabel, TextField, FormControlLabel, MenuItem, Menu, Grid, Typography, makeStyles, createTheme} from "@material-ui/core"
+import { Paper, Button, AppBar, Toolbar, Box } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {useParams, useNavigate} from 'react-router-dom';
@@ -114,7 +114,21 @@ export function Settings(props){
 
   return (
     <div margin='0 0 0 0'>
-      <Typography className={classes.Heading} variant = "h4" style={{width: "20%", marginLeft:"2%"}}>Settings</Typography>
+      <Box sx={{ flexGrow: 1 }}>
+                    <AppBar theme={theme} color="secondary" position="static">
+                        <Toolbar>
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="div"
+                            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                        >
+                            Settings
+                        </Typography>
+                        </Toolbar>
+                    </AppBar>
+                </Box>
+      {/* <Typography className={classes.Heading} variant = "h4" style={{width: "20%", marginLeft:"2%"}}>Settings</Typography> */}
       <Paper className={classes.Paper}>
         <Box className={classes.TableContainer} style={{margin: "2%"}}>
             <FormControl fullWidth className={classes.TableContainer}>
