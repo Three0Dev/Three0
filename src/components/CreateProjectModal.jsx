@@ -1,9 +1,54 @@
 import React from 'react';
 import {useNavigate} from 'react-router-dom';
-import {FormControl, FormLabel, TextField, FormControlLabel, MenuItem, Menu, Button, Grid, Typography} from "@material-ui/core"
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@mui/material'
+import {FormControl, FormLabel, TextField, FormControlLabel, MenuItem, Menu, Grid, Typography, makeStyles, createTheme} from "@material-ui/core"
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button} from '@mui/material'
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        width: '100%',
+        marginTop: theme.spacing(2),
+        marginBottom: theme.spacing(2),
+        overflowX: 'auto',
+        justifyContent: 'center',
+        display: 'flex',
+    },
+    table: {
+        minWidth: 650,
+    },
+    TableContainer: {
+        maxHeight: '100%',
+        borderRadius: '10px',
+        margin: theme.spacing(1),
+        minWidth: 120,
+    },
+    Buttons: {
+        margin: theme.spacing(1),
+        borderRadius: '1px',
+    },
+    Paper: {
+        padding: theme.spacing(2),
+        display: 'flex',
+        overflow: 'auto',
+        flexDirection: 'column',
+        width: '100%',
+        marginTop: theme.spacing(2),
+        marginBottom: theme.spacing(2),
+    },
+    Heading: {
+        marginTop: theme.spacing(1),
+    },
+  }));
+
+  const theme = createTheme({
+    palette: {
+      secondary: {
+        main: '#7b1fa2'
+      }
+    }
+  });
 
 export function CreateProjectModal(props){
+    const classes = useStyles();
     const [name, setName] = React.useState('');
     const [description, setDescription] = React.useState('');
     const [blockchainNetwork, setBlockchainNetwork] = React.useState(false);
@@ -54,16 +99,20 @@ export function CreateProjectModal(props){
 
     return (   
         <Dialog
+            className={classes.root}
             open = {props.isShown}
             aria-labelledby="form-dialog-title"
             preventBodyScrolling
         >
-            <DialogTitle>Create Project</DialogTitle>
+            <DialogTitle
+                id="form-dialog-title"
+            >
+                Create Project
+            </DialogTitle>
             <DialogContent>
-                <Grid container spacing={3}>
+                <Grid container spacing={1}>
                     <Grid item xs={12}>
-                        <TextField
-
+                        <TextField margin='dense'
                             label="Name"
                             variant="outlined"
                             fullWidth
@@ -72,7 +121,7 @@ export function CreateProjectModal(props){
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextField
+                        <TextField margin='dense'
                             label="Description"
                             variant="outlined"
                             fullWidth
@@ -82,11 +131,10 @@ export function CreateProjectModal(props){
                     </Grid>
                     <Grid item xs={12}>
                         <FormControl fullWidth>
-                            <FormLabel>Blockchain Network</FormLabel>
-                            <TextField
-
+                            {/* <FormLabel>Blockchain Network</FormLabel> */}
+                            <TextField margin='dense'
                                 select
-                                // label="Blockchain Network"
+                                label="Blockchain Network"
                                 variant="outlined"
                                 fullWidth
                                 value={blockchainNetwork}
@@ -103,9 +151,9 @@ export function CreateProjectModal(props){
                     </Grid>
                 </Grid>
             </DialogContent>
-            <DialogActions>
-                <Button onClick={closeModal} disabled={addLoading}>Cancel</Button>
-                <Button onClick={createProject}disabled={addLoading}>Create</Button>
+            <DialogActions className={classes.TableContainer}>
+                <Button onClick={closeModal} color='secondary' disabled={addLoading}>Cancel</Button>
+                <Button onClick={createProject} color='secondary' disabled={addLoading}>Create</Button>
             </DialogActions>
         </Dialog>
     )

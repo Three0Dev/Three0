@@ -10,6 +10,9 @@ import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 
 const theme = createTheme({
     palette: {
+    primary: {
+        main: '#707070'
+        },
       secondary: {
         main: '#7b1fa2'
       }
@@ -84,7 +87,7 @@ export function ConfigFile(){
                 iconBefore='document'
                 appearance='default'
                 height={24}
-                color="secondary"
+                color="primary"
             >
                 Get Config
             </Button>

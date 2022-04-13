@@ -23,6 +23,15 @@ const useStyles = makeStyles((theme) => ({
         maxHeight: '100%',
         borderRadius: '10px',
     },
+    Paper: {
+        padding: theme.spacing(2),
+        display: 'flex',
+        overflow: 'auto',
+        flexDirection: 'column',
+        width: '100%',
+        marginTop: theme.spacing(2),
+        marginBottom: theme.spacing(2),
+    },
 }));
 
 export function ProjectDisplayTable(){
@@ -50,25 +59,27 @@ export function ProjectDisplayTable(){
 
     return (
         <div>
-            <TableContainer component={Paper} className={classes.TableContainer}>   
-                <Table>
-                    <TableHead>
-                        <TableCell><Typography fontWeight={"bold"}>Name</Typography></TableCell>
-                        <TableCell><Typography fontWeight={"bold"}>Description</Typography></TableCell>
-                        <TableCell><Typography fontWeight={"bold"}>Users</Typography></TableCell>
-                        <TableCell><Typography fontWeight={"bold"}>Databases</Typography></TableCell>
-                    </TableHead>
-                    <TableBody>
-                    {projects.entries.map((project) => ( 
-                        <TableRow key={project.pid} hover role="checkbox" onClick={() => navigate(`/app/${project.pid}/auth`)}>
-                            <TableCell><Typography>{project.name}</Typography></TableCell>
-                            <TableCell>{project.description}</TableCell>
-                            <TableCell isNumber>{project.num_users}</TableCell>
-                            <TableCell isNumber>{project.num_databases}</TableCell>
-                        </TableRow>
-                    ))}
-                    </TableBody>
-                </Table>
+            <TableContainer className={classes.TableContainer}> 
+                <Paper className={classes.Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableCell><Typography fontWeight={"bold"}>Name</Typography></TableCell>
+                            <TableCell><Typography fontWeight={"bold"}>Description</Typography></TableCell>
+                            <TableCell><Typography fontWeight={"bold"}>Users</Typography></TableCell>
+                            <TableCell><Typography fontWeight={"bold"}>Databases</Typography></TableCell>
+                        </TableHead>
+                        <TableBody>
+                        {projects.entries.map((project) => ( 
+                            <TableRow key={project.pid} hover role="checkbox" onClick={() => navigate(`/app/${project.pid}/auth`)}>
+                                <TableCell><Typography>{project.name}</Typography></TableCell>
+                                <TableCell>{project.description}</TableCell>
+                                <TableCell isNumber>{project.num_users}</TableCell>
+                                <TableCell isNumber>{project.num_databases}</TableCell>
+                            </TableRow>
+                        ))}
+                        </TableBody>
+                    </Table>
+                </Paper> 
                 <Pagination className={classes.root} defaultPage={1} count={Math.floor(projects.num/(limit_num))+1} boundaryCount={2} onChange={updatePage} variant='outlined' shape="rounded"> </Pagination>
             </TableContainer>
         </div>

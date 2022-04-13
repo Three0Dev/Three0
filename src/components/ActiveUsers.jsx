@@ -4,7 +4,6 @@ import {Tooltip, Pagination, CircleIcon, Badge, Table, TableCell, TableHead, Tab
 import { makeStyles, Button } from "@material-ui/core";
 import InfoIcon from '@mui/icons-material/Info';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-// import SearchBar from 'material-ui-search-bar';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { ProjectDetailsContext } from '../ProjectDetailsContext';
 import InputAdornment from "@material-ui/core/InputAdornment";

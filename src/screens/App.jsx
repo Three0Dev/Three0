@@ -7,6 +7,15 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import PublishIcon from '@mui/icons-material/Publish';
 import { useEffect } from "react";
 import { logout } from "../utils";
+import { createTheme } from "@material-ui/core";
+
+const theme = createTheme({
+  palette: {
+    secondary: {
+      main: '#7b1fa2'
+    }
+  }
+});
 
 export function App() {
   let navigate = useNavigate();
@@ -51,7 +60,7 @@ export function App() {
         }} src={logo}/> </Link>
         <Typography fontWeight={'bold'} variant="h5" color="#7b1fa2">Three0</Typography>
         
-        <IconButton style={{position: "absolute", right: "8%"}} aria-label="delete" onClick={deleteAccount}>
+        <IconButton style={{position: "absolute", right: "8%"}}  aria-label="delete" onClick={deleteAccount}>
           <DeleteForeverIcon />
         </IconButton>
         <IconButton style={{position: "absolute", right: "5%"}} aria-label="deploy" onClick={deployContract}>

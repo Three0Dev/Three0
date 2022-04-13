@@ -45,6 +45,9 @@ const useStyles = makeStyles((theme) => ({
 
 const theme = createTheme({
   palette: {
+    primary: {
+      main: '#707070'
+    },
     secondary: {
       main: '#7b1fa2'
     }
@@ -110,7 +113,7 @@ export function Settings(props){
   }
 
   return (
-    <div>
+    <div margin='0 0 0 0'>
       <Typography className={classes.Heading} variant = "h4" style={{width: "20%", marginLeft:"2%"}}>Settings</Typography>
       <Paper className={classes.Paper}>
         <Box className={classes.TableContainer} style={{margin: "2%"}}>
@@ -141,8 +144,8 @@ export function Settings(props){
             <div style = {{display: "flex", justifyContent: "space-between"}} className={classes.Buttons}>
               <ConfigFile />
               <div>
-                <Button theme={theme} isLoading={updateLoading} startIcon={<SaveIcon/>} color="secondary" onClick={updateProject}>Save</Button>
-                <Button theme={theme} isLoading={deleteLoading} startIcon={<DeleteIcon/>} color="secondary" onClick={deleteProject}>Delete</Button>
+                <Button theme={theme} isLoading={updateLoading} startIcon={<SaveIcon/>} color="primary" onClick={updateProject}>Save</Button>
+                <Button theme={theme} isLoading={deleteLoading} startIcon={<DeleteIcon/>} color="primary" onClick={deleteProject}>Delete</Button>
               </div>
             </div>
         </Box>
