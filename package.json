@@ -39,13 +39,10 @@
     "@mui/icons-material": "^5.5.1",
     "@mui/material": "^5.5.3",
     "@types/react": "^17.0.43",
-    "baseui": "^10.8.0",
     "evergreen-ui": "^6.8.2",
-    "install": "^0.13.0",
     "ipfs-core": "^0.14.1",
     "js-sha256": "^0.9.0",
     "near-api-js": "^0.44.2",
-    "npm": "^8.5.5",
     "orbit-db": "^0.28.1",
     "orbit-db-identity-provider": "^0.4.0",
     "react": "^17.0.2",
@@ -56,8 +53,7 @@
     "styletron-engine-atomic": "^1.4.8",
     "styletron-react": "^6.0.2",
     "sweetalert": "^2.1.2",
-    "sweetalert2": "^11.4.8",
-    "sweetalert2-react-content": "^4.2.0"
+    "sweetalert2": "^11.4.8"
   },
   "resolutions": {
     "@babel/preset-env": "7.13.8"

@@ -1,7 +1,5 @@
 import React from 'react'
 import Swal from 'sweetalert'
-import withReactContent from 'sweetalert2-react-content';
-
 
 import {Typography, Container, Progress, Box, Snackbar, IconButton, CloseIcon, Button, Backdrop} from '@mui/material'
 import CircularProgress from '@mui/material/CircularProgress';
