@@ -45,7 +45,6 @@ if (code === 0 && calledFromDir !== __dirname) {
   sh.rm('-f', link)
   //fixes #831: copy-update instead of linking .- sometimes sh.ln does not work on Windows
   sh.cp('-u',outFile,link)
-  sh.cp('-u', outFile, `${calledFromDir}/src/wasms/main.wasm`)
 }
 
 // exit script with the same code as the build command
