@@ -1,6 +1,5 @@
 import React from 'react'
-// import ReactDOM from 'react-dom';
-import {Tooltip, Pagination, CircleIcon, Badge, Table, TableCell, TableHead, TableBody, TableContainer, Typography, Paper, TextField,Toolbar, Box, Divider, AppBar, IconButton, styled, alpha, CssBaseline, InputBase } from '@mui/material'
+import {Tooltip, Pagination, Badge, Table, TableCell, TableHead, TableBody, TableContainer, Typography, Paper, Toolbar, Box, AppBar, styled, alpha, InputBase } from '@mui/material'
 import { makeStyles, Button } from "@material-ui/core";
 import InfoIcon from '@mui/icons-material/Info';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -14,10 +13,7 @@ import { createTheme } from "@material-ui/core";
 const theme = createTheme({
     palette: {
       primary: {
-        main: '#707070'
-      },
-      secondary: {
-        main: '#7b1fa2'
+        main: '#7d68d1'
       }
     }
   });
@@ -50,7 +46,6 @@ const theme = createTheme({
     color: 'inherit',
     '& .MuiInputBase-input': {
       padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
       paddingLeft: `calc(1em + ${theme.spacing(4)})`,
       transition: theme.transitions.create('width'),
       width: '100%',
@@ -154,14 +149,8 @@ export function ActiveUsers(){
 
     return (
         <div>
-            {/* <StatusExplanation/> */}
-            {/* <Box
-                display='flex'
-                flex='1 1 60%'
-                
-            > */}
                 <Box sx={{ flexGrow: 1 }}>
-                    <AppBar theme={theme} color="secondary" position="static">
+                    <AppBar theme={theme} color="primary" position="static">
                         <Toolbar>
                         <Typography
                             variant="h6"
@@ -196,20 +185,17 @@ export function ActiveUsers(){
                     </AppBar>
                 </Box>
                 
-            {/* </Box> */}
             <TableContainer component ={Paper}className={classes.root}>
                 <Table style={{margin: "2%"}}>
                     <TableHead>
                         <TableCell  
                                 style={{
-                                    // display: 'flex',
                                     alignItems: 'center',
                                     flexWrap: 'wrap',
                                 }} 
                                 flexBasis={cellWidth} flexShrink={0} flexGrow={0} > 
                             <div style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', width: '100%'}}>
                                 <Tooltip
-                                    // title="User ID"
                                     title={<StatusExplanation/>}
                                     appearance="card"
                                     onOpen={() => {
@@ -218,14 +204,13 @@ export function ActiveUsers(){
 
                                     
                                 >
-                                    <InfoIcon style={{marginLeft: "15px"}} />
+                                    <InfoIcon style={{marginLeft: "15px",}} />
                                 </Tooltip>
                                 <Typography fontWeight={'bold'}>Online Status</Typography>
                             </div>
                             
                         </TableCell>
                         <TableCell style={{
-                                    // display: 'flex',
                                     alignItems: 'center',
                                     flexWrap: 'wrap',
                                 }}>

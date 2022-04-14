@@ -1,22 +1,9 @@
 import React from "react";
-import { Outlet, useNavigate, useParams } from "react-router-dom";
-import { Pagination, Table, TableRow, Typography, TableHead, TableBody, TableCell, TableContainer, Paper,Drawer, Toolbar, Box, Divider, AppBar, IconButton, styled, alpha, CssBaseline, InputBase } from '@mui/material'
+import { useNavigate } from "react-router-dom";
+import { Pagination, Table, TableRow, Typography, TableHead, TableBody, TableCell, TableContainer, Paper, Toolbar, Box, AppBar, styled, alpha, InputBase } from '@mui/material'
 import { makeStyles } from "@material-ui/core";
-import { useEffect } from "react";
-// import {useParams, useNavigate} from 'react-router-dom';
-import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import { createTheme } from "@material-ui/core";
-const theme = createTheme({
-    palette: {
-      primary: {
-        main: '#707070'
-      },
-      secondary: {
-        main: '#7b1fa2'
-      }
-    }
-  });
+
 const limit_num = 5;
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -33,7 +20,7 @@ const Search = styled('div')(({ theme }) => ({
     },
   }));
   
-  const SearchIconWrapper = styled('div')(({ theme }) => ({
+const SearchIconWrapper = styled('div')(({ theme }) => ({
     padding: theme.spacing(0, 2),
     height: '100%',
     position: 'absolute',
@@ -41,24 +28,24 @@ const Search = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-  }));
-  
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: 'inherit',
     '& .MuiInputBase-input': {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create('width'),
-      width: '100%',
-      [theme.breakpoints.up('sm')]: {
+        padding: theme.spacing(1, 1, 1, 0),
+        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
         width: '12ch',
         '&:focus': {
-          width: '20ch',
+            width: '20ch',
         },
-      },
+        },
     },
-  }));
+}));
+
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
@@ -67,9 +54,6 @@ const useStyles = makeStyles((theme) => ({
         overflowX: 'auto',
         justifyContent: 'center',
         display: 'flex',
-    },
-    table: {
-        minWidth: 650,
     },
     TableContainer: {
         maxHeight: '100%',
@@ -83,18 +67,6 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         marginTop: theme.spacing(2),
         marginBottom: theme.spacing(2),
-    },
-    Drawer: {
-        background: '#7b1fa2',
-        // width: '100%',
-        // height: '100%',
-        // padding: theme.spacing(2),
-        // display: 'flex',
-        // flexDirection: 'column',
-        // overflow: 'auto',
-        // flexDirection: 'column',
-        // marginTop: theme.spacing(2),
-        // marginBottom: theme.spacing(2),
     },
 }));
 
@@ -123,24 +95,9 @@ export function ProjectDisplayTable(){
 
     return (
         <Box sx={{display: 'flex'}} >
-            
-            {/* <Drawer
-                variant="permanent"
-                sx={{
-                width: 240,
-                flexShrink: 0,
-                [`& .MuiDrawer-paper`]: { width: 240, boxSizing: 'border-box' , background:'white'},
-                }}
-            >
-                <Toolbar />
-                <Box sx={{ overflow: 'auto' }}>
-                
-                <Divider />
-                </Box>
-            </Drawer> */}
             <Box component="main" sx={{ flexGrow: 1, p: 3}}>
                 <Box sx={{ flexGrow: 1 }}>
-                    <AppBar theme={theme} color="secondary" position="static">
+                    <AppBar color="primary" position="static">
                         <Toolbar>
                         <Typography
                             variant="h6"

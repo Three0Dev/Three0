@@ -1,12 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-
-import {
-   Box,
-   Typography, 
-   TextField,
-   Toolbar, Divider, AppBar, IconButton, styled, alpha, CssBaseline, InputBase
-} from '@mui/material'
+import {Box,Typography, Toolbar, AppBar, styled, alpha, InputBase} from '@mui/material'
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from '@mui/icons-material/Search';
 import { createTheme } from "@material-ui/core";
@@ -14,10 +8,7 @@ import { createTheme } from "@material-ui/core";
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#707070'
-    },
-    secondary: {
-      main: '#7b1fa2'
+      main: '#7d68d1'
     }
   }
 });
@@ -79,7 +70,7 @@ export function Header () {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar theme={theme} color="secondary" position="static">
+      <AppBar theme={theme} color="primary" position="static">
           <Toolbar>
           <Typography
               variant="h6"

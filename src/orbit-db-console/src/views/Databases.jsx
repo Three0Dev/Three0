@@ -1,21 +1,11 @@
 import React from 'react'
-import Swal from 'sweetalert'
-
-import {Typography, Container, Progress, Box, Snackbar, IconButton, CloseIcon, Button, Backdrop} from '@mui/material'
-import CircularProgress from '@mui/material/CircularProgress';
-import { ThemeProvider, createTheme } from '@material-ui/core/styles';
+import Swal from 'sweetalert2'
+import {Typography, CircularProgress, Box, Button, Backdrop} from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
-
 import { useStateValue, actions } from '../state'
-
-import { getAllDatabases, 
-  // addDatabase, 
-  removeDatabase, createDatabase } from '../database'
-
+import { getAllDatabases, removeDatabase, createDatabase } from '../database'
 import {ProgramList} from '../components/DatabaseList'
 import {CreateDialog} from '../components/CreateDialog'
-// import {AddDialog} from '../components/AddDialog'
-
 import { useParams } from 'react-router-dom'
 
 export function DatabasesView () {
@@ -51,29 +41,22 @@ export function DatabasesView () {
       fetchDatabases().then((data) => {
         console.log("Loaded programs", data)
       })
-      Swal("Database  Created!", "You can now access the database", {
-        timer: 1000,buttons: false
-        });
+      Swal.fire({
+        title: 'Database Created!',
+        text: 'You can now access the database',
+        timer: 1200,
+        buttons: false
+      });
     }).catch((err) => {
       console.error("Error", err)
-      Swal("Oops...", "Something went wrong!",{timer: 1000,buttons: false}
-      );
+      Swal.fire({
+        title: 'Oops...',
+        text: 'Something went wrong!',
+        timer: 1200,
+        buttons: false
+      });
     }).finally(() => setLoading(false))
   }
-
-  // const handleAddDatabase = (args) => {
-  //   dispatch({ type: actions.DB.OPEN_ADDDB_DIALOG })
-  // }
-
-  // const addDB = (args) => {
-  //   console.log("Add database...", args)
-  //   addDatabase(args.address).then((hash) => {
-  //     console.log("Added", args.address)
-  //     fetchDatabases().then((data) => {
-  //       console.log("Loaded programs", data)
-  //     })
-  //   })
-  // }
 
   const handleRemoveDatabase = (hash, program) => {
     console.log("Remove database...", hash, program)
@@ -83,20 +66,24 @@ export function DatabasesView () {
       fetchDatabases().then((data) => {
         console.log("Loaded programs", data)
       })
-      Swal("Database  Deleted!",{
-        timer: 1000,buttons: false
-        });
+      Swal.fire({
+        title: 'Database Deleted!',
+        timer: 1200,
+        buttons: false
+      });
     }).catch((err) => {
       console.error("Error", err)
-      Swal("Oops...", "Something went wrong!",{
-        timer: 1000,buttons: false
-        });
+      Swal.fire({
+        title: 'Oops...',
+        text: 'Something went wrong!',
+        timer: 1200,
+        buttons: false
+      });
     }).finally(() => setLoading(false))
   }
 
   return (
   <>
-    {/* <Pane marginX={6}></Pane> */}
     <Box 
       display='flex' 
       flexDirection='row'
@@ -114,20 +101,9 @@ export function DatabasesView () {
       >
         Create
       </Button>
-
-      {/* <Button
-        iconBefore='plus'
-        appearance='default'
-        height={24}
-        marginLeft={minorScale(1)}
-        onClick={handleAddDatabase}
-      >
-        Open
-      </Button> */}
     </Box>
     <Box display='flex' justifyContent='center' overflow='auto'>
       <CreateDialog onCreate={createDB}/>
-      {/* <AddDialog onAdd={addDB}/> */}
       <Box
         flex='1'
         overflow='auto'
@@ -148,11 +124,9 @@ export function DatabasesView () {
               marginBottom={1}
             >
               <CircularProgress size={24}/>
-              {/* <Text marginY={1}>Loading...</Text> */}
               <Typography variant='body1' color='textSecondary'>Loading...</Typography>
             </Box>)
-        }
-
+         }
       </Box>
     </Box>
     <Backdrop open={loading}>

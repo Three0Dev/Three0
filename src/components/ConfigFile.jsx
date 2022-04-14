@@ -1,18 +1,18 @@
 import React from "react";
 import {useParams} from "react-router-dom";
 import {nearConfig} from "../utils";
-import Swal from 'sweetalert'
+import Swal from 'sweetalert2'
 import {Box, Button, Popover, Typography, ToggleButton, ToggleButtonGroup, Paper} from "@mui/material"
 import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
-import {createTheme, makeStyles } from '@material-ui/core/styles';
+import { createTheme, makeStyles } from '@material-ui/core/styles';
 
 const theme = createTheme({
     palette: {
     primary: {
-        main: '#707070'
+        main: '#d1c9f0'
         },
       secondary: {
-        main: '#7b1fa2'
+        main: '#7d68d1'
       }
     }
   });
@@ -46,7 +46,7 @@ const theme = createTheme({
         width: '100%',
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1),
-        backgroundColor: '#faedff',
+        backgroundColor: '#dedaf0',
     },
     Heading: {
         marginTop: theme.spacing(1),
@@ -66,8 +66,10 @@ function ConfigFileInner(){
     `
     function copyConfig(){
         navigator.clipboard.writeText(copyConfigText);
-        Swal("Copied to clipboard", {
-            timer: 1500,buttons: false,
+        Swal.fire({
+            title: 'Copied to clipboard',
+            timer: 1500,
+            buttons: false,
             });
     }
 
@@ -90,21 +92,19 @@ function ConfigFileInner(){
             >
                 <ToggleButton 
                 variant="outlined"
-                color='secondary'
                 iconBefore='document'
                 appearance='default'
                 height={24}
-                style={{color: '#7b1fa2'}}
+                style={{color: '#7d68d1'}}
                 onClick={downloadConfig}>
                     Download
                 </ToggleButton>
                 <ToggleButton 
                 variant="outlined" 
-                color='secondary'
                 iconBefore='document'
                 appearance='default'
                 height={24}
-                style={{color: '#7b1fa2'}}
+                style={{color: '#7d68d1'}}
                 onClick={copyConfig}>
                     Copy
                 </ToggleButton>
@@ -129,7 +129,7 @@ export function ConfigFile(){
     };
     return (
         <div>
-            <Button aria-describedby={id} variant="contained" onClick={handleClick} endIcon={<FileDownloadRoundedIcon />} style={{backgroundColor:'#7b1fa2'}}>
+            <Button aria-describedby={id} variant="contained" onClick={handleClick} endIcon={<FileDownloadRoundedIcon />} style={{backgroundColor:'#7d68d1'}}>
                 Get Config
             </Button>
             <Popover

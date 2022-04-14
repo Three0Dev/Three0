@@ -1,6 +1,6 @@
 import React from 'react';
-import {FormControl, FormLabel, TextField, FormControlLabel, MenuItem, Menu, Grid, Typography, makeStyles, createTheme} from "@material-ui/core"
-import { Paper, Button, AppBar, Toolbar, Box, Tooltip } from '@mui/material';
+import {FormControl, TextField, Typography, makeStyles, createTheme} from "@material-ui/core"
+import {Paper, Button, AppBar, Toolbar, Box, } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {useParams, useNavigate} from 'react-router-dom';
@@ -9,17 +9,6 @@ import {ProjectDetailsContext} from '../ProjectDetailsContext';
 
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-      width: '100%',
-      marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(2),
-      overflowX: 'auto',
-      justifyContent: 'center',
-      display: 'flex',
-  },
-  table: {
-      minWidth: 650,
-  },
   TableContainer: {
       maxHeight: '100%',
       borderRadius: '10px',
@@ -39,18 +28,15 @@ const useStyles = makeStyles((theme) => ({
       marginTop: theme.spacing(2),
       marginBottom: theme.spacing(2),
   },
-  Heading: {
-      marginTop: theme.spacing(1),
+  Text: {
+    color: 'white',
   },
 }));
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#707070'
-    },
-    secondary: {
-      main: '#7b1fa2'
+      main: '#7d68d1'
     }
   }
 });
@@ -116,20 +102,21 @@ export function Settings(props){
   return (
     <div margin='0 0 0 0'>
       <Box sx={{ flexGrow: 1 }}>
-                    <AppBar theme={theme} color="secondary" position="static">
+                    <AppBar theme={theme} color="primary" position="static">
                         <Toolbar>
                         <Typography
+                            className={classes.Text}
                             variant="h6"
+                            color="white"
                             noWrap
                             component="div"
-                            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' },  }}
                         >
                             Settings
                         </Typography>
                         </Toolbar>
                     </AppBar>
                 </Box>
-      {/* <Typography className={classes.Heading} variant = "h4" style={{width: "20%", marginLeft:"2%"}}>Settings</Typography> */}
       <Paper className={classes.Paper}>
         <Box className={classes.TableContainer} style={{margin: "2%"}}>
             <FormControl fullWidth className={classes.TableContainer}>
