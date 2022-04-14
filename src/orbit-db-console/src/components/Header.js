@@ -4,12 +4,64 @@ import { useNavigate } from 'react-router-dom'
 import {
    Box,
    Typography, 
-   TextField
+   TextField,
+   Toolbar, Divider, AppBar, IconButton, styled, alpha, CssBaseline, InputBase
 } from '@mui/material'
-import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from '@mui/icons-material/Search';
+import { createTheme } from "@material-ui/core";
 
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#707070'
+    },
+    secondary: {
+      main: '#7b1fa2'
+    }
+  }
+});
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginLeft: 0,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(1),
+    width: 'auto',
+  },
+}));
+
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '12ch',
+      '&:focus': {
+        width: '20ch',
+      },
+    },
+  },
+}));
 
 export function Header () {
   const navigate = useNavigate();
@@ -26,41 +78,29 @@ export function Header () {
   }
 
   return (
-    <Box background='white' elevation={1}>
-      <Box
-        className='row-wrap'
-        display='flex'
-        borderBottom='default'
-      >
-        <Box
-          className='align title'
-          display='flex'
-          flex='1 1 60%'
-        >
-          
-          <Typography variant = "h4" color = "black" size={800}>
-            Database
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar theme={theme} color="secondary" position="static">
+          <Toolbar>
+          <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+              align="left"
+          >
+              Database
           </Typography>
-        </Box>
-        <Box
-          className='align search'
-          display='flex'
-          alignItems='center'
-          justifyContent='center'
-        >
-          <TextField
-            InputProps={{
-              endAdornment: (
-                <InputAdornment>
-                  <IconButton>
-                    <SearchIcon />
-                  </IconButton>
-                </InputAdornment>
-              )
-            }}
-          />
-        </Box>
-      </Box>
+          <Search>
+              <SearchIconWrapper>
+              <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+              placeholder="Search…"
+              inputProps={{ 'aria-label': 'search' }}
+              />
+          </Search>
+          </Toolbar>
+      </AppBar>
     </Box>
   )
 }

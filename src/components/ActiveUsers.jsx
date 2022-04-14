@@ -155,11 +155,11 @@ export function ActiveUsers(){
     return (
         <div>
             {/* <StatusExplanation/> */}
-            <Box
+            {/* <Box
                 display='flex'
                 flex='1 1 60%'
                 
-            >
+            > */}
                 <Box sx={{ flexGrow: 1 }}>
                     <AppBar theme={theme} color="secondary" position="static">
                         <Toolbar>
@@ -196,7 +196,7 @@ export function ActiveUsers(){
                     </AppBar>
                 </Box>
                 
-            </Box>
+            {/* </Box> */}
             <TableContainer component ={Paper}className={classes.root}>
                 <Table style={{margin: "2%"}}>
                     <TableHead>
