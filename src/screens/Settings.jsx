@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
   Text: {
     color: 'white',
+    fontSize: '1.3rem',
   },
 }));
 
@@ -100,23 +101,16 @@ export function Settings(props){
   }
 
   return (
-    <div margin='0 0 0 0'>
+    <div>
       <Box sx={{ flexGrow: 1 }}>
-                    <AppBar theme={theme} color="primary" position="static">
-                        <Toolbar>
-                        <Typography
-                            className={classes.Text}
-                            variant="h6"
-                            color="white"
-                            noWrap
-                            component="div"
-                            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' },  }}
-                        >
-                            Settings
-                        </Typography>
-                        </Toolbar>
-                    </AppBar>
-                </Box>
+          <AppBar theme={theme} color="primary" position="static">
+              <Toolbar>
+                <div className={classes.Text}>
+                  Settings
+                </div>
+              </Toolbar>
+          </AppBar>
+      </Box>
       <Paper className={classes.Paper}>
         <Box className={classes.TableContainer} style={{margin: "2%"}}>
             <FormControl fullWidth className={classes.TableContainer}>

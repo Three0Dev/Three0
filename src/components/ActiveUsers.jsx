@@ -1,5 +1,5 @@
 import React from 'react'
-import {Tooltip, Pagination, Badge, Table, TableCell, TableHead, TableBody, TableContainer, Typography, Paper, Toolbar, Box, AppBar, styled, alpha, InputBase } from '@mui/material'
+import {Tooltip, Pagination, Badge, Table, TableCell, TableHead, TableBody, TableContainer, Typography, Paper, Toolbar, Box, AppBar, styled, alpha, InputBase, IconButton } from '@mui/material'
 import { makeStyles, Button } from "@material-ui/core";
 import InfoIcon from '@mui/icons-material/Info';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -162,15 +162,14 @@ export function ActiveUsers(){
                             Active Users
                         </Typography>
                         <Tooltip title="Refresh">
-                            <Button
+                            <IconButton
                                 color="inherit"
-                                size='large'
                                 onClick={() => {
                                     getUsers();
-                                }}
-                                startIcon={<RefreshIcon />}
+                                }} 
                             >
-                            </Button>
+                                <RefreshIcon />
+                            </IconButton>
                         </Tooltip>
                         <Search>
                             <SearchIconWrapper>

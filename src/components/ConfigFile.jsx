@@ -129,7 +129,7 @@ export function ConfigFile(){
     };
     return (
         <div>
-            <Button aria-describedby={id} variant="contained" onClick={handleClick} endIcon={<FileDownloadRoundedIcon />} style={{backgroundColor:'#7d68d1'}}>
+            <Button aria-describedby={id} variant="contained" onClick={handleClick} endIcon={<FileDownloadRoundedIcon />} style={{backgroundColor:'primary'}}>
                 Get Config
             </Button>
             <Popover
@@ -151,44 +151,3 @@ export function ConfigFile(){
         </div>
     )
 }
-        // <Popover content={<ConfigFileInner />} >
-        //     <Button
-        //         theme={theme}
-        //         // variant="outlined" 
-        //         startIcon={<FileDownloadRoundedIcon/>}
-        //         iconBefore='document'
-        //         appearance='default'
-        //         height={24}
-        //         color="primary"
-        //     >
-        //         Get Config
-        //     </Button>
-        // </Popover >
-        // <div>
-        //     <Button
-        //         variant="outlined" startIcon={<FileDownloadRoundedIcon fontSize='small'/>}
-        //         iconBefore='document'
-        //         appearance='default'
-        //         height={24}
-        //         onClick={openPopover}
-        //     >
-        //     Get Config
-        // </Button>
-        // <Popover>
-        //     open = {Boolean(anchorEl)}
-        //     anchorEl = {anchorEl}
-        //     onClose = {() => setAnchorEl(null)}
-        //     anchorOrigin = {{
-        //         vertical: 'bottom',
-        //         horizontal: 'center',
-        //     }}
-        //     transformOrigin = {{
-        //         vertical: 'top',
-        //         horizontal: 'center',
-        //     }}
-        //     <ConfigFileInner />
-        // </Popover>
-        // </div>
-        
-//     )
-// }

@@ -1,6 +1,7 @@
 import React from "react";
 import {Button, Box, Typography} from "@mui/material"
 import logo from '../assets/logo.png'
+import UpdatedLogo from '../assets/updatedLogo.png'
 import {login} from '../utils'
 
 export class Login extends React.Component {
@@ -44,8 +45,7 @@ export class Login extends React.Component {
         width: "100%",
         height: "13%",
         top: "20%",
-        // TODO remove when theme is complete
-        background: "#7B20A2",
+        background: "#7d68d1",
         color: "white",
       }
     }
@@ -55,9 +55,9 @@ export class Login extends React.Component {
     return (
       <Box style={this.styles.container}>
         <Box style={this.styles.loginContainer}>
-          <img src={logo} style={this.styles.logo} />
+          <img src={UpdatedLogo} style={this.styles.logo} />
           {/* <Heading size={900} style={this.styles.heading}>Three0</Heading> */}
-          <Typography color="#7b1fa2" variant="h5" style={this.styles.heading}>Three0</Typography>
+          <Typography color="primary" variant="h5" style={this.styles.heading}>Three0</Typography>
           <Button style={this.styles.button}
           onClick={login}
           >Log In</Button>

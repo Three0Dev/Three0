@@ -24,7 +24,7 @@ export function ProjectsDash() {
         size: "large",
         width: "60px",
         height: "60px",
-        color: "#9763ad"
+        color: "#7d68d1",
         }} 
         aria-label="create-project" 
         onClick={() => setShowCreateProjectModal(true)}>

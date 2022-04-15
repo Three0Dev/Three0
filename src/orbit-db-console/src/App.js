@@ -8,7 +8,7 @@ import { actions, loadingState,
 import {Systems} from './components/Systems'
 import {Header} from './components/Header'
 
-import {Pane, majorScale, Paragraph} from 'evergreen-ui';
+import {Box, Typography} from '@mui/material'
 import orbitLogo from '../public/Orbit_round-02.png';
 
 import './index.css'
@@ -97,18 +97,19 @@ export function DBView (props) {
   return (
     <>
       <StateProvider initialState={initialState} reducer={reducer}>
-        <Pane background='tint1' height='100%'>
+        <Box  height='100%' sx={{ backgroundColor: '#ededed'  }}>
           <Header />
           <Systems />
           <Outlet />
-        </Pane>
+        </Box>
       </StateProvider>
       <footer style={{
         position: 'fixed',
         bottom: 0,
         width: '100%',
         textAlign: 'center',
-      }}><img alt="orbit-logo" src={orbitLogo} width={majorScale(2)}/><Paragraph>Powered by OrbitDB</Paragraph>
+      }}><img alt="orbit-logo" src={orbitLogo} width={'1.5%'}/>
+        <Typography variant='subtitle2'>Powered by OrbitDB</Typography>
       </footer>
     </>
   )
