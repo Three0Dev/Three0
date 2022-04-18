@@ -1,7 +1,5 @@
 import {useEffect} from "react";
 import { Outlet, useNavigate, Link } from "react-router-dom";
-import logo from '../assets/logo.png';
-import white_logo from '../assets/white_logo.png';
 import UpdatedLogo from '../assets/UpdatedLogo.png';
 import {IconButton, Box, AppBar, CssBaseline, Toolbar, Typography} from "@mui/material";
 import LogoutIcon from '@mui/icons-material/Logout';

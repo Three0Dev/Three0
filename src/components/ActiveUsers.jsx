@@ -1,14 +1,12 @@
 import React from 'react'
-import {Tooltip, Pagination, Badge, Table, TableCell, TableHead, TableBody, TableContainer, Typography, Paper, Toolbar, Box, AppBar, styled, alpha, InputBase, IconButton } from '@mui/material'
-import { makeStyles, Button } from "@material-ui/core";
+// import ReactDOM from 'react-dom';
+import {Tooltip, Pagination, Badge, Table, TableCell, TableHead, TableBody, TableContainer, Typography, Paper, Toolbar, Box, AppBar, styled, alpha, InputBase, TableRow, IconButton } from '@mui/material'
+import { makeStyles, createTheme } from "@material-ui/core";
 import InfoIcon from '@mui/icons-material/Info';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { ProjectDetailsContext } from '../ProjectDetailsContext';
-import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from '@mui/icons-material/Search';
-import { createTheme } from "@material-ui/core";
-
 
 const theme = createTheme({
     palette: {
@@ -120,30 +118,38 @@ export function ActiveUsers(){
     let [profiles, setProfiles] = React.useState([]);
     let [userNumber, setUserNum] = React.useState(0);
     let [page, setPage] = React.useState(1);
+    let projectDetails = React.useContext(ProjectDetailsContext);
+
 
     let updatePage = (e, val) => setPage((val-1)*20);
     async function getUsers(){
         try{
-        let users = await window.contract.get_users({project_id: projectDetails.id});
-        setProfiles(users);
+            let users = await window.contract.get_project_users({project_id: projectDetails.pid, offset: 0, limit: 10});
+            setProfiles(users);
         } catch(e){
             console.error(e);
         }
     }
-    let projectDetails = React.useContext(ProjectDetailsContext);
+
+    async function searchUser(val){
+        try{
+            let user = await window.contract.get_user({project_id: projectDetails.pid, account_id: val});
+            setProfiles([user]);
+        } catch(e){
+            // TODO SWAL ERROR
+            console.error(e);
+        }
+    }
+
     React.useEffect(() => {
-        if(projectDetails.users){
+        if(projectDetails.num_users){
             getUsers();
         }
     }, [projectDetails]);
 
     React.useEffect(() => {
-        let tempNum = 0;
-        profiles.map((num) => (tempNum = tempNum + 1));
-        setUserNum(tempNum);
-    });
-
-    console.log(userNumber)
+        setUserNum(profiles.length);
+    }, [profiles]);
 
     const cellWidth = "200px"
 
@@ -173,11 +179,21 @@ export function ActiveUsers(){
                         </Tooltip>
                         <Search>
                             <SearchIconWrapper>
-                            <SearchIcon />
+                                <SearchIcon />
                             </SearchIconWrapper>
                             <StyledInputBase
-                            placeholder="Search…"
-                            inputProps={{ 'aria-label': 'search' }}
+                                onKeyPress={(e) => {
+                                    if (e.key === 'Enter') {
+                                      searchUser(e.target.value);
+                                    }
+                                  }}
+                                  onChange={(e) => {
+                                      if(e.target.value === ""){
+                                            getUsers();
+                                        }
+                                    }}
+                                placeholder="Search…"
+                                inputProps={{ 'aria-label': 'search' }}
                             />
                         </Search>
                         </Toolbar>
@@ -197,11 +213,6 @@ export function ActiveUsers(){
                                 <Tooltip
                                     title={<StatusExplanation/>}
                                     appearance="card"
-                                    onOpen={() => {
-                                        console.log("open")
-                                    }}
-
-                                    
                                 >
                                     <InfoIcon style={{marginLeft: "15px",}} />
                                 </Tooltip>
@@ -214,7 +225,7 @@ export function ActiveUsers(){
                                     flexWrap: 'wrap',
                                 }}>
                             <div style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', width: '100%'}}>
-                                <AccountCircleIcon size={12} ></AccountCircleIcon> 
+                                {/* <AccountCircleIcon size={12} ></AccountCircleIcon>  */}
                                 <Typography fontWeight={'bold'}>Public Identifier</Typography>
                             </div>
                         </TableCell>
@@ -233,11 +244,19 @@ export function ActiveUsers(){
                     </TableHead>
                     <TableBody>
                         {profiles && profiles.map((profile) => (
-                            <TableRow key={profile.accountID}>
+                            <TableRow key={profile.account_id}>
                                 <TableCell flexBasis={cellWidth} flexShrink={0} flexGrow={0} style={{justifyContent: "center"}}>
-                                    <Badge color={profile.isOnline ? 'success' : 'danger'}/>
+                                    <Badge 
+                                        className={classes.Badge}
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }} 
+                                        color={profile.is_online ? 'success' : 'warning'} variant="dot">
+
+                                    </Badge>
                                 </TableCell>
-                                <TableCell >{profile.accountID}</TableCell>
+                                <TableCell >{profile.account_id}</TableCell>
                                 <TableCell > <Typography> Date </Typography></TableCell>
                                 <TableCell ><Typography>Date</Typography></TableCell>
                             </TableRow>

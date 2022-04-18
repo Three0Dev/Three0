@@ -139,6 +139,14 @@ impl Three0 {
         project.users.insert(&env::signer_account_id(), &user);
         self.project_map.insert(&project_id, &project);
     }
+
+    pub fn get_user(&self, project_id: String, account_id: String) -> User {
+        let project = self.project_map.get(&project_id);
+        match project {
+            Some(project) => project.users.get(&account_id).unwrap_or_else(|| env::panic(b"User not found")),
+            None => env::panic(b"Project not found")
+        }
+    }
 }
 
 /*
