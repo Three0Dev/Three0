@@ -1,8 +1,9 @@
 import * as IPFS from 'ipfs-core'
 import OrbitDB from 'orbit-db'
 import {config as Config} from '../config'
-import {NearIdentityProvider} from './NearIdentityProvider'
+import NearIdentityProvider from './NearIdentityProvider'
 import IdentityProvider from "orbit-db-identity-provider";
+import {nearConfig} from "../../../utils";
 
 let ipfs;
 
@@ -26,7 +27,8 @@ export const initIPFS = async () => {
 export const initOrbitDB = async (ipfs) => {
   if(!orbitdb){
     const identity = await IdentityProvider.createIdentity({ type: `NearIdentity`})
-    orbitdb = await OrbitDB.createInstance(ipfs, {identity})  }
+    orbitdb = await OrbitDB.createInstance(ipfs, {identity})  
+  }
   return orbitdb
 }
 
@@ -38,7 +40,7 @@ export const getAllDatabases = async (pid) => {
   }
   if (!programs && orbitdb) {
     // Load programs database
-    programs = await orbitdb.feed(`three0-${pid}`, {
+    programs = await orbitdb.feed(`three0-${pid}-${nearConfig.contractName}`, {
       accessController: { write: [orbitdb.identity.id] },
       create: true
     })

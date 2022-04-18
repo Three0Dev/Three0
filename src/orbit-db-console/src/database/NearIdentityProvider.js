@@ -3,7 +3,7 @@ import IdentityProvider  from "orbit-db-identity-provider";
 import { nearConfig as NEAR_CONFIG } from '../../../utils';
 const js_sha256 = require("js-sha256")
 
-export class NearIdentityProvider extends IdentityProvider {
+export default class NearIdentityProvider extends IdentityProvider {
     // return type
     static get type () {
         return 'NearIdentity' 

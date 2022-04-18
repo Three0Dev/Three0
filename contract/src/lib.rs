@@ -74,13 +74,24 @@ impl Three0 {
     }
 
     pub fn get_all_projects(&self, offset: usize, limit: usize) -> AllSchema<ProjectReturnSchema> {
-        AllSchema {
-            entries: self.project_map.values()
-            .skip(offset)
+        let project_size = self.project_map.len();
+        let mut new_skip:usize = 0;
+
+        if project_size as usize > offset + limit {
+            new_skip = (project_size as usize) - (offset + limit);
+        }
+
+        let mut projects:Vec<ProjectReturnSchema> = self.project_map.values()
+            .skip(new_skip)
             .take(limit)
             .map(|project| project.get_project_return())
-            .collect(),
-            num: self.project_map.len() as u16,
+            .collect();
+        
+        projects.reverse();
+        
+        AllSchema {
+            entries: projects,
+            num: project_size as u16,
         }
     }
 

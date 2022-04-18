@@ -137,6 +137,7 @@ export function ActiveUsers(){
             setProfiles([user]);
         } catch(e){
             // TODO SWAL ERROR
+            setProfiles([]);
             console.error(e);
         }
     }
