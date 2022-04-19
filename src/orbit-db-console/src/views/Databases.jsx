@@ -36,8 +36,7 @@ export function DatabasesView () {
   const createDB = (args) => {
     console.log("Create database...", args)
     setLoading(true)
-    createDatabase(args.name, args.type, args.permissions, params.pid, args.overwrite).then((hash) => {
-      console.log("Created", hash)
+    createDatabase(args.name, args.type, args.permissions, params.pid, args.overwrite).then(() => {
       fetchDatabases().then((data) => {
         console.log("Loaded programs", data)
       })
@@ -96,7 +95,7 @@ export function DatabasesView () {
         iconBefore='document'
         appearance='default'
         height={24}
-        isLoading={loading}
+        disabled={loading}
         onClick={handleCreateDatabase}
       >
         Create

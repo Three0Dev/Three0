@@ -13,8 +13,6 @@ export async function initContract() {
     )
   );
 
-  window.near = near;
-
   // Initializing Wallet based Account. It can work with NEAR testnet wallet that
   // is hosted at https://wallet.testnet.near.org
   window.walletConnection = new WalletConnection(near);

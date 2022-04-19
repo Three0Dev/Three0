@@ -4,7 +4,7 @@ import { Core } from './Core'
 import { initContract } from './utils'
 
 
-window.nearInitPromise = initContract()
+initContract()
   .then(() => {
     ReactDOM.render(
       <Core  />,

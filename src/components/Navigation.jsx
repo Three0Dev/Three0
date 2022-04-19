@@ -74,7 +74,6 @@ export function Navigation() {
                             </ListItem>
                         ))}
                     </List>
-                    <Divider />
                 </Box>
             </Drawer>
         </Box>

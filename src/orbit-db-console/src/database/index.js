@@ -29,6 +29,7 @@ export const initOrbitDB = async (ipfs) => {
     const identity = await IdentityProvider.createIdentity({ type: `NearIdentity`})
     orbitdb = await OrbitDB.createInstance(ipfs, {identity})  
   }
+
   return orbitdb
 }
 
@@ -92,30 +93,29 @@ export const createDatabase = async (name, type, permissions, pid, overwrite = f
 
   console.log(dbDetails);
 
-  await window.contract.add_database({
-    database_details: dbDetails,
-    project_id: pid,
-  });
-
-  return programs.add({
+  await programs.add({
       name,
       type,
       address: db.address.toString(),
       added: Date.now()
-  })
+  }).then(async () => {
+    await window.contract.add_database({
+      database_details: dbDetails,
+      project_id: pid,
+    });
+  });
 }
 
 export const removeDatabase = async (hash, program, pid) => {
-
- await window.contract.delete_database({
-    database_name: program.address,
-    project_id: pid
-  });
-
   const db = await orbitdb.open(program.address)
   await db.drop()
   await db.close()
 
-  return programs.remove(hash)
+  await programs.remove(hash)
+
+  await window.contract.delete_database({
+    database_name: program.address,
+    project_id: pid
+  });
 }
 
