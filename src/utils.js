@@ -23,11 +23,10 @@ export async function initContract() {
   window.accountId = window.walletConnection.getAccountId();
 
   // Initializing our contract APIs by contract name and configuration
-  window.contract = new Contract(
+  window.contract = await new Contract(
     window.walletConnection.account(),
     nearConfig.contractName,
     {
-      sender: window.walletConnection.account(),
       viewMethods: ["get_all_projects", "get_project", "get_project_users", "get_user"],
       changeMethods: ["create_project", "update_project", "delete_project", "add_database", "delete_database"],
       // View methods are read only. They don't modify the state, but usually return some value.

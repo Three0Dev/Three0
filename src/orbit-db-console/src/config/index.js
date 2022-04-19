@@ -1,5 +1,8 @@
 export const config = {
   ipfs: {
+    EXPERIMENTAL: {
+      pubsub: true
+    },
     preload: {
       enabled: false
     },

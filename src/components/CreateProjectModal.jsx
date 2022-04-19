@@ -80,7 +80,7 @@ export function CreateProjectModal(props){
             let id = await window.contract.create_project({
                 name,
                 description,
-           });
+            });
             setAddLoading(false);
             props.closeModal();
             navigate(`/app/${id}`);

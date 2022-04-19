@@ -79,16 +79,9 @@ export function ProjectDisplayTable(){
     let updatePage = (e, val) => setPage((val-1)*limit_num);
 
     React.useEffect(() => {
-        async function getProjects(){
-            try{
-                let projects_temp = await window.contract.get_all_projects({sender: window.contract.account.accountId, offset: off, limit: limit_num});
-                setProjects(projects_temp);
-            }catch(e){
-                console.error(e);
-            }
-        }
-
-        getProjects();
+        window.contract.get_all_projects({sender: window.contract.account.accountId, offset: off, limit: limit_num})
+                .then(res => setProjects(res))
+                .catch(err => console.error(err));
     }, [off]);
 
     console.log(projects)
