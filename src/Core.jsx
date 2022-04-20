@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import {Login, Dash, Auth, ProjectsDash, Storage, Settings, App, NotFound} from "./screens";
+import {Login, Dash, Auth, ProjectsDash, Settings, App, NotFound} from "./screens";
 import {DBView} from "../src/orbit-db-console/src/App";
 import {Box} from "@mui/material";
 import {ProgramView as DatabaseView} from '../src/orbit-db-console/src/views/Database.jsx'
@@ -8,6 +8,8 @@ import {DatabasesView} from '../src/orbit-db-console/src/views/Databases.jsx'
 import {SearchResultsView} from '../src/orbit-db-console/src/views/SearchResults.jsx'
 import { RedirectAuth } from "./components/RedirectAuth";
 import { RedirectLogin } from "./components/RedirectLogin";
+import { StorageApp } from "./storage-ui";
+import { Grid } from "./storage-ui/src/components/Grid/index.js";
 
 import "./global.css";
 import { createTheme, ThemeProvider } from "@mui/material";
@@ -41,7 +43,9 @@ export function Core() {
                   <Route path='orbitdb/:programName/:dbName' element={<DatabaseView />} />
                   <Route path='search' element={<SearchResultsView />} />
                 </Route>
-                <Route path="storage" element={<Storage />} />
+                <Route path="storage" element={<StorageApp />}>
+                  <Route path="*" component={Grid} />
+                </Route>
                 <Route path="settings" element={<Settings />} />
               </Route>
             </Route>
