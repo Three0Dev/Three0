@@ -1,7 +1,8 @@
 import React from 'react';
 import {useNavigate} from 'react-router-dom';
-import {FormControl, FormLabel, TextField, FormControlLabel, MenuItem, Menu, Grid, Typography, makeStyles, createTheme} from "@material-ui/core"
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button} from '@mui/material'
+import {FormControl, TextField, MenuItem, Grid, makeStyles, createTheme} from "@material-ui/core"
+import {Dialog, DialogActions, DialogContent, DialogTitle, Button} from '@mui/material'
+import LoadingButton from '@mui/lab/LoadingButton';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -152,7 +153,7 @@ export function CreateProjectModal(props){
                 </Grid>
             </DialogContent>
             <DialogActions className={classes.TableContainer}>
-                <Button onClick={closeModal} color='secondary' disabled={addLoading}>Cancel</Button>
+                <LoadingButton onClick={closeModal} color='secondary' disabled={addLoading}>Cancel</LoadingButton>
                 <Button onClick={createProject} color='secondary' disabled={addLoading}>Create</Button>
             </DialogActions>
         </Dialog>

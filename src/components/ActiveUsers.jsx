@@ -1,9 +1,8 @@
 import React from 'react'
 // import ReactDOM from 'react-dom';
-import {Tooltip, Pagination, Badge, Table, TableCell, TableHead, TableBody, TableContainer, Typography, Paper, Toolbar, Box, AppBar, styled, alpha, InputBase, TableRow, IconButton } from '@mui/material'
+import {Backdrop, CircularProgress, Tooltip, Pagination, Badge, Table, TableCell, TableHead, TableBody, TableContainer, Typography, Paper, Toolbar, Box, AppBar, styled, alpha, InputBase, TableRow, IconButton } from '@mui/material'
 import { makeStyles, createTheme } from "@material-ui/core";
 import InfoIcon from '@mui/icons-material/Info';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { ProjectDetailsContext } from '../ProjectDetailsContext';
 import SearchIcon from '@mui/icons-material/Search';
@@ -119,25 +118,30 @@ export function ActiveUsers(){
     let [userNumber, setUserNum] = React.useState(0);
     let [page, setPage] = React.useState(1);
     let projectDetails = React.useContext(ProjectDetailsContext);
-
+    let [loading, setLoading] = React.useState(false);
 
     let updatePage = (e, val) => setPage((val-1)*20);
     async function getUsers(){
         try{
+            setLoading(true);
             let users = await window.contract.get_project_users({project_id: projectDetails.pid, offset: 0, limit: 10});
             setProfiles(users);
+            setLoading(false);
         } catch(e){
+            setLoading(false);
             console.error(e);
         }
     }
 
     async function searchUser(val){
         try{
+            setLoading(true);
             let user = await window.contract.get_user({project_id: projectDetails.pid, account_id: val});
             setProfiles([user]);
+            setLoading(false);
         } catch(e){
-            // TODO SWAL ERROR
             setProfiles([]);
+            setLoading(false);
             console.error(e);
         }
     }
@@ -155,93 +159,98 @@ export function ActiveUsers(){
     const cellWidth = "200px"
 
     return (
-        <div>
-                <Box sx={{ flexGrow: 1 }}>
-                    <AppBar theme={theme} color="primary" position="static">
-                        <Toolbar>
-                        <Typography
-                            variant="h6"
-                            noWrap
-                            component="div"
-                            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-                            align="left"
+        <>
+        <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={loading}
+        >
+            <CircularProgress color="inherit" />
+      </Backdrop>
+            <Box sx={{ flexGrow: 1 }}>
+                <AppBar theme={theme} color="primary" position="static">
+                    <Toolbar>
+                    <Typography
+                        variant="h6"
+                        noWrap
+                        component="div"
+                        sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                        align="left"
+                    >
+                        Active Users
+                    </Typography>
+                    <Tooltip title="Refresh">
+                        <IconButton
+                            color="inherit"
+                            onClick={() => {
+                                getUsers();
+                            }} 
                         >
-                            Active Users
-                        </Typography>
-                        <Tooltip title="Refresh">
-                            <IconButton
-                                color="inherit"
-                                onClick={() => {
-                                    getUsers();
-                                }} 
-                            >
-                                <RefreshIcon />
-                            </IconButton>
-                        </Tooltip>
-                        <Search>
-                            <SearchIconWrapper>
-                                <SearchIcon />
-                            </SearchIconWrapper>
-                            <StyledInputBase
-                                onKeyPress={(e) => {
-                                    if (e.key === 'Enter') {
-                                      searchUser(e.target.value);
+                            <RefreshIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Search>
+                        <SearchIconWrapper>
+                            <SearchIcon />
+                        </SearchIconWrapper>
+                        <StyledInputBase
+                            onKeyPress={(e) => {
+                                if (e.key === 'Enter') {
+                                    searchUser(e.target.value);
+                                }
+                                }}
+                                onChange={(e) => {
+                                    if(e.target.value === ""){
+                                        getUsers();
                                     }
-                                  }}
-                                  onChange={(e) => {
-                                      if(e.target.value === ""){
-                                            getUsers();
-                                        }
-                                    }}
-                                placeholder="Search…"
-                                inputProps={{ 'aria-label': 'search' }}
-                            />
-                        </Search>
-                        </Toolbar>
-                    </AppBar>
-                </Box>
-                
-            <TableContainer component ={Paper}className={classes.root}>
+                                }}
+                            placeholder="Search…"
+                            inputProps={{ 'aria-label': 'search' }}
+                        />
+                    </Search>
+                    </Toolbar>
+                </AppBar>
+            </Box>
+            
+            <TableContainer component ={Paper} className={classes.root}>
                 <Table style={{margin: "2%"}}>
                     <TableHead>
-                        <TableCell  
-                                style={{
-                                    alignItems: 'center',
-                                    flexWrap: 'wrap',
-                                }} 
-                                flexBasis={cellWidth} flexShrink={0} flexGrow={0} > 
-                            <div style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', width: '100%'}}>
-                                <Tooltip
-                                    title={<StatusExplanation/>}
-                                    appearance="card"
-                                >
-                                    <InfoIcon style={{marginLeft: "15px",}} />
-                                </Tooltip>
-                                <Typography fontWeight={'bold'}>Online Status</Typography>
-                            </div>
-                            
-                        </TableCell>
-                        <TableCell style={{
-                                    alignItems: 'center',
-                                    flexWrap: 'wrap',
-                                }}>
-                            <div style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', width: '100%'}}>
-                                {/* <AccountCircleIcon size={12} ></AccountCircleIcon>  */}
+                        <TableRow>
+                            <TableCell  
+                                    style={{
+                                        alignItems: 'center',
+                                        flexWrap: 'wrap',
+                                    }} 
+                                    flexBasis={cellWidth} flexShrink={0} flexGrow={0} > 
+                                <div style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', width: '100%'}}>
+                                    <Tooltip
+                                        title={<StatusExplanation/>}
+                                        appearance="card"
+                                    >
+                                        <InfoIcon style={{marginLeft: "15px",}} />
+                                    </Tooltip>
+                                    <Typography fontWeight={'bold'}>Online Status</Typography>
+                                </div>
+                                
+                            </TableCell>
+                            <TableCell style={{
+                                        alignItems: 'center',
+                                        flexWrap: 'wrap',
+                                    }}>
                                 <Typography fontWeight={'bold'}>Public Identifier</Typography>
-                            </div>
-                        </TableCell>
-                        <TableCell style={{
-                                    alignItems: 'center',
-                                    flexWrap: 'wrap',
-                                }}>
-                            <Typography fontWeight={'bold'}>Account Created</Typography>
-                        </TableCell>
-                        <TableCell style={{
-                                    alignItems: 'center',
-                                    flexWrap: 'wrap',
-                                }}>
-                            <Typography fontWeight={'bold'}>Last Signed In</Typography>
-                        </TableCell>
+                            </TableCell>
+                            <TableCell style={{
+                                        alignItems: 'center',
+                                        flexWrap: 'wrap',
+                                    }}>
+                                <Typography fontWeight={'bold'}>Account Created</Typography>
+                            </TableCell>
+                            <TableCell style={{
+                                        alignItems: 'center',
+                                        flexWrap: 'wrap',
+                                    }}>
+                                <Typography>Last Signed In</Typography>
+                            </TableCell>
+                        </TableRow>
                     </TableHead>
                     <TableBody>
                         {profiles && profiles.map((profile) => (
@@ -266,6 +275,6 @@ export function ActiveUsers(){
                 </Table>
             </TableContainer>    
             <Pagination className = {classes.root} defaultPage={1} count={Math.floor(userNumber/6)+1} boundaryCount={2} onChange={updatePage} variant='outlined' shape='rounded'> </Pagination>
-        </div>
+        </>
     );
 }

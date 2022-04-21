@@ -1,6 +1,7 @@
 import React from 'react';
-import {FormControl, TextField, Typography, makeStyles, createTheme} from "@material-ui/core"
-import {Paper, Button, AppBar, Toolbar, Box, } from '@mui/material';
+import {FormControl, TextField, makeStyles, createTheme} from "@material-ui/core"
+import {Paper, AppBar, Toolbar, Box } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {useParams, useNavigate} from 'react-router-dom';
@@ -140,8 +141,8 @@ export function Settings(props){
             <div style = {{display: "flex", justifyContent: "space-between"}} className={classes.Buttons}>
               <ConfigFile />
               <div>
-                <Button theme={theme} isLoading={updateLoading} startIcon={<SaveIcon/>} color="primary" onClick={updateProject}>Save</Button>
-                <Button theme={theme} isLoading={deleteLoading} startIcon={<DeleteIcon/>} color="primary" onClick={deleteProject}>Delete</Button>
+                <LoadingButton theme={theme} loading={updateLoading} disabled={deleteLoading} startIcon={<SaveIcon/>} color="primary" onClick={updateProject}>Save</LoadingButton>
+                <LoadingButton theme={theme} loading={deleteLoading} disabled={updateLoading} startIcon={<DeleteIcon/>} color="primary" onClick={deleteProject}>Delete</LoadingButton>
               </div>
             </div>
         </Box>

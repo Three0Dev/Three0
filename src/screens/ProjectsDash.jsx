@@ -1,9 +1,8 @@
 import React from "react";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { Typography, IconButton, Button } from "@mui/material";
+import { IconButton } from "@mui/material";
 import {CreateProjectModal} from "../components/CreateProjectModal";
 import { ProjectDisplayTable } from "../components/ProjectDisplayTable";
-import { Drawer, Toolbar, Box, Divider } from "@mui/material";
 
 export function ProjectsDash() {
   let [showCreateProjectModal, setShowCreateProjectModal] = React.useState(false);
