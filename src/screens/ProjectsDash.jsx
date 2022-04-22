@@ -1,6 +1,6 @@
 import React from "react";
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { IconButton } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
+import { Fab } from "@mui/material";
 import {CreateProjectModal} from "../components/CreateProjectModal";
 import { ProjectDisplayTable } from "../components/ProjectDisplayTable";
 
@@ -14,21 +14,17 @@ export function ProjectsDash() {
   return (
     <>
       <ProjectDisplayTable />
-      {/* TODO Change to sticky */}
-      <IconButton style={{
-        // borderRadius: "50px",
-        position: "absolute",
-        bottom: "10px",
-        right: "10px",
-        size: "large",
-        width: "60px",
-        height: "60px",
-        color: "#7d68d1",
-        }} 
+      <Fab
+        sx={{
+          position: "fixed",
+          bottom: 16,
+          right: 16,
+        }}
+        color="primary"
         aria-label="create-project" 
         onClick={() => setShowCreateProjectModal(true)}>
-          <AddCircleIcon fontSize="inherit"/>
-      </IconButton>
+          <AddIcon/>
+      </Fab>
       <CreateProjectModal closeModal={closeModal} isShown={showCreateProjectModal} />
     </>
   );

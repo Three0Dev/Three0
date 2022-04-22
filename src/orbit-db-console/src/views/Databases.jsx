@@ -1,12 +1,13 @@
 import React from 'react'
 import Swal from 'sweetalert2'
-import {Typography, CircularProgress, Box, Button, Backdrop} from '@mui/material'
+import {Typography, CircularProgress, Box, Backdrop} from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import { useStateValue, actions } from '../state'
 import { getAllDatabases, removeDatabase, createDatabase } from '../database'
 import {ProgramList} from '../components/DatabaseList'
 import {CreateDialog} from '../components/CreateDialog'
 import { useParams } from 'react-router-dom'
+import Fab from '@mui/material/Fab';
 
 export function DatabasesView () {
   const [appState, dispatch] = useStateValue()
@@ -83,24 +84,6 @@ export function DatabasesView () {
 
   return (
   <>
-    <Box 
-      display='flex' 
-      flexDirection='row'
-      marginX={6}
-      marginTop={2}
-      marginBottom={1}
-    >
-      <Button
-        variant="outlined" startIcon={<AddIcon fontSize='small'/>}
-        iconBefore='document'
-        appearance='default'
-        height={24}
-        disabled={loading}
-        onClick={handleCreateDatabase}
-      >
-        Create
-      </Button>
-    </Box>
     <Box display='flex' justifyContent='center' overflow='auto'>
       <CreateDialog onCreate={createDB}/>
       <Box
@@ -128,6 +111,15 @@ export function DatabasesView () {
          }
       </Box>
     </Box>
+    <Fab color="primary" aria-label="add" disabled={loading}
+        onClick={handleCreateDatabase}
+        sx={{
+          position: "fixed",
+          bottom: 16,
+          right: 16,
+        }}>
+      <AddIcon />
+    </Fab>
     <Backdrop open={loading}>
       <Box display="flex" alignItems="center" justifyContent="center" height={400}>
         <CircularProgress color='inherit'/>

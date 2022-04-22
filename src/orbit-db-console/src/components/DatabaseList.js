@@ -1,18 +1,44 @@
 import React from 'react'
 
-import {
-  minorScale,
-  CrossIcon,
-  DatabaseIcon,
-  EyeOpenIcon,
-  Icon,
-  IconButton,
-  Table,
-  TrashIcon
-} from 'evergreen-ui'
-
 import { useNavigate, useParams } from 'react-router-dom'
 import { formatDistanceToNow } from 'date-fns'
+
+import { styled } from '@mui/material/styles';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import DeleteIcon from '@mui/icons-material/Delete';
+import LaunchIcon from '@mui/icons-material/Launch';
+import CloseIcon from '@mui/icons-material/Close';
+import StorageIcon from '@mui/icons-material/Storage';
+import IconButton from '@mui/material/IconButton';
+import Swal from 'sweetalert2';
+
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
+
 
 const colors = {
    eventlog: '#47B881',
@@ -31,75 +57,68 @@ export function ProgramList ({ programs, onRemove }) {
     navigate(`./${newPath}`)
   }
 
+  function copyAddress(program){
+    navigator.clipboard.writeText(program.address.toString() ? program.address.toString() : program.address);
+    Swal.fire({
+      title: 'Address copied to clipboard!',
+    })
+  }
+
   return (
-    <Table>
-      <Table.Head padding='0'>
-        <Table.TextHeaderCell
-          flex='1 1 2%'
-          textAlign='center'
-          padding={minorScale(2)}
-          alignItems='center'
-        >
-          <Icon icon={EyeOpenIcon} />
-        </Table.TextHeaderCell>
-        <Table.TextHeaderCell flex='1 1 10%' paddingX={0}>Name</Table.TextHeaderCell>
-        <Table.TextHeaderCell flex='1 1 5%' paddingX={minorScale(1)}>Type</Table.TextHeaderCell>
-        <Table.TextHeaderCell flex='1 1 40%' paddingX={0}>Address</Table.TextHeaderCell>
-        <Table.TextHeaderCell flex='1 1 10%' paddingX={0}>Added</Table.TextHeaderCell>
-        <Table.TextHeaderCell
-          flex='1 1 2%'
-          textAlign='center'
-          padding={minorScale(2)}
-          alignItems='center'
-        >
-          <Icon size={12} icon={TrashIcon} />
-        </Table.TextHeaderCell>
-      </Table.Head>
-      <Table.Body>
-        {programs.map(e => {
-          const program = e.payload.value
-          return (
-            <Table.Row key={`program-id-${program.address}`}>
-              <Table.Cell
-                flex='1 1 2%'
-                display='flex'
-                flexDirection='row'
-                justifyContent='center'
-                padding={minorScale(2)}
-              >
-                <IconButton
-                  appearance='minimal'
-                  icon={DatabaseIcon}
-                  margin={0}
-                  padding={0}
-                  onClick={() => handleSelect(program)}
-                />
-              </Table.Cell>
-              <Table.TextCell flex='1 1 10%' paddingX={0}>{program.name}</Table.TextCell>
-              <Table.TextCell flex='1 1 5%' paddingX={minorScale(1)} textProps={{ color: colors[program.type]}}>
-                {program.type}
-              </Table.TextCell>
-              <Table.TextCell flex='1 1 40%' paddingX={0}>{program.address.toString() ? program.address.toString() : program.address}</Table.TextCell>
-              <Table.TextCell flex='1 1 10%' paddingX={0}>{program.added ? formatDistanceToNow(program.added) + ' ago': 'Unknown'}</Table.TextCell>
-              <Table.Cell
-                flex='1 1 2%'
-                display='flex'
-                flexDirection='row'
-                justifyContent='center'
-                padding={minorScale(2)}
-              >
-                <IconButton
-                  appearance='minimal'
-                  icon={CrossIcon}
-                  intent='danger'
-                  margin={0}
-                  padding={0}
-                  onClick={() => onRemove(e.hash, program)}
-                />
-              </Table.Cell>
-            </Table.Row>
-        )})}
-      </Table.Body>
-    </Table>
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <StyledTableCell><LaunchIcon /></StyledTableCell>
+            <StyledTableCell>Name</StyledTableCell>
+            <StyledTableCell>Type</StyledTableCell>
+            <StyledTableCell>Address</StyledTableCell>
+            <StyledTableCell>Added</StyledTableCell>
+            <StyledTableCell>
+              <DeleteIcon />
+            </StyledTableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {programs.map(e => {
+            const program = e.payload.value
+            return (
+              <StyledTableRow key={`program-id-${program.address}`}>
+                <StyledTableCell
+                >
+                  <IconButton
+                    onClick={() => handleSelect(program)}
+                  >
+                    <StorageIcon />
+                  </IconButton>
+                </StyledTableCell>
+                <StyledTableCell>{program.name}</StyledTableCell>
+                <StyledTableCell sx={{
+                  color: colors[program.type]
+                  }}>
+                  {program.type}
+                </StyledTableCell>
+                <StyledTableCell
+                  sx={{
+                    "text-overflow": "ellipsis",
+                    "max-width": "200px",
+                    overflow: "hidden",
+                    "white-space": "nowrap"
+                  }}
+                  onClick={() => copyAddress(program)}
+                >{program.address.toString() ? program.address.toString() : program.address}</StyledTableCell>
+                <StyledTableCell>{program.added ? formatDistanceToNow(program.added) + ' ago': 'Unknown'}</StyledTableCell>
+                <StyledTableCell>
+                  <IconButton
+                    onClick={() => onRemove(e.hash, program)}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </StyledTableCell>
+              </StyledTableRow>
+          )})}
+        </TableBody>
+      </Table>
+    </TableContainer>
   )
 }

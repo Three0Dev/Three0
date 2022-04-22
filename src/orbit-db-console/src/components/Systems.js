@@ -1,17 +1,8 @@
 import React from 'react'
-import {
-  majorScale,
-  minorScale,
-  Pane,
-  Text,
-  StatusIndicator
-} from 'evergreen-ui'
-
 import { initIPFS, initOrbitDB, getAllDatabases } from '../database'
 import { actions, useStateValue } from '../state'
 import {useParams} from 'react-router-dom'
-
-import { ConnectToWalletButton } from './ConnectToWalletButton'
+import { Box, Typography, Stack, Chip } from '@mui/material';
 
 export function Systems () {
   const [appState, dispatch] = useStateValue()
@@ -34,36 +25,18 @@ export function Systems () {
   }, [dispatch])
 
   return (
-    <Pane background='white' elevation={1}>
-      <Pane
-        display='flex'
-        flexDirection='row'
-        alignItems='left'
-        paddingX={majorScale(6)}
-        paddingY={majorScale(1)}
-      >
-        <Pane display='flex' flexDirection='row' width='100%'>
-          <Text
-            display='flex'
-            alignItems='center'
-            fontWeight='600'
-            marginRight={minorScale(1)}
-          >
-            Systems:
-          </Text>
-          {
-            appState.ipfsStatus === 'Started'
-              ? <StatusIndicator color='success'>IPFS</StatusIndicator>
-              : <StatusIndicator color='warning'>IPFS</StatusIndicator>
-          }
-          {
-            appState.orbitdbStatus === 'Started'
-              ? <StatusIndicator color='success'>OrbitDB</StatusIndicator>
-              : <StatusIndicator color='warning'>OrbitDB</StatusIndicator>
-          }
-          {/* <ConnectToWalletButton style={{ marginLeft: 'auto' }} /> */}
-        </Pane>
-      </Pane>
-    </Pane>
+      <Box display='flex' flexDirection='row' width='100%' padding='1%'>
+        <Typography
+          display='flex'
+          alignItems='center'
+          fontWeight='600'
+        >
+          Status: &nbsp;
+        </Typography>
+        <Stack direction="row" spacing={1}>
+          <Chip label="IPFS" color={appState.ipfsStatus === 'Started' ? 'success' : 'warning'} />
+          <Chip label="OrbitDB" color={appState.ipfsStatus === 'Started' ? 'success' : 'warning'} />
+        </Stack>
+      </Box>
   )
 }

@@ -97,7 +97,7 @@ export function DBView (props) {
   return (
     <>
       <StateProvider initialState={initialState} reducer={reducer}>
-        <Box  height='100%'>
+        <Box height='100%'>
           <Header />
           <Systems />
           <Outlet />
