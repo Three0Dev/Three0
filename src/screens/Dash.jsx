@@ -29,7 +29,7 @@ export function Dash() {
     <Box style={{display: "flex"}}>
       <Navigation />
       <ProjectDetailsContext.Provider value={projectDetails}>
-        <div style={{width: "99%", marginLeft: "1%"}}>
+        <div style={{width: "99%", marginLeft: "1%", marginTop: "2%"}}>
           <Outlet />
         </div>
       </ProjectDetailsContext.Provider>
