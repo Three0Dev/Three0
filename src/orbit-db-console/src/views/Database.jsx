@@ -2,25 +2,21 @@ import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import {Typography, CircularProgress, Button, Box } from '@mui/material'
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
-import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 
-const theme = createTheme({
-  typography: {
-    fontFamily: [
-      "Nunito",
-      "Roboto",
-      "Helvetica Neue",
-      "Arial",
-      "sans-serif"
-    ].join(",")
-  }
-});
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 import {LogStoreControls} from '../components/LogStoreControls'
 import {FeedStoreControls} from '../components/FeedStoreControls'
 import {KeyValueStoreControls} from '../components/KeyValueStoreControls'
 import {DocumentStoreControls} from '../components/DocumentStoreControls'
 import {CounterStoreControls} from '../components/CounterStoreControls'
+import Divider from '@mui/material/Divider';
 
 import { getDB } from '../database'
 import { useStateValue, actions } from '../state'
@@ -98,7 +94,6 @@ export function ProgramView () {
     else if (db.type === 'counter')
       return "Count"
     else
-      // return <Text intent='danger'>No input controls found for '{db.type}'</Text>
       return <Typography variant="body2" color="textSecondary">No input controls found for '{db.type}'</Typography>
   }
 
@@ -106,33 +101,43 @@ export function ProgramView () {
     const program = appState.program ? appState.program.payload.value : null
     return (
         <Box marginTop={2}>
-          <Box flex='1' >
-            <Typography variant="h7" color="textPrimary">Name: {program ? program.name : '-'}</Typography>
-          </Box>
-
-          <Box flex='1' >
-            <Typography variant="h7" color="textPrimary">Type: </Typography>
-            {program
-              ? <Typography variant="h8" color={colors[program.type]}>{program.type}</Typography>
-              : <Typography variant="h8" color="textSecondary">-</Typography>
-            }
-          </Box>
-
-          <Box flex='1'>
-            <Typography variant="h7" color="textPrimary">Permissions: </Typography>
-            {appState.db
-              ? <Typography variant="h8" color="textSecondary">{appState.db.access.write}</Typography>
-              : <Typography variant="h8" color="textSecondary">-</Typography>
-            }
-          </Box>
-
-          <Box flex='1' flexDirection='row'>
-            <Typography variant="h7" color="textPrimary">Entries: </Typography>
-            {appState.db
-              ? <Typography variant="h8" color="textSecondary">{appState.db._oplog?.length}</Typography>
-              : <Typography variant="h8" color="textSecondary">-</Typography>
-            }
-          </Box>
+           <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Name</TableCell>
+                  <TableCell >Type</TableCell>
+                  <TableCell >Permissions</TableCell>
+                  <TableCell >Entries</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>
+                  <Typography>{program ? program.name : '-'}</Typography>
+                  </TableCell>
+                  <TableCell>
+                  {program
+                    ? <Typography variant="h8" color={colors[program.type]}>{program.type}</Typography>
+                    : <Typography variant="h8" color="textSecondary">-</Typography>
+                  }
+                  </TableCell>
+                  <TableCell>
+                  {appState.db
+                    ? <Typography variant="h8" color="textSecondary">{appState.db.access.write}</Typography>
+                    : <Typography variant="h8" color="textSecondary">-</Typography>
+                  }
+                  </TableCell>
+                  <TableCell>
+                  {appState.db
+                    ? <Typography variant="h8" color="textSecondary">{appState.db._oplog?.length}</Typography>
+                    : <Typography variant="h8" color="textSecondary">-</Typography>
+                  }
+                  </TableCell>
+                 </TableRow> 
+              </TableBody>
+              </Table>
+            </TableContainer>
 
           <Box flex='1' marginBottom={2}>
               <Typography sx={{ fontWeight: 'bold' }} variant="h7" color="textPrimary">{getValuesTitle()}</Typography>
@@ -140,7 +145,7 @@ export function ProgramView () {
               ? <CircularProgress
                   size={2}
                   delay={100}
-                  marginY={2}
+                  marginy={2}
                 />
               : appState.entries.map((e, idx) => {
                   idx += 1
@@ -207,6 +212,7 @@ export function ProgramView () {
         background='white'
         marginX={6}
         padding={4}
+        paddingTop={0}
         sx={{borderColor: 'black', bgcolor: 'white'}}
       >
         <Box borderBottom='default'>
@@ -214,9 +220,11 @@ export function ProgramView () {
               /orbitdb/{programName}/{dbName}
             </Typography>
         </Box>
+        <Divider variant="middle" />
         <Box>
           {renderProgram()}
         </Box>
+        <Divider variant="middle" />
         <Box>
           {appState.program ? (renderDatabaseControls()) : ''}
         </Box>

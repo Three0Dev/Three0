@@ -1,6 +1,6 @@
 import React from 'react'
 // import ReactDOM from 'react-dom';
-import {Backdrop, CircularProgress, Tooltip, Pagination, Badge, Table, TableCell, TableHead, TableBody, TableContainer, Typography, Paper, Toolbar, Box, AppBar, styled, alpha, InputBase, TableRow, IconButton } from '@mui/material'
+import {Backdrop, CircularProgress, Tooltip, Pagination, Badge, Table, TableCell, TableHead, TableBody, TableContainer, Typography, Paper, Toolbar, Box, AppBar, styled, alpha, InputBase, TableRow, IconButton, tableCellClasses } from '@mui/material'
 import { makeStyles, createTheme } from "@material-ui/core";
 import InfoIcon from '@mui/icons-material/Info';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -10,7 +10,7 @@ import SearchIcon from '@mui/icons-material/Search';
 const theme = createTheme({
     palette: {
       primary: {
-        main: '#7d68d1'
+        main: '#6247aa'
       }
     }
   });
@@ -78,6 +78,26 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '1px',
     },
 }));
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: "#616161",
+      color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+  }));
+  
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+      border: 0,
+    },
+  }));
 function StatusExplanation(){
     const classes = useStyles();
     return (
@@ -214,8 +234,8 @@ export function ActiveUsers(){
             <TableContainer component ={Paper} className={classes.root}>
                 <Table style={{margin: "2%"}}>
                     <TableHead>
-                        <TableRow>
-                            <TableCell  
+                        <StyledTableRow>
+                            <StyledTableCell  
                                     style={{
                                         alignItems: 'center',
                                         flexWrap: 'wrap',
@@ -226,36 +246,37 @@ export function ActiveUsers(){
                                         title={<StatusExplanation/>}
                                         appearance="card"
                                     >
-                                        <InfoIcon style={{marginLeft: "15px",}} />
+                                        <InfoIcon/>
                                     </Tooltip>
-                                    <Typography fontWeight={'bold'}>Online Status</Typography>
+                                    &nbsp;
+                                    <Typography>Online Status</Typography>
                                 </div>
                                 
-                            </TableCell>
-                            <TableCell style={{
+                            </StyledTableCell>
+                            <StyledTableCell style={{
                                         alignItems: 'center',
                                         flexWrap: 'wrap',
                                     }}>
-                                <Typography fontWeight={'bold'}>Public Identifier</Typography>
-                            </TableCell>
-                            <TableCell style={{
+                                <Typography>Public Identifier</Typography>
+                            </StyledTableCell>
+                            <StyledTableCell style={{
                                         alignItems: 'center',
                                         flexWrap: 'wrap',
                                     }}>
-                                <Typography fontWeight={'bold'}>Account Created</Typography>
-                            </TableCell>
-                            <TableCell style={{
+                                <Typography>Account Created</Typography>
+                            </StyledTableCell>
+                            <StyledTableCell style={{
                                         alignItems: 'center',
                                         flexWrap: 'wrap',
                                     }}>
                                 <Typography>Last Signed In</Typography>
-                            </TableCell>
-                        </TableRow>
+                            </StyledTableCell>
+                        </StyledTableRow>
                     </TableHead>
                     <TableBody>
                         {profiles && profiles.map((profile) => (
-                            <TableRow key={profile.account_id}>
-                                <TableCell flexBasis={cellWidth} flexShrink={0} flexGrow={0} style={{justifyContent: "center"}}>
+                            <StyledTableRow key={profile.account_id}>
+                                <StyledTableCell flexBasis={cellWidth} flexShrink={0} flexGrow={0} style={{justifyContent: "center"}}>
                                     <Badge 
                                         className={classes.Badge}
                                         anchorOrigin={{
@@ -265,11 +286,11 @@ export function ActiveUsers(){
                                         color={profile.is_online ? 'success' : 'warning'} variant="dot">
 
                                     </Badge>
-                                </TableCell>
-                                <TableCell >{profile.account_id}</TableCell>
-                                <TableCell > <Typography> Date </Typography></TableCell>
-                                <TableCell ><Typography>Date</Typography></TableCell>
-                            </TableRow>
+                                </StyledTableCell>
+                                <StyledTableCell >{profile.account_id}</StyledTableCell>
+                                <StyledTableCell > <Typography> Date </Typography></StyledTableCell>
+                                <StyledTableCell ><Typography>Date</Typography></StyledTableCell>
+                            </StyledTableRow>
                         ))}
                     </TableBody>
                 </Table>

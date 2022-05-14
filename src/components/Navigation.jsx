@@ -6,7 +6,6 @@ import FolderIcon from '@mui/icons-material/Folder';
 import StorageIcon from '@mui/icons-material/Storage';
 import KeyIcon from '@mui/icons-material/Key';
 import {Box, List, ListItem, ListItemIcon, ListItemText} from '@mui/material'
-import { useTheme } from '@material-ui/core/styles';
 
 export function Navigation() {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -18,10 +17,6 @@ export function Navigation() {
     let params = useParams().pid;
 
     const location = useLocation();
-
-    const theme = useTheme();
-
-  console.log(theme);
 
 
     useEffect(() => {
@@ -54,7 +49,7 @@ export function Navigation() {
     }
 
     return (
-        <Box sx={{bgcolor: "#7d68d1", height: "calc(100vh - 56px)"}}>
+        <Box sx={{bgcolor: "#6247aa", height: "calc(100vh - 56px)"}}>
             <List>
                 {tabs.map((tab, index) => (
                     <ListItem button key={tab} style={{color: 'white'}} onClick={() => switchLink(index)}>

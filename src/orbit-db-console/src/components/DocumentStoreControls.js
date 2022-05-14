@@ -1,11 +1,6 @@
 import React, { useState } from 'react'
-import {
-  majorScale,
-  Button,
-  Heading,
-  Pane,
-  TextInput
-} from 'evergreen-ui'
+import {Box, Button, TextField, Typography} from '@material-ui/core'
+import AddIcon from '@mui/icons-material/Add';
 
 import { useStateValue, actions } from '../state'
 
@@ -43,34 +38,30 @@ export function DocumentStoreControls () {
   }
 
   return (
-    <Pane
-      flex='1'
-    >
-      <Heading marginBottom={majorScale(1)}>Add a document to the database</Heading>
-      <TextInput
+    <Box>
+    <Typography>Add a document to the database</Typography>
+    <TextField
         onChange={handleKeyChange}
         name='key'
-        placeholder='_id'
+        placeholder='key'
         height={24}
         width='20%'
-      ></TextInput>
-      <TextInput
+      ></TextField>
+      <TextField
         onChange={handleValueChange}
         name='value'
-        placeholder='document'
+        placeholder='value'
         height={24}
         width='20%'
-        marginLeft={majorScale(1)}
-      ></TextInput>
-      <Button
-        iconBefore='plus'
-        appearance='default'
-        height={24}
-        marginLeft={majorScale(1)}
-        onClick={handleAdd}
-      >
-        Put
-      </Button>
-    </Pane>
+      ></TextField>
+    <Button
+      height={24}
+      onClick={handleAdd}
+      variant="outlined"
+    >
+      <AddIcon />
+      Put
+    </Button>
+  </Box>
   )
 }

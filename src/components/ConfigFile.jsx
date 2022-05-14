@@ -12,7 +12,7 @@ const theme = createTheme({
         main: '#d1c9f0'
         },
       secondary: {
-        main: '#7d68d1'
+        main: '#6247aa'
       }
     }
   });
@@ -95,7 +95,7 @@ function ConfigFileInner(){
                 iconBefore='document'
                 appearance='default'
                 height={24}
-                style={{color: '#7d68d1'}}
+                style={{color: '#6247aa'}}
                 onClick={downloadConfig}>
                     Download
                 </ToggleButton>
@@ -104,7 +104,7 @@ function ConfigFileInner(){
                 iconBefore='document'
                 appearance='default'
                 height={24}
-                style={{color: '#7d68d1'}}
+                style={{color: '#6247aa'}}
                 onClick={copyConfig}>
                     Copy
                 </ToggleButton>

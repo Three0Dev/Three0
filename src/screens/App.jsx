@@ -22,7 +22,7 @@ function TopBar(){
                 width:"50px",
                 margin: "0px"
               }} src={UpdatedLogo}/> </Link>
-              <Typography fontWeight={'bold'} variant="h5" color="#7d68d1">Three0</Typography>
+              <Typography fontWeight={'bold'} variant="h5" color="#6247aa">Three0</Typography>
               <IconButton style={{position: "absolute", right: "2%", color:"#707070"}} aria-label="logout" onClick={logout}>
                 <LogoutIcon />
               </IconButton>

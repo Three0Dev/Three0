@@ -18,10 +18,9 @@ import StorageIcon from '@mui/icons-material/Storage';
 import IconButton from '@mui/material/IconButton';
 import Swal from 'sweetalert2';
 
-
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: "#616161",
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -100,10 +99,10 @@ export function ProgramList ({ programs, onRemove }) {
                 </StyledTableCell>
                 <StyledTableCell
                   sx={{
-                    "text-overflow": "ellipsis",
-                    "max-width": "200px",
+                    textOverflow: "ellipsis",
+                    maxWidth: "200px",
                     overflow: "hidden",
-                    "white-space": "nowrap"
+                    whiteSpace: "nowrap"
                   }}
                   onClick={() => copyAddress(program)}
                 >{program.address.toString() ? program.address.toString() : program.address}</StyledTableCell>

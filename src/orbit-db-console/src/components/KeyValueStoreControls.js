@@ -1,11 +1,6 @@
 import React, { useState } from 'react'
-import {
-  majorScale,
-  Button,
-  Heading,
-  Pane,
-  TextInput
-} from 'evergreen-ui'
+import {Box, Button, TextField, Typography} from '@material-ui/core'
+import AddIcon from '@mui/icons-material/Add';
 
 import { useStateValue, actions } from '../state'
 
@@ -43,34 +38,30 @@ export function KeyValueStoreControls () {
   }
 
   return (
-    <Pane
-      flex='1'
-    >
-      <Heading marginBottom={majorScale(1)}>Set a value for a key</Heading>
-      <TextInput
+    <Box>
+    <Typography>Set a value for a key</Typography>
+    <TextField
         onChange={handleKeyChange}
         name='key'
         placeholder='key'
         height={24}
         width='20%'
-      ></TextInput>
-      <TextInput
+      ></TextField>
+      <TextField
         onChange={handleValueChange}
         name='value'
         placeholder='value'
         height={24}
         width='20%'
-        marginLeft={majorScale(1)}
-      ></TextInput>
-      <Button
-        iconBefore='plus'
-        appearance='default'
-        height={24}
-        marginLeft={majorScale(1)}
-        onClick={handleAdd}
-      >
-        Set
-      </Button>
-    </Pane>
+      ></TextField>
+    <Button
+      height={24}
+      onClick={handleAdd}
+      variant="outlined"
+    >
+      <AddIcon />
+      Set
+    </Button>
+  </Box>
   )
 }

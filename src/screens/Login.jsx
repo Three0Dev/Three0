@@ -45,7 +45,7 @@ export class Login extends React.Component {
         width: "100%",
         height: "13%",
         top: "20%",
-        background: "#7d68d1",
+        background: "#6247aa",
         color: "white",
       }
     }

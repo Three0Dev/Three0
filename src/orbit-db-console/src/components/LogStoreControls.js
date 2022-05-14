@@ -1,11 +1,7 @@
 import React from 'react'
-import {
-  majorScale,
-  Button,
-  Heading,
-  Pane,
-  TextInput
-} from 'evergreen-ui'
+
+import {Box, Button, TextField, Typography} from '@material-ui/core'
+import AddIcon from '@mui/icons-material/Add';
 
 import { useStateValue, actions } from '../state'
 
@@ -37,26 +33,23 @@ export function LogStoreControls () {
   }
 
   return (
-    <Pane
-      flex='1'
-    >
-      <Heading marginBottom={majorScale(1)}>Add an event to the log</Heading>
-      <TextInput
+    <Box>
+      <Typography>Add an event to the log</Typography>
+      <TextField
         onChange={handleValueChange}
         name='value'
         placeholder='Value'
         height={24}
         width='30%'
-      ></TextInput>
+      ></TextField>
       <Button
-        iconBefore='plus'
-        appearance='default'
         height={24}
-        marginLeft={majorScale(1)}
         onClick={handleAdd}
+        variant="outlined"
       >
+        <AddIcon />
         Add
       </Button>
-    </Pane>
+    </Box>
   )
 }
