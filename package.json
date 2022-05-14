@@ -29,7 +29,8 @@
     "jest-environment-node": "~26.6.2",
     "near-cli": "~2.1.1",
     "nodemon": "~2.0.3",
-    "parcel-bundler": "~1.12.4",
+    "parcel": "^2.5.0",
+    "process": "^0.11.10",
     "react-test-renderer": "~17.0.1",
     "shelljs": "~0.8.4"
   },
@@ -74,18 +75,6 @@
     "testPathIgnorePatterns": [
       "<rootDir>/contract/",
       "<rootDir>/node_modules/"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
     ]
   }
 }
