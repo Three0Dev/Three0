@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 
-
 import {Box, Button, TextField, Typography} from '@material-ui/core'
 import AddIcon from '@mui/icons-material/Add';
 
 import { useStateValue, actions } from '../state'
 
-export function KeyValueStoreControls () {
+export function CounterStoreControls () {
   const [appState, dispatch] = useStateValue()
   const [value, setValue] = useState(1)
 

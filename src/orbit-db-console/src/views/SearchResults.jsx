@@ -1,7 +1,7 @@
 import React from 'react'
-import {Typography, CircularProgress, Button, Box } from '@mui/material'
+import {Typography, CircularProgress, Box } from '@mui/material'
 
-import { useLocation, Redirect, useParams } from 'react-router-dom'
+import { useLocation, Navigate, useParams } from 'react-router-dom'
 import { useStateValue, actions, loadingState } from '../state'
 
 import { getAllDatabases, removeDatabase } from '../database'
@@ -19,7 +19,7 @@ export function SearchResultsView () {
   const query = useQuery().get('q')
   const queryOk = query.length >= 1
 
-  if (!queryOk) return <Redirect to='/' />
+  if (!queryOk) return <Navigate to='/' />
   
   let programs = appState.programs
   if (query) {
