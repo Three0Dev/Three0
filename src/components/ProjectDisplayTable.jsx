@@ -112,23 +112,24 @@ export function ProjectDisplayTable(){
                         </Toolbar>
                     </AppBar>
                 </Box>
-                {/* <Toolbar /> */}
                 <TableContainer className={classes.TableContainer}> 
                 <Paper className={classes.Paper}>
                     <Table>
                         <TableHead>
-                            <TableCell><Typography fontWeight={"bold"}>Name</Typography></TableCell>
-                            <TableCell><Typography fontWeight={"bold"}>Description</Typography></TableCell>
-                            <TableCell><Typography fontWeight={"bold"}>Users</Typography></TableCell>
-                            <TableCell><Typography fontWeight={"bold"}>Databases</Typography></TableCell>
+                            <TableRow>
+                                <TableCell><Typography fontWeight={"bold"}>Name</Typography></TableCell>
+                                <TableCell><Typography fontWeight={"bold"}>Description</Typography></TableCell>
+                                <TableCell><Typography fontWeight={"bold"}>Users</Typography></TableCell>
+                                <TableCell><Typography fontWeight={"bold"}>Databases</Typography></TableCell>
+                                </TableRow>
                         </TableHead>
                         <TableBody>
                         {projects.entries.map((project) => ( 
                             <TableRow key={project.pid} hover role="checkbox" onClick={() => navigate(`/app/${project.pid}/auth`)}>
                                 <TableCell><Typography>{project.name}</Typography></TableCell>
                                 <TableCell>{project.description}</TableCell>
-                                <TableCell isNumber>{project.num_users}</TableCell>
-                                <TableCell isNumber>{project.num_databases}</TableCell>
+                                <TableCell>{project.num_users}</TableCell>
+                                <TableCell>{project.num_databases}</TableCell>
                             </TableRow>
                         ))}
                         </TableBody>
