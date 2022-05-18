@@ -98,4 +98,21 @@ impl Three0 {
         }
     }
 
+    pub fn get_project(&self, contract_address: String, account_id: String) -> ProjectRef {
+        let projects = self.dev_project_map.get(&account_id);
+        let template_project = ProjectRef::new("".to_string(), "".to_string(), "".to_string(), 0);
+        
+        return match projects {
+            Some(projects) => {
+                let mut project_ret = template_project;
+                for project in projects.iter() {
+                    if project.contract_address == contract_address {
+                        project_ret = project.clone();
+                    }
+                }
+                project_ret
+            }
+            None => template_project
+        }
+    }
 }
