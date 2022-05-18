@@ -37,15 +37,35 @@ const { code } = sh.exec(buildCmd)
 // When running commands like `near deploy`, near-cli looks for a contract at
 // <CURRENT_DIRECTORY>/out/main.wasm
 if (code === 0 && calledFromDir !== __dirname) {
+  const type = debug ? 'debug' : 'release';
+  const outDir = `./target/wasm32-unknown-unknown/${type}`
+
   const linkDir = `${calledFromDir}/out`
-  const link = `${calledFromDir}/out/main.wasm`
-  const packageName = require('fs').readFileSync(`${__dirname}/Cargo.toml`).toString().match(/name = "([^"]+)"/)[1]
-  const outFile = `./target/wasm32-unknown-unknown/${debug ? 'debug' : 'release'}/${packageName}.wasm`
+  const link = `${linkDir}/main.wasm`
+  const controllerPackageName = getName("controller")
+  const outFile = `${outDir}/${controllerPackageName}.wasm`
   sh.mkdir('-p', linkDir)
   sh.rm('-f', link)
   //fixes #831: copy-update instead of linking .- sometimes sh.ln does not work on Windows
   sh.cp('-u',outFile,link)
+
+  const frontEndDir = `${calledFromDir}/src/contractWasms`
+  const frontEndLink = `${frontEndDir}/near.wasm`
+  const projectPackageName = getName("project")
+
+  const outProjectFile = `${outDir}/${projectPackageName}.wasm`
+
+  sh.mkdir('-p', frontEndDir)
+  sh.rm('-f', frontEndLink)
+  //fixes #831: copy-update instead of linking .- sometimes sh.ln does not work on Windows
+  sh.cp('-u',outProjectFile,frontEndLink)
+
+  
 }
 
 // exit script with the same code as the build command
 process.exit(code)
+
+function getName(fileDir) {
+  return require('fs').readFileSync(`${__dirname}/${fileDir}/Cargo.toml`).toString().match(/name = "([^"]+)"/)[1]
+}

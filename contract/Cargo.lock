@@ -543,7 +543,14 @@ dependencies = [
 ]
 
 [[package]]
-name = "three0"
+name = "three0_controller"
+version = "0.1.0"
+dependencies = [
+ "near-sdk",
+]
+
+[[package]]
+name = "three0_project"
 version = "0.1.0"
 dependencies = [
  "near-sdk",
