@@ -73,7 +73,17 @@ impl Three0Project {
     }
 
     pub fn get_users(&self, offset: usize, limit: usize) -> Vec<User> {
-        self.users.values().skip(offset).take(limit).collect()
+        let user_size = self.users.len();
+        let new_skip:usize = if user_size as usize > offset + limit {
+            (user_size as usize) - (offset + limit)
+        }else{
+            0
+        };
+
+        self.users.values()
+            .skip(new_skip)
+            .take(limit)
+            .collect()
     }
 
     pub fn user_action(&mut self, action: String) {
