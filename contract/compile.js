@@ -60,7 +60,13 @@ if (code === 0 && calledFromDir !== __dirname) {
   //fixes #831: copy-update instead of linking .- sometimes sh.ln does not work on Windows
   sh.cp('-u',outProjectFile,frontEndLink)
 
-  
+  sh.echo("")
+  sh.echo("Controller Size:");
+  sh.exec(`wc -c ${outFile} | awk '{print $1}'`)
+  sh.echo("")
+  sh.echo("Project Size:")
+  sh.exec(`wc -c ${outProjectFile} | awk '{print $1}'`)
+  sh.echo("")
 }
 
 // exit script with the same code as the build command
