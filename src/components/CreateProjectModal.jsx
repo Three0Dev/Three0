@@ -1,8 +1,10 @@
 import React from 'react';
-import {useNavigate} from 'react-router-dom';
-import {FormControl, TextField, MenuItem, Grid, makeStyles, createTheme} from "@material-ui/core"
+import {FormControl, TextField, MenuItem, Grid, makeStyles, Select, InputLabel} from "@material-ui/core"
 import {Dialog, DialogActions, DialogContent, DialogTitle, Button} from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton';
+import {createNEARAccount} from "../services/NEAR";
+
+const short = require('short-uuid');
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -40,24 +42,20 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-  const theme = createTheme({
-    palette: {
-      secondary: {
-        main: '#7b1fa2'
-      }
-    }
-  });
-
 export function CreateProjectModal(props){
     const classes = useStyles();
     const [name, setName] = React.useState('');
     const [description, setDescription] = React.useState('');
-    const [blockchainNetwork, setBlockchainNetwork] = React.useState(false);
-    const [addLoading, setAddLoading] = React.useState(false);
+    const [blockchainNetwork, setBlockchainNetwork] = React.useState("NEAR_TESTNET");
+
+    const uuid = short.generate().toLowerCase();
+    const nameRegex = /^(([a-z\d]+[\-_])*[a-z\d]+)$/;
 
     function handleNameChange(e){
         const name = e.target.value;
-        if(name.length <= 20){
+        const pid = `${name}-${uuid}.${window.accountId}`;
+
+        if(pid.length <= 50){
             setName(e.target.value);
         }
     }
@@ -73,23 +71,12 @@ export function CreateProjectModal(props){
         setBlockchainNetwork(e.target.value);
     }
 
-    let navigate = useNavigate();
-
     async function createProject(){
-        try{
-            setAddLoading(true);
-            let id = await window.contract.create_project({
-                name,
-                description,
-            });
-            setAddLoading(false);
-            props.closeModal();
-            navigate(`/app/${id}`);
-        } catch(e){
-            setAddLoading(false);
-            props.closeModal();
-            console.error(e);
-        }
+        if(!nameRegex.test(name)) return;
+        const pid = `${name}-${uuid}.${window.accountId}`;
+
+        localStorage.setItem("projectDetails", JSON.stringify({pid, name, description, blockchainNetwork}));
+        createNEARAccount();
     }
 
     function closeModal(){
@@ -103,7 +90,6 @@ export function CreateProjectModal(props){
             className={classes.root}
             open = {props.isShown}
             aria-labelledby="form-dialog-title"
-            preventBodyScrolling
         >
             <DialogTitle
                 id="form-dialog-title"
@@ -111,50 +97,38 @@ export function CreateProjectModal(props){
                 Create Project
             </DialogTitle>
             <DialogContent>
-                <Grid container spacing={1}>
-                    <Grid item xs={12}>
-                        <TextField margin='dense'
-                            label="Name"
-                            variant="outlined"
-                            fullWidth
-                            value={name}
-                            onChange={handleNameChange}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField margin='dense'
-                            label="Description"
-                            variant="outlined"
-                            fullWidth
-                            value={description}
-                            onChange={handleDescriptionChange}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <FormControl fullWidth>
-                            {/* <FormLabel>Blockchain Network</FormLabel> */}
-                            <TextField margin='dense'
-                                select
-                                label="Blockchain Network"
-                                variant="outlined"
-                                fullWidth
-                                value={blockchainNetwork}
-                                onChange={handleBlockchainNetworkChange}
-                            >
-                                <MenuItem value={false}>
-                                    <em>None</em>
-                                </MenuItem>
-                                <MenuItem value={true}>
-                                    NEAR
-                                </MenuItem>
-                            </TextField>
-                        </FormControl>
-                    </Grid>
-                </Grid>
+                <TextField margin='dense'
+                    label="Name"
+                    variant="outlined"
+                    fullWidth
+                    value={name}
+                    onChange={handleNameChange}
+                />
+                <TextField margin='dense'
+                    label="Description"
+                    variant="outlined"
+                    fullWidth
+                    value={description}
+                    onChange={handleDescriptionChange}
+                />
+                <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Blockchain Network</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        variant="outlined"
+                        fullWidth
+                        value={blockchainNetwork}
+                        onChange={handleBlockchainNetworkChange}
+                    >
+                        <MenuItem value="NEAR_TESTNET">
+                            NEAR Testnet
+                        </MenuItem>
+                    </Select>
+                </FormControl>
             </DialogContent>
             <DialogActions className={classes.TableContainer}>
-                <LoadingButton onClick={closeModal} color='secondary' disabled={addLoading}>Cancel</LoadingButton>
-                <Button onClick={createProject} color='secondary' disabled={addLoading}>Create</Button>
+                <LoadingButton onClick={closeModal} color='secondary'>Cancel</LoadingButton>
+                <Button onClick={createProject} color='secondary'>Create</Button>
             </DialogActions>
         </Dialog>
     )

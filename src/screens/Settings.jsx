@@ -7,6 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {useParams, useNavigate} from 'react-router-dom';
 import { ConfigFile } from '../components/ConfigFile';
 import {ProjectDetailsContext} from '../ProjectDetailsContext';
+import Swal from 'sweetalert2';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -52,7 +53,7 @@ export function Settings(props){
   const [deleteLoading, setDeleteLoading] = React.useState(false);
 
   let params = useParams();
-  let projectDetails = React.useContext(ProjectDetailsContext);
+  let {projectDetails, projectContract} = React.useContext(ProjectDetailsContext);
 
   React.useEffect(() => {
     setName(projectDetails.name);
@@ -77,8 +78,7 @@ export function Settings(props){
     setUpdateLoading(true);
     
     try{
-        await window.contract.update_project({
-            project_id: params.pid,
+        await projectContract.update_project({
             project_name: name,
             project_description: description,
         });
@@ -92,13 +92,25 @@ export function Settings(props){
 
   async function deleteProject(){
     setDeleteLoading(true);
-      try{
-          await window.contract.delete_project({project_id: params.pid});
-          setDeleteLoading(false);
-          navigate('/app');
-      } catch(e){
-        console.error(e);
+    try{
+      const canDelete = await window.contract.delete_project({contract_address: params.pid});
+      if(canDelete){
+        const account = await window.near.account(params.pid);
+        await account.deleteAccount(window.accountId);
+
+        navigate('/app');
+      }else{
+        Swal.fire({
+          title: 'Error',
+          text: 'You can not delete this project',
+          icon: 'error',
+          confirmButtonText: 'Ok'
+        });
       }
+   
+    } catch(e){
+      console.error(e);
+    }
   }
 
   return (

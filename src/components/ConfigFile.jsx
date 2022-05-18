@@ -57,8 +57,7 @@ function ConfigFileInner(){
     let params = useParams();
     let configCredentials = `
         {
-            "contractName": "${nearConfig.contractName}",
-            "projectId": "${params.pid}"
+            "contractName": ${params.pid},
         }
         `
     let copyConfigText = `

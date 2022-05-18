@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Pagination, Table, TableRow, Typography, TableHead, TableBody, TableCell, TableContainer, Paper, Toolbar, Box, AppBar, styled, alpha, InputBase } from '@mui/material'
 import { makeStyles } from "@material-ui/core";
 import SearchIcon from '@mui/icons-material/Search';
+import { formatDistanceToNow } from 'date-fns'
 
 const limit_num = 5;
 const Search = styled('div')(({ theme }) => ({
@@ -79,7 +80,7 @@ export function ProjectDisplayTable(){
     let updatePage = (e, val) => setPage((val-1)*limit_num);
 
     React.useEffect(() => {
-        window.contract.get_all_projects({sender: window.contract.account.accountId, offset: off, limit: limit_num})
+        window.contract.get_all_projects({owner: window.accountId, offset: off, limit: limit_num})
                 .then(res => setProjects(res))
                 .catch(err => console.error(err));
     }, [off]);
@@ -118,18 +119,16 @@ export function ProjectDisplayTable(){
                         <TableHead>
                             <TableRow>
                                 <TableCell><Typography fontWeight={"bold"}>Name</Typography></TableCell>
-                                <TableCell><Typography fontWeight={"bold"}>Description</Typography></TableCell>
-                                <TableCell><Typography fontWeight={"bold"}>Users</Typography></TableCell>
-                                <TableCell><Typography fontWeight={"bold"}>Databases</Typography></TableCell>
+                                <TableCell><Typography fontWeight={"bold"}>Chain Type</Typography></TableCell>
+                                <TableCell><Typography fontWeight={"bold"}>Created</Typography></TableCell>
                                 </TableRow>
                         </TableHead>
                         <TableBody>
                         {projects.entries.map((project) => ( 
-                            <TableRow key={project.pid} hover role="checkbox" onClick={() => navigate(`/app/${project.pid}/auth`)}>
-                                <TableCell><Typography>{project.name}</Typography></TableCell>
-                                <TableCell>{project.description}</TableCell>
-                                <TableCell>{project.num_users}</TableCell>
-                                <TableCell>{project.num_databases}</TableCell>
+                            <TableRow key={project.contract_address} hover role="checkbox" onClick={() => navigate(`/app/${project.contract_address}/`)}>
+                                <TableCell>{project.contract_address}</TableCell>
+                                <TableCell>{project.chain_type}</TableCell>
+                                <TableCell>{formatDistanceToNow(new Date(project.created_at/1000000))}</TableCell>
                             </TableRow>
                         ))}
                         </TableBody>

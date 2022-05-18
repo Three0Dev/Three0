@@ -8,19 +8,15 @@ import {ProgramList} from '../components/DatabaseList'
 import {CreateDialog} from '../components/CreateDialog'
 import { useParams } from 'react-router-dom'
 import Fab from '@mui/material/Fab';
+import {ProjectDetailsContext} from '../../../ProjectDetailsContext'
 
 export function DatabasesView () {
   const [appState, dispatch] = useStateValue()
   const [loading, setLoading] = React.useState(false)
 
-  const params = useParams()
-  const [open, setOpen] = React.useState(false);
-  const handleClose = () => {
-    setOpen(false);
-  }
-  const handleToggle = () => {
-    setOpen(!open);
-  }
+  const params = useParams();
+
+  const {projectContract} = React.useContext(ProjectDetailsContext);
 
   async function fetchDatabases () {
     dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: true })
@@ -37,7 +33,7 @@ export function DatabasesView () {
   const createDB = (args) => {
     console.log("Create database...", args)
     setLoading(true)
-    createDatabase(args.name, args.type, args.permissions, params.pid, args.overwrite).then(() => {
+    createDatabase(projectContract, args.name, args.type, args.permissions, params.pid, args.overwrite).then(() => {
       fetchDatabases().then((data) => {
         console.log("Loaded programs", data)
       })
@@ -61,7 +57,7 @@ export function DatabasesView () {
   const handleRemoveDatabase = (hash, program) => {
     console.log("Remove database...", hash, program)
     setLoading(true)
-    removeDatabase(hash, program, params.pid).then(() => {
+    removeDatabase(projectContract, hash, program, params.pid).then(() => {
       console.log("Removed")
       fetchDatabases().then((data) => {
         console.log("Loaded programs", data)
