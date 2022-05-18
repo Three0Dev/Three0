@@ -17,7 +17,7 @@ export function Dash() {
       const account = await window.near.account(params.pid);
       const status = await account.state();
     
-      return status.code_hash == "11111111111111111111111111111111";
+      return status.code_hash != "11111111111111111111111111111111";
     } catch(e) {
       console.error(e);
       return false;
@@ -31,7 +31,7 @@ export function Dash() {
       account,
       params.pid,
       {
-        viewMethods: ["get_project", "get_users"],
+        viewMethods: ["get_project", "get_users", "get_user"],
         changeMethods: ["update_project", "add_database", "delete_database"],
       }
     );

@@ -98,21 +98,26 @@ impl Three0 {
         }
     }
 
-    pub fn get_project(&self, contract_address: String, account_id: String) -> ProjectRef {
+    pub fn get_project(&self, contract_address: String, account_id: String) -> AllSchema {
         let projects = self.dev_project_map.get(&account_id);
-        let template_project = ProjectRef::new("".to_string(), "".to_string(), "".to_string(), 0);
+        let mut entries = Vec::new();
         
-        return match projects {
+        match projects {
             Some(projects) => {
-                let mut project_ret = template_project;
                 for project in projects.iter() {
-                    if project.contract_address == contract_address {
-                        project_ret = project.clone();
+                    if project.contract_address.contains(&contract_address) {
+                        entries.push(project.clone());
                     }
                 }
-                project_ret
             }
-            None => template_project
+            None => {}
+        }
+
+        let len = entries.len();
+
+        AllSchema{
+            entries: entries,
+            num: len as u16,
         }
     }
 }

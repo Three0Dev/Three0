@@ -137,14 +137,14 @@ export function ActiveUsers(){
     let [profiles, setProfiles] = React.useState([]);
     let [userNumber, setUserNum] = React.useState(0);
     let [page, setPage] = React.useState(1);
-    let projectDetails = React.useContext(ProjectDetailsContext);
+    let {projectDetails, projectContract} = React.useContext(ProjectDetailsContext);
     let [loading, setLoading] = React.useState(false);
 
     let updatePage = (e, val) => setPage((val-1)*20);
     async function getUsers(){
         try{
             setLoading(true);
-            let users = await window.contract.get_project_users({project_id: projectDetails.pid, offset: 0, limit: 10});
+            let users = await projectContract.get_users({offset: 0, limit: 10});
             setProfiles(users);
             setLoading(false);
         } catch(e){
@@ -156,7 +156,7 @@ export function ActiveUsers(){
     async function searchUser(val){
         try{
             setLoading(true);
-            let user = await window.contract.get_user({project_id: projectDetails.pid, account_id: val});
+            let user = await projectContract.get_user({account_id: val});
             setProfiles([user]);
             setLoading(false);
         } catch(e){
@@ -167,9 +167,7 @@ export function ActiveUsers(){
     }
 
     React.useEffect(() => {
-        if(projectDetails.num_users){
-            getUsers();
-        }
+        getUsers();
     }, [projectDetails]);
 
     React.useEffect(() => {

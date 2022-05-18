@@ -1,9 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Pagination, Table, TableRow, Typography, TableHead, TableBody, TableCell, TableContainer, Paper, Toolbar, Box, AppBar, styled, alpha, InputBase } from '@mui/material'
+import { Pagination, Table, Backdrop, CircularProgress, TableRow, Typography, TableHead, TableBody, TableCell, TableContainer, Paper, Toolbar, Box, AppBar, styled, alpha, InputBase } from '@mui/material'
 import { makeStyles } from "@material-ui/core";
 import SearchIcon from '@mui/icons-material/Search';
-import { formatDistanceToNow } from 'date-fns'
+import { formatDistanceToNow } from 'date-fns';
 
 const limit_num = 5;
 const Search = styled('div')(({ theme }) => ({
@@ -75,19 +75,44 @@ export function ProjectDisplayTable(){
     const classes = useStyles();
     let navigate = useNavigate();
     let [projects, setProjects] = React.useState({num: 0, entries: []});
+    let [loading, setLoading] = React.useState(false);
 
     let [off, setPage] = React.useState(0);
     let updatePage = (e, val) => setPage((val-1)*limit_num);
 
     React.useEffect(() => {
-        window.contract.get_all_projects({owner: window.accountId, offset: off, limit: limit_num})
-                .then(res => setProjects(res))
-                .catch(err => console.error(err));
+        getProjects();
     }, [off]);
 
-    console.log(projects)
+    function getProjects(){
+        window.contract.get_all_projects({owner: window.accountId, offset: off, limit: limit_num})
+        .then(res => setProjects(res))
+        .catch(err => console.error(err));
+    }
+
+    async function searchProject(val){
+        setLoading(true);
+
+        try{
+            const projectsSearch = await window.contract.get_project({contract_address: val, account_id: window.accountId});
+            setProjects(projectsSearch);
+        } catch(e){
+            setProjects({num: 0, entries: []});
+            console.error(e);
+        }
+
+        setLoading(false);
+
+    }
 
     return (
+        <>
+        <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={loading}
+        >
+            <CircularProgress color="inherit" />
+      </Backdrop>
         <Box sx={{display: 'flex'}} >
             <Box component="main" sx={{ flexGrow: 1, p: 3}}>
                 <Box sx={{ flexGrow: 1 }}>
@@ -106,8 +131,18 @@ export function ProjectDisplayTable(){
                             <SearchIcon />
                             </SearchIconWrapper>
                             <StyledInputBase
-                            placeholder="Search…"
-                            inputProps={{ 'aria-label': 'search' }}
+                                placeholder="Search…"
+                                inputProps={{ 'aria-label': 'search' }}
+                                onKeyPress={(e) => {
+                                    if (e.key === 'Enter') {
+                                        searchProject(e.target.value);
+                                    }
+                                }}
+                                onChange={(e) => {
+                                    if(e.target.value === ""){
+                                        getProjects();
+                                    }
+                                }}
                             />
                         </Search>
                         </Toolbar>
@@ -137,7 +172,7 @@ export function ProjectDisplayTable(){
                 <Pagination className={classes.root} defaultPage={1} count={Math.floor(projects.num/(limit_num))+1} boundaryCount={2} onChange={updatePage} variant='outlined' shape="rounded"> </Pagination>
             </TableContainer>
             </Box>
-            
         </Box>
+        </>
     )
 }
