@@ -1,51 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Pagination, Table, Backdrop, CircularProgress, TableRow, Typography, TableHead, TableBody, TableCell, TableContainer, Paper, Toolbar, Box, AppBar, styled, alpha, InputBase } from '@mui/material'
+import { Pagination, Typography, Paper, Toolbar, Box, AppBar} from '@mui/material'
 import { makeStyles } from "@material-ui/core";
-import SearchIcon from '@mui/icons-material/Search';
 import { formatDistanceToNow } from 'date-fns';
+import SearchBar from "./templates/Search";
+import {Table, TableBody, TableContainer, TableRow, TableCell, TableHeader} from './templates/Table';
+import Backdrop from "./templates/Backdrop";
 
 const limit_num = 5;
-const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(1),
-      width: 'auto',
-    },
-  }));
-  
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    '& .MuiInputBase-input': {
-        padding: theme.spacing(1, 1, 1, 0),
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-        width: '12ch',
-        '&:focus': {
-            width: '20ch',
-        },
-        },
-    },
-}));
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -78,7 +40,7 @@ export function ProjectDisplayTable(){
     let [loading, setLoading] = React.useState(false);
 
     let [off, setPage] = React.useState(0);
-    let updatePage = (e, val) => setPage((val-1)*limit_num);
+    let updatePage = (_e, val) => setPage((val-1)*limit_num);
 
     React.useEffect(() => {
         getProjects();
@@ -90,31 +52,20 @@ export function ProjectDisplayTable(){
         .catch(err => console.error(err));
     }
 
-    async function searchProject(val){
+    function searchProject(val){
         setLoading(true);
-
-        try{
-            const projectsSearch = await window.contract.get_project({contract_address: val, account_id: window.accountId});
-            setProjects(projectsSearch);
-        } catch(e){
-            setProjects({num: 0, entries: []});
-            console.error(e);
-        }
-
-        setLoading(false);
-
+        window.contract.get_project({contract_address: val, account_id: window.accountId})
+            .then(setProjects)
+            .catch(err => {
+                setProjects({num: 0, entries: []});
+                console.error(err)
+            }).finally(() => setLoading(false));
     }
 
     return (
         <>
-        <Backdrop
-            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-            open={loading}
-        >
-            <CircularProgress color="inherit" />
-      </Backdrop>
-        <Box sx={{display: 'flex'}} >
-            <Box component="main" sx={{ flexGrow: 1, p: 3}}>
+            <Backdrop loading={loading} />
+            <Box component="main" sx={{ flexGrow: 1, p: 3, display: 'flex'}}>
                 <Box sx={{ flexGrow: 1 }}>
                     <AppBar color="primary" position="static">
                         <Toolbar>
@@ -126,53 +77,46 @@ export function ProjectDisplayTable(){
                         >
                             Projects
                         </Typography>
-                        <Search>
-                            <SearchIconWrapper>
-                            <SearchIcon />
-                            </SearchIconWrapper>
-                            <StyledInputBase
-                                placeholder="Search…"
-                                inputProps={{ 'aria-label': 'search' }}
-                                onKeyPress={(e) => {
-                                    if (e.key === 'Enter') {
-                                        searchProject(e.target.value);
-                                    }
-                                }}
-                                onChange={(e) => {
-                                    if(e.target.value === ""){
-                                        getProjects();
-                                    }
-                                }}
-                            />
-                        </Search>
+                        <SearchBar
+                            placeholder="Search…"
+                            onKeyPress={(e) => {
+                                if (e.key === 'Enter')
+                                    searchProject(e.target.value);
+                            }}
+                            onChange={(e) => {
+                                if(e.target.value === "")
+                                    getProjects();
+                            }}
+                        />
                         </Toolbar>
                     </AppBar>
                 </Box>
                 <TableContainer className={classes.TableContainer}> 
                 <Paper className={classes.Paper}>
                     <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell><Typography fontWeight={"bold"}>Name</Typography></TableCell>
-                                <TableCell><Typography fontWeight={"bold"}>Chain Type</Typography></TableCell>
-                                <TableCell><Typography fontWeight={"bold"}>Created</Typography></TableCell>
-                                </TableRow>
-                        </TableHead>
+                        <TableHeader headers={["Name", "Chain Type", "Created At"]}/>
                         <TableBody>
                         {projects.entries.map((project) => ( 
                             <TableRow key={project.contract_address} hover role="checkbox" onClick={() => navigate(`/app/${project.contract_address}/`)}>
                                 <TableCell>{project.contract_address}</TableCell>
                                 <TableCell>{project.chain_type}</TableCell>
-                                <TableCell>{formatDistanceToNow(new Date(project.created_at/1000000))}</TableCell>
+                                <TableCell>{formatDistanceToNow(new Date(project.created_at/1000000)) + ' ago'}</TableCell>
                             </TableRow>
                         ))}
                         </TableBody>
                     </Table>
                 </Paper> 
-                <Pagination className={classes.root} defaultPage={1} count={Math.floor(projects.num/(limit_num))+1} boundaryCount={2} onChange={updatePage} variant='outlined' shape="rounded"> </Pagination>
+                <Pagination 
+                    className={classes.root} 
+                    defaultPage={1} 
+                    count={Math.floor(projects.num/(limit_num))+1} 
+                    boundaryCount={2} 
+                    onChange={updatePage} 
+                    variant='outlined' 
+                    shape="rounded"> 
+                </Pagination>
             </TableContainer>
             </Box>
-        </Box>
         </>
     )
 }
