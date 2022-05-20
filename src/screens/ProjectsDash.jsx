@@ -42,7 +42,9 @@ export function ProjectsDash() {
   };
 
   return (
-    <>
+    <div style={{
+      background: "ECEFF1"
+    }}>
       <ProjectDisplayTable />
       <Fab
         sx={{
@@ -56,6 +58,6 @@ export function ProjectsDash() {
           <AddIcon/>
       </Fab>
       <CreateProjectModal closeModal={closeModal} isShown={showCreateProjectModal} />
-    </>
+    </div>
   );
 }

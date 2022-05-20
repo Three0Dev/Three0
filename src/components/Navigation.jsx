@@ -49,7 +49,7 @@ export function Navigation() {
     }
 
     return (
-        <Box sx={{bgcolor: "#6247aa", height: "calc(100vh - 56px)"}}>
+        <Box sx={{bgcolor: "#6247aa", height: "calc(100vh - 64px)"}}>
             <List>
                 {tabs.map((tab, index) => (
                     <ListItem button key={tab} style={{color: 'white'}} onClick={() => switchLink(index)}>

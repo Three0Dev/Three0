@@ -44,8 +44,7 @@ export function App() {
     <div className="App">
       <Box sx={{ display: 'flex' }}>
         <TopBar />
-        <Box component="main" sx={{ flexGrow: 1}}>
-          <Toolbar />
+        <Box component="main" sx={{ flexGrow: 1, height: "calc(100vh - 64px)", top: 64, bgcolor: "#ECEFF1", position: "relative"}}>
           <Outlet />
         </Box>
       </Box>
