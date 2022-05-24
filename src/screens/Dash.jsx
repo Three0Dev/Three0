@@ -6,7 +6,7 @@ import {ProjectDetailsContext} from '../ProjectDetailsContext'
 import {Contract} from 'near-api-js';
 
 export function Dash() {
-  let params = useParams();
+  let {pid} = useParams();
   let navigate = useNavigate();
 
   const [projectDetails, setProjectDetails] = React.useState({});
@@ -14,7 +14,7 @@ export function Dash() {
 
   async function isValidProject(){
     try{
-      const account = await window.near.account(params.pid);
+      const account = await window.near.account(pid);
       const status = await account.state();
     
       return status.code_hash != "11111111111111111111111111111111";
@@ -25,11 +25,11 @@ export function Dash() {
   }
 
   async function getProjectDetails(){
-    const account = await window.near.account(params.pid);
+    const account = await window.near.account(pid);
 
     const projectContractInit = new Contract(
       account,
-      params.pid,
+      pid,
       {
         viewMethods: ["get_project", "get_users", "get_user"],
         changeMethods: ["update_project", "add_database", "delete_database"],
@@ -53,10 +53,10 @@ export function Dash() {
 
 
   return (
-    <Box style={{display: "flex"}}>
+    <Box sx={{display: "flex", top: "57px", height:"100%", position: "relative"}}>
       <Navigation />
       <ProjectDetailsContext.Provider value={{projectDetails, projectContract}}>
-        <div style={{width: "99%", marginLeft: "1%", marginTop: "2%"}}>
+        <div style={{width: "98%", padding: "2% 1%"}}>
           <Outlet />
         </div>
       </ProjectDetailsContext.Provider>

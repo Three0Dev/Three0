@@ -2,11 +2,21 @@ import React, { useEffect } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import { Fab } from "@mui/material";
 import {CreateProjectModal} from "../components/CreateProjectModal";
-import { ProjectDisplayTable } from "../components/ProjectDisplayTable";
+import ProjectDisplayBoard from "../components/ProjectDisplayBoard";
 import { nearConfig } from "../utils";
 import {deployNEARProjectContract, createNEARProject} from '../services/NEAR'
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import {providers} from 'near-api-js';
+import wave from '../assets/wave.svg';
+
+const classes = {
+  coloredBackground: {
+      height: "75vh", 
+      background: "secondary.main", 
+      width: "100%",
+      zIndex: "snackbar - 1",
+  },
+};
 
 export function ProjectsDash() {
   let [showCreateProjectModal, setShowCreateProjectModal] = React.useState(false);
@@ -43,7 +53,7 @@ export function ProjectsDash() {
 
   return (
     <>
-      <ProjectDisplayTable />
+      <ProjectDisplayBoard />
       <Fab
         sx={{
           position: "fixed",
@@ -55,6 +65,7 @@ export function ProjectsDash() {
         onClick={() => setShowCreateProjectModal(true)}>
           <AddIcon/>
       </Fab>
+      <img src={wave} style={{position: "fixed", "bottom": 0}}/>
       <CreateProjectModal closeModal={closeModal} isShown={showCreateProjectModal} />
     </>
   );

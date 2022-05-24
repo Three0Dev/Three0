@@ -4,19 +4,19 @@ import React from "react";
 import FolderIcon from '@mui/icons-material/Folder';
 import StorageIcon from '@mui/icons-material/Storage';
 import KeyIcon from '@mui/icons-material/Key';
-import {Box, List, ListItem, ListItemIcon, ListItemText} from '@mui/material'
+import {Box, List, ListItemButton, ListItemIcon, ListItemText} from '@mui/material'
+import HomeIcon from '@mui/icons-material/Home';
 
 export function Navigation() {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
 
-    const tabs = ['Authentication', 'Database',  'Storage']
-    const tabIcon = [ <KeyIcon />, <StorageIcon />, <FolderIcon />]
+    const tabs = ['Home', 'Authentication', 'Database',  'Storage']
+    const tabIcon = [<HomeIcon />,<KeyIcon />, <StorageIcon />, <FolderIcon />]
 
     let navigate = useNavigate();
-    let params = useParams().pid;
+    let {pid} = useParams();
 
     const location = useLocation();
-
 
     useEffect(() => {
         const path = location.pathname.split('/');
@@ -24,35 +24,33 @@ export function Navigation() {
         setSelectedIndex(index == -1 ? 0 : index);
     }, []);
 
-    const switchLink = (index) => {
-        let url = '';
-        setSelectedIndex(index);
-        switch (index) {
-            case 0:
-                url = `/app/${params}/auth`;
-                break;
+    useEffect(() => {
+        let url = `/app/${pid}`;
+        switch (selectedIndex) {
             case 1:
-                url = `/app/${params}/database`;
+                url += `/auth`;
                 break;
             case 2:
-                url =`/app/${params}/storage`;
+                url += `/database`;
+                break;
+            case 3:
+                url += `/storage`;
                 break;
             default:
-                url = `/app/${params}/auth`;
                 break;
         }
         navigate(url);
-    }
+    }, [selectedIndex]);
 
     // TODO Indicate selected tab
     return (
-        <Box sx={{bgcolor: "#6247aa", height: "calc(100vh - 56px)"}}>
-            <List>
+        <Box sx={{bgcolor: "primary.main"}}>
+            <List component="nav">
                 {tabs.map((tab, index) => (
-                    <ListItem button key={tab} style={{color: 'white'}} onClick={() => switchLink(index)}>
+                    <ListItemButton selected={index == selectedIndex} key={tab} style={{color: 'white'}} onClick={() => setSelectedIndex(index)}>
                         <ListItemIcon  style={{color: 'white'}} >{tabIcon[index]}</ListItemIcon>
                         <ListItemText primary={tab}/>
-                    </ListItem>
+                    </ListItemButton>
                 ))}
             </List>
         </Box>

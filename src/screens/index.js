@@ -5,6 +5,7 @@ import {Dash} from './Dash';
 import {NotFound} from './NotFound';
 import {Auth} from './Auth';
 import {ProjectsDash} from './ProjectsDash';
+import ProjectHome from './ProjectHome';
 
 export {
     Login,
@@ -13,5 +14,6 @@ export {
     Dash,
     Storage,
     NotFound,
-    ProjectsDash
+    ProjectsDash,
+    ProjectHome
 }

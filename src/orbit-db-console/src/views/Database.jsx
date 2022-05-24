@@ -1,15 +1,9 @@
 import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import {Typography, CircularProgress, Button, Box } from '@mui/material'
+import {Typography, CircularProgress, Paper, Box, IconButton } from '@mui/material'
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import {TableHeader, Table, TableContainer, TableBody, TableCell, TableRow} from '../../../components/templates/Table'
 
 import {LogStoreControls} from '../components/LogStoreControls'
 import {FeedStoreControls} from '../components/FeedStoreControls'
@@ -17,7 +11,7 @@ import {KeyValueStoreControls} from '../components/KeyValueStoreControls'
 import {DocumentStoreControls} from '../components/DocumentStoreControls'
 import {CounterStoreControls} from '../components/CounterStoreControls'
 import Divider from '@mui/material/Divider';
-
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { getDB } from '../database'
 import { useStateValue, actions } from '../state'
 
@@ -100,17 +94,11 @@ export function ProgramView () {
   function renderProgram () {
     const program = appState.program ? appState.program.payload.value : null
     return (
-        <Box marginTop={2}>
-           <TableContainer component={Paper}>
+        <>
+          <Box component={Paper}>
+           <TableContainer>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Name</TableCell>
-                  <TableCell >Type</TableCell>
-                  <TableCell >Permissions</TableCell>
-                  <TableCell >Entries</TableCell>
-                </TableRow>
-              </TableHead>
+              <TableHeader headers={["Name", "Type", "Permissions", "Entries"]} />
               <TableBody>
                 <TableRow>
                   <TableCell>
@@ -138,8 +126,8 @@ export function ProgramView () {
               </TableBody>
               </Table>
             </TableContainer>
-
-          <Box flex='1' marginBottom={2}>
+          </Box>
+          <Box flex='1' marginY={2}>
               <Typography sx={{ fontWeight: 'bold' }} variant="h7" color="textPrimary">{getValuesTitle()}</Typography>
             {loading
               ? <CircularProgress
@@ -150,7 +138,7 @@ export function ProgramView () {
               : appState.entries.map((e, idx) => {
                   idx += 1
                   return (
-                    <div key={idx}>
+                    <div key={idx} style={{wordBreak: "break-word"}}>
                       <Box>
                         <Typography userSelect='none' cursor='pointer' onClick={() => handleSelect(idx)}>{JSON.stringify(e.payload.value, null, 2)}</Typography>
                       </Box>
@@ -165,7 +153,7 @@ export function ProgramView () {
                 })
             }
           </Box>
-        </Box>
+        </>
     )
   }
 
@@ -189,47 +177,38 @@ export function ProgramView () {
   }
 
   return (
-  <>
+  <Box component={Paper}>
     <Box
-      marginTop={3}
-      marginBottom={2}
-      marginX={1}
       display='flex'
       flexDirection='row'
       alignItems='baseline'
     >
-      
-      <Button>  
-        <KeyboardBackspaceIcon onClick={handleBack}/>
-      </Button>
-
+      <IconButton onClick={handleBack}>  
+        <KeyboardBackspaceIcon/>
+      </IconButton>
     </Box>
-    <Box display='flex' justifyContent='center'>
+    <Box display='flex'>
       <Box
         flex='1'
         overflow='auto'
         elevation={1}
-        background='white'
-        marginX={6}
         padding={4}
+        marginX={2}
         paddingTop={0}
-        sx={{borderColor: 'black', bgcolor: 'white'}}
       >
-        <Box borderBottom='default'>
-            <Typography sx={{ fontWeight: 'bold' }} size={500} marginBottom={1} borderBottom='default' overflow='auto'>
+        <Box borderBottom='default' style={{display: "flex"}}>
+            <Typography sx={{ fontWeight: 'bold' }} style={{margin: "revert"}} size={500} borderBottom='default' overflow='auto'>
               /orbitdb/{programName}/{dbName}
             </Typography>
+            <IconButton onClick={() => navigator.clipboard.writeText(`/orbitdb/${programName}/${dbName}`)}>
+              <ContentCopyIcon/>
+            </IconButton>
         </Box>
-        <Divider variant="middle" />
-        <Box>
           {renderProgram()}
-        </Box>
-        <Divider variant="middle" />
-        <Box>
+          <Divider variant='middle' />
           {appState.program ? (renderDatabaseControls()) : ''}
-        </Box>
       </Box>
     </Box>
-  </>
+  </Box>
   )
 }

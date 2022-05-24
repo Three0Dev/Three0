@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import {Box, Button, TextField, Typography} from '@material-ui/core'
+import {Box, Button, TextField, InputLabel} from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 
 import { useStateValue, actions } from '../state'
+const short = require('short-uuid');
 
 export function DocumentStoreControls () {
   const [appState, dispatch] = useStateValue()
@@ -31,6 +32,10 @@ export function DocumentStoreControls () {
       throw new Error('This component can only handle Document databases')
     }
 
+    if(key.length === 0) {
+      setKey(short.generate());
+    }
+
     await db.put({_id: key, value})
 
     const entries = db.query(e => e !== null, {fullOp: true}).reverse()
@@ -38,26 +43,25 @@ export function DocumentStoreControls () {
   }
 
   return (
-    <Box>
-    <Typography>Add a document to the database</Typography>
+  <Box>
+    <InputLabel>Entry</InputLabel>
     <TextField
-        onChange={handleKeyChange}
-        name='key'
-        placeholder='key'
-        height={24}
-        width='20%'
-      ></TextField>
-      <TextField
-        onChange={handleValueChange}
-        name='value'
-        placeholder='value'
-        height={24}
-        width='20%'
-      ></TextField>
+      id='key'
+      onChange={handleKeyChange}
+      name='key'
+      value={key}
+      placeholder='Key'
+    />
+    <TextField
+      onChange={handleValueChange}
+      name='value'
+      value={value}
+      placeholder='Value'
+    />
     <Button
-      height={24}
       onClick={handleAdd}
-      variant="outlined"
+      variant="contained"
+      sx={{marginLeft: 2}}
     >
       <AddIcon />
       Put
