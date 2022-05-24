@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import {Login, Dash, Auth, ProjectsDash, Storage, Settings, App, NotFound} from "./screens";
+import {Login, Dash, Auth, ProjectsDash, Storage, App, NotFound} from "./screens";
 import {DBView} from "../src/orbit-db-console/src/App";
 import {Box} from "@mui/material";
 import {ProgramView as DatabaseView} from '../src/orbit-db-console/src/views/Database.jsx'
@@ -27,7 +27,7 @@ export function Core() {
   return (
     <ThemeProvider theme={theme}>
       <Box>
-        <BrowserRouter>
+        <BrowserRouter basename={process.env.NODE_ENV === "production" ? "/Three0/" : "/"}>
           <Routes>
             <Route path="/" element={<RedirectLogin/>}/>
             <Route path="/login" element={<Login />} />
@@ -42,7 +42,6 @@ export function Core() {
                   <Route path='search' element={<SearchResultsView />} />
                 </Route>
                 <Route path="storage" element={<Storage />} />
-                <Route path="settings" element={<Settings />} />
               </Route>
             </Route>
             <Route path="*" element={<NotFound />} />

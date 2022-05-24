@@ -1,7 +1,6 @@
 import {useParams, useNavigate, useLocation} from "react-router-dom";
 import {useEffect } from "react";
 import React from "react";
-import SettingsIcon from '@mui/icons-material/Settings';
 import FolderIcon from '@mui/icons-material/Folder';
 import StorageIcon from '@mui/icons-material/Storage';
 import KeyIcon from '@mui/icons-material/Key';
@@ -10,8 +9,8 @@ import {Box, List, ListItem, ListItemIcon, ListItemText} from '@mui/material'
 export function Navigation() {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
 
-    const tabs = ['Authentication', 'Database',  'Storage', 'Settings']
-    const tabIcon = [ <KeyIcon />, <StorageIcon />, <FolderIcon />, <SettingsIcon />]
+    const tabs = ['Authentication', 'Database',  'Storage']
+    const tabIcon = [ <KeyIcon />, <StorageIcon />, <FolderIcon />]
 
     let navigate = useNavigate();
     let params = useParams().pid;
@@ -38,9 +37,6 @@ export function Navigation() {
             case 2:
                 url =`/app/${params}/storage`;
                 break;
-            case 3:
-                url = `/app/${params}/settings`;
-                break;
             default:
                 url = `/app/${params}/auth`;
                 break;
@@ -48,6 +44,7 @@ export function Navigation() {
         navigate(url);
     }
 
+    // TODO Indicate selected tab
     return (
         <Box sx={{bgcolor: "#6247aa", height: "calc(100vh - 56px)"}}>
             <List>
