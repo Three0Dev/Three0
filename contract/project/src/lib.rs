@@ -28,7 +28,6 @@ setup_alloc!();
 #[derive(BorshDeserialize, BorshSerialize, PanicOnDefault)]
 pub struct Three0Project {
     name: String,
-    description: String,
     owner: AccountId,
     pid: String,
     databases: LookupMap<String, Database>,
@@ -39,12 +38,11 @@ pub struct Three0Project {
 impl Three0Project {
     
     #[init]
-    pub fn init(name: String, pid: String, description: String) -> Self {
+    pub fn init(name: String, pid: String) -> Self {
         Self {
             name,
             owner: env::signer_account_id(),
             pid,
-            description,
             databases: LookupMap::new(b"databases".to_vec()),
             users: UnorderedMap::new(b"users".to_vec()),
         }
@@ -55,13 +53,7 @@ impl Three0Project {
             pid: self.pid.clone(),
             name: self.name.clone(),
             num_users: self.users.len() as u32,
-            description: self.description.clone()
         }
-    }
-
-    pub fn update_project(&mut self, project_name: String, project_description: String) {
-        self.name = project_name;
-        self.description = project_description;
     }
 
     pub fn add_database(&mut self, database_details: Database){
