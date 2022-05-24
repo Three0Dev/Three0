@@ -8,21 +8,15 @@ import * as React from 'react';
 
 function TopBar(){
   return (
-    <AppBar>
-          <Toolbar
-            sx={{
-              background:'whitesmoke',
-              width:"100%",
-              padding: "0.5%",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
+    <AppBar sx={{
+      background:'whitesmoke',
+    }}>
+          <Toolbar>
               <Link to="/app"><img style={{
                 width:"50px",
                 margin: "0px"
               }} src={UpdatedLogo}/> </Link>
-              <Typography fontWeight={'bold'} variant="h5" color="#6247aa">Three0</Typography>
+              <Typography fontWeight={'bold'} variant="h5" color="primary">Three0</Typography>
               <IconButton style={{position: "absolute", right: "2%", color:"#707070"}} aria-label="logout" onClick={logout}>
                 <LogoutIcon />
               </IconButton>
@@ -41,13 +35,9 @@ export function App() {
 
 
   return (
-    <div className="App">
-      <Box sx={{ display: 'flex' }}>
-        <TopBar />
-        <Box component="main" sx={{ flexGrow: 1, height: "calc(100vh - 64px)", top: 64, bgcolor: "#ECEFF1", position: "relative"}}>
-          <Outlet />
-        </Box>
-      </Box>
-    </div>
+    <>
+      <TopBar />
+      <Outlet />
+    </>
   );
 }

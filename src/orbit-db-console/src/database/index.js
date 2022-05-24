@@ -29,7 +29,6 @@ export const initOrbitDB = async (ipfs) => {
     const identity = await IdentityProvider.createIdentity({ type: `NearIdentity`})
     orbitdb = await OrbitDB.createInstance(ipfs, {identity})  
   }
-
   return orbitdb
 }
 

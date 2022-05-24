@@ -1,6 +1,6 @@
 import React from 'react'
 import Swal from 'sweetalert2'
-import {Typography, CircularProgress, Box, Backdrop} from '@mui/material'
+import {Typography, Box, CircularProgress} from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import { useStateValue, actions } from '../state'
 import { getAllDatabases, removeDatabase, createDatabase } from '../database'
@@ -9,6 +9,7 @@ import {CreateDialog} from '../components/CreateDialog'
 import { useParams } from 'react-router-dom'
 import Fab from '@mui/material/Fab';
 import {ProjectDetailsContext} from '../../../ProjectDetailsContext'
+import Backdrop from '../../../components/templates/Backdrop'
 
 export function DatabasesView () {
   const [appState, dispatch] = useStateValue()
@@ -80,8 +81,8 @@ export function DatabasesView () {
 
   return (
   <>
+    <CreateDialog onCreate={createDB}/>
     <Box display='flex' justifyContent='center' overflow='auto'>
-      <CreateDialog onCreate={createDB}/>
       <Box
         flex='1'
         overflow='auto'
@@ -107,20 +108,19 @@ export function DatabasesView () {
          }
       </Box>
     </Box>
-    <Fab color="primary" aria-label="add" disabled={loading}
+    {
+      appState.programs && 
+      <Fab color="primary" aria-label="add" disabled={loading}
         onClick={handleCreateDatabase}
         sx={{
           position: "fixed",
           bottom: 16,
           right: 16,
         }}>
-      <AddIcon />
-    </Fab>
-    <Backdrop open={loading}>
-      <Box display="flex" alignItems="center" justifyContent="center" height={400}>
-        <CircularProgress color='inherit'/>
-      </Box>
-    </Backdrop>
+        <AddIcon />
+      </Fab>
+    }
+    <Backdrop loading={loading}/>
   </>
   )
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import {Box, Button, TextField, Typography} from '@material-ui/core'
+import {Box, Button, TextField, InputLabel} from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 
 import { useStateValue, actions } from '../state'
@@ -37,22 +37,22 @@ export function CounterStoreControls () {
   }
 
   return (
-    <Box>
-    <Typography>Increment the value of the counter</Typography>
+  <Box>
+    <InputLabel>Number</InputLabel>
     <TextField
       onChange={handleValueChange}
       name='value'
+      value={value}
       placeholder='Value'
-      height={24}
-      width='30%'
-    ></TextField>
+    />
+
     <Button
-      height={24}
       onClick={handleAdd}
-      variant="outlined"
+      variant="contained"
+      sx={{marginLeft: 2}}
     >
       <AddIcon />
-      Add
+      Increment
     </Button>
   </Box>
   )

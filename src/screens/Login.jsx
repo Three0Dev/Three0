@@ -42,17 +42,15 @@ export function Login() {
         width: "100%",
         height: "13%",
         top: "20%",
-        background: "#6247aa",
-        color: "white",
       }
     }
     
     return (
-      <Box style={styles.container}>
-        <Box style={styles.loginContainer}>
+      <Box sx={styles.container}>
+        <Box sx={styles.loginContainer}>
           <img src={UpdatedLogo} style={styles.logo} />
-          <Typography color="primary" variant="h5" style={styles.heading}>Three0</Typography>
-          <Button style={styles.button}
+          <Typography color="primary" variant="h5" sx={styles.heading}>Three0</Typography>
+          <Button sx={styles.button} variant="contained"
           onClick={login}
           >Log In</Button>
         </Box>
