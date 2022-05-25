@@ -55,3 +55,17 @@ export async function deployNEARProjectContract(){
     ]
   });
 }
+
+export async function deleteNEARProject(pid){
+  try{
+    const canDelete = await window.contract.delete_project({contract_address: pid});
+    if(canDelete){
+      const account = await window.near.account(pid);
+      await account.deleteAccount(window.accountId);
+      return true;
+    }
+  } catch(e){
+    console.error(e);
+  }
+  return false;
+}
