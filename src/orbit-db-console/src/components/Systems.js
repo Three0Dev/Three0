@@ -12,15 +12,15 @@ export function Systems () {
   React.useEffect(() => {
     dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: true })
 
-    initIPFS().then(async (ipfs) => {
+    initIPFS().then((ipfs) => {
       dispatch({ type: actions.SYSTEMS.SET_IPFS, ipfsStatus: 'Started' })
 
-      initOrbitDB(ipfs).then(async () => {
+      initOrbitDB(ipfs).then(() => {
         dispatch({ type: actions.SYSTEMS.SET_ORBITDB, orbitdbStatus: 'Started' })
-        // console.log(projectDetails)
-        const programs = await getAllDatabases(pid)
-        dispatch({ type: actions.PROGRAMS.SET_PROGRAMS, programs: programs.reverse() })
-        dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: false })
+        getAllDatabases(pid).then((programs) => {
+          dispatch({ type: actions.PROGRAMS.SET_PROGRAMS, programs: programs.reverse() })
+          dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: false })
+        })
       })
     })
   }, [dispatch])

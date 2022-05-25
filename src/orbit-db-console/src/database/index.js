@@ -13,11 +13,14 @@ let orbitdb
 // Databases
 let programs
 
+let ipfsActivate = false;
+
 IdentityProvider.addIdentityProvider(NearIdentityProvider)
 
 // Start IPFS
 export const initIPFS = async () => {
-  if(!ipfs){
+  if(!(ipfs || ipfsActivate)){
+    ipfsActivate = true
     ipfs = await IPFS.create(Config.ipfs)
   }
   return ipfs
@@ -25,7 +28,7 @@ export const initIPFS = async () => {
 
 // Start OrbitDB
 export const initOrbitDB = async (ipfs) => {
-  if(!orbitdb){
+  if(ipfs && !orbitdb){
     const identity = await IdentityProvider.createIdentity({ type: `NearIdentity`})
     orbitdb = await OrbitDB.createInstance(ipfs, {identity})  
   }
