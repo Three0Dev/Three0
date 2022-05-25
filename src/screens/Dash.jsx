@@ -53,7 +53,7 @@ export function Dash() {
 
 
   return (
-    <Box sx={{display: "flex", top: "57px", height:"100%", position: "relative"}}>
+    <Box sx={{display: "flex", top: "57px", height:"calc(100% - 57px)", position: "relative"}}>
       <Navigation />
       <ProjectDetailsContext.Provider value={{projectDetails, projectContract}}>
         <div style={{width: "98%", padding: "2% 1%"}}>
