@@ -2,9 +2,7 @@ import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import {Typography, CircularProgress, Paper, Box, IconButton } from '@mui/material'
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
-
 import {TableHeader, Table, TableContainer, TableBody, TableCell, TableRow} from '../../../components/templates/Table'
-
 import {LogStoreControls} from '../components/LogStoreControls'
 import {FeedStoreControls} from '../components/FeedStoreControls'
 import {KeyValueStoreControls} from '../components/KeyValueStoreControls'
@@ -14,6 +12,7 @@ import Divider from '@mui/material/Divider';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { getDB } from '../database'
 import { useStateValue, actions } from '../state'
+import jsonview from '@pgrabovets/json-view';
 
 const colors = {
    eventlog: '#47B881',
@@ -27,12 +26,22 @@ export function ProgramView () {
   const { programName, dbName } = useParams()
   const [appState, dispatch] = useStateValue()
   const navigate = useNavigate()
-  const [index, setIndex] = React.useState(null)
   const [loading, setLoading] = React.useState(false)
   const [address] = React.useState(`/orbitdb/${programName}/${dbName}`)
+  const [metaTreeContainer, setMetaTree] = React.useState({index: null, tree: null})
 
-  const handleSelect = (idx) => {
-    setIndex(idx !== index ? idx : null)
+  const handleSelect = (idx, data) => {
+    if(metaTreeContainer.index == idx || metaTreeContainer.tree) {
+      jsonview.destroy(metaTreeContainer.tree)
+      if(metaTreeContainer.index == idx){
+        setMetaTree({index: null, tree: null})
+        return
+      }
+    }
+    const metaStringifyData = JSON.stringify(data)
+    const metaTree = jsonview.create(metaStringifyData);
+    setMetaTree({tree: metaTree, index: idx})
+    jsonview.render(metaTree, document.getElementsByClassName('metajsontree')[idx]);
   }
 
   const handleBack = () => {
@@ -136,17 +145,13 @@ export function ProgramView () {
                   marginy={2}
                 />
               : appState.entries.map((e, idx) => {
-                  idx += 1
                   return (
                     <div key={idx} style={{wordBreak: "break-word"}}>
                       <Box>
-                        <Typography userSelect='none' cursor='pointer' onClick={() => handleSelect(idx)}>{JSON.stringify(e.payload.value, null, 2)}</Typography>
+                        <Typography userSelect='none' cursor='pointer' onClick={() => handleSelect(idx, e)}>{JSON.stringify(e.payload.value, null, 2)}</Typography>
                       </Box>
                       <Box>
-                        {index && idx === index
-                          ? 
-                          <Typography variant="body" color="textSecondary">{JSON.stringify(e, null, 2)}</Typography>
-                          : ''}
+                        <div className='metajsontree'></div>
                       </Box>
                     </div>
                   )
@@ -187,7 +192,6 @@ export function ProgramView () {
         <KeyboardBackspaceIcon/>
       </IconButton>
     </Box>
-    <Box display='flex'>
       <Box
         flex='1'
         overflow='auto'
@@ -204,11 +208,10 @@ export function ProgramView () {
               <ContentCopyIcon/>
             </IconButton>
         </Box>
-          {renderProgram()}
-          <Divider variant='middle' />
-          {appState.program ? (renderDatabaseControls()) : ''}
+        {renderProgram()}
+        <Divider variant='middle' />
+        {appState.program ? (renderDatabaseControls()) : ''}
       </Box>
-    </Box>
   </Box>
   )
 }

@@ -39,6 +39,7 @@
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.5.1",
     "@mui/material": "^5.8.0",
+    "@pgrabovets/json-view": "^2.7.1",
     "@types/react": "^18.0.0",
     "date-fns": "^2.25.0",
     "ipfs-core": "^0.14.1",
