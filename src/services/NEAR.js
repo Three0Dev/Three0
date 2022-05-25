@@ -28,7 +28,7 @@ export async function createNEARProject(){
 }
 
 export async function deployNEARProjectContract(){
-  let {pid, name, description} = JSON.parse(localStorage.getItem("projectDetails"));
+  let {pid, name} = JSON.parse(localStorage.getItem("projectDetails"));
   const account = await window.near.account(pid);
   const status = await account.state();
 

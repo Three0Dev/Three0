@@ -6,7 +6,6 @@ import { useStateValue, actions } from '../state'
 import { getAllDatabases, removeDatabase, createDatabase } from '../database'
 import {ProgramList} from '../components/DatabaseList'
 import {CreateDialog} from '../components/CreateDialog'
-import { useParams } from 'react-router-dom'
 import Fab from '@mui/material/Fab';
 import {ProjectDetailsContext} from '../../../ProjectDetailsContext'
 import Backdrop from '../../../components/templates/Backdrop'
@@ -15,13 +14,11 @@ export function DatabasesView () {
   const [appState, dispatch] = useStateValue()
   const [loading, setLoading] = React.useState(false)
 
-  const params = useParams();
-
-  const {projectContract} = React.useContext(ProjectDetailsContext);
+  const {projectContract, pid} = React.useContext(ProjectDetailsContext);
 
   async function fetchDatabases () {
     dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: true })
-    const programs = await getAllDatabases(params.pid)
+    const programs = await getAllDatabases(pid)
     dispatch({ type: actions.PROGRAMS.SET_PROGRAMS, programs: programs.reverse() })
     dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: false })
     return programs
@@ -34,7 +31,7 @@ export function DatabasesView () {
   const createDB = (args) => {
     console.log("Create database...", args)
     setLoading(true)
-    createDatabase(projectContract, args.name, args.type, args.permissions, params.pid, args.overwrite).then(() => {
+    createDatabase(projectContract, args.name, args.type, args.permissions, pid, args.overwrite).then(() => {
       fetchDatabases().then((data) => {
         console.log("Loaded programs", data)
       })
@@ -58,7 +55,7 @@ export function DatabasesView () {
   const handleRemoveDatabase = (hash, program) => {
     console.log("Remove database...", hash, program)
     setLoading(true)
-    removeDatabase(projectContract, hash, program, params.pid).then(() => {
+    removeDatabase(projectContract, hash, program, pid).then(() => {
       console.log("Removed")
       fetchDatabases().then((data) => {
         console.log("Loaded programs", data)

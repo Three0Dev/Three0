@@ -35,7 +35,6 @@ impl User {
 #[serde(crate = "near_sdk::serde")]
 pub struct ProjectReturnSchema {
     pub pid: String,
-    pub name: String,
     pub num_users: u32,
 }
 

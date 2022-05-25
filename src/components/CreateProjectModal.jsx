@@ -21,7 +21,6 @@ const classes = {
 
 export function CreateProjectModal(props){
     const [name, setName] = React.useState('');
-    const [description, setDescription] = React.useState('');
     const [blockchainNetwork, setBlockchainNetwork] = React.useState("");
 
     const uuid = short.generate().toLowerCase();
@@ -36,13 +35,6 @@ export function CreateProjectModal(props){
         }
     }
 
-    function handleDescriptionChange(e){
-        const desc = e.target.value;
-        if(desc.length <= 100){
-            setDescription(desc);
-        }
-    }
-
     function handleBlockchainNetworkChange(e){
         setBlockchainNetwork(e.target.value);
     }
@@ -51,13 +43,12 @@ export function CreateProjectModal(props){
         if(!nameRegex.test(name)) return;
         const pid = `${name}-${uuid}.${window.accountId}`;
 
-        localStorage.setItem("projectDetails", JSON.stringify({pid, name, description, blockchainNetwork}));
+        localStorage.setItem("projectDetails", JSON.stringify({pid, name, blockchainNetwork}));
         createNEARAccount();
     }
 
     function closeModal(){
         setName('');
-        setDescription('');
         props.closeModal();
     }
 
@@ -79,13 +70,6 @@ export function CreateProjectModal(props){
                     fullWidth
                     value={name}
                     onChange={handleNameChange}
-                />
-                <TextField margin='dense'
-                    label="Description"
-                    variant="outlined"
-                    fullWidth
-                    value={description}
-                    onChange={handleDescriptionChange}
                 />
                 <InputLabel id="demo-simple-select-label">Blockchain Network</InputLabel>
                 <Select

@@ -27,7 +27,6 @@ setup_alloc!();
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize, PanicOnDefault)]
 pub struct Three0Project {
-    name: String,
     owner: AccountId,
     pid: String,
     databases: LookupMap<String, Database>,
@@ -38,9 +37,8 @@ pub struct Three0Project {
 impl Three0Project {
     
     #[init]
-    pub fn init(name: String, pid: String) -> Self {
+    pub fn init(pid: String) -> Self {
         Self {
-            name,
             owner: env::signer_account_id(),
             pid,
             databases: LookupMap::new(b"databases".to_vec()),
@@ -51,7 +49,6 @@ impl Three0Project {
     pub fn get_project(&self) -> ProjectReturnSchema {
         ProjectReturnSchema {
             pid: self.pid.clone(),
-            name: self.name.clone(),
             num_users: self.users.len() as u32,
         }
     }
