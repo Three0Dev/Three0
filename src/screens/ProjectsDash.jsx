@@ -4,10 +4,11 @@ import { Fab } from "@mui/material";
 import {CreateProjectModal} from "../components/CreateProjectModal";
 import ProjectDisplayBoard from "../components/ProjectDisplayBoard";
 import { nearConfig } from "../utils";
-import {deployNEARProjectContract, createNEARProject} from '../services/NEAR'
+import {deployNEARProjectContract} from '../services/NEAR'
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import {providers} from 'near-api-js';
 import wave from '../assets/wave.svg';
+import Backdrop from "../components/templates/Backdrop";
 
 const classes = {
   coloredBackground: {
@@ -20,6 +21,7 @@ const classes = {
 
 export function ProjectsDash() {
   let [showCreateProjectModal, setShowCreateProjectModal] = React.useState(false);
+  let [loading, setLoading] = React.useState(false);
 
   let [params] = useSearchParams();
   const navigate = useNavigate();
@@ -39,10 +41,8 @@ export function ProjectsDash() {
     provider.txStatus(hash, window.accountId).then(result => {
       console.log(result);
       if(result.transaction.actions.includes("CreateAccount") && result.transaction_outcome.outcome.status.SuccessReceiptId){
-        Promise.all([createNEARProject(result.transaction.receiver_id),
-          deployNEARProjectContract()]).then(() => navigate(`/app/${result.transaction.receiver_id}`));
-      } else if(result.transaction.actions[0].FunctionCall.method_name == "create_project" && result.transaction_outcome.outcome.status.SuccessReceiptId){
-        deployNEARProjectContract().then(() => navigate(`/app/${result.transaction.receiver_id}`));
+        setLoading(true);
+        deployNEARProjectContract().then(() => navigate(`/app/${result.transaction.receiver_id}`)).finally(() => setLoading(false));
       }
     });
   }
@@ -53,6 +53,7 @@ export function ProjectsDash() {
 
   return (
     <>
+      <Backdrop loading={loading}/>
       <ProjectDisplayBoard />
       <Fab
         sx={{

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, MenuItem, Select, InputLabel} from '@mui/material'
-import {createNEARAccount} from "../services/NEAR";
+import {createNEARAccount, createNEARProject} from "../services/NEAR";
 import AddIcon from '@mui/icons-material/Add';
 
 const short = require('short-uuid');
@@ -43,7 +43,10 @@ export function CreateProjectModal(props){
         if(!nameRegex.test(name)) return;
         const pid = `${name}-${uuid}.${window.accountId}`;
 
-        localStorage.setItem("projectDetails", JSON.stringify({pid, name, blockchainNetwork}));
+        if(blockchainNetwork === "") return;
+
+        localStorage.setItem("projectDetails", JSON.stringify({pid, blockchainNetwork}));
+        await createNEARProject();
         createNEARAccount();
     }
 

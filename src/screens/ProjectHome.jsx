@@ -8,6 +8,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { deleteNEARProject } from '../services/NEAR';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import Backdrop from '../components/templates/Backdrop';
 
 const classes = {
     h1: {wordBreak: "break-all", textAlign: "center", padding: "3% 3% 0"},
@@ -18,6 +19,7 @@ const classes = {
 
 export default function ProjectHome(){
     let {projectDetails} = React.useContext(ProjectDetailsContext);
+    let [loading, setLoading] = React.useState(false);
 
     const navigate = useNavigate();
 
@@ -42,15 +44,15 @@ export default function ProjectHome(){
                 else if(value !== projectDetails.pid){
                     return 'Project ID does not match';
                 }
-                return true;
             }
         });
 
         if (isConfirmed) {
+            setLoading(true);
             deleteNEARProject(projectDetails.pid)
             .then((canDelete) => {
                 if (canDelete) {
-                    navigate("/");
+                    navigate("/app");
                 }else{
                     Swal.fire({
                         title: 'Error',
@@ -59,13 +61,13 @@ export default function ProjectHome(){
                         confirmButtonText: 'Ok'
                     });
                 }
-                navigate("/");
-            });
+            }).finally(() => setLoading(false));
         }
     }
 
     return (
         <>
+            <Backdrop loading={loading}/>
             <img src={CodeImage} alt="Code" style={classes.img}/>
             {/* TODO Change to Name */}
             <Typography variant="h1" sx={classes.h1}>Welcome to</Typography>
