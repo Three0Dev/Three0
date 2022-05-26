@@ -45,3 +45,10 @@ pub struct Database {
     pub name: String,
     pub db_type: String, 
 }
+
+#[derive(BorshDeserialize, BorshSerialize, Serialize)]
+#[serde(crate = "near_sdk::serde")]
+pub struct AllSchema {
+    pub num: u16,
+    pub entries: Vec<User>, 
+}

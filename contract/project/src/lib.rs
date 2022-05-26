@@ -61,7 +61,7 @@ impl Three0Project {
         self.databases.remove(&database_name);
     }
 
-    pub fn get_users(&self, offset: usize, limit: usize) -> Vec<User> {
+    pub fn get_users(&self, offset: usize, limit: usize) -> AllSchema {
         let user_size = self.users.len();
         let new_skip:usize = if user_size as usize > offset + limit {
             (user_size as usize) - (offset + limit)
@@ -69,10 +69,15 @@ impl Three0Project {
             0
         };
 
-        self.users.values()
+        let users = self.users.values()
             .skip(new_skip)
             .take(limit)
-            .collect()
+            .collect::<Vec<User>>();
+
+        AllSchema {
+            entries: users,
+            num: user_size as u16,
+        }
     }
 
     pub fn user_action(&mut self, action: String) {
