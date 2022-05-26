@@ -8,13 +8,10 @@ import { actions, loadingState,
 import {Systems} from './components/Systems'
 import {Header} from './components/Header'
 
-import {Box, Typography} from '@mui/material'
-import orbitLogo from '../public/Orbit_round-02.png';
-
 import './index.css'
 
 
-export function DBView (props) {
+export function DBView () {
   const initialState = {
     user: null,
     loginDialogOpen: false,
@@ -94,23 +91,23 @@ export function DBView (props) {
     }
   }
 
+  /*
+  * DO NOT TOUCH
+  * This is allowing the database screen to load the UI properly even if the window is refreshed on it
+  * This is a workaround for the issue of the database screen not loading properly when the window is refreshed
+  * This needs to be fixed in the future
+  */
+  const [loadSystems, setLoadSystems] = React.useState(false)
+
+  React.useEffect(() => {
+      setLoadSystems(true)
+  }, [])
+
   return (
-    <>
       <StateProvider initialState={initialState} reducer={reducer}>
-        <Box height='100%'>
-          <Header />
-          <Systems />
-          <Outlet />
-        </Box>
+        <Header />
+        {loadSystems && <Systems />}
+        <Outlet />
       </StateProvider>
-      <footer style={{
-        position: 'fixed',
-        bottom: 0,
-        width: '100%',
-        textAlign: 'center',
-      }}><img alt="orbit-logo" src={orbitLogo} width={'1.5%'}/>
-        <Typography variant='subtitle2'>Powered by OrbitDB</Typography>
-      </footer>
-    </>
   )
 }

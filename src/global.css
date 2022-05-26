@@ -8,3 +8,16 @@
   font-family: myFont !important;
 }
 
+body {
+  background-color: #ECEFF1;
+}
+
+.majorImg {
+  width: 75%;
+  margin: 2% auto;
+  display: block;
+}
+
+#root {
+  height: 100%;
+}

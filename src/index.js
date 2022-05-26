@@ -1,14 +1,13 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { Core } from './Core'
 import { initContract } from './utils'
+import { createRoot } from 'react-dom/client';
 
 
 initContract()
   .then(() => {
-    ReactDOM.render(
-      <Core  />,
-      document.querySelector('#root')
-    )
+    const container = document.querySelector('#root');
+    const root = createRoot(container);
+    root.render(<Core />);
   })
   .catch(console.error)

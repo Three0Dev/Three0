@@ -1,13 +1,10 @@
 import React from "react";
 import {Button, Box, Typography} from "@mui/material"
-import logo from '../assets/logo.png'
 import UpdatedLogo from '../assets/updatedLogo.png'
 import {login} from '../utils'
 
-export class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.styles = {
+export function Login() {
+    const styles = {
       container: {
         height: "100vh",
         background: "ghostwhite"
@@ -45,24 +42,18 @@ export class Login extends React.Component {
         width: "100%",
         height: "13%",
         top: "20%",
-        background: "#6247aa",
-        color: "white",
       }
     }
-  }
     
-  render() {
     return (
-      <Box style={this.styles.container}>
-        <Box style={this.styles.loginContainer}>
-          <img src={UpdatedLogo} style={this.styles.logo} />
-          {/* <Heading size={900} style={this.styles.heading}>Three0</Heading> */}
-          <Typography color="primary" variant="h5" style={this.styles.heading}>Three0</Typography>
-          <Button style={this.styles.button}
+      <Box sx={styles.container}>
+        <Box sx={styles.loginContainer}>
+          <img src={UpdatedLogo} style={styles.logo} />
+          <Typography color="primary" variant="h5" sx={styles.heading}>Three0</Typography>
+          <Button sx={styles.button} variant="contained"
           onClick={login}
           >Log In</Button>
         </Box>
       </Box>
     );
-  }
 }

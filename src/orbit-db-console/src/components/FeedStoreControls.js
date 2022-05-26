@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {Box, Button, TextField, Typography} from '@material-ui/core'
+import {Box, Button, TextField, InputLabel, Select, MenuItem} from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 
 import { useStateValue, actions } from '../state'
@@ -8,6 +8,7 @@ import { useStateValue, actions } from '../state'
 export function FeedStoreControls () {
   const [appState, dispatch] = useStateValue()
   const [value, setValue] = React.useState('')
+  const [type, setType] = React.useState('string')
 
   function handleValueChange (event) {
     setValue(event.target.value)
@@ -26,7 +27,26 @@ export function FeedStoreControls () {
       throw new Error('This component can only handle Feed databases')
     }
 
-    await db.add(value)
+    let entry = value;
+
+    switch (type) {
+      case 'bool':
+        entry = Boolean(value)
+        break
+      case 'number':
+        entry = Number(value)
+        break
+      case 'array':
+        entry = value.split(',')
+        break
+      case 'map':
+        entry = JSON.parse(value)
+        break
+      default:
+        break
+    }
+
+    await db.add(entry)
 
     const entries = await db.iterator({ limit: 10 }).collect().reverse()
     dispatch({ type: actions.DB.SET_DB, db, entries })
@@ -34,22 +54,34 @@ export function FeedStoreControls () {
 
   return (
     <Box>
-    <Typography>Add an entry to the feed</Typography>
-    <TextField
-      onChange={handleValueChange}
-      name='value'
-      placeholder='Value'
-      height={24}
-      width='30%'
-    ></TextField>
-    <Button
-      height={24}
-      onClick={handleAdd}
-      variant="outlined"
-    >
-      <AddIcon />
-      Add
-    </Button>
-  </Box>
+      <InputLabel id="type">Type</InputLabel>
+      <Select
+        labelId="type"
+        value={type}
+        label="data-type"
+        onChange={(e) => setType(e.target.value)}
+      >
+        <MenuItem value="string">String</MenuItem>
+        <MenuItem value="number">Number</MenuItem>
+        <MenuItem value="bool">Boolean</MenuItem>
+        <MenuItem value="map">Map</MenuItem>
+        <MenuItem value="array">Array</MenuItem>
+      </Select>
+      <TextField
+        onChange={handleValueChange}
+        name='value'
+        value={value}
+        placeholder='Value'
+      />
+
+      <Button
+        onClick={handleAdd}
+        variant="contained"
+        sx={{marginLeft: 2}}
+      >
+        <AddIcon />
+        Add
+      </Button>
+    </Box>
   )
 }

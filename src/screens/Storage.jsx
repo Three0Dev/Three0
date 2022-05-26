@@ -1,11 +1,13 @@
 import React from 'react';
 import { Typography } from '@mui/material';
+import WIPPhoto from '../assets/wip.svg';
 
-export class Storage extends React.Component {
-    
-  render() {
-    return (
-      <Typography variant="h5" style={{textAlign: "center"}}>To Be Implemented!</Typography>
-    );
-  }
+export function Storage() {
+
+  return (
+    <>
+      <img src={WIPPhoto} alt="WIP" className="majorImg"/>
+      <Typography variant="h2" style={{textAlign: "center", fontWeight: 'bold'}}>Coming Soon!</Typography>
+    </>
+  );
 }

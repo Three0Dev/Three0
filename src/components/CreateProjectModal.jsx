@@ -1,71 +1,37 @@
 import React from 'react';
-import {useNavigate} from 'react-router-dom';
-import {FormControl, TextField, MenuItem, Grid, makeStyles, createTheme} from "@material-ui/core"
-import {Dialog, DialogActions, DialogContent, DialogTitle, Button} from '@mui/material'
-import LoadingButton from '@mui/lab/LoadingButton';
+import {Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, MenuItem, Select, InputLabel} from '@mui/material'
+import {createNEARAccount, createNEARProject} from "../services/NEAR";
+import AddIcon from '@mui/icons-material/Add';
 
-const useStyles = makeStyles((theme) => ({
+const short = require('short-uuid');
+
+const classes = {
     root: {
         width: '100%',
-        marginTop: theme.spacing(2),
-        marginBottom: theme.spacing(2),
+        marginTop: 2,
+        marginBottom: 2,
         overflowX: 'auto',
         justifyContent: 'center',
         display: 'flex',
     },
-    table: {
-        minWidth: 650,
-    },
-    TableContainer: {
-        maxHeight: '100%',
-        borderRadius: '10px',
-        margin: theme.spacing(1),
-        minWidth: 120,
-    },
-    Buttons: {
-        margin: theme.spacing(1),
-        borderRadius: '1px',
-    },
-    Paper: {
-        padding: theme.spacing(2),
-        display: 'flex',
-        overflow: 'auto',
-        flexDirection: 'column',
-        width: '100%',
-        marginTop: theme.spacing(2),
-        marginBottom: theme.spacing(2),
-    },
-    Heading: {
-        marginTop: theme.spacing(1),
-    },
-  }));
-
-  const theme = createTheme({
-    palette: {
-      secondary: {
-        main: '#7b1fa2'
-      }
+    actionContainer: {
+        margin: 1,
     }
-  });
+  };
 
 export function CreateProjectModal(props){
-    const classes = useStyles();
     const [name, setName] = React.useState('');
-    const [description, setDescription] = React.useState('');
-    const [blockchainNetwork, setBlockchainNetwork] = React.useState(false);
-    const [addLoading, setAddLoading] = React.useState(false);
+    const [blockchainNetwork, setBlockchainNetwork] = React.useState("");
+
+    const uuid = short.generate().toLowerCase();
+    const nameRegex = /^(([a-z\d]+[\-_])*[a-z\d]+)$/;
 
     function handleNameChange(e){
         const name = e.target.value;
-        if(name.length <= 20){
-            setName(e.target.value);
-        }
-    }
+        const pid = `${name}-${uuid}.${window.accountId}`;
 
-    function handleDescriptionChange(e){
-        const desc = e.target.value;
-        if(desc.length <= 100){
-            setDescription(desc);
+        if(pid.length <= 50){
+            setName(e.target.value);
         }
     }
 
@@ -73,37 +39,27 @@ export function CreateProjectModal(props){
         setBlockchainNetwork(e.target.value);
     }
 
-    let navigate = useNavigate();
-
     async function createProject(){
-        try{
-            setAddLoading(true);
-            let id = await window.contract.create_project({
-                name,
-                description,
-            });
-            setAddLoading(false);
-            props.closeModal();
-            navigate(`/app/${id}`);
-        } catch(e){
-            setAddLoading(false);
-            props.closeModal();
-            console.error(e);
-        }
+        if(!nameRegex.test(name)) return;
+        const pid = `${name}-${uuid}.${window.accountId}`;
+
+        if(blockchainNetwork === "") return;
+
+        localStorage.setItem("projectDetails", JSON.stringify({pid, blockchainNetwork}));
+        await createNEARProject();
+        createNEARAccount();
     }
 
     function closeModal(){
         setName('');
-        setDescription('');
         props.closeModal();
     }
 
     return (   
         <Dialog
-            className={classes.root}
+            sx={classes.root}
             open = {props.isShown}
             aria-labelledby="form-dialog-title"
-            preventBodyScrolling
         >
             <DialogTitle
                 id="form-dialog-title"
@@ -111,50 +67,29 @@ export function CreateProjectModal(props){
                 Create Project
             </DialogTitle>
             <DialogContent>
-                <Grid container spacing={1}>
-                    <Grid item xs={12}>
-                        <TextField margin='dense'
-                            label="Name"
-                            variant="outlined"
-                            fullWidth
-                            value={name}
-                            onChange={handleNameChange}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField margin='dense'
-                            label="Description"
-                            variant="outlined"
-                            fullWidth
-                            value={description}
-                            onChange={handleDescriptionChange}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <FormControl fullWidth>
-                            {/* <FormLabel>Blockchain Network</FormLabel> */}
-                            <TextField margin='dense'
-                                select
-                                label="Blockchain Network"
-                                variant="outlined"
-                                fullWidth
-                                value={blockchainNetwork}
-                                onChange={handleBlockchainNetworkChange}
-                            >
-                                <MenuItem value={false}>
-                                    <em>None</em>
-                                </MenuItem>
-                                <MenuItem value={true}>
-                                    NEAR
-                                </MenuItem>
-                            </TextField>
-                        </FormControl>
-                    </Grid>
-                </Grid>
+                <TextField margin='dense'
+                    label="Name"
+                    variant="outlined"
+                    fullWidth
+                    value={name}
+                    onChange={handleNameChange}
+                />
+                <InputLabel id="demo-simple-select-label">Blockchain Network</InputLabel>
+                <Select
+                    labelId="demo-simple-select-label"
+                    variant="outlined"
+                    fullWidth
+                    value={blockchainNetwork}
+                    onChange={handleBlockchainNetworkChange}
+                >
+                    <MenuItem value="NEAR_TESTNET">
+                        NEAR Testnet
+                    </MenuItem>
+                </Select>
             </DialogContent>
-            <DialogActions className={classes.TableContainer}>
-                <LoadingButton onClick={closeModal} color='secondary' disabled={addLoading}>Cancel</LoadingButton>
-                <Button onClick={createProject} color='secondary' disabled={addLoading}>Create</Button>
+            <DialogActions sx={classes.actionContainer}>
+                <Button onClick={closeModal} color='error'>Cancel</Button>
+                <Button onClick={createProject} color='primary' variant="contained"><AddIcon />Create</Button>
             </DialogActions>
         </Dialog>
     )

@@ -3,6 +3,6 @@ import { ActiveUsers } from '../components/ActiveUsers';
 
 export function Auth() {
   return (
-    <ActiveUsers/>
+      <ActiveUsers/>
   );
 }

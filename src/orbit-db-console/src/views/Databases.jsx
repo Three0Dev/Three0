@@ -1,30 +1,24 @@
 import React from 'react'
 import Swal from 'sweetalert2'
-import {Typography, CircularProgress, Box, Backdrop} from '@mui/material'
+import {Typography, Box, CircularProgress} from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import { useStateValue, actions } from '../state'
 import { getAllDatabases, removeDatabase, createDatabase } from '../database'
 import {ProgramList} from '../components/DatabaseList'
 import {CreateDialog} from '../components/CreateDialog'
-import { useParams } from 'react-router-dom'
 import Fab from '@mui/material/Fab';
+import {ProjectDetailsContext} from '../../../ProjectDetailsContext'
+import Backdrop from '../../../components/templates/Backdrop'
 
 export function DatabasesView () {
   const [appState, dispatch] = useStateValue()
   const [loading, setLoading] = React.useState(false)
 
-  const params = useParams()
-  const [open, setOpen] = React.useState(false);
-  const handleClose = () => {
-    setOpen(false);
-  }
-  const handleToggle = () => {
-    setOpen(!open);
-  }
+  const {projectContract, pid} = React.useContext(ProjectDetailsContext);
 
   async function fetchDatabases () {
     dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: true })
-    const programs = await getAllDatabases(params.pid)
+    const programs = await getAllDatabases(pid)
     dispatch({ type: actions.PROGRAMS.SET_PROGRAMS, programs: programs.reverse() })
     dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: false })
     return programs
@@ -37,7 +31,7 @@ export function DatabasesView () {
   const createDB = (args) => {
     console.log("Create database...", args)
     setLoading(true)
-    createDatabase(args.name, args.type, args.permissions, params.pid, args.overwrite).then(() => {
+    createDatabase(projectContract, args.name, args.type, args.permissions, pid, args.overwrite).then(() => {
       fetchDatabases().then((data) => {
         console.log("Loaded programs", data)
       })
@@ -61,7 +55,7 @@ export function DatabasesView () {
   const handleRemoveDatabase = (hash, program) => {
     console.log("Remove database...", hash, program)
     setLoading(true)
-    removeDatabase(hash, program, params.pid).then(() => {
+    removeDatabase(projectContract, hash, program, pid).then(() => {
       console.log("Removed")
       fetchDatabases().then((data) => {
         console.log("Loaded programs", data)
@@ -84,8 +78,8 @@ export function DatabasesView () {
 
   return (
   <>
+    <CreateDialog onCreate={createDB}/>
     <Box display='flex' justifyContent='center' overflow='auto'>
-      <CreateDialog onCreate={createDB}/>
       <Box
         flex='1'
         overflow='auto'
@@ -111,20 +105,19 @@ export function DatabasesView () {
          }
       </Box>
     </Box>
-    <Fab color="primary" aria-label="add" disabled={loading}
+    {
+      appState.programs && 
+      <Fab color="primary" aria-label="add" disabled={loading}
         onClick={handleCreateDatabase}
         sx={{
           position: "fixed",
           bottom: 16,
           right: 16,
         }}>
-      <AddIcon />
-    </Fab>
-    <Backdrop open={loading}>
-      <Box display="flex" alignItems="center" justifyContent="center" height={400}>
-        <CircularProgress color='inherit'/>
-      </Box>
-    </Backdrop>
+        <AddIcon />
+      </Fab>
+    }
+    <Backdrop loading={loading}/>
   </>
   )
 }

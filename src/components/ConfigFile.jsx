@@ -1,76 +1,35 @@
 import React from "react";
 import {useParams} from "react-router-dom";
-import {nearConfig} from "../utils";
 import Swal from 'sweetalert2'
-import {Box, Button, Popover, Typography, ToggleButton, ToggleButtonGroup, Paper} from "@mui/material"
+import {Box, Button, Popover, ButtonGroup, Paper} from "@mui/material"
 import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
-import { createTheme, makeStyles } from '@material-ui/core/styles';
 
-const theme = createTheme({
-    palette: {
-    primary: {
-        main: '#d1c9f0'
-        },
-      secondary: {
-        main: '#6247aa'
-      }
-    }
-  });
-  const useStyles = makeStyles((theme) => ({
-    root: {
-        width: '100%',
-        marginTop: theme.spacing(2),
-        marginBottom: theme.spacing(2),
-        overflowX: 'auto',
-        justifyContent: 'center',
-        display: 'flex',
-    },
-    table: {
-        minWidth: 650,
-    },
-    TableContainer: {
-        maxHeight: '100%',
-        borderRadius: '10px',
-        margin: theme.spacing(1),
-        minWidth: 120,
-    },
-    Buttons: {
-        margin: theme.spacing(1),
-        borderRadius: '1px',
-    },
+  const classes = {
     Paper: {
-        padding: theme.spacing(1),
+        padding: 1,
         display: 'flex',
-        // overflow: 'auto',
         flexDirection: 'column',
         width: '100%',
-        marginTop: theme.spacing(1),
-        marginBottom: theme.spacing(1),
+        marginTop: 1,
+        marginBottom: 1,
         backgroundColor: '#dedaf0',
+        wordBreak: 'break-word',
+        whiteSpace: 'break-spaces',
     },
-    Heading: {
-        marginTop: theme.spacing(1),
-    },
-  }));
+  };
+  
 function ConfigFileInner(){
-    const classes = useStyles();
     let params = useParams();
-    let configCredentials = `
-        {
-            "contractName": "${nearConfig.contractName}",
-            "projectId": "${params.pid}"
-        }
-        `
-    let copyConfigText = `
-        const config = ${configCredentials};
-    `
+    const configCredentials = `{\n"contractName": ${params.pid}\n}`
+    const copyConfigText = `const config = ${configCredentials};`
     function copyConfig(){
         navigator.clipboard.writeText(copyConfigText);
         Swal.fire({
             title: 'Copied to clipboard',
             timer: 1500,
             buttons: false,
-            });
+            icon: 'success',
+        });
     }
 
     function downloadConfig(){
@@ -84,31 +43,24 @@ function ConfigFileInner(){
     }
         
     return (
-        <Box width={240} height={240} padding="3%" display="flex" alignItems="center" justifyContent="center" flexDirection="column">
-            <Paper elevation={0} className={classes.Paper} >
+        <Box width={240} padding="3%" display="flex" alignItems="center" justifyContent="center" flexDirection="column">
+            <Paper elevation={0} sx={classes.Paper} >
                 {copyConfigText}
             </Paper>
-            <ToggleButtonGroup 
+            <ButtonGroup
+             color="primary"
             >
-                <ToggleButton 
-                variant="outlined"
-                iconBefore='document'
-                appearance='default'
+                <Button 
                 height={24}
-                style={{color: '#6247aa'}}
                 onClick={downloadConfig}>
                     Download
-                </ToggleButton>
-                <ToggleButton 
-                variant="outlined" 
-                iconBefore='document'
-                appearance='default'
+                </Button>
+                <Button 
                 height={24}
-                style={{color: '#6247aa'}}
                 onClick={copyConfig}>
                     Copy
-                </ToggleButton>
-            </ToggleButtonGroup>
+                </Button>
+            </ButtonGroup>
         </Box>
     )
 }
@@ -124,12 +76,10 @@ export function ConfigFile(){
     };
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
-    const openPopover = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+
     return (
-        <div>
-            <Button aria-describedby={id} variant="contained" onClick={handleClick} endIcon={<FileDownloadRoundedIcon />} style={{backgroundColor:'primary'}}>
+        <>
+            <Button aria-describedby={id} variant="contained" onClick={handleClick} endIcon={<FileDownloadRoundedIcon />} sx={{backgroundColor:'primary'}}>
                 Get Config
             </Button>
             <Popover
@@ -148,6 +98,6 @@ export function ConfigFile(){
             >
                 <ConfigFileInner />
             </Popover>
-        </div>
+        </>
     )
 }

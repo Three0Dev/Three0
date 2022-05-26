@@ -3,33 +3,60 @@ import { Navigation } from "../components/Navigation";
 import { Outlet, useParams, useNavigate } from "react-router-dom";
 import { Box } from "@mui/material";
 import {ProjectDetailsContext} from '../ProjectDetailsContext'
+import {Contract} from 'near-api-js';
 
 export function Dash() {
-  let params = useParams();
+  let {pid} = useParams();
   let navigate = useNavigate();
 
-  const [projectDetails, setProjectDetails] = React.useState({})
+  const [projectDetails, setProjectDetails] = React.useState({});
+  const [projectContract, setContract] = React.useState(null);
 
   async function isValidProject(){
     try{
-      let project = await window.contract.get_project({project_id: params.pid});
-      setProjectDetails(project);
+      const account = await window.near.account(pid);
+      const status = await account.state();
+    
+      return status.code_hash != "11111111111111111111111111111111";
     } catch(e) {
       console.error(e);
-      navigate("/app");
+      return false;
     }
   }
 
+  async function getProjectDetails(){
+    const account = await window.near.account(pid);
+
+    const projectContractInit = new Contract(
+      account,
+      pid,
+      {
+        viewMethods: ["get_project", "get_users", "get_user"],
+        changeMethods: ["update_project", "add_database", "delete_database"],
+      }
+    );
+
+    const details = await projectContractInit.get_project({});
+    setContract(projectContractInit);
+    setProjectDetails(details);
+  }
+
   React.useEffect(() => {
-    isValidProject();
+    isValidProject().then(isValid => {
+      if(isValid){
+        getProjectDetails();
+      } else {
+        navigate('/app');
+      }
+    });
   }, []);
 
 
   return (
-    <Box style={{display: "flex"}}>
+    <Box sx={{display: "flex", top: "57px", height:"calc(100% - 57px)", position: "relative"}}>
       <Navigation />
-      <ProjectDetailsContext.Provider value={projectDetails}>
-        <div style={{width: "99%", marginLeft: "1%", marginTop: "2%"}}>
+      <ProjectDetailsContext.Provider value={{projectDetails, projectContract}}>
+        <div style={{width: "98%", padding: "2% 1%"}}>
           <Outlet />
         </div>
       </ProjectDetailsContext.Provider>
