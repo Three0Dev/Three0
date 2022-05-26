@@ -73,7 +73,7 @@ export const addDatabase = async (address) => {
   })
 }
 
-export const createDatabase = async (contract, name, type, permissions, pid, overwrite = false) => {
+export const createDatabase = async (contract, name, type, permissions, overwrite = false) => {
   let accessController
 
   switch (permissions) {
@@ -103,12 +103,11 @@ export const createDatabase = async (contract, name, type, permissions, pid, ove
   }).then(async () => {
     await contract.add_database({
       database_details: dbDetails,
-      project_id: pid,
     });
   });
 }
 
-export const removeDatabase = async (contract, hash, program, pid) => {
+export const removeDatabase = async (contract, hash, program) => {
   const db = await orbitdb.open(program.address)
   await db.drop()
   await db.close()
@@ -117,7 +116,6 @@ export const removeDatabase = async (contract, hash, program, pid) => {
 
   await contract.delete_database({
     database_name: program.address,
-    project_id: pid
   });
 }
 
