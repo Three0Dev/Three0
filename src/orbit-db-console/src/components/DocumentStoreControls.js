@@ -62,8 +62,8 @@ export function DocumentStoreControls () {
       onClick={handleAdd}
       variant="contained"
       sx={{marginLeft: 2}}
+      startIcon={<AddIcon />}
     >
-      <AddIcon />
       Put
     </Button>
   </Box>

@@ -2,6 +2,7 @@ import React from 'react';
 import {Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, MenuItem, Select, InputLabel} from '@mui/material'
 import {createNEARAccount, createNEARProject} from "../services/NEAR";
 import AddIcon from '@mui/icons-material/Add';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 const short = require('short-uuid');
 
@@ -22,6 +23,7 @@ const classes = {
 export function CreateProjectModal(props){
     const [name, setName] = React.useState('');
     const [blockchainNetwork, setBlockchainNetwork] = React.useState("");
+    const [loading, setLoading] = React.useState(false);
 
     const uuid = short.generate().toLowerCase();
     const nameRegex = /^(([a-z\d]+[\-_])*[a-z\d]+)$/;
@@ -46,8 +48,10 @@ export function CreateProjectModal(props){
         if(blockchainNetwork === "") return;
 
         localStorage.setItem("projectDetails", JSON.stringify({pid, blockchainNetwork}));
+        setLoading(true);
         await createNEARProject();
         createNEARAccount();
+        setLoading(false);
     }
 
     function closeModal(){
@@ -88,8 +92,8 @@ export function CreateProjectModal(props){
                 </Select>
             </DialogContent>
             <DialogActions sx={classes.actionContainer}>
-                <Button onClick={closeModal} color='error'>Cancel</Button>
-                <Button onClick={createProject} color='primary' variant="contained"><AddIcon />Create</Button>
+                <Button disabled={loading} onClick={closeModal} color='error'>Cancel</Button>
+                <LoadingButton loading={loading} onClick={createProject} variant="contained" startIcon={<AddIcon />}>Create</LoadingButton>
             </DialogActions>
         </Dialog>
     )

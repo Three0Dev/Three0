@@ -88,8 +88,8 @@ export function KeyValueStoreControls () {
       onClick={handleAdd}
       variant="contained"
       sx={{marginLeft: 2}}
+      startIcon={<AddIcon />}
     >
-      <AddIcon />
       Set
     </Button>
   </Box>

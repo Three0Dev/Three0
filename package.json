@@ -38,6 +38,7 @@
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.5.1",
+    "@mui/lab": "^5.0.0-alpha.83",
     "@mui/material": "^5.8.0",
     "@pgrabovets/json-view": "^2.7.1",
     "@types/react": "^18.0.0",

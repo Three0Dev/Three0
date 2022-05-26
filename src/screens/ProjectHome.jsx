@@ -74,10 +74,11 @@ export default function ProjectHome(){
             <Typography variant="h3" sx={classes.h3}>{projectDetails.pid}</Typography>
             <Box sx={ classes.buttonContainer}>
                 <ConfigFile />
-                <Button variant='outlined' sx={{marginLeft: "5%"}} onClick={() => window.open("https://github.com/Three0Org/JS-SDK", '_blank').focus()}><GitHubIcon/>&nbsp;Visit Docs</Button>
+                <Button startIcon={<GitHubIcon/>} variant='outlined' sx={{marginLeft: "5%"}} 
+                    onClick={() => window.open("https://github.com/Three0Org/JS-SDK", '_blank').focus()}>Visit Docs</Button>
             </Box>
             <Box sx={ classes.buttonContainer}>
-                <Button color="error" onClick={handleDelete}><DeleteForeverIcon/>&nbsp;Delete Project</Button>
+                <Button color="error" onClick={handleDelete} startIcon={<DeleteForeverIcon/>}>Delete Project</Button>
             </Box>
         </>
     )
