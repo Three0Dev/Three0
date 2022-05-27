@@ -57,6 +57,10 @@ impl Three0Project {
         self.databases.insert(&database_details.address, &database_details);
     }
 
+    pub fn valid_database(&self, address: String) -> bool {
+        self.databases.contains_key(&address)
+    }
+
     pub fn delete_database(&mut self, database_name: String){
         self.databases.remove(&database_name);
     }
