@@ -41,7 +41,6 @@
     "@mui/lab": "^5.0.0-alpha.83",
     "@mui/material": "^5.8.0",
     "@pgrabovets/json-view": "^2.7.1",
-    "@types/react": "^18.0.0",
     "date-fns": "^2.25.0",
     "ipfs-core": "^0.14.1",
     "js-sha256": "^0.9.0",
@@ -50,12 +49,10 @@
     "orbit-db-identity-provider": "^0.4.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-is": "^17.0.2",
+    "react-reveal": "^1.2.2",
     "react-router-dom": "^6.2.1",
     "regenerator-runtime": "~0.13.5",
     "short-uuid": "^4.2.0",
-    "styletron-engine-atomic": "^1.4.8",
-    "styletron-react": "^6.0.2",
     "sweetalert2": "^11.4.8"
   },
   "resolutions": {
