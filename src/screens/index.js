@@ -6,6 +6,7 @@ import {NotFound} from './NotFound';
 import {Auth} from './Auth';
 import {ProjectsDash} from './ProjectsDash';
 import ProjectHome from './ProjectHome';
+import Landing from './Landing';
 
 export {
     Login,
@@ -15,5 +16,6 @@ export {
     Storage,
     NotFound,
     ProjectsDash,
-    ProjectHome
+    ProjectHome,
+    Landing
 }

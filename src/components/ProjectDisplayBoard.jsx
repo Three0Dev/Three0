@@ -21,7 +21,6 @@ const classes = {
     container: {
         width: "75%", margin: "2% auto",
         zIndex: 2, position: "relative",
-        top: "57px"
     },
     background: {
         position: "fixed",
