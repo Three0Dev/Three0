@@ -27,8 +27,6 @@ setup_alloc!();
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize, PanicOnDefault)]
 pub struct Three0Project {
-    name: String,
-    description: String,
     owner: AccountId,
     pid: String,
     databases: LookupMap<String, Database>,
@@ -39,12 +37,10 @@ pub struct Three0Project {
 impl Three0Project {
     
     #[init]
-    pub fn init(name: String, pid: String, description: String) -> Self {
+    pub fn init(pid: String) -> Self {
         Self {
-            name,
             owner: env::signer_account_id(),
             pid,
-            description,
             databases: LookupMap::new(b"databases".to_vec()),
             users: UnorderedMap::new(b"users".to_vec()),
         }
@@ -53,26 +49,23 @@ impl Three0Project {
     pub fn get_project(&self) -> ProjectReturnSchema {
         ProjectReturnSchema {
             pid: self.pid.clone(),
-            name: self.name.clone(),
             num_users: self.users.len() as u32,
-            description: self.description.clone()
         }
-    }
-
-    pub fn update_project(&mut self, project_name: String, project_description: String) {
-        self.name = project_name;
-        self.description = project_description;
     }
 
     pub fn add_database(&mut self, database_details: Database){
         self.databases.insert(&database_details.address, &database_details);
     }
 
+    pub fn valid_database(&self, address: String) -> bool {
+        self.databases.contains_key(&address)
+    }
+
     pub fn delete_database(&mut self, database_name: String){
         self.databases.remove(&database_name);
     }
 
-    pub fn get_users(&self, offset: usize, limit: usize) -> Vec<User> {
+    pub fn get_users(&self, offset: usize, limit: usize) -> AllSchema {
         let user_size = self.users.len();
         let new_skip:usize = if user_size as usize > offset + limit {
             (user_size as usize) - (offset + limit)
@@ -80,10 +73,15 @@ impl Three0Project {
             0
         };
 
-        self.users.values()
+        let users = self.users.values()
             .skip(new_skip)
             .take(limit)
-            .collect()
+            .collect::<Vec<User>>();
+
+        AllSchema {
+            entries: users,
+            num: user_size as u16,
+        }
     }
 
     pub fn user_action(&mut self, action: String) {

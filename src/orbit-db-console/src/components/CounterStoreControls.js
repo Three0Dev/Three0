@@ -50,8 +50,8 @@ export function CounterStoreControls () {
       onClick={handleAdd}
       variant="contained"
       sx={{marginLeft: 2}}
+      startIcon={<AddIcon />}
     >
-      <AddIcon />
       Increment
     </Button>
   </Box>

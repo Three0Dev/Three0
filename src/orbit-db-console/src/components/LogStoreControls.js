@@ -78,8 +78,8 @@ export function LogStoreControls () {
       onClick={handleAdd}
       variant="contained"
       sx={{marginLeft: 2}}
+      startIcon={<AddIcon />}
     >
-      <AddIcon />
       Add
     </Button>
   </Box>

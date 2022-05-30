@@ -1,6 +1,6 @@
 import React from "react";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import {Login, Dash, Auth, ProjectsDash, Storage, App, NotFound, ProjectHome} from "./screens";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {Login, Dash, Auth, ProjectsDash, Storage, Landing, App, NotFound, ProjectHome} from "./screens";
 import {DBView} from "../src/orbit-db-console/src/App";
 import {DatabaseView, DatabasesView, SearchResultsView} from '../src/orbit-db-console/src/views'
 import "./global.css";
@@ -48,7 +48,7 @@ export function Core() {
     <ThemeProvider theme={theme}>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Navigate to="/login" />}/>
+            <Route   path="/" element={<Landing />}/>
             <Route path="/login" element={<Login />} />
             <Route path="/app" element={<App />} >
               <Route index element={<ProjectsDash />} />

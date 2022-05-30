@@ -78,8 +78,8 @@ export function FeedStoreControls () {
         onClick={handleAdd}
         variant="contained"
         sx={{marginLeft: 2}}
+        startIcon={<AddIcon />}
       >
-        <AddIcon />
         Add
       </Button>
     </Box>

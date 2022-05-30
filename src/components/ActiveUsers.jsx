@@ -37,7 +37,10 @@ export function ActiveUsers(){
         setLoading(true);
 
         projectContract.get_users({offset: page, limit: 10})
-            .then(users => setProfiles(users))
+            .then(users => {
+                setProfiles(users.entries)
+                setUserNum(users.num)
+            })
             .catch(err => console.error(err)).finally(() => setLoading(false));
     }
 
@@ -56,7 +59,6 @@ export function ActiveUsers(){
     // Todo change users schema
     React.useEffect(() => {
         getUsers();
-        setUserNum(projectDetails.num_users);
     }, [projectDetails, page]);
 
     return (

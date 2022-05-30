@@ -29,7 +29,6 @@ export function DBView () {
   }
 
   const reducer = (state, action) => {
-    console.log(action)
     switch (action.type) {
       case actions.SYSTEMS.SET_ORBITDB:
         return {
@@ -92,10 +91,22 @@ export function DBView () {
     }
   }
 
+  /*
+  * DO NOT TOUCH
+  * This is allowing the database screen to load the UI properly even if the window is refreshed on it
+  * This is a workaround for the issue of the database screen not loading properly when the window is refreshed
+  * This needs to be fixed in the future
+  */
+  const [loadSystems, setLoadSystems] = React.useState(false)
+
+  React.useEffect(() => {
+      setLoadSystems(true)
+  }, [])
+
   return (
       <StateProvider initialState={initialState} reducer={reducer}>
         <Header />
-        <Systems />
+        {loadSystems && <Systems />}
         <Outlet />
       </StateProvider>
   )

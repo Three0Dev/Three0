@@ -23,20 +23,12 @@ export async function createNEARProject(){
     chain_type: blockchainNetwork,
     contract_address: pid,
   });
-
-  window.history.replaceState({}, document.title, "/app");
 }
 
 export async function deployNEARProjectContract(){
-  let {pid, name, description} = JSON.parse(localStorage.getItem("projectDetails"));
+  let {pid} = JSON.parse(localStorage.getItem("projectDetails"));
+  localStorage.removeItem("projectDetails");
   const account = await window.near.account(pid);
-  const status = await account.state();
-
-  if(status.code_hash != "11111111111111111111111111111111") {
-    localStorage.removeItem("projectDetails");
-    window.history.replaceState({}, document.title, "/app");
-    return;
-  }
 
   const contract = await fetch(NEAR_CONTRACT);
 
@@ -48,7 +40,7 @@ export async function deployNEARProjectContract(){
       transactions.deployContract(new Uint8Array(buf)),
       transactions.functionCall(
         "init",
-        {name, pid, description},
+        {pid},
         10000000000000,
         "0"
       )

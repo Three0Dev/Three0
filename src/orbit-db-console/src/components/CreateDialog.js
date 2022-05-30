@@ -91,7 +91,7 @@ export function CreateDialog ({ onCreate }) {
       </DialogContent>
       <DialogActions sx={classes.actionContainer}>
           <Button onClick={handleClose} color='error'>Cancel</Button>
-          <Button onClick={handleSubmit} color='primary' variant="contained"><AddIcon />Create</Button>
+          <Button onClick={handleSubmit} color='primary' variant="contained" startIcon={<AddIcon />}>Create</Button>
         </DialogActions>
     </Dialog>
   )

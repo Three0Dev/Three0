@@ -35,8 +35,6 @@ impl User {
 #[serde(crate = "near_sdk::serde")]
 pub struct ProjectReturnSchema {
     pub pid: String,
-    pub name: String,
-    pub description: String,
     pub num_users: u32,
 }
 
@@ -46,4 +44,11 @@ pub struct Database {
     pub address: String,
     pub name: String,
     pub db_type: String, 
+}
+
+#[derive(BorshDeserialize, BorshSerialize, Serialize)]
+#[serde(crate = "near_sdk::serde")]
+pub struct AllSchema {
+    pub num: u16,
+    pub entries: Vec<User>, 
 }

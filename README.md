@@ -1,7 +1,8 @@
 Three0
 ==================
+Three0 is a completely decentralized BaaS (Backed-As-A-Service) providing easy to use tools to build Web3 dApps through a Web2 lens. Three0 offers 4 main services - Database, Authentication, Storage, and Hosting.
 
-This [React] app was initialized with [create-near-app]
+Currently this project contains the Database and Authentication services and will soon be implementing the Storage and Hosting services.
 
 
 Quick Start
@@ -21,6 +22,8 @@ Go ahead and play with the app and the code. As you make code changes, the app w
 
 Exploring The Code
 ==================
+
+This [React] app was initialized with [create-near-app]
 
 1. The "backend" code lives in the `/contract` folder. See the README there for
    more info.

@@ -42,6 +42,7 @@ export function Navigation() {
         navigate(url);
     }, [selectedIndex]);
 
+    // TODO Indicate selected tab
     return (
         <Box sx={{bgcolor: "primary.main"}}>
             <List component="nav">
