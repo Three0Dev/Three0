@@ -1,6 +1,6 @@
 import React from "react";
 import {AppBar, Toolbar, Typography, Box, Button} from "@mui/material";
-import UpdatedLogo from '../assets/UpdatedLogo.png';
+import UpdatedLogo from '../assets/logos/UpdatedLogo.png';
 import { Link } from "react-router-dom";
 import Wave from '../assets/wave.svg';
 import { useTheme } from "@emotion/react";

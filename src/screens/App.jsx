@@ -1,5 +1,5 @@
 import { Outlet, useNavigate, Link } from "react-router-dom";
-import UpdatedLogo from '../assets/UpdatedLogo.png';
+import UpdatedLogo from '../assets/logos/UpdatedLogo.png';
 import {IconButton, AppBar, Toolbar, Typography} from "@mui/material";
 import LogoutIcon from '@mui/icons-material/Logout';
 import { logout } from "../utils";

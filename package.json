@@ -1,6 +1,6 @@
 {
   "name": "three0",
-  "version": "0.1.0",
+  "version": "0.1.0-alpha",
   "license": "GPL-3.0",
   "description": "Three0 Contract and Dev Console Repository",
   "scripts": {
@@ -15,7 +15,7 @@
     "prestart": "npm run build:contract:debug && npm run dev:deploy:contract",
     "start": "npm run front",
     "front": "echo The app is starting! It will automatically open in your browser when ready && env-cmd -f ./neardev/dev-account.env parcel src/index.html --open",
-    "dev": "nodemon --watch contract -e ts --exec \"npm run start\"",
+    "dev": "nodemon --watch contract -e rs --exec \"npm run start\"",
     "test:contract": "npm run build:contract:debug && cd contract && cargo test -- --nocapture",
     "test": "npm run build:contract:debug && cd contract && cargo test -- --nocapture && cd .. && jest test --runInBand"
   },

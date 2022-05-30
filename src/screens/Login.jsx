@@ -1,6 +1,6 @@
 import React from "react";
 import {Button, Box, Typography} from "@mui/material"
-import UpdatedLogo from '../assets/updatedLogo.png'
+import UpdatedLogo from '../assets/logos/UpdatedLogo.png'
 import {login} from '../utils'
 
 export function Login() {
