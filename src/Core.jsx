@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import {Login, Dash, Auth, ProjectsDash, Storage, Landing, App, NotFound, ProjectHome} from "./screens";
+import {Login, Dash, Auth, ProjectsDash, Storage, Landing, App, NotFound, ProjectHome, Hosting} from "./screens";
 import {DBView} from "../src/orbit-db-console/src/App";
 import {DatabaseView, DatabasesView, SearchResultsView} from '../src/orbit-db-console/src/views'
 import "./global.css";
@@ -61,6 +61,7 @@ export function Core() {
                   <Route path='search' element={<SearchResultsView />} />
                 </Route>
                 <Route path="storage" element={<Storage />} />
+                <Route path= "hosting" element={<Hosting />} />
               </Route>
             </Route>
             <Route path="*" element={<NotFound />} />

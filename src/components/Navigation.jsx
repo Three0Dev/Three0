@@ -1,17 +1,18 @@
 import {useParams, useNavigate, useLocation} from "react-router-dom";
-import {useEffect } from "react";
-import React from "react";
+import React, {useEffect} from "react";
+import {Box, List, ListItemButton, ListItemIcon, ListItemText} from '@mui/material'
 import FolderIcon from '@mui/icons-material/Folder';
 import StorageIcon from '@mui/icons-material/Storage';
+import PublicIcon from '@mui/icons-material/Public';
 import KeyIcon from '@mui/icons-material/Key';
-import {Box, List, ListItemButton, ListItemIcon, ListItemText} from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home';
+
 
 export function Navigation() {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
 
-    const tabs = ['Home', 'Authentication', 'Database',  'Storage']
-    const tabIcon = [<HomeIcon />,<KeyIcon />, <StorageIcon />, <FolderIcon />]
+    const tabs = ['Home', 'Authentication', 'Database',  'Storage', 'Hosting']
+    const tabIcon = [<HomeIcon />,<KeyIcon />, <StorageIcon />, <FolderIcon />, <PublicIcon />]
 
     let navigate = useNavigate();
     let {pid} = useParams();
@@ -35,6 +36,9 @@ export function Navigation() {
                 break;
             case 3:
                 url += `/storage`;
+                break;
+            case 4:
+                url += `/hosting`;
                 break;
             default:
                 break;

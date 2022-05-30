@@ -7,6 +7,7 @@ import {Auth} from './Auth';
 import {ProjectsDash} from './ProjectsDash';
 import ProjectHome from './ProjectHome';
 import Landing from './Landing';
+import Hosting from './Hosting';
 
 export {
     Login,
@@ -17,5 +18,6 @@ export {
     NotFound,
     ProjectsDash,
     ProjectHome,
-    Landing
+    Landing,
+    Hosting
 }
