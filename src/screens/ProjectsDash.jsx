@@ -55,7 +55,7 @@ export function ProjectsDash() {
         }
     
         const chainType = document.getElementById('blockchain-type').value
-        return {pid, chainType}
+        return [pid, chainType]
     
       }
     })
