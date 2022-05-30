@@ -6,7 +6,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import wave from '../assets/wave.svg';
 import Backdrop from "../components/templates/Backdrop";
 import Swal from "sweetalert2";
-import {createNEARAccount, createNEARProject, checkAccountStatus} from "../services/NEAR";
+import {createNEARAccount, checkAccountStatus} from "../services/NEAR";
 
 const short = require('short-uuid');
 
@@ -63,14 +63,13 @@ export function ProjectsDash() {
     if (formValues) {
       localStorage.setItem("projectDetails", JSON.stringify({pid: formValues[0], blockchainNetwork: formValues[1]}));
       setLoading(true);
-      await createNEARProject();
       createNEARAccount();
     }
   }
 
   return (
     <>
-      <Backdrop loding={loading} />
+      <Backdrop loading={loading} />
       <ProjectDisplayBoard />
       <Fab
         sx={{
@@ -80,7 +79,7 @@ export function ProjectsDash() {
         }}
         color="primary"
         aria-label="create-project" 
-        onClick={() => showProjectSwal()}>
+        onClick={showProjectSwal}>
           <AddIcon/>
       </Fab>
       <img src={wave} style={{position: "fixed", "bottom": 0}}/>
