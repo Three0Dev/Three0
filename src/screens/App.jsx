@@ -37,6 +37,8 @@ export function App() {
   return (
     <>
       <TopBar />
+      {/* DO NOT REMOVE - THIS EXISTS FOR SPACING AS RECOMMENDED BY MATERIAL UI */}
+      <Toolbar />
       <Outlet />
     </>
   );

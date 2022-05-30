@@ -1,4 +1,4 @@
-import { keyStores, transactions, KeyPair, utils } from "near-api-js";
+import { keyStores, transactions, KeyPair, utils, providers } from "near-api-js";
 import NEAR_CONTRACT from 'url:../contractWasms/near.wasm';
 import { nearConfig } from "../utils";
 
@@ -54,4 +54,31 @@ export async function deployNEARProjectContract(){
       )
     ]
   });
+}
+
+export async function deleteNEARProject(pid){
+  try{
+    const canDelete = await window.contract.delete_project({contract_address: pid});
+    if(canDelete){
+      const account = await window.near.account(pid);
+      await account.deleteAccount(window.accountId);
+      return true;
+    }
+  } catch(e){
+    console.error(e);
+  }
+  return false;
+}
+
+export async function checkAccountStatus(hash){
+  const provider = new providers.JsonRpcProvider(
+    `https://archival-rpc.${nearConfig.networkId}.near.org`
+  );
+  
+  const result = await provider.txStatus(hash, window.accountId)
+  console.log(result);
+  if(result.transaction.actions.includes("CreateAccount") && result.transaction_outcome.outcome.status.SuccessReceiptId){
+    return deployNEARProjectContract()
+  }
+  return Promise.resolve();
 }

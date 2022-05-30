@@ -6,13 +6,16 @@ import {DatabaseView, DatabasesView, SearchResultsView} from '../src/orbit-db-co
 import "./global.css";
 import { createTheme, ThemeProvider, StyledEngineProvider } from "@mui/material";
 
+const PRIMARY_COLOR = '#6247aa'
+const SECONDARY_COLOR = '#81C784'
+
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#6247aa'
+      main: PRIMARY_COLOR
     },
     secondary: {
-      main: '#81C784'
+      main: SECONDARY_COLOR
     },
   },
   components: {
@@ -31,7 +34,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           "selected": {
-            "backgroundColor": "#6247aa"
+            "backgroundColor": PRIMARY_COLOR
           }
         }
     }
