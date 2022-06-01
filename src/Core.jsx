@@ -4,7 +4,7 @@ import {Login, Dash, Auth, ProjectsDash, Storage, Landing, App, NotFound, Projec
 import {DBView} from "../src/orbit-db-console/src/App";
 import {DatabaseView, DatabasesView, SearchResultsView} from '../src/orbit-db-console/src/views'
 import "./global.css";
-import { createTheme, ThemeProvider, StyledEngineProvider } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material";
 
 const PRIMARY_COLOR = '#6247aa'
 const SECONDARY_COLOR = '#81C784'
@@ -44,30 +44,28 @@ const theme = createTheme({
 
 export function Core() {
   return (
-    <StyledEngineProvider injectFirst>
-    <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <Routes>
-            <Route   path="/" element={<Landing />}/>
-            <Route path="/login" element={<Login />} />
-            <Route path="/app" element={<App />} >
-              <Route index element={<ProjectsDash />} />
-              <Route path=":pid" element={<Dash />}>
-                <Route index element={<ProjectHome />}/>
-                <Route path="auth" element={<Auth />} />
-                <Route path="database" element={<DBView />}>
-                  <Route index element={<DatabasesView />} />
-                  <Route path='orbitdb/:programName/:dbName' element={<DatabaseView />} />
-                  <Route path='search' element={<SearchResultsView />} />
+      <ThemeProvider theme={theme}>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Landing />}/>
+              <Route path="/login" element={<Login />} />
+              <Route path="/app" element={<App />} >
+                <Route index element={<ProjectsDash />} />
+                <Route path=":pid" element={<Dash />}>
+                  <Route index element={<ProjectHome />}/>
+                  <Route path="auth" element={<Auth />} />
+                  <Route path="database" element={<DBView />}>
+                    <Route index element={<DatabasesView />} />
+                    <Route path='orbitdb/:programName/:dbName' element={<DatabaseView />} />
+                    <Route path='search' element={<SearchResultsView />} />
+                  </Route>
+                  <Route path="storage" element={<Storage />} />
+                  <Route path= "hosting" element={<Hosting />} />
                 </Route>
-                <Route path="storage" element={<Storage />} />
-                <Route path= "hosting" element={<Hosting />} />
               </Route>
-            </Route>
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-    </ThemeProvider>
-    </StyledEngineProvider>  
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+      </ThemeProvider>
   );
 }
