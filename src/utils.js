@@ -1,6 +1,6 @@
 import { connect, Contract, keyStores, WalletConnection, transactions, KeyPair, utils } from "near-api-js";
 import getConfig from "./config";
-import NEAR_CONTRACT from 'url:./contractWasms/near.wasm';
+import NEAR_CONTRACT from 'url:./contract-wasms/near.wasm';
 
 export const nearConfig = getConfig(process.env.NODE_ENV || "development");
 

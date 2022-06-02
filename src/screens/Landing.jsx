@@ -4,7 +4,6 @@ import UpdatedLogo from '../assets/logos/UpdatedLogo.png';
 import { Link } from "react-router-dom";
 import Wave from '../assets/wave.svg';
 import { useTheme } from "@emotion/react";
-import Fade from 'react-reveal/Fade';
 
 export default function Landing(){
     const theme = useTheme()
@@ -35,7 +34,6 @@ export default function Landing(){
 
                 <img src={Wave} width="100%" />
             </Box>
-            <Fade big>
                 <Box sx={{textAlign: "center", padding: 5}}>
                     <Typography variant="h3" fontWeight='bold' color={theme.palette.primary.light}>What is Three0?</Typography>
                     <Typography>
@@ -45,7 +43,6 @@ export default function Landing(){
                         The power of web3 with the simplicity of web2
                     </Typography>
                 </Box>
-            </Fade>
         </>
     )
 }
