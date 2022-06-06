@@ -10,7 +10,7 @@
     "build:web": "parcel build src/index.html --public-url ./",
     "dev:deploy:contract": "near dev-deploy",
     "deploy:contract": "near deploy",
-    "deploy:pages": "gh-pages -d dist/",
+    "deploy:pages": "echo 'app.three0dev.com' > ./dist/CNAME && gh-pages -d dist/",
     "deploy": "npm run build && npm run deploy:contract && npm run deploy:pages",
     "prestart": "npm run build:contract:debug && npm run dev:deploy:contract",
     "start": "npm run front",
@@ -30,7 +30,7 @@
     "jest-environment-node": "~26.6.2",
     "near-cli": "^3.3.1",
     "nodemon": "~2.0.3",
-    "parcel": "^2.5.0",
+    "parcel": "^2.6.0",
     "process": "^0.11.10",
     "react-test-renderer": "~17.0.1",
     "shelljs": "~0.8.4"
