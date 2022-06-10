@@ -1,71 +1,76 @@
 import React from 'react'
-import {Typography, CircularProgress, Box } from '@mui/material'
+import { Typography, CircularProgress, Box } from '@mui/material'
 
 import { useLocation, Navigate, useParams } from 'react-router-dom'
 import { useStateValue, actions, loadingState } from '../state'
 
 import { getAllDatabases, removeDatabase } from '../database'
 
-import {ProgramList} from '../components/DatabaseList'
+import { ProgramList } from '../components/DatabaseList'
 
-
-function useQuery () {
-  return new URLSearchParams(useLocation().search)
+function useQuery() {
+	return new URLSearchParams(useLocation().search)
 }
 
-export function SearchResultsView () {
-  const [appState, dispatch] = useStateValue()
+export function SearchResultsView() {
+	const [appState, dispatch] = useStateValue()
 
-  const query = useQuery().get('q')
-  const queryOk = query.length >= 1
+	const query = useQuery().get('q')
+	const queryOk = query.length >= 1
 
-  if (!queryOk) return <Navigate to='/' />
-  
-  let programs = appState.programs
-  if (query) {
-    programs = programs.filter(({ payload: { value: { name, type, address } } }) =>
-      name.includes(query) || type.includes(query) || address.toString().includes(query)
-    )
-  }
+	if (!queryOk) return <Navigate to="/" />
 
-  let params = useParams()
+	let { programs } = appState
+	if (query) {
+		programs = programs.filter(
+			({
+				payload: {
+					value: { name, type, address },
+				},
+			}) =>
+				name.includes(query) ||
+				type.includes(query) ||
+				address.toString().includes(query)
+		)
+	}
 
-  async function fetchDatabases () {
-    dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: true })
-    const programs = await getAllDatabases(params.pid)
-    dispatch({ type: actions.PROGRAMS.SET_PROGRAMS, programs: programs.reverse() })
-    dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: false })
-    return programs
-  }
+	const params = useParams()
 
-  const handleRemoveDatabase = (hash, program) => {
-    console.log("Remove database...", hash, program)
-    removeDatabase(hash).then(() => {
-      console.log("Removed")
-      fetchDatabases().then((data) => {
-        console.log("Loaded programs", data)
-      })
-    })
-  }
+	async function fetchDatabases() {
+		dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: true })
+		const programs = await getAllDatabases(params.pid)
+		dispatch({
+			type: actions.PROGRAMS.SET_PROGRAMS,
+			programs: programs.reverse(),
+		})
+		dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: false })
+		return programs
+	}
 
-  return (
-    <Box display='flex' justifyContent='center'>
-      <Box
-        flex='1'
-        elevation={1}
-        background='white'
-        margin={6}
-        padding={4}
-      >
-        <Box borderBottom='default'>
-          <Typography variant='body1' align='left'>
-            {programs.length} programs found
-          </Typography>
-        </Box>
-        {programs !== loadingState
-          ? <ProgramList programs={programs} onRemove={handleRemoveDatabase} />
-          : <CircularProgress marginX='auto' marginY={120} />}
-      </Box>
-    </Box>
-  )
+	const handleRemoveDatabase = (hash, program) => {
+		console.log('Remove database...', hash, program)
+		removeDatabase(hash).then(() => {
+			console.log('Removed')
+			fetchDatabases().then((data) => {
+				console.log('Loaded programs', data)
+			})
+		})
+	}
+
+	return (
+		<Box display="flex" justifyContent="center">
+			<Box flex="1" elevation={1} background="white" margin={6} padding={4}>
+				<Box borderBottom="default">
+					<Typography variant="body1" align="left">
+						{programs.length} programs found
+					</Typography>
+				</Box>
+				{programs !== loadingState ? (
+					<ProgramList programs={programs} onRemove={handleRemoveDatabase} />
+				) : (
+					<CircularProgress marginX="auto" marginY={120} />
+				)}
+			</Box>
+		</Box>
+	)
 }

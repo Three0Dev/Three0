@@ -17,7 +17,9 @@
     "front": "echo The app is starting! It will automatically open in your browser when ready && env-cmd -f ./neardev/dev-account.env parcel src/index.html --open",
     "dev": "nodemon --watch contract -e rs --exec \"npm run start\"",
     "test:contract": "npm run build:contract:debug && cd contract && cargo test -- --nocapture",
-    "test": "npm run build:contract:debug && cd contract && cargo test -- --nocapture && cd .. && jest test --runInBand"
+    "test": "npm run build:contract:debug && cd contract && cargo test -- --nocapture && cd .. && jest test --runInBand",
+    "lint": "eslint 'src/**/*.{js,jsx}' --no-error-on-unmatched-pattern",
+    "lint:fix": "eslint 'src/**/*.{js,jsx}' --no-error-on-unmatched-pattern --fix"
   },
   "devDependencies": {
     "@babel/core": "~7.14.0",
@@ -25,12 +27,21 @@
     "@babel/preset-react": "~7.13.13",
     "babel-jest": "~26.6.2",
     "env-cmd": "~10.1.0",
+    "eslint": "^8.17.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.30.0",
+    "eslint-plugin-react-hooks": "^4.5.0",
     "gh-pages": "^4.0.0",
     "jest": "~26.6.2",
     "jest-environment-node": "~26.6.2",
     "near-cli": "^3.3.1",
     "nodemon": "~2.0.3",
     "parcel": "^2.6.0",
+    "prettier": "^2.6.2",
     "process": "^0.11.10",
     "react-test-renderer": "~17.0.1",
     "shelljs": "~0.8.4"

@@ -1,8 +1,6 @@
-import React from 'react';
-import { ActiveUsers } from '../components/ActiveUsers';
+import React from 'react'
+import ActiveUsers from '../components/ActiveUsers'
 
-export function Auth() {
-  return (
-      <ActiveUsers/>
-  );
+export default function Auth() {
+	return <ActiveUsers />
 }

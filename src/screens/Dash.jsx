@@ -1,65 +1,65 @@
-import React from "react";
-import { Navigation } from "../components/Navigation";
-import { Outlet, useParams, useNavigate } from "react-router-dom";
-import { Box } from "@mui/material";
-import {ProjectDetailsContext} from '../ProjectDetailsContext'
-import {Contract} from 'near-api-js';
+import React from 'react'
+import { Outlet, useParams, useNavigate } from 'react-router-dom'
+import { Box } from '@mui/material'
+import { Contract } from 'near-api-js'
+import { ProjectDetailsContext } from '../ProjectDetailsContext'
+import Navigation from '../components/Navigation'
 
-export function Dash() {
-  let {pid} = useParams();
-  let navigate = useNavigate();
+export default function Dash() {
+	const { pid } = useParams()
+	const navigate = useNavigate()
 
-  const [projectDetails, setProjectDetails] = React.useState({});
-  const [projectContract, setContract] = React.useState(null);
+	const [projectDetails, setProjectDetails] = React.useState({})
+	const [projectContract, setContract] = React.useState(null)
 
-  async function isValidProject(){
-    try{
-      const account = await window.near.account(pid);
-      const status = await account.state();
-    
-      return status.code_hash != "11111111111111111111111111111111";
-    } catch(e) {
-      console.error(e);
-      return false;
-    }
-  }
+	async function isValidProject() {
+		try {
+			const account = await window.near.account(pid)
+			const status = await account.state()
 
-  async function getProjectDetails(){
-    const account = await window.near.account(pid);
+			return status.code_hash !== '11111111111111111111111111111111'
+		} catch (e) {
+			console.error(e)
+			return false
+		}
+	}
 
-    const projectContractInit = new Contract(
-      account,
-      pid,
-      {
-        viewMethods: ["get_project", "get_users", "get_user"],
-        changeMethods: ["update_project", "add_database", "delete_database"],
-      }
-    );
+	async function getProjectDetails() {
+		const account = await window.near.account(pid)
 
-    const details = await projectContractInit.get_project({});
-    setContract(projectContractInit);
-    setProjectDetails(details);
-  }
+		const projectContractInit = new Contract(account, pid, {
+			viewMethods: ['get_project', 'get_users', 'get_user'],
+			changeMethods: ['update_project', 'add_database', 'delete_database'],
+		})
 
-  React.useEffect(() => {
-    isValidProject().then(isValid => {
-      if(isValid){
-        getProjectDetails();
-      } else {
-        navigate('/app');
-      }
-    });
-  }, []);
+		const details = await projectContractInit.get_project({})
+		setContract(projectContractInit)
+		setProjectDetails(details)
+	}
 
+	React.useEffect(() => {
+		isValidProject().then((isValid) => {
+			if (isValid) {
+				getProjectDetails()
+			} else {
+				navigate('/')
+			}
+		})
+	}, [])
 
-  return (
-    <Box sx={{display: "flex", height:"100%", position: "relative"}}>
-      <Navigation />
-      <ProjectDetailsContext.Provider value={{projectDetails, projectContract}}>
-        <div style={{width: "98%", padding: "2% 1%"}}>
-          <Outlet />
-        </div>
-      </ProjectDetailsContext.Provider>
-    </Box>
-  );
+	const projectProviderValue = React.useMemo(
+		() => ({ projectDetails, projectContract }),
+		[projectDetails, projectContract]
+	)
+
+	return (
+		<Box sx={{ display: 'flex', height: '100%', position: 'relative' }}>
+			<Navigation />
+			<ProjectDetailsContext.Provider value={projectProviderValue}>
+				<div style={{ width: '98%', padding: '2% 1%' }}>
+					<Outlet />
+				</div>
+			</ProjectDetailsContext.Provider>
+		</Box>
+	)
 }

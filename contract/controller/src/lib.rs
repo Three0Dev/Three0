@@ -79,14 +79,16 @@ impl Three0 {
 
         return match projects {
             Some(projects) => {
-                let ending_index = if offset + limit + 1 > projects.len() {
-                    projects.len()
-                } else {
-                    offset + limit + 1
-                };
+                let entries = projects
+                    .iter()
+                    .rev()
+                    .skip(offset)
+                    .take(limit)
+                    .map(|x| x.clone())
+                    .collect::<Vec<ProjectRef>>();
 
                 AllSchema {
-                    entries: (&projects[offset..ending_index]).to_vec(),
+                    entries: entries,
                     num: projects.len() as u16,
                 }
             },

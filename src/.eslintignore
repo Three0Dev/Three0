@@ -1,0 +1,8 @@
+src/assets/**
+src/contract-wasms/**
+src/__mocks__/**
+node_modules/**
+.parcel-cache/**
+dist/**
+neardev/**
+.vscode/**
