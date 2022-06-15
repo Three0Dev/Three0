@@ -64,7 +64,8 @@
     "react-router-dom": "^6.2.1",
     "regenerator-runtime": "~0.13.5",
     "short-uuid": "^4.2.0",
-    "sweetalert2": "^11.4.8"
+    "sweetalert2": "^11.4.8",
+    "sweetalert2-react-content": "^5.0.0"
   },
   "resolutions": {
     "@babel/preset-env": "7.13.8"

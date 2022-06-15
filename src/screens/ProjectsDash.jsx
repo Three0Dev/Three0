@@ -3,11 +3,13 @@ import AddIcon from '@mui/icons-material/Add'
 import { Fab, useTheme } from '@mui/material'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 import * as short from 'short-uuid'
 import ProjectDisplayBoard from '../components/ProjectDisplayBoard'
 import wave from '../assets/wave.svg'
 import Backdrop from '../components/templates/Backdrop'
 import { createNEARAccount, checkAccountStatus } from '../services/NEAR'
+import CreateProjectDialog from '../components/CreateProjectDialog'
 
 export default function ProjectsDash() {
 	const [loading, setLoading] = React.useState(false)
@@ -15,6 +17,8 @@ export default function ProjectsDash() {
 	const [params] = useSearchParams()
 	const navigate = useNavigate()
 	const theme = useTheme()
+
+	const MySwal = withReactContent(Swal)
 
 	function handleCreateQueryParams() {
 		const hash = params.get('transactionHashes')
@@ -29,14 +33,9 @@ export default function ProjectsDash() {
 	async function showProjectSwal() {
 		const uuid = short.generate().toLowerCase()
 
-		const { value: formValues } = await Swal.fire({
+		const { value: formValues } = await MySwal.fire({
 			title: 'Create Project',
-			html: `<input id="project-name" class="swal2-input" placeholder="Three0">
-        <select class="swal2-input" id="blockchain-type" placeholder="Blockchain">
-          <optgroup label="NEAR">
-            <option value="NEAR_TESTNET">NEAR Testnet</option>
-          </optgroup>
-        </select>`,
+			html: <CreateProjectDialog />,
 			focusConfirm: false,
 			confirmButtonColor: theme.palette.secondary.dark,
 			preConfirm: () => {

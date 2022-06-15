@@ -14,8 +14,6 @@ export const useStateValue = () => useContext(StateContext)
 
 export const actions = {
 	DB: {
-		OPEN_CREATEDB_DIALOG: 'OPEN_CREATEDB_DIALOG',
-		CLOSE_CREATEDB_DIALOG: 'CLOSE_CREATEDB_DIALOG',
 		OPEN_ADDDB_DIALOG: 'OPEN_ADDDB_DIALOG',
 		CLOSE_ADDDB_DIALOG: 'CLOSE_ADDDB_DIALOG',
 		SET_DB: 'SET_DB',

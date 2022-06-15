@@ -1,8 +1,9 @@
 import React from 'react'
 import Swal from 'sweetalert2'
-import { Typography, Box, CircularProgress } from '@mui/material'
+import { Typography, Box, CircularProgress, useTheme } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import Fab from '@mui/material/Fab'
+import withReactContent from 'sweetalert2-react-content'
 import { useStateValue, actions } from '../state'
 import { getAllDatabases, removeDatabase, createDatabase } from '../database'
 import { ProgramList } from '../components/DatabaseList'
@@ -13,10 +14,15 @@ import Backdrop from '../../../components/templates/Backdrop'
 export default function DatabasesView() {
 	const [appState, dispatch] = useStateValue()
 	const [loading, setLoading] = React.useState(false)
+	const [newDBInfo, setNewDBInfo] = React.useState({})
+
+	const theme = useTheme()
 
 	const { projectContract, projectDetails } = React.useContext(
 		ProjectDetailsContext
 	)
+
+	const MySwal = withReactContent(Swal)
 
 	async function fetchDatabases() {
 		dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: true })
@@ -27,10 +33,6 @@ export default function DatabasesView() {
 		})
 		dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: false })
 		return programs
-	}
-
-	const handleCreateDatabase = () => {
-		dispatch({ type: actions.DB.OPEN_CREATEDB_DIALOG })
 	}
 
 	const createDB = (args) => {
@@ -51,6 +53,7 @@ export default function DatabasesView() {
 					title: 'Database Created!',
 					text: 'You can now access the database',
 					timer: 1200,
+					toast: true,
 				})
 			})
 			.catch((err) => {
@@ -59,9 +62,24 @@ export default function DatabasesView() {
 					title: 'Oops...',
 					text: 'Something went wrong!',
 					timer: 1200,
+					toast: true,
+					icon: 'error',
 				})
 			})
 			.finally(() => setLoading(false))
+	}
+
+	const handleCreateDatabase = () => {
+		MySwal.fire({
+			title: 'Create a new database',
+			html: <CreateDialog onCreate={setNewDBInfo} />,
+			focusConfirm: false,
+			confirmButtonColor: theme.palette.secondary.dark,
+		}).then(({ isConfirmed }) => {
+			if (isConfirmed) {
+				createDB(newDBInfo)
+			}
+		})
 	}
 
 	const handleRemoveDatabase = (hash, program) => {
@@ -76,6 +94,7 @@ export default function DatabasesView() {
 				Swal.fire({
 					title: 'Database Deleted!',
 					timer: 1200,
+					toast: true,
 				})
 			})
 			.catch((err) => {
@@ -84,6 +103,8 @@ export default function DatabasesView() {
 					title: 'Oops...',
 					text: 'Something went wrong!',
 					timer: 1200,
+					toast: true,
+					icon: 'error',
 				})
 			})
 			.finally(() => setLoading(false))
@@ -91,7 +112,6 @@ export default function DatabasesView() {
 
 	return (
 		<>
-			<CreateDialog onCreate={createDB} />
 			<Box display="flex" justifyContent="center" overflow="auto">
 				<Box
 					flex="1"
