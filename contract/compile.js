@@ -49,7 +49,7 @@ if (code === 0 && calledFromDir !== __dirname) {
   //fixes #831: copy-update instead of linking .- sometimes sh.ln does not work on Windows
   sh.cp('-u',outFile,link)
 
-  const frontEndDir = `${calledFromDir}/src/contractWasms`
+  const frontEndDir = `${calledFromDir}/src/contract-wasms`
   const frontEndLink = `${frontEndDir}/near.wasm`
   const projectPackageName = getName("project")
 
