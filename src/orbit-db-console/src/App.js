@@ -58,16 +58,6 @@ export function DBView() {
 					db: action.db,
 					entries: action.entries,
 				}
-			case actions.DB.OPEN_CREATEDB_DIALOG:
-				return {
-					...state,
-					createDBDialogOpen: true,
-				}
-			case actions.DB.CLOSE_CREATEDB_DIALOG:
-				return {
-					...state,
-					createDBDialogOpen: false,
-				}
 			case actions.DB.OPEN_ADDDB_DIALOG:
 				return {
 					...state,
