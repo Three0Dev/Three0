@@ -14,7 +14,7 @@ function TopBar() {
 		>
 			<Toolbar>
 				<Link to="/">
-					<img width="50px" src={UpdatedLogo} alt="Logo" />
+					<img width="75" src={UpdatedLogo} alt="Logo" />
 				</Link>
 				<Typography fontWeight="bold" variant="h5" color="primary">
 					Three0

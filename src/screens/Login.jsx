@@ -28,14 +28,11 @@ export default function Login() {
 			top: '10%',
 		},
 		logo: {
-			width: 150,
-			height: 'auto',
-			margin: '0 auto',
-			display: 'block',
-			marginBottom: '15%',
+			width: '100%',
 		},
 		heading: {
 			textAlign: 'center',
+			fontWeight: 'bold',
 		},
 		button: {
 			position: 'relative',
@@ -49,7 +46,7 @@ export default function Login() {
 		<Box sx={styles.container}>
 			<Box sx={styles.loginContainer}>
 				<img alt="logo" src={UpdatedLogo} style={styles.logo} />
-				<Typography color="primary" variant="h5" sx={styles.heading}>
+				<Typography color="primary" variant="h3" sx={styles.heading}>
 					Three0
 				</Typography>
 				<Button sx={styles.button} variant="contained" onClick={login}>
