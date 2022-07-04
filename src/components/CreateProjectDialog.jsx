@@ -1,7 +1,6 @@
 import React from 'react'
 import {
 	TextField,
-	MenuItem,
 	Select,
 	InputLabel,
 	FormControl,
@@ -21,12 +20,13 @@ export default function CreateProjectDialog() {
 			<FormControl fullWidth sx={{ margin: '2% 0' }}>
 				<InputLabel id="blockchain-type">Type:</InputLabel>
 				<Select
+					native
 					variant="outlined"
 					label="Type:"
 					labelId="blockchain-type"
-					id="blockchain-type"
+					id="blockchain-type-selector"
 				>
-					<MenuItem value="NEAR_TESTNET">NEAR Testnet</MenuItem>
+					<option value="NEAR_TESTNET">NEAR Testnet</option>
 				</Select>
 			</FormControl>
 		</>

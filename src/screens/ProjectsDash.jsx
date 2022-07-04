@@ -49,7 +49,10 @@ export default function ProjectsDash() {
 					Swal.showValidationMessage('Invalid Project Name')
 				}
 
-				const chainType = document.getElementById('blockchain-type').value
+				const chainTypeElement = document.getElementById(
+					'blockchain-type-selector'
+				)
+				const chainType = chainTypeElement[chainTypeElement.selectedIndex].value
 				return [pid, chainType]
 			},
 		})
