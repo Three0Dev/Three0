@@ -70,11 +70,13 @@ export async function checkAccountStatus(hash) {
 
 	try {
 		const result = await provider.txStatus(hash, window.accountId)
+
 		if (
 			result.transaction.actions.includes('CreateAccount') &&
 			result.transaction_outcome.outcome.status.SuccessReceiptId
 		) {
-			await Promise.all([deployNEARProjectContract, createNEARProject])
+			await createNEARProject()
+			await deployNEARProjectContract()
 		}
 
 		return Promise.resolve(result.transaction.receiver_id)
