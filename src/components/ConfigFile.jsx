@@ -18,9 +18,17 @@ const classes = {
 	},
 }
 
+// TODO Make configCrendentials more generic for other networks
+
+const getProjectId = (pid) => pid.substring(0, pid.indexOf('.'))
+
 function ConfigFileInner() {
 	const params = useParams()
-	const configCredentials = `{\n"contractName": ${params.pid}\n}`
+	const configCredentials = `{\n"contractName": "${
+		params.pid
+	}",\n"projectId": "${getProjectId(
+		params.pid
+	)}",\n"chainType": "NEAR_TESTNET"\n}`
 	const copyConfigText = `const config = ${configCredentials};`
 	function copyConfig() {
 		navigator.clipboard.writeText(copyConfigText)
@@ -58,10 +66,10 @@ function ConfigFileInner() {
 				{copyConfigText}
 			</Paper>
 			<ButtonGroup color="primary">
-				<Button height={24} onClick={() => downloadConfig}>
+				<Button height={24} onClick={() => downloadConfig()}>
 					Download
 				</Button>
-				<Button height={24} onClick={() => copyConfig}>
+				<Button height={24} onClick={() => copyConfig()}>
 					Copy
 				</Button>
 			</ButtonGroup>

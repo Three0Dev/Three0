@@ -10,10 +10,10 @@ import {
 	CardContent,
 	CardMedia,
 } from '@mui/material'
-import { formatDistanceToNow } from 'date-fns'
 import Search from './templates/Search'
 import Backdrop from './templates/Backdrop'
 import NearIcon from '../assets/near_icon_nm.svg'
+import { getContractRelativeDate } from '../utils'
 
 const LIMIT_NUM = 4
 
@@ -141,8 +141,7 @@ export default function ProjectDisplayBoard() {
 									color="text.secondary"
 									component="div"
 								>
-									{formatDistanceToNow(new Date(project.created_at / 1000000))}{' '}
-									ago
+									{`${getContractRelativeDate(project.created_at)} ago`}
 								</Typography>
 							</CardContent>
 						</Box>

@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-	TextField,
-	Select,
-	InputLabel,
-	FormControl,
-} from '@mui/material'
+import { TextField, Select, InputLabel, FormControl } from '@mui/material'
 
 export default function CreateProjectDialog() {
 	return (

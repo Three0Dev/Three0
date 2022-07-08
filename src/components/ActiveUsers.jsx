@@ -23,6 +23,7 @@ import {
 	TableRow,
 } from './templates/Table'
 import nousers from '../assets/nousers.svg'
+import { getContractRelativeDate } from '../utils'
 
 const classes = {
 	root: {
@@ -48,7 +49,7 @@ export default function ActiveUsers() {
 	const [loading, setLoading] = React.useState(false)
 	const [userNumber, setUserNum] = React.useState(0)
 
-	const updatePage = (_e, val) => setPage((val - 1) * 20)
+	const updatePage = (_e, val) => setPage((val - 1) * 10)
 
 	function getUsers() {
 		setLoading(true)
@@ -56,6 +57,7 @@ export default function ActiveUsers() {
 		projectContract
 			.get_users({ offset: page, limit: 10 })
 			.then((users) => {
+				console.log(users)
 				setProfiles(users.entries)
 				setUserNum(users.num)
 			})
@@ -159,8 +161,12 @@ export default function ActiveUsers() {
 											/>
 										</TableCell>
 										<TableCell>{profile.account_id}</TableCell>
-										<TableCell>{profile.created_at}</TableCell>
-										<TableCell>{profile.last_online}</TableCell>
+										<TableCell>
+											{`${getContractRelativeDate(profile.created_at)} ago`}
+										</TableCell>
+										<TableCell>
+											{`${getContractRelativeDate(profile.last_online)} ago`}
+										</TableCell>
 									</TableRow>
 								))}
 							</TableBody>

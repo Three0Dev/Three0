@@ -1,4 +1,5 @@
 import { connect, Contract, keyStores, WalletConnection } from 'near-api-js'
+import { formatDistanceToNow } from 'date-fns'
 import getConfig from './config'
 
 export const nearConfig = getConfig(process.env.NODE_ENV || 'development')
@@ -50,4 +51,8 @@ export function login() {
 		`${starter}/`,
 		`${starter}/login`
 	)
+}
+
+export function getContractRelativeDate(date) {
+	return formatDistanceToNow(new Date(date / 1000000))
 }
