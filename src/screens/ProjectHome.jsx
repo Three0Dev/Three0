@@ -99,7 +99,7 @@ export default function ProjectHome() {
 			<Box sx={classes.buttonContainer}>
 				<Button
 					color="error"
-					onClick={() => handleDelete}
+					onClick={() => handleDelete()}
 					startIcon={<DeleteForeverIcon />}
 				>
 					Delete Project
