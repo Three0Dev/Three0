@@ -1,8 +1,7 @@
 import { keyStores } from 'near-api-js'
 import IdentityProvider from 'orbit-db-identity-provider'
+import { sha256 } from 'js-sha256'
 import { nearConfig as NEAR_CONFIG } from '../../../utils'
-
-const js_sha256 = require('js-sha256')
 
 export default class NearIdentityProvider extends IdentityProvider {
 	// return type
@@ -17,7 +16,7 @@ export default class NearIdentityProvider extends IdentityProvider {
 
 	// return a signature of data (signature of the OrbitDB public key)
 	async signIdentity(data) {
-		const dataBuffer = convertToArray(data)
+		const dataBuffer = Buffer.from(data)
 		const keyStore = new keyStores.BrowserLocalStorageKeyStore()
 		const keyPair = await keyStore.getKey(
 			NEAR_CONFIG.networkId,
@@ -34,12 +33,8 @@ export default class NearIdentityProvider extends IdentityProvider {
 			window.accountId
 		)
 		return keyPair.verify(
-			convertToArray(identity.publicKey + identity.signatures.id),
+			Buffer.from(identity.publicKey + identity.signatures.id),
 			identity.signatures.publicKey
 		)
 	}
-}
-
-function convertToArray(data) {
-	return Uint8Array.from(js_sha256.sha256.array(data))
 }
