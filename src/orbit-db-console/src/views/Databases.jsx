@@ -40,10 +40,10 @@ export default function DatabasesView() {
 		setLoading(true)
 		createDatabase(
 			projectContract,
-			args.name,
-			args.type,
-			args.permissions,
-			args.overwrite
+			'replication',
+			'docstore',
+			'public',
+			false
 		)
 			.then(() => {
 				fetchDatabases().then((data) => {

@@ -56,7 +56,7 @@ export default function ProjectDisplayBoard() {
 		window.contract
 			.get_all_projects({
 				owner: window.accountId,
-				offset: off,
+				offset: 0,
 				limit: LIMIT_NUM,
 			})
 			.then((res) => setProjects(res))

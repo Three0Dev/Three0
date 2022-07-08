@@ -23,6 +23,8 @@ export const initIPFS = async () => {
 		ipfsActivate = true
 		ipfs = await IPFS.create(Config.ipfs)
 	}
+	// await ipfs.swarm.connect('/dns4/webrtc-star.discovery.libp2p.io/tcp/443/wss/p2p-webrtc-star/p2p/12D3KooWGeWsFTZzezfC3fygx4ixkptAmggg6hmRYRYyK2HiJFUK')
+	console.log(ipfs.swarm)
 	return ipfs
 }
 
@@ -52,6 +54,12 @@ export const getAllDatabases = async (pid) => {
 
 		await programs.load()
 	}
+	console.log(programs.iterator({ limit: -1 }).collect())
+
+	programs.events.on('replicated', (address) => {
+		// console.log( 'db - replicated - state', this.db.get('state'), address );
+		console.log("test")
+	  });
 
 	return programs ? programs.iterator({ limit: -1 }).collect() : []
 }
