@@ -57,9 +57,8 @@ export const getAllDatabases = async (pid) => {
 	console.log(programs.iterator({ limit: -1 }).collect())
 
 	programs.events.on('replicated', (address) => {
-		// console.log( 'db - replicated - state', this.db.get('state'), address );
-		console.log("test")
-	  });
+		console.log( 'db - replicated - state', this.db.get('state'), address );
+	});
 
 	return programs ? programs.iterator({ limit: -1 }).collect() : []
 }
