@@ -1,6 +1,5 @@
 import { keyStores } from 'near-api-js'
 import IdentityProvider from 'orbit-db-identity-provider'
-import { sha256 } from 'js-sha256'
 import { nearConfig as NEAR_CONFIG } from '../../../utils'
 
 export default class NearIdentityProvider extends IdentityProvider {
