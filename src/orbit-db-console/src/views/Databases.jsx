@@ -14,8 +14,6 @@ import Backdrop from '../../../components/templates/Backdrop'
 export default function DatabasesView() {
 	const [appState, dispatch] = useStateValue()
 	const [loading, setLoading] = React.useState(false)
-	const [newDBInfo, setNewDBInfo] = React.useState({})
-
 	const theme = useTheme()
 
 	const { projectContract, projectDetails } = React.useContext(
@@ -40,10 +38,10 @@ export default function DatabasesView() {
 		setLoading(true)
 		createDatabase(
 			projectContract,
-			'replication',
-			'docstore',
-			'public',
-			false
+			args.name,
+			args.type,
+			args.permissions,
+			args.overwrite
 		)
 			.then(() => {
 				fetchDatabases().then((data) => {
@@ -72,13 +70,34 @@ export default function DatabasesView() {
 	const handleCreateDatabase = () => {
 		MySwal.fire({
 			title: 'Create a new database',
-			html: <CreateDialog onCreate={setNewDBInfo} />,
+			html: <CreateDialog />,
 			focusConfirm: false,
 			confirmButtonColor: theme.palette.secondary.dark,
-		}).then(({ isConfirmed }) => {
-			if (isConfirmed) {
-				createDB(newDBInfo)
+			preConfirm: () => {
+				const name = document.getElementById('database-name').value
+				if (name.includes(' '))
+					Swal.showValidationMessage('No Spaces in Database Name')
+
+				const typeElement = document.getElementById('database-type')
+				const type = typeElement[typeElement.selectedIndex].value
+
+				const permissionsElement = document.getElementById(
+					'database-permissions'
+				)
+				const permissions =
+					permissionsElement[permissionsElement.selectedIndex].value
+				const overwrite = document.getElementById('database-overwrite').checked
+
+				return { name, type, permissions, overwrite }
+			},
+		}).then(({ value: formValues }) => {
+			const args = {
+				name: formValues.name,
+				type: formValues.type,
+				permissions: formValues.permissions,
+				overwrite: formValues.overwrite,
 			}
+			createDB(args)
 		})
 	}
 

@@ -1,7 +1,6 @@
 import React from 'react'
 import {
 	TextField,
-	MenuItem,
 	Select,
 	InputLabel,
 	FormControlLabel,
@@ -9,75 +8,51 @@ import {
 	FormControl,
 } from '@mui/material'
 
-export default function CreateDialog({ onCreate }) {
-	const [name, setName] = React.useState('')
-	const [type, setType] = React.useState('')
-	const [permissions, setPermissions] = React.useState('')
-	const [overwrite, setOverwrite] = React.useState(false)
-
-	function handleNameChange(newName) {
-		if (!newName.includes(' ')) {
-			setName(newName)
-		}
-	}
-
-	React.useEffect(
-		() => onCreate({ name, type, permissions, overwrite }),
-		[name, type, permissions, overwrite]
-	)
-
+export default function CreateDialog() {
 	return (
 		<>
 			<FormControl fullWidth sx={{ margin: '2% 0' }}>
 				<TextField
-					onChange={(e) => handleNameChange(e.target.value)}
 					name="name"
-					value={name}
 					placeholder="Database name"
 					variant="outlined"
+					id="database-name"
 				/>
 			</FormControl>
 			<FormControl fullWidth sx={{ margin: '2% 0' }}>
-				<InputLabel id="database-type">Type:</InputLabel>
+				<InputLabel id="database-type-label">Type:</InputLabel>
 				<Select
+					native
 					variant="outlined"
 					label="Type:"
-					labelId="database-type"
-					onChange={(e) => setType(e.target.value)}
-					value={type}
+					id="database-type"
+					labelId="database-type-label"
 				>
-					<MenuItem value="eventlog">Immutable Log</MenuItem>
-					<MenuItem value="feed">A list of entries</MenuItem>
-					<MenuItem value="keyvalue">Key-Value Store</MenuItem>
-					<MenuItem value="docstore">Document Store</MenuItem>
-					<MenuItem value="counter">Counter (CRDT)</MenuItem>
+					<option value="eventlog">Immutable Log</option>
+					<option value="feed">A list of entries</option>
+					<option value="keyvalue">Key-Value Store</option>
+					<option value="docstore">Document Store</option>
+					<option value="counter">Counter (CRDT)</option>
 				</Select>
 			</FormControl>
 			<FormControl fullWidth sx={{ margin: '2% 0' }}>
-				<InputLabel id="write-permissions">Write Permissions:</InputLabel>
+				<InputLabel id="write-permissions-label">Write Permissions:</InputLabel>
 				<Select
+					native
 					variant="outlined"
 					label="Write Permissions:"
-					labelId="write-permissions"
-					onChange={(e) => setPermissions(e.target.value)}
-					value={permissions}
+					labelId="write-permissions-label"
+					id="database-permissions"
 				>
-					<MenuItem value="creator">
+					<option value="creator">
 						Creator-only: Only you can write, public read
-					</MenuItem>
-					<MenuItem value="public">
-						Public: Anybody can write and write
-					</MenuItem>
+					</option>
+					<option value="public">Public: Anybody can write and write</option>
 				</Select>
 			</FormControl>
 			<FormControl>
 				<FormControlLabel
-					control={
-						<Checkbox
-							checked={overwrite}
-							onChange={(event) => setOverwrite(event.target.checked)}
-						/>
-					}
+					control={<Checkbox id="database-overwrite" />}
 					label="Overwrite"
 				/>
 			</FormControl>
