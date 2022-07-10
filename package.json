@@ -54,7 +54,7 @@
     "@mui/material": "^5.8.0",
     "@pgrabovets/json-view": "^2.7.1",
     "date-fns": "^2.25.0",
-    "ipfs-core": "^0.14.1",
+    "ipfs-core": "^0.14.3",
     "near-api-js": "^0.44.2",
     "orbit-db": "^0.28.1",
     "orbit-db-identity-provider": "^0.4.0",
