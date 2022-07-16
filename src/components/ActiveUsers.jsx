@@ -145,11 +145,7 @@ export default function ActiveUsers() {
 							<TableBody>
 								{profiles.map((profile) => (
 									<TableRow key={profile.account_id}>
-										<TableCell
-											flexShrink={0}
-											flexGrow={0}
-											style={{ justifyContent: 'center' }}
-										>
+										<TableCell style={{ justifyContent: 'center' }}>
 											<Badge
 												sx={classes.Badge}
 												anchorOrigin={{

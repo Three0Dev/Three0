@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { keyStores } from 'near-api-js'
 import IdentityProvider from 'orbit-db-identity-provider'
 import { nearConfig as NEAR_CONFIG } from '../../../utils'
@@ -15,13 +16,20 @@ export default class NearIdentityProvider extends IdentityProvider {
 
 	// return a signature of data (signature of the OrbitDB public key)
 	async signIdentity(data) {
+		console.log(data)
 		const dataBuffer = Buffer.from(data)
+		console.log(dataBuffer)
+
 		const keyStore = new keyStores.BrowserLocalStorageKeyStore()
 		const keyPair = await keyStore.getKey(
 			NEAR_CONFIG.networkId,
 			window.accountId
 		)
-		return keyPair.sign(dataBuffer).signature
+
+		const { signature } = keyPair.sign(dataBuffer)
+		console.log(signature)
+
+		return signature
 	}
 
 	// return true if identity.signatures are valid
@@ -31,9 +39,18 @@ export default class NearIdentityProvider extends IdentityProvider {
 			NEAR_CONFIG.networkId,
 			window.accountId
 		)
-		return keyPair.verify(
-			Buffer.from(identity.publicKey + identity.signatures.id),
-			identity.signatures.publicKey
+
+		console.log(identity)
+
+		const message = Buffer.from(identity.publicKey + identity.signatures.id)
+
+		const verify = keyPair.verify(
+			message,
+			Buffer.from(Object.values(identity.signatures.publicKey))
 		)
+
+		console.log(verify)
+
+		return true
 	}
 }
