@@ -3,6 +3,7 @@
 import * as IPFS from 'ipfs-core'
 import OrbitDB from 'orbit-db'
 // import IdentityProvider from 'orbit-db-identity-provider'
+import axios from 'axios'
 import { config as Config } from '../config'
 // import NearIdentityProvider from './NearIdentityProvider'
 import { nearConfig } from '../../../utils'
@@ -16,6 +17,8 @@ let orbitdb
 let programs
 
 let ipfsActivate = false
+
+const peerDBServer = 'https://three0server.herokuapp.com'
 
 // IdentityProvider.addIdentityProvider(NearIdentityProvider)
 
@@ -107,6 +110,11 @@ export const createDatabase = async (
 
 	console.log(dbDetails)
 
+	await axios.post(peerDBServer, {
+		address: db.address.toString(),
+		type,
+	})
+
 	await programs
 		.add({
 			name,
@@ -127,6 +135,10 @@ export const removeDatabase = async (contract, hash, program) => {
 	await db.close()
 
 	await programs.remove(hash)
+
+	await axios.delete(peerDBServer, {
+		address: program.address,
+	})
 
 	await contract.delete_database({
 		database_name: program.address,

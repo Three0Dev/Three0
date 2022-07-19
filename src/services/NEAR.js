@@ -55,6 +55,12 @@ export async function deleteNEARProject(pid) {
 		if (canDelete) {
 			const account = await window.near.account(pid)
 			await account.deleteAccount(window.accountId)
+
+			await new keyStores.BrowserLocalStorageKeyStore().removeKey(
+				nearConfig.networkId,
+				pid
+			)
+
 			return true
 		}
 	} catch (e) {

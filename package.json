@@ -53,6 +53,7 @@
     "@mui/lab": "^5.0.0-alpha.83",
     "@mui/material": "^5.8.0",
     "@pgrabovets/json-view": "^2.7.1",
+    "axios": "^0.27.2",
     "date-fns": "^2.25.0",
     "ipfs-core": "^0.14.3",
     "near-api-js": "^0.44.2",
