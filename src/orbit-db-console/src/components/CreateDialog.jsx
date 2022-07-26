@@ -28,8 +28,9 @@ export default function CreateDialog() {
 					id="database-type"
 					labelId="database-type-label"
 				>
-					<option value="eventlog">Immutable Log</option>
-					<option value="feed">A list of entries</option>
+					{/* TODO: Release post alpha */}
+					{/* <option value="eventlog">Immutable Log</option> */}
+					{/* <option value="feed">A list of entries</option> */}
 					<option value="keyvalue">Key-Value Store</option>
 					<option value="docstore">Document Store</option>
 					<option value="counter">Counter (CRDT)</option>
