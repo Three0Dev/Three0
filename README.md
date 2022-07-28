@@ -1,7 +1,7 @@
 
 
 
-
+Three0
 ==================
 Three0 is a completely decentralized BaaS (Backed-As-A-Service) providing easy to use tools to build Web3 dApps through a Web2 lens. Three0 offers 4 main services - Database, Authentication, Storage, and Hosting.
 
