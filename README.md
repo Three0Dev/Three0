@@ -1,4 +1,7 @@
-Three0
+
+
+
+
 ==================
 Three0 is a completely decentralized BaaS (Backed-As-A-Service) providing easy to use tools to build Web3 dApps through a Web2 lens. Three0 offers 4 main services - Database, Authentication, Storage, and Hosting.
 
@@ -57,7 +60,7 @@ Ensure that it's installed with `near --version` (or `npx near --version`)
 Step 1: Create an account for the contract
 ------------------------------------------
 
-Each account on NEAR can have at most one contract deployed to it. If you've already created an account such as `your-name.testnet`, you can deploy your contract to `Three0.your-name.testnet`. Assuming you've already created an account on [NEAR Wallet], here's how to create `three0.your-name.testnet`:
+Each account on NEAR can have at most one contract deployed to it. If you've already created an account such as `your-name.testnet`, you can deploy your contract to `three0.your-name.testnet`. Assuming you've already created an account on [NEAR Wallet], here's how to create `three0.your-name.testnet`:
 
 1. Authorize NEAR CLI, following the commands it gives you:
 
