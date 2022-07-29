@@ -1,7 +1,8 @@
 {
   "name": "three0",
-  "version": "0.1.0-alpha",
+  "version": "0.1.0",
   "license": "GPL-3.0",
+  "private": true,
   "description": "Three0 Contract and Dev Console Repository",
   "scripts": {
     "build": "npm run build:contract && npm run build:web",
