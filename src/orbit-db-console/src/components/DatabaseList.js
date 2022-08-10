@@ -41,6 +41,8 @@ export function ProgramList({ programs, onRemove }) {
 		navigator.clipboard.writeText(address || program.address)
 		Swal.fire({
 			title: 'Address copied to clipboard!',
+			toast: true,
+			timer: 1200,
 		})
 	}
 

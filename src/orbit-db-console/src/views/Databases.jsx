@@ -91,6 +91,9 @@ export default function DatabasesView() {
 				return { name, type, permissions, overwrite }
 			},
 		}).then(({ value: formValues }) => {
+			if (!formValues) {
+				return
+			}
 			const args = {
 				name: formValues.name,
 				type: formValues.type,

@@ -31,8 +31,8 @@ export default function CreateDialog() {
 					{/* TODO: Release post alpha */}
 					{/* <option value="eventlog">Immutable Log</option> */}
 					{/* <option value="feed">A list of entries</option> */}
-					<option value="keyvalue">Key-Value Store</option>
 					<option value="docstore">Document Store</option>
+					<option value="keyvalue">Key-Value Store</option>
 					<option value="counter">Counter (CRDT)</option>
 				</Select>
 			</FormControl>
@@ -45,10 +45,10 @@ export default function CreateDialog() {
 					labelId="write-permissions-label"
 					id="database-permissions"
 				>
+					<option value="public">Public: Anybody can write and write</option>
 					<option value="creator">
 						Creator-only: Only you can write, public read
 					</option>
-					<option value="public">Public: Anybody can write and write</option>
 				</Select>
 			</FormControl>
 			<FormControl>

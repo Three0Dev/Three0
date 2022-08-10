@@ -3,7 +3,6 @@
 import * as IPFS from 'ipfs-core'
 import OrbitDB from 'orbit-db'
 // import IdentityProvider from 'orbit-db-identity-provider'
-import axios from 'axios'
 import { config as Config } from '../config'
 // import NearIdentityProvider from './NearIdentityProvider'
 import { nearConfig } from '../../../utils'
@@ -18,7 +17,7 @@ let programs
 
 let ipfsActivate = false
 
-const peerDBServer = 'https://three0server.herokuapp.com'
+const peerDBServer = 'http://137.184.71.10:8000/'
 
 // IdentityProvider.addIdentityProvider(NearIdentityProvider)
 
@@ -110,9 +109,13 @@ export const createDatabase = async (
 
 	console.log(dbDetails)
 
-	await axios.post(peerDBServer, {
-		address: db.address.toString(),
-		type,
+	await fetch(`${peerDBServer}pin?address=${db.address.toString()}`, {
+		method: 'POST',
+		mode: 'cors',
+		cache: 'no-cache',
+		credentials: 'same-origin', // include, *same-origin, omit
+		redirect: 'follow',
+		referrerPolicy: 'no-referrer',
 	})
 
 	await programs
@@ -136,8 +139,13 @@ export const removeDatabase = async (contract, hash, program) => {
 
 	await programs.remove(hash)
 
-	await axios.delete(peerDBServer, {
-		address: program.address,
+	await fetch(`${peerDBServer}unpin?address=${program.address}`, {
+		method: 'POST',
+		mode: 'cors',
+		cache: 'no-cache',
+		credentials: 'same-origin', // include, *same-origin, omit
+		redirect: 'follow',
+		referrerPolicy: 'no-referrer',
 	})
 
 	await contract.delete_database({
