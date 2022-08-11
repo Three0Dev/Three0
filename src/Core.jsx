@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material'
 import {
 	Login,
@@ -79,7 +79,8 @@ export default function Core() {
 							<Route path="hosting" element={<Hosting />} />
 						</Route>
 					</Route>
-					<Route path="*" element={<NotFound />} />
+					<Route path="404" element={<NotFound />} />
+					<Route path="*" element={<Navigate replace to="/404" />} />
 				</Routes>
 			</BrowserRouter>
 		</ThemeProvider>
