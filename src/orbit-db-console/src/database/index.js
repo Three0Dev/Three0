@@ -17,7 +17,7 @@ let programs
 
 let ipfsActivate = false
 
-const peerDBServer = 'http://157.245.255.12/'
+const peerDBServer = 'http://pinning.three0dev.com/'
 
 // IdentityProvider.addIdentityProvider(NearIdentityProvider)
 
