@@ -1,0 +1,35 @@
+@font-face {
+  font-family: myFont;
+  src: url("font.8995201e.ttf");
+}
+
+* {
+  box-sizing: border-box;
+  font-family: myFont !important;
+}
+
+body {
+  background-color: #eceff1;
+}
+
+.majorImg {
+  width: 75%;
+  margin: 2% auto;
+  display: block;
+}
+
+#root {
+  height: 100%;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+}
+
+/*# sourceMappingURL=index.25587b4b.css.map */
