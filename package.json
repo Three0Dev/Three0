@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "license": "GPL-3.0",
   "private": true,
-  "description": "Three0 Contract and Dev Console Repository",
+  "description": "Three0 Contract and Dev Console",
   "scripts": {
     "build": "npm run build:contract && npm run build:web",
     "build:contract": "node contract/compile.js",
@@ -15,7 +15,7 @@
     "deploy": "npm run build && npm run deploy:contract && npm run deploy:pages",
     "prestart": "npm run build:contract:debug && npm run dev:deploy:contract",
     "start": "npm run front",
-    "front": "echo The app is starting! It will automatically open in your browser when ready && env-cmd -f ./neardev/dev-account.env parcel src/index.html --open",
+    "front": "env-cmd -f ./neardev/dev-account.env parcel src/index.html --open",
     "dev": "nodemon --watch contract -e rs --exec \"npm run start\"",
     "test:contract": "npm run build:contract:debug && cd contract && cargo test -- --nocapture",
     "test": "npm run build:contract:debug && cd contract && cargo test -- --nocapture && cd .. && jest test --runInBand",
@@ -41,6 +41,7 @@
     "prettier": "^2.6.2",
     "process": "^0.11.10",
     "react-test-renderer": "~17.0.1",
+    "regenerator-runtime": "^0.13.9",
     "shelljs": "~0.8.4"
   },
   "dependencies": {
@@ -58,7 +59,6 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.2.1",
-    "regenerator-runtime": "~0.13.5",
     "short-uuid": "^4.2.0",
     "sweetalert2": "^11.4.8",
     "sweetalert2-react-content": "^5.0.0"
