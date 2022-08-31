@@ -1,3 +1,4 @@
-import React, { createContext } from 'react'
+import { createContext } from 'react'
 
-export const ProjectDetailsContext = createContext({})
+const ProjectDetailsContext = createContext({})
+export default ProjectDetailsContext

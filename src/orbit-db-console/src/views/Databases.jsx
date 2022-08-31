@@ -8,7 +8,7 @@ import { useStateValue, actions } from '../state'
 import { getAllDatabases, removeDatabase, createDatabase } from '../database'
 import { ProgramList } from '../components/DatabaseList'
 import CreateDialog from '../components/CreateDialog'
-import { ProjectDetailsContext } from '../../../ProjectDetailsContext'
+import ProjectDetailsContext from '../../../ProjectDetailsContext'
 import Backdrop from '../../../components/templates/Backdrop'
 
 export default function DatabasesView() {
