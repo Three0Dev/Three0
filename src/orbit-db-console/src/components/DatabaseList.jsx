@@ -28,7 +28,7 @@ const colors = {
 	counter: '#735DD0',
 }
 
-export function ProgramList({ programs, onRemove }) {
+export default function ProgramList({ programs, onRemove }) {
 	const navigate = useNavigate()
 
 	function handleSelect(program) {

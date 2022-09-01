@@ -6,7 +6,7 @@ import { useStateValue, actions, loadingState } from '../state'
 
 import { getAllDatabases, removeDatabase } from '../database'
 
-import { ProgramList } from '../components/DatabaseList'
+import ProgramList from '../components/DatabaseList'
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search)

@@ -12,7 +12,7 @@ import {
 	ProjectHome,
 	Hosting,
 } from './screens'
-import { DBView } from './orbit-db-console/src/App'
+import DBView from './orbit-db-console/src/App'
 import {
 	DatabaseView,
 	DatabasesView,

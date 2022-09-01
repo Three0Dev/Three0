@@ -36,8 +36,8 @@ function TableHeader(props) {
 	return (
 		<TableHead>
 			<TableRow>
-				{props.headers.map((header, index) => (
-					<StyledTableCell key={index}>{header}</StyledTableCell>
+				{props.headers.map((header) => (
+					<StyledTableCell key={header}>{header}</StyledTableCell>
 				))}
 			</TableRow>
 		</TableHead>
