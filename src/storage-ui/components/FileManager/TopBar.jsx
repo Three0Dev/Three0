@@ -1,25 +1,53 @@
 import React, { useRef } from 'react'
-import { Tooltip, Toolbar, AppBar, IconButton, TextField } from '@mui/material'
-import { styled, alpha, InputBase } from '@mui/material'
+import {
+	Tooltip,
+	Toolbar,
+	AppBar,
+	IconButton,
+	InputBase,
+	styled,
+	alpha,
+} from '@mui/material'
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder'
 import FileUploadIcon from '@mui/icons-material/FileUpload'
 import HomeIcon from '@mui/icons-material/Home'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import Swal from 'sweetalert2'
+
+const IconWrapper = styled('div')(({ theme }) => ({
+	height: '100%',
+	position: 'absolute',
+	pointerEvents: 'none',
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'center',
+}))
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
 	color: 'inherit',
+	width: '100%',
 	'& .MuiInputBase-input': {
 		padding: theme.spacing(1, 1, 1, 0),
-		paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-		transition: theme.transitions.create('width'),
-		width: '100%',
-		[theme.breakpoints.up('sm')]: {
-			width: '12ch',
-			'&:focus': {
-				width: '20ch',
-			},
+		paddingLeft: '1%',
+		borderRadius: theme.shape.borderRadius,
+		transition: theme.transitions.create(['background', 'color'], {
+			easing: 'ease-in-out',
+		}),
+		'&:hover': {
+			background: alpha(theme.palette.common.white, 0.15),
+		},
+		'&:focus': {
+			background: alpha(theme.palette.common.white, 0.25),
 		},
 	},
+}))
+
+const PathInputContainer = styled('div')(({ theme }) => ({
+	position: 'relative',
+	borderRadius: theme.shape.borderRadius,
+	backgroundColor: alpha(theme.palette.common.white, 0.15),
+	marginLeft: 0,
+	width: '75%',
+	display: 'flex',
 }))
 
 export default function TopBar({
@@ -44,46 +72,30 @@ export default function TopBar({
 		}
 	}
 
-	const onCreateDirectory = () => {
-		createDirectory(currentPath)
-			.then(reload)
-			.catch((error) => error && console.error(error))
+	const onCreateDirectory = async () => {
+		// createDirectory(currentPath)
+		// 	.then(reload)
+		// 	.catch((error) => error && console.error(error))
+
+		const { value: folderName } = await Swal.fire({
+			title: 'New Folder',
+			input: 'text',
+			showCancelButton: true,
+			inputValidator: (value) => {
+				if (!value) {
+					return 'You need to write something!'
+				}
+			},
+		})
 	}
 
 	return (
-		<AppBar color="primary" position="static" sx={{ borderRadius: 5 }}>
+		<AppBar
+			color="primary"
+			position="static"
+			sx={{ borderTopLeftRadius: '20px', borderTopRightRadius: '20px' }}
+		>
 			<Toolbar sx={{ justifyContent: 'space-around' }}>
-				<Tooltip title={labels.home}>
-					<IconButton color="inherit" onClick={() => setCurrentPath('')}>
-						<HomeIcon />
-					</IconButton>
-				</Tooltip>
-				<Tooltip title={labels.up}>
-					<IconButton
-						color="inherit"
-						onClick={() => {
-							const parts = currentPath.split('/')
-							parts.splice(parts.length - 1, 1)
-							setCurrentPath(parts.join('/'))
-						}}
-						disabled={!currentPath}
-					>
-						<ArrowBackIcon />
-					</IconButton>
-				</Tooltip>
-				<StyledInputBase
-					sx={{ width: '75%' }}
-					key={currentPath}
-					type="text"
-					variant="outlined"
-					defaultValue={currentPath || '/'}
-					onBlur={(event) => onPathChange(event.target.value)}
-					onKeyDown={(event) => {
-						if (event.keyCode === 13) {
-							onPathChange(event.target.value)
-						}
-					}}
-				/>
 				<input
 					ref={uploadInputRef}
 					type="file"
@@ -97,6 +109,25 @@ export default function TopBar({
 						</IconButton>
 					</Tooltip>
 				)}
+				<PathInputContainer>
+					<Tooltip title={labels.home}>
+						<IconButton color="inherit" onClick={() => setCurrentPath('')}>
+							<HomeIcon />
+						</IconButton>
+					</Tooltip>
+					<StyledInputBase
+						key={currentPath}
+						type="text"
+						variant="outlined"
+						defaultValue={currentPath || '/'}
+						onBlur={(event) => onPathChange(event.target.value)}
+						onKeyDown={(event) => {
+							if (event.keyCode === 13) {
+								onPathChange(event.target.value)
+							}
+						}}
+					/>
+				</PathInputContainer>
 				{enabledFeatures.indexOf('uploadFiles') !== -1 && (
 					<Tooltip title={labels.upload}>
 						<IconButton

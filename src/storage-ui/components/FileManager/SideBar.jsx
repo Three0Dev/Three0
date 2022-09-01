@@ -1,3 +1,4 @@
+import { Paper, Box } from '@mui/material'
 import React from 'react'
 import SideBarTreeNode from './SideBarTreeNode'
 
@@ -43,7 +44,7 @@ export default function SideBar({
 	})
 
 	return (
-		<div className="FileManager-SideBar">
+		<Box component={Paper} className="FileManager-SideBar">
 			<SideBarTreeNode
 				node={tree[0] || {}}
 				labels={labels}
@@ -53,6 +54,6 @@ export default function SideBar({
 				collapsed={collapsed}
 				setCollapsed={setCollapsed}
 			/>
-		</div>
+		</Box>
 	)
 }

@@ -1,5 +1,9 @@
 .FileManager {
     font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    height: 100%;
 }
 
 .FileManager * {
@@ -61,7 +65,8 @@
 }
 
 .FileManager-SideBar .SideBar-TreeNode {
-
+    padding: 2%;
+    color: lightslategray;
 }
 
 .SideBar-TreeNode .TreeNode-Name {
@@ -80,17 +85,18 @@
 }
 
 .FileManager .FileManager-MiddleArea {
-    flex: auto;
-    overflow: auto;
+    flex: 1;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    padding: 1%
 }
 
 .FileManager .FileManager-SideBar {
     min-width: 250px;
     padding: 8px 0;
     overflow: auto;
+    margin: 1%;
 }
 
 .FileManager .FileManager-Body {
@@ -102,12 +108,14 @@
     grid-gap: 16px;
     grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
     grid-template-rows: repeat(auto-fill, minmax(96px, 1fr));
+    margin: 1%;
 }
 
 .FileManager-Body .Body-Item {
     text-align: center;
     padding: 8px;
     border-radius: 8px;
+    color: slategray;
 }
 
 .Body-Item .Body-Item-Name {
@@ -127,10 +135,14 @@
 }
 
 .FileManager .FileManager-Footer {
-    padding: 1%;
-    background-color: rgba(0, 0, 0, 0.1);
+    padding: 0.5% 1% 0.5% 2%;
+    background-color: #6247aa;
     display: flex;
     align-items: center;
+    color: white;
+    border-radius: 0 0 20px 20px;
+    font-weight: bold;
+    box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%);
 }
 
 .FileManager-Footer .Footer-Right {

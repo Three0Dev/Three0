@@ -1,7 +1,7 @@
 import React from 'react'
 import FolderIcon from '@mui/icons-material/Folder'
-import FolderOpenIcon from '@mui/icons-material/FolderOpen'
 import { Typography } from '@mui/material'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 
 const OFFSET = 16
 
@@ -32,7 +32,7 @@ export default function SideBarTreeNode({
 				style={{ paddingLeft: `${8 + (level || 0) * OFFSET}px` }}
 			>
 				{!collapsed[node.path] && structure[node.path] ? (
-					<FolderOpenIcon />
+					<ArrowDropDownIcon />
 				) : (
 					<FolderIcon />
 				)}
@@ -42,6 +42,7 @@ export default function SideBarTreeNode({
 					noWrap
 					sx={{
 						flexGrow: 1,
+						fontSize: '16px',
 						display: { xs: 'none', sm: 'block' },
 					}}
 				>

@@ -59,7 +59,7 @@ export default function Navigation() {
 
 	// TODO Indicate selected tab
 	return (
-		<Box sx={{ bgcolor: 'primary.main' }}>
+		<Box sx={{ bgcolor: 'primary.main', padding: '1%' }}>
 			<List component="nav">
 				{tabs.map((tab, index) => (
 					<ListItemButton

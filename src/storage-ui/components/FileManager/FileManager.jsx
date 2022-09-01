@@ -141,6 +141,18 @@ export default function FileManager({
 				reload={reload}
 				enabledFeatures={enabledFeatures}
 			/>
+			<Footer
+				structure={structure}
+				setStructure={setStructure}
+				currentPath={currentPath}
+				selection={selection}
+				enabledFeatures={enabledFeatures}
+				labels={labels}
+				loading={loading}
+				deletePaths={deletePaths}
+				reload={reload}
+				rename={rename}
+			/>
 			<MiddleArea
 				collapsed={collapsed}
 				setCollapsed={setCollapsed}
@@ -156,18 +168,6 @@ export default function FileManager({
 				enabledFeatures={enabledFeatures}
 				labels={labels}
 				loading={loading}
-				rename={rename}
-			/>
-			<Footer
-				structure={structure}
-				setStructure={setStructure}
-				currentPath={currentPath}
-				selection={selection}
-				enabledFeatures={enabledFeatures}
-				labels={labels}
-				loading={loading}
-				deletePaths={deletePaths}
-				reload={reload}
 				rename={rename}
 			/>
 		</div>

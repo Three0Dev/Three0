@@ -1,6 +1,7 @@
 import React from 'react'
 import FolderIcon from '@mui/icons-material/Folder'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
+import { Box, Paper } from '@mui/material'
 
 export default function Body({
 	structure,
@@ -22,8 +23,9 @@ export default function Body({
 	}
 
 	return (
-		<div
+		<Box
 			className="FileManager-Body"
+			component={Paper}
 			onClick={(event) => {
 				event.stopPropagation()
 				event.preventDefault()
@@ -79,6 +81,6 @@ export default function Body({
 					})}
 				</>
 			)}
-		</div>
+		</Box>
 	)
 }
