@@ -1,20 +1,35 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 import { Box, Typography, Toolbar, AppBar } from '@mui/material'
 import StorageIcon from '@mui/icons-material/Storage'
 import Search from '../../../components/templates/Search'
-import { useStateValue, actions, loadingState } from '../state'
+import { ProgramList } from '../components/DatabaseList'
+import { ProjectDetailsContext } from '../../../ProjectDetailsContext'
+
+// import { getDB } from '../database'
+
+// import { useStateValue, actions, loadingState } from '../state'
 
 import { getAllDatabases, removeDatabase, getDB } from '../database'
 
-import { ProgramList } from '../components/DatabaseList'
+// import { useLocation, Navigate, useParams } from 'react-router-dom'
+import { SearchResultsView } from '../views/SearchResults'
 
+// function useQuery() {
+// 	return new URLSearchParams(useLocation().search)
+// }
 const LIMIT_NUM = 4
 export function Header() {
-	const navigate = useNavigate()
+	// const navigate = useNavigate()
 	const [databases, setDatabases] = React.useState({ num: 0, entries: [] })
 	const [loading, setLoading] = React.useState(false)
 
+	const [page, setPage] = React.useState(1)
+	const { databaseDetails, projectContract } = React.useContext(
+		ProjectDetailsContext
+	)
+
+	const updatePage = (_e, val) => setPage((val - 1) * 10)
 
 	function handleKeyUp(event) {
 		if (event.keyCode === 13) {
@@ -26,64 +41,29 @@ export function Header() {
 		}
 	}
 	function getDatabases() {
-		window.contract
-			.getAllDatabases({
-				owner: window.accountId,
-				offset: 0,
-				limit: LIMIT_NUM,
-			})
-			.then((res) => setDatabases(res))
+		projectContract
+			projectContract
+			.getAllDatabases({ offset: page, limit: 10 })
+			.then((dEntries) => setDatabases(dEntries))
 			.catch((err) => console.error(err))
+			.finally(() => setLoading(false))
 	}
 	async function searchDatabase(val) {
 		setLoading(true)
 
-		try {
-			const databaseSearch = await window.contract.getDB({
-				contract_address: val,
-				account_id: window.accountId,
-			})
-			setDatabases(databaseSearch)
-		} catch (e) {
-			setDatabases({ num: 0, entries: [] })
-			console.error(e)
-		}
-
-		setLoading(false)
-	}
-	const [appState, dispatch] = useStateValue()
-
-	const query = useQuery().get('q')
-	const queryOk = query.length >= 1
-
-	if (!queryOk) return <Navigate to="/" />
-
-	let { programs } = appState
-	if (query) {
-		programs = programs.filter(
-			({
-				payload: {
-					value: { name, type, address },
-				},
-			}) =>
-				name.includes(query) ||
-				type.includes(query) ||
-				address.toString().includes(query)
-		)
+		projectContract
+			projectContract
+				.getDB({ account_id: val })
+				.then((dEntries) => setDatabases([databaseSearch]))
+				.catch((err) => {
+					console.error(err)
+				})
+				.finally(() => setLoading(false))
 	}
 
-	const params = useParams()
-
-	async function fetchDatabases() {
-		dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: true })
-		const programs = await getAllDatabases(params.pid)
-		dispatch({
-			type: actions.PROGRAMS.SET_PROGRAMS,
-			programs: programs.reverse(),
-		})
-		dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: false })
-		return programs
-	}
+	React.useEffect(() => {
+		getDatabases()
+	}, [databaseDetails, page])
 	return (
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar color="primary" position="static" sx={{ borderRadius: 5 }}>
@@ -100,19 +80,18 @@ export function Header() {
 						Database
 					</Typography>
 					<Search
-						placeholder="Search…"
-						// onKeyPress={handleKeyUp}
-						onKeyPress={(e) => {
-							if (e.key === 'Enter') {
-								searchDatabase(e.target.value)
-							}
-						}}
-						onChange={(e) => {
-							if (e.target.value === '') {
-								getDatabases()
-							}
-						}}
-					/>
+							onKeyPress={(e) => {
+								if (e.key === 'Enter') {
+									searchDatabase(e.target.value)
+								}
+							}}
+							onChange={(e) => {
+								if (e.target.value === '') {
+									getDatabases()
+								}
+							}}
+							placeholder="Search…"
+						/>
 				</Toolbar>
 			</AppBar>
 		</Box>

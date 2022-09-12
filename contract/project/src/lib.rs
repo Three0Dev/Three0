@@ -31,6 +31,7 @@ pub struct Three0Project {
     pid: String,
     databases: LookupMap<String, Database>,
     users: UnorderedMap<String, User>,
+    dEntries: UnorderedMap<String, DEntry>,
 }
 
 #[near_bindgen]
@@ -63,6 +64,25 @@ impl Three0Project {
 
     pub fn delete_database(&mut self, database_name: String){
         self.databases.remove(&database_name);
+    }
+
+    pub fn getAllDatabases(&self, offset: usize, limit: usize) -> AllSchema {
+        let data_size = self.databases.len();
+        let new_skip:usize = if data_size as usize > offset + limit {
+            (data_size as usize) - (offset + limit)
+        }else{
+            0
+        };
+
+        let dEntries = self.databases.values()
+            .skip(new_skip)
+            .take(limit)
+            .collect::<Vec<Database>>();
+
+        AllSchema {
+            entries: dEntries,
+            num: data_size as u16,
+        }
     }
 
     pub fn get_users(&self, offset: usize, limit: usize) -> AllSchema {
@@ -98,5 +118,8 @@ impl Three0Project {
 
     pub fn get_user(&self, account_id: AccountId) -> User {
         self.users.get(&account_id).unwrap_or_else(|| env::panic(b"User not found"))
+    }
+    pub fn getDB(&self, account_id: AccountId) -> DEntry {
+        self.databases.get(&account_id).unwrap_or_else(|| env::panic(b"Database not found"))
     }
 }
