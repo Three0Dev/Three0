@@ -42,7 +42,6 @@ export function Header() {
 	}
 	function getDatabases() {
 		projectContract
-			projectContract
 			.getAllDatabases({ offset: page, limit: 10 })
 			.then((dEntries) => setDatabases(dEntries))
 			.catch((err) => console.error(err))
@@ -52,13 +51,12 @@ export function Header() {
 		setLoading(true)
 
 		projectContract
-			projectContract
-				.getDB({ account_id: val })
-				.then((dEntries) => setDatabases([databaseSearch]))
-				.catch((err) => {
-					console.error(err)
-				})
-				.finally(() => setLoading(false))
+			.getDB({ account_id: val })
+			.then((dEntries) => setDatabases([databaseSearch]))
+			.catch((err) => {
+				console.error(err)
+			})
+			.finally(() => setLoading(false))
 	}
 
 	React.useEffect(() => {
