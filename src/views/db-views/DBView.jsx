@@ -1,12 +1,9 @@
+/* eslint-disable import/prefer-default-export */
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-
 import { actions, loadingState, StateProvider } from '../../state/DatabaseState'
-
-import { Systems } from '../../components/db-components/Systems'
-import { Header } from '../../components/db-components/Header'
-
-import '../../index.css'
+import Systems from '../../components/db-components/Systems'
+import Header from '../../components/db-components/Header'
 
 export function DBView() {
 	const initialState = {

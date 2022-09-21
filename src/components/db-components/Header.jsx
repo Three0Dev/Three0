@@ -4,7 +4,7 @@ import { Box, Typography, Toolbar, AppBar } from '@mui/material'
 import StorageIcon from '@mui/icons-material/Storage'
 import Search from '../templates/Search'
 
-export function Header() {
+export default function Header() {
 	const navigate = useNavigate()
 
 	function handleKeyUp(event) {

@@ -10,7 +10,7 @@ import {
 	removeDatabase,
 	createDatabase,
 } from '../../services/database'
-import { ProgramList } from '../../components/db-components/DatabaseList'
+import ProgramList from '../../components/db-components/DatabaseList'
 import CreateDialog from '../../components/db-components/CreateDialog'
 import { ProjectDetailsContext } from '../../state/ProjectDetailsContext'
 import Backdrop from '../../components/templates/Backdrop'

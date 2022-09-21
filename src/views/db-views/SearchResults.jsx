@@ -3,13 +3,13 @@ import { Typography, CircularProgress, Box } from '@mui/material'
 import { useLocation, Navigate, useParams } from 'react-router-dom'
 import { useStateValue, actions, loadingState } from '../../state/DatabaseState'
 import { getAllDatabases, removeDatabase } from '../../services/database'
-import { ProgramList } from '../../components/db-components/DatabaseList'
+import ProgramList from '../../components/db-components/DatabaseList'
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search)
 }
 
-export function SearchResultsView() {
+export default function SearchResultsView() {
 	const [appState, dispatch] = useStateValue()
 
 	const query = useQuery().get('q')
@@ -35,13 +35,13 @@ export function SearchResultsView() {
 
 	async function fetchDatabases() {
 		dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: true })
-		const programs = await getAllDatabases(params.pid)
+		const program = await getAllDatabases(params.pid)
 		dispatch({
 			type: actions.PROGRAMS.SET_PROGRAMS,
-			programs: programs.reverse(),
+			programs: program.reverse(),
 		})
 		dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: false })
-		return programs
+		return program
 	}
 
 	const handleRemoveDatabase = (hash, program) => {
