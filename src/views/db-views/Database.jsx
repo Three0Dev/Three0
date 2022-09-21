@@ -37,73 +37,6 @@ const colors = {
 	counter: '#735DD0',
 }
 
-function ValuesTitle(appState) {
-	const item = appState
-	const db = item.program ? item.program.payload.value : null
-	let values = ''
-	if (!db) {
-		values = 'No database found'
-	} else {
-		switch (db.type) {
-			case 'eventlog':
-				values = 'Latest 10 events'
-				break
-			case 'feed':
-				values = 'Latest 10 entries'
-				break
-			case 'keyvalue':
-				values = 'Keys and Values'
-				break
-			case 'docstore':
-				values = 'All Documents'
-				break
-			case 'counter':
-				values = 'Count'
-				break
-			default:
-				values = `No values found for ${db.type}`
-		}
-	}
-	return (
-		<Typography variant="body2" color="textSecondary">
-			{values}
-		</Typography>
-	)
-}
-
-function DatabaseControls(appState) {
-	const { db } = appState
-	let values = ''
-	if (!db) {
-		values = 'No database found'
-	} else {
-		switch (db.type) {
-			case 'eventlog':
-				values = <LogStoreControls />
-				break
-			case 'feed':
-				values = <FeedStoreControls />
-				break
-			case 'keyvalue':
-				values = <KeyValueStoreControls />
-				break
-			case 'docstore':
-				values = <DocumentStoreControls />
-				break
-			case 'counter':
-				values = <CounterStoreControls />
-				break
-			default:
-				values = `No input controls found for ${db.type}`
-		}
-	}
-	return (
-		<Typography variant="body2" color="textSecondary">
-			{values}
-		</Typography>
-	)
-}
-
 export default function ProgramView() {
 	const { programName, dbName } = useParams()
 	const [appState, dispatch] = useStateValue()
@@ -175,6 +108,38 @@ export default function ProgramView() {
 		dispatch({ type: actions.PROGRAMS.SET_PROGRAM, program })
   }, [dispatch, address, appState.programs]) // eslint-disable-line
 
+	function getValuesTitle() {
+		const db = appState.program ? appState.program.payload.value : null
+		let value = ''
+		if (!db) value = 'No database found'
+		else {
+			switch (db.type) {
+				case 'eventlog':
+					value = 'Latest 10 events'
+					break
+				case 'feed':
+					value = 'Latest 10 entries'
+					break
+				case 'keyvalue':
+					value = 'All key-value pairs'
+					break
+				case 'docstore':
+					value = 'All documents'
+					break
+				case 'counter':
+					value = 'Count'
+					break
+				default:
+					value = `No values found for ${db.type}`
+			}
+		}
+		return (
+			<Typography variant="body2" color="textSecondary">
+				{value}
+			</Typography>
+		)
+	}
+
 	function renderProgram() {
 		const program = appState.program ? appState.program.payload.value : null
 		return (
@@ -215,7 +180,10 @@ export default function ProgramView() {
 									<TableCell>
 										{appState.db ? (
 											<Typography variant="h8" color="textSecondary">
-												{appState.db.oplog?.length}
+												{
+													// eslint-disable-next-line no-underscore-dangle
+													appState.db._oplog.values.length
+												}
 											</Typography>
 										) : (
 											<Typography variant="h8" color="textSecondary">
@@ -234,7 +202,7 @@ export default function ProgramView() {
 						variant="h7"
 						color="textPrimary"
 					>
-						<ValuesTitle appState={appState} />
+						{getValuesTitle()}
 					</Typography>
 					{loading ? (
 						<CircularProgress size={2} delay={100} marginy={2} />
@@ -258,6 +226,38 @@ export default function ProgramView() {
 					)}
 				</Box>
 			</>
+		)
+	}
+
+	function renderDatabaseControls() {
+		const { db } = appState
+		let value = null
+		if (!db) value = 'No database found'
+		else {
+			switch (db.type) {
+				case 'eventlog':
+					value = <LogStoreControls />
+					break
+				case 'feed':
+					value = <FeedStoreControls />
+					break
+				case 'docstore':
+					value = <DocumentStoreControls />
+					break
+				case 'keyvalue':
+					value = <KeyValueStoreControls />
+					break
+				case 'counter':
+					value = <CounterStoreControls />
+					break
+				default:
+					value = `No input controls found for ${db.type}`
+			}
+		}
+		return (
+			<Typography variant="body2" color="textSecondary">
+				{value}
+			</Typography>
 		)
 	}
 
@@ -297,7 +297,7 @@ export default function ProgramView() {
 				</Box>
 				{renderProgram()}
 				<Divider variant="middle" />
-				{appState.program ? <DatabaseControls appState={appState} /> : ''}
+				{appState.program ? renderDatabaseControls() : ''}
 			</Box>
 		</Box>
 	)
