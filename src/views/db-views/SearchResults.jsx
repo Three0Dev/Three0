@@ -1,12 +1,9 @@
 import React from 'react'
 import { Typography, CircularProgress, Box } from '@mui/material'
-
 import { useLocation, Navigate, useParams } from 'react-router-dom'
-import { useStateValue, actions, loadingState } from '../state'
-
-import { getAllDatabases, removeDatabase } from '../database'
-
-import { ProgramList } from '../components/db-components/DatabaseList'
+import { useStateValue, actions, loadingState } from '../../state/DatabaseState'
+import { getAllDatabases, removeDatabase } from '../../services/database'
+import { ProgramList } from '../../components/db-components/DatabaseList'
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search)

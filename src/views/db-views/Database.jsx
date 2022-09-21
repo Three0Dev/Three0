@@ -27,7 +27,7 @@ import {
 	CounterStoreControls,
 } from '../../components/db-components/controls'
 import { getDB } from '../../services/database'
-import { useStateValue, actions } from '../../state'
+import { useStateValue, actions } from '../../state/DatabaseState'
 
 const colors = {
 	eventlog: '#47B881',

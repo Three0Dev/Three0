@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 
-import { useStateValue, actions } from '../../../state'
+import { useStateValue, actions } from '../../../state/DatabaseState'
 
 export default function KeyValueStoreControls() {
 	const [appState, dispatch] = useStateValue()
