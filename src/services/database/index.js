@@ -3,9 +3,9 @@
 import * as IPFS from 'ipfs-core'
 import OrbitDB from 'orbit-db'
 // import IdentityProvider from 'orbit-db-identity-provider'
-import { config as Config } from './db-config'
+import { config as Config } from './config'
 // import NearIdentityProvider from './NearIdentityProvider'
-import { nearConfig } from '../utils'
+import { nearConfig } from '../../utils'
 
 let ipfs
 

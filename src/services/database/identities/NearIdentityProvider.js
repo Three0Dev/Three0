@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { keyStores } from 'near-api-js'
 import IdentityProvider from 'orbit-db-identity-provider'
-import { nearConfig as NEAR_CONFIG } from '../utils'
+import { nearConfig as NEAR_CONFIG } from '../../../utils'
 
 export default class NearIdentityProvider extends IdentityProvider {
 	// return type

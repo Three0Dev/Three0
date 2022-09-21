@@ -26,7 +26,7 @@ import {
 	DocumentStoreControls,
 	CounterStoreControls,
 } from '../../components/db-components/controls'
-import { getDB } from '../../database'
+import { getDB } from '../../services/database'
 import { useStateValue, actions } from '../../state'
 
 const colors = {
