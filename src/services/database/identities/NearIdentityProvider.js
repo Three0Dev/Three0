@@ -10,11 +10,13 @@ export default class NearIdentityProvider extends IdentityProvider {
 	}
 
 	// return identifier of external id (eg. a public key)
+	// eslint-disable-next-line class-methods-use-this
 	async getId() {
 		return window.accountId
 	}
 
 	// return a signature of data (signature of the OrbitDB public key)
+	// eslint-disable-next-line class-methods-use-this
 	async signIdentity(data) {
 		console.log(data)
 		const dataBuffer = Buffer.from(data)

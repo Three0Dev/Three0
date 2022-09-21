@@ -48,19 +48,19 @@ export default function DocumentStoreControls() {
 			<InputLabel>Entry</InputLabel>
 			<TextField
 				id="key"
-				onChange={handleKeyChange}
+				onChange={() => handleKeyChange}
 				name="key"
 				value={key}
 				placeholder="Key"
 			/>
 			<TextField
-				onChange={handleValueChange}
+				onChange={() => handleValueChange}
 				name="value"
 				value={value}
 				placeholder="Value"
 			/>
 			<Button
-				onClick={handleAdd}
+				onClick={() => handleAdd}
 				variant="contained"
 				sx={{ marginLeft: 2 }}
 				startIcon={<AddIcon />}

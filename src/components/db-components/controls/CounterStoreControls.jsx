@@ -40,14 +40,14 @@ export default function CounterStoreControls() {
 		<Box>
 			<InputLabel>Number</InputLabel>
 			<TextField
-				onChange={handleValueChange}
+				onChange={() => handleValueChange}
 				name="value"
 				value={value}
 				placeholder="Value"
 			/>
 
 			<Button
-				onClick={handleAdd}
+				onClick={() => handleAdd}
 				variant="contained"
 				sx={{ marginLeft: 2 }}
 				startIcon={<AddIcon />}
