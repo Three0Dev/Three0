@@ -11,7 +11,7 @@ import {
 	NotFound,
 	ProjectHome,
 	Hosting,
-} from './screens'
+} from './views'
 import { DBView } from './database/App'
 import {
 	DatabaseView,
