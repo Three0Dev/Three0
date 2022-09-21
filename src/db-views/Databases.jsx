@@ -4,12 +4,12 @@ import { Typography, Box, CircularProgress, useTheme } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import Fab from '@mui/material/Fab'
 import withReactContent from 'sweetalert2-react-content'
-import { useStateValue, actions } from '../../../state'
-import { getAllDatabases, removeDatabase, createDatabase } from '../../../database'
+import { useStateValue, actions } from '../state'
+import { getAllDatabases, removeDatabase, createDatabase } from '../database'
 import { ProgramList } from '../db-components/DatabaseList'
 import CreateDialog from '../db-components/CreateDialog'
-import { ProjectDetailsContext } from '../../../ProjectDetailsContext'
-import Backdrop from '../../../components/templates/Backdrop'
+import { ProjectDetailsContext } from '../ProjectDetailsContext'
+import Backdrop from '../components/templates/Backdrop'
 
 export default function DatabasesView() {
 	const [appState, dispatch] = useStateValue()

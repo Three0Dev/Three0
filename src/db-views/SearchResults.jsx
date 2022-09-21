@@ -2,9 +2,9 @@ import React from 'react'
 import { Typography, CircularProgress, Box } from '@mui/material'
 
 import { useLocation, Navigate, useParams } from 'react-router-dom'
-import { useStateValue, actions, loadingState } from '../../../state'
+import { useStateValue, actions, loadingState } from '../state'
 
-import { getAllDatabases, removeDatabase } from '../../../database'
+import { getAllDatabases, removeDatabase } from '../database'
 
 import { ProgramList } from '../db-components/DatabaseList'
 

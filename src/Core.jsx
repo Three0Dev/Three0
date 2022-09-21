@@ -17,7 +17,7 @@ import {
 	DatabaseView,
 	DatabasesView,
 	SearchResultsView,
-} from './orbit-db-console/src/db-views'
+} from './db-views'
 import './global.css'
 
 const PRIMARY_COLOR = '#6247aa'

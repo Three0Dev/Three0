@@ -18,7 +18,7 @@ import {
 	TableRow,
 	TableCell,
 	TableHeader,
-} from '../../../components/templates/Table'
+} from '../components/templates/Table'
 
 const colors = {
 	eventlog: '#47B881',

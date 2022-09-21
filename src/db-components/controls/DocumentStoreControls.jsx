@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Box, Button, TextField, InputLabel } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 
-import { useStateValue, actions } from '../../../../state'
+import { useStateValue, actions } from '../../state'
 
 const short = require('short-uuid')
 
