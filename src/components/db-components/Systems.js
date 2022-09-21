@@ -1,8 +1,8 @@
 import React from 'react'
 import { Box, Typography, Stack, Chip } from '@mui/material'
 import { useParams } from 'react-router-dom'
-import { initIPFS, initOrbitDB, getAllDatabases } from '../database'
-import { actions, useStateValue } from '../state'
+import { initIPFS, initOrbitDB, getAllDatabases } from '../../database'
+import { actions, useStateValue } from '../../state'
 
 export function Systems() {
 	const [appState, dispatch] = useStateValue()

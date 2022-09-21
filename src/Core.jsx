@@ -12,7 +12,7 @@ import {
 	ProjectHome,
 	Hosting,
 } from './screens'
-import { DBView } from './App'
+import { DBView } from './database/App'
 import {
 	DatabaseView,
 	DatabasesView,

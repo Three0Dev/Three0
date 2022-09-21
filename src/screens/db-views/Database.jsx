@@ -18,16 +18,16 @@ import {
 	TableBody,
 	TableCell,
 	TableRow,
-} from '../components/templates/Table'
+} from '../../components/templates/Table'
 import {
 	LogStoreControls,
 	FeedStoreControls,
 	KeyValueStoreControls,
 	DocumentStoreControls,
 	CounterStoreControls,
-} from '../db-components/controls'
-import { getDB } from '../database'
-import { useStateValue, actions } from '../state'
+} from '../../components/db-components/controls'
+import { getDB } from '../../database'
+import { useStateValue, actions } from '../../state'
 
 const colors = {
 	eventlog: '#47B881',

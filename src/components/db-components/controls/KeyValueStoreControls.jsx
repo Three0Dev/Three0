@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
 	Box,
 	Button,
@@ -8,22 +8,28 @@ import {
 	MenuItem,
 } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
-import { useStateValue, actions } from '../../state'
 
-export default function LogStoreControls() {
+import { useStateValue, actions } from '../../../state'
+
+export default function KeyValueStoreControls() {
 	const [appState, dispatch] = useStateValue()
-	const [value, setValue] = React.useState('')
-	const [type, setType] = React.useState('string')
+	const [key, setKey] = useState('')
+	const [value, setValue] = useState('')
+	const [type, setType] = useState('string')
 
 	function handleValueChange(event) {
 		setValue(event.target.value)
 	}
 
+	function handleKeyChange(event) {
+		setKey(event.target.value)
+	}
+
 	const addToDB = async () => {
 		const { db } = appState
 
-		if (db.type !== 'eventlog') {
-			throw new Error('This component can only handle Log databases')
+		if (db.type !== 'keyvalue') {
+			throw new Error('This component can only handle Key-Value databases')
 		}
 
 		let entry = value
@@ -45,15 +51,18 @@ export default function LogStoreControls() {
 				break
 		}
 
-		await db.add(entry)
+		await db.set(key, entry)
 
-		const entries = await db.iterator({ limit: 10 }).collect().reverse()
+		const entries = Object.keys(db.all).map((e) => ({
+			payload: { value: { key: e, value: db.get(e) } },
+		}))
 		dispatch({ type: actions.DB.SET_DB, db, entries })
 	}
 
 	function handleAdd(event) {
 		if (event) event.preventDefault()
 		if (value.length === 0) return
+		if (key.length === 0) return
 		addToDB()
 	}
 
@@ -73,19 +82,24 @@ export default function LogStoreControls() {
 				<MenuItem value="array">Array</MenuItem>
 			</Select>
 			<TextField
+				onChange={handleKeyChange}
+				name="key"
+				value={key}
+				placeholder="Key"
+			/>
+			<TextField
 				onChange={handleValueChange}
 				name="value"
 				value={value}
 				placeholder="Value"
 			/>
-
 			<Button
 				onClick={handleAdd}
 				variant="contained"
 				sx={{ marginLeft: 2 }}
 				startIcon={<AddIcon />}
 			>
-				Add
+				Set
 			</Button>
 		</Box>
 	)
