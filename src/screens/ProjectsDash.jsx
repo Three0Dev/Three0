@@ -53,7 +53,10 @@ export default function ProjectsDash() {
 					'blockchain-type-selector'
 				)
 				const chainType = chainTypeElement[chainTypeElement.selectedIndex].value
-				return [pid, chainType]
+
+				const storageSelected = document.getElementById('storage-selector').value
+
+				return [pid, chainType, storageSelected]
 			},
 		})
 
@@ -63,6 +66,7 @@ export default function ProjectsDash() {
 				JSON.stringify({
 					pid: formValues[0],
 					blockchainNetwork: formValues[1],
+					storage: formValues[2],
 				})
 			)
 			setLoading(true)

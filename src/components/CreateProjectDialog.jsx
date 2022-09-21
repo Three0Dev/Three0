@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextField, Select, InputLabel, FormControl } from '@mui/material'
+import { Checkbox, TextField, Select, InputLabel, FormControl, FormControlLabel } from '@mui/material'
 
 export default function CreateProjectDialog() {
 	return (
@@ -23,6 +23,9 @@ export default function CreateProjectDialog() {
 				>
 					<option value="NEAR_TESTNET">NEAR Testnet</option>
 				</Select>
+			</FormControl>
+			<FormControl>
+				<FormControlLabel control={<Checkbox id="storage-selector"/>} label="Storage" />
 			</FormControl>
 		</>
 	)

@@ -50,15 +50,20 @@ if (code === 0 && calledFromDir !== __dirname) {
   sh.cp('-u',outFile,link)
 
   const frontEndDir = `${calledFromDir}/src/contract-wasms`
-  const frontEndLink = `${frontEndDir}/near.wasm`
+  const projectFrontEndLink = `${frontEndDir}/near.wasm`
   const projectPackageName = getName("project")
-
   const outProjectFile = `${outDir}/${projectPackageName}.wasm`
 
+  const storageFrontEndLink = `${frontEndDir}/near-storage.wasm`
+  const storagePackageName = getName("storage")
+  const outStorageFile = `${outDir}/${storagePackageName}.wasm`
+
   sh.mkdir('-p', frontEndDir)
-  sh.rm('-f', frontEndLink)
+  sh.rm('-f', projectFrontEndLink)
+  sh.rm('-f', storageFrontEndLink)
   //fixes #831: copy-update instead of linking .- sometimes sh.ln does not work on Windows
-  sh.cp('-u',outProjectFile,frontEndLink)
+  sh.cp('-u',outProjectFile,projectFrontEndLink)
+  sh.cp('-u',outStorageFile,storageFrontEndLink)
 
   sh.echo("")
   sh.echo("Controller Size:");
@@ -66,6 +71,9 @@ if (code === 0 && calledFromDir !== __dirname) {
   sh.echo("")
   sh.echo("Project Size:")
   sh.exec(`wc -c ${outProjectFile} | awk '{print $1}'`)
+  sh.echo("")
+  sh.echo("Storage Size:")
+  sh.exec(`wc -c ${outStorageFile} | awk '{print $1}'`)
   sh.echo("")
 }
 
