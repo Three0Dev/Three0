@@ -3,12 +3,12 @@ import { Outlet } from 'react-router-dom'
 
 import { actions, loadingState, StateProvider } from './state'
 
-import { Systems } from './components/Systems'
-import { Header } from './components/Header'
+import Systems from './components/Systems'
+import Header from './components/Header'
 
 import './index.css'
 
-export function DBView() {
+export default function DBView() {
 	const initialState = {
 		user: null,
 		loginDialogOpen: false,

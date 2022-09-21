@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import { initIPFS, initOrbitDB, getAllDatabases } from '../database'
 import { actions, useStateValue } from '../state'
 
-export function Systems() {
+export default function Systems() {
 	const [appState, dispatch] = useStateValue()
 
 	const { pid } = useParams()

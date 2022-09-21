@@ -73,14 +73,14 @@ export default function LogStoreControls() {
 				<MenuItem value="array">Array</MenuItem>
 			</Select>
 			<TextField
-				onChange={handleValueChange}
+				onChange={(e) => handleValueChange(e)}
 				name="value"
 				value={value}
 				placeholder="Value"
 			/>
 
 			<Button
-				onClick={handleAdd}
+				onClick={(e) => handleAdd(e)}
 				variant="contained"
 				sx={{ marginLeft: 2 }}
 				startIcon={<AddIcon />}

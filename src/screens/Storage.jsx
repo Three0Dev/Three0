@@ -1,17 +1,23 @@
 import React from 'react'
-import { Typography } from '@mui/material'
-import WIPPhoto from '../assets/wip.svg'
+import FileManager, {
+	getList,
+	createDirectory,
+	deletePaths,
+	openFile,
+	uploadFiles,
+	rename,
+} from '../storage-ui'
 
 export default function Storage() {
 	return (
-		<>
-			<img src={WIPPhoto} alt="WIP" className="majorImg" />
-			<Typography
-				variant="h2"
-				style={{ textAlign: 'center', fontWeight: 'bold' }}
-			>
-				Coming Soon!
-			</Typography>
-		</>
+		<FileManager
+			getList={getList}
+			createDirectory={createDirectory}
+			deletePaths={deletePaths}
+			openFile={openFile}
+			uploadFiles={uploadFiles}
+			rename={rename}
+			features={['createDirectory', 'uploadFiles', 'deletePaths', 'rename']}
+		/>
 	)
 }

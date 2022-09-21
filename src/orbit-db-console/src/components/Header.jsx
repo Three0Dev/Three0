@@ -4,7 +4,7 @@ import { Box, Typography, Toolbar, AppBar } from '@mui/material'
 import StorageIcon from '@mui/icons-material/Storage'
 import Search from '../../../components/templates/Search'
 
-export function Header() {
+export default function Header() {
 	const navigate = useNavigate()
 
 	function handleKeyUp(event) {
@@ -34,7 +34,7 @@ export function Header() {
 					</Typography>
 					<Search
 						placeholder="Search…"
-						onKeyPress={handleKeyUp}
+						onKeyPress={(e) => handleKeyUp(e)}
 						onChange={() => {}}
 					/>
 				</Toolbar>
