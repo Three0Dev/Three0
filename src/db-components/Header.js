@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Box, Typography, Toolbar, AppBar } from '@mui/material'
 import StorageIcon from '@mui/icons-material/Storage'
-import Search from '../../../components/templates/Search'
+import Search from '../components/templates/Search'
 
 export function Header() {
 	const navigate = useNavigate()

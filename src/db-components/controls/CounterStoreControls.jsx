@@ -1,71 +1,58 @@
 import React, { useState } from 'react'
+
 import { Box, Button, TextField, InputLabel } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 
-import { useStateValue, actions } from '../../state'
+import { useStateValue, actions } from '../../../../state'
 
-const short = require('short-uuid')
-
-export default function DocumentStoreControls() {
+export default function CounterStoreControls() {
 	const [appState, dispatch] = useStateValue()
-	const [key, setKey] = useState('')
-	const [value, setValue] = useState('')
+	const [value, setValue] = useState(1)
 
 	function handleValueChange(event) {
 		setValue(event.target.value)
 	}
 
-	function handleKeyChange(event) {
-		setKey(event.target.value)
-	}
-
 	const addToDB = async () => {
 		const { db } = appState
 
-		if (db.type !== 'docstore') {
-			throw new Error('This component can only handle Document databases')
+		if (db.type !== 'counter') {
+			throw new Error('This component can only handle Counter databases')
 		}
 
-		if (key.length === 0) {
-			setKey(short.generate())
+		const val = parseInt(value, 10) || 0
+
+		if (val > 0) {
+			await db.inc(val)
 		}
 
-		await db.put({ _id: key, value })
-
-		const entries = db.query((e) => e !== null, { fullOp: true }).reverse()
+		const entries = [{ payload: { value: db.value } }]
 		dispatch({ type: actions.DB.SET_DB, db, entries })
 	}
 
 	function handleAdd(event) {
 		if (event) event.preventDefault()
 		if (value.length === 0) return
-		if (key.length === 0) return
 		addToDB()
 	}
 
 	return (
 		<Box>
-			<InputLabel>Entry</InputLabel>
-			<TextField
-				id="key"
-				onChange={handleKeyChange}
-				name="key"
-				value={key}
-				placeholder="Key"
-			/>
+			<InputLabel>Number</InputLabel>
 			<TextField
 				onChange={handleValueChange}
 				name="value"
 				value={value}
 				placeholder="Value"
 			/>
+
 			<Button
 				onClick={handleAdd}
 				variant="contained"
 				sx={{ marginLeft: 2 }}
 				startIcon={<AddIcon />}
 			>
-				Put
+				Increment
 			</Button>
 		</Box>
 	)

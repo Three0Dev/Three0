@@ -3,8 +3,8 @@ import { Outlet } from 'react-router-dom'
 
 import { actions, loadingState, StateProvider } from './state'
 
-import { Systems } from './components/Systems'
-import { Header } from './components/Header'
+import { Systems } from './db-components/Systems'
+import { Header } from './db-components/Header'
 
 import './index.css'
 

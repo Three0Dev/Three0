@@ -25,9 +25,9 @@ import {
 	KeyValueStoreControls,
 	DocumentStoreControls,
 	CounterStoreControls,
-} from '../components/controls'
-import { getDB } from '../database'
-import { useStateValue, actions } from '../state'
+} from '../db-components/controls'
+import { getDB } from '../../../database'
+import { useStateValue, actions } from '../../../state'
 
 const colors = {
 	eventlog: '#47B881',
