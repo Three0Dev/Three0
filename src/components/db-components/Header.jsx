@@ -34,7 +34,7 @@ export default function Header() {
 					</Typography>
 					<Search
 						placeholder="Search…"
-						onKeyPress={() => handleKeyUp}
+						onKeyPress={(e) => handleKeyUp(e)}
 						onChange={() => {}}
 					/>
 				</Toolbar>
