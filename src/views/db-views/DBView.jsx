@@ -1,19 +1,9 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-<<<<<<<< HEAD:src/views/db-views/DBView.jsx
 import { actions, loadingState, StateProvider } from '../../state/DatabaseState'
 import Systems from '../../components/db-components/Systems'
 import Header from '../../components/db-components/Header'
-========
-
-import { actions, loadingState, StateProvider } from './state'
-
-import Systems from './components/Systems'
-import Header from './components/Header'
-
-import './index.css'
->>>>>>>> main:src/orbit-db-console/src/App.jsx
 
 export default function DBView() {
 	const initialState = {
