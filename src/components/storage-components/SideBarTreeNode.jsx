@@ -30,6 +30,7 @@ export default function SideBarTreeNode({
 					setCurrentPath(node.path)
 				}}
 				style={{ paddingLeft: `${8 + (level || 0) * OFFSET}px` }}
+				aria-hidden="true"
 			>
 				{!collapsed[node.path] && structure[node.path] ? (
 					<ArrowDropDownIcon />

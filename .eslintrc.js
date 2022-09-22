@@ -15,5 +15,7 @@ module.exports = {
 	rules: {
 		'prettier/prettier': ['error'],
 		'no-console': 'off',
+		// TODO: remove this rule post ts migration
+		'react/prop-types': 'off',
 	},
 }

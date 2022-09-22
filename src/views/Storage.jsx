@@ -6,7 +6,7 @@ import FileManager, {
 	openFile,
 	uploadFiles,
 	rename,
-} from '../storage-ui'
+} from '../components/storage-components/FileManager'
 
 export default function Storage() {
 	return (

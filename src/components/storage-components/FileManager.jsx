@@ -55,6 +55,19 @@ export default function FileManager({
 		}
 	}
 
+	const load = async (path) => {
+		try {
+			const response = await getList(path)
+			return response.map((item) => ({
+				name: item.name,
+				type: item.type === 1 ? 1 : 2,
+			}))
+		} catch (error) {
+			console.error(error)
+			return `Error: ${error.message}`
+		}
+	}
+
 	const reload = async () => {
 		setLoading(true)
 		const updated = {}
@@ -110,18 +123,6 @@ export default function FileManager({
 				ordered[path] = processed[path]
 			})
 		setStructure(ordered)
-	}
-
-	const load = async (path) => {
-		try {
-			const response = await getList(path)
-			return response.map((item) => ({
-				name: item.name,
-				type: item.type === 1 ? 1 : 2,
-			}))
-		} catch (error) {
-			console.error(error)
-		}
 	}
 
 	useEffect(() => {

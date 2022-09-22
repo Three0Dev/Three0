@@ -85,6 +85,7 @@ export default function TopBar({
 				if (!value) {
 					return 'You need to write something!'
 				}
+				return value
 			},
 		})
 	}

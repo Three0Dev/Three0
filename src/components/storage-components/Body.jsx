@@ -34,12 +34,11 @@ export default function Body({
 		>
 			{!!list && (
 				<>
-					{list.map((item, index) => {
+					{list.map((item) => {
 						const path = `${currentPath}/${item.name}`
 						const selected = selection.indexOf(path) !== -1
 						return (
 							<div
-								key={index}
 								className={`Body-Item${selected ? ' Item-Selected' : ''}`}
 								onClick={(event) => {
 									event.stopPropagation()
@@ -56,6 +55,7 @@ export default function Body({
 										setCurrentPath(path)
 									}
 								}}
+								aria-hidden="true"
 							>
 								<div className="Body-Item-Icon">
 									{item.type === 1 ? <InsertDriveFileIcon /> : <FolderIcon />}
@@ -73,6 +73,7 @@ export default function Body({
 											onRename()
 										}
 									}}
+									aria-hidden="true"
 								>
 									{item.name}
 								</div>
