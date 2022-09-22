@@ -12,7 +12,7 @@ import {
 	ProjectHome,
 	Hosting,
 } from './views'
-import { DBView } from './views/db-views/DBView'
+import DBView from './views/db-views/DBView'
 import {
 	DatabaseView,
 	DatabasesView,
