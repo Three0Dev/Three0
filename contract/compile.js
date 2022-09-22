@@ -37,12 +37,12 @@ const { code } = sh.exec(buildCmd)
 // When running commands like `near deploy`, near-cli looks for a contract at
 // <CURRENT_DIRECTORY>/out/main.wasm
 if (code === 0 && calledFromDir !== __dirname) {
-  const type = debug ? 'debug' : 'release';
-  const outDir = `./target/wasm32-unknown-unknown/${type}`
+	const type = debug ? 'debug' : 'release'
+	const outDir = `./target/wasm32-unknown-unknown/${type}`
 
-  const linkDir = `${calledFromDir}/out`
-  const link = `${linkDir}/main.wasm`
-  const controllerPackageName = getName("controller")
+	const linkDir = `${calledFromDir}/out`
+	const link = `${linkDir}/main.wasm`
+	const controllerPackageName = getName('controller')
   const outFile = `${outDir}/${controllerPackageName}.wasm`
   sh.mkdir('-p', linkDir)
   sh.rm('-f', link)
@@ -73,5 +73,8 @@ if (code === 0 && calledFromDir !== __dirname) {
 process.exit(code)
 
 function getName(fileDir) {
-  return require('fs').readFileSync(`${__dirname}/${fileDir}/Cargo.toml`).toString().match(/name = "([^"]+)"/)[1]
+	return require('fs')
+		.readFileSync(`${__dirname}/${fileDir}/Cargo.toml`)
+		.toString()
+		.match(/name = "([^"]+)"/)[1]
 }
