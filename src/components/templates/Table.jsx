@@ -33,10 +33,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }))
 
 function TableHeader(props) {
+	const item = props
 	return (
 		<TableHead>
 			<TableRow>
-				{props.headers.map((header) => (
+				{item.headers.map((header) => (
 					<StyledTableCell key={header}>{header}</StyledTableCell>
 				))}
 			</TableRow>

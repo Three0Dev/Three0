@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-import ProjectDetailsContext from '../ProjectDetailsContext'
+import ProjectDetailsContext from '../state/ProjectDetailsContext'
 import Backdrop from './templates/Backdrop'
 import Search from './templates/Search'
 import {

@@ -1,6 +1,6 @@
 const CONTRACT_NAME = process.env.CONTRACT_NAME || 'alpha.three0.testnet'
 
-function getConfig(env) {
+function getNEARConfig(env) {
 	switch (env) {
 		case 'mainnet':
 			return {
@@ -61,4 +61,4 @@ function getConfig(env) {
 	}
 }
 
-module.exports = getConfig
+module.exports = getNEARConfig

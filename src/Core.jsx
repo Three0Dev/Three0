@@ -11,13 +11,13 @@ import {
 	NotFound,
 	ProjectHome,
 	Hosting,
-} from './screens'
-import DBView from './orbit-db-console/src/App'
+} from './views'
+import DBView from './views/db-views/DBView'
 import {
 	DatabaseView,
 	DatabasesView,
 	SearchResultsView,
-} from './orbit-db-console/src/views'
+} from './views/db-views'
 import './global.css'
 
 const PRIMARY_COLOR = '#6247aa'
