@@ -1,4 +1,3 @@
-import React from 'react'
 import FileManager, {
 	getList,
 	createDirectory,
@@ -18,6 +17,8 @@ export default function Storage() {
 			uploadFiles={uploadFiles}
 			rename={rename}
 			features={['createDirectory', 'uploadFiles', 'deletePaths', 'rename']}
+			translations={{
+			}}
 		/>
 	)
 }

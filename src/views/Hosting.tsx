@@ -1,4 +1,3 @@
-import React from 'react'
 import { Typography } from '@mui/material'
 import WIPPhoto from '../assets/wip.svg'
 

@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button, Box, Typography } from '@mui/material'
 import UpdatedLogo from '../assets/logos/UpdatedLogo.png'
 import { login } from '../utils'

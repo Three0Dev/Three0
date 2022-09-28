@@ -39,7 +39,7 @@ export default function ProjectsDash() {
 			focusConfirm: false,
 			confirmButtonColor: theme.palette.secondary.dark,
 			preConfirm: () => {
-				const name = document.getElementById('project-name').value
+				const name = (document.getElementById('project-name') as HTMLInputElement).value
 				// eslint-disable-next-line no-useless-escape
 				const nameRegex = /^(([a-z\d]+[\-_])*[a-z\d]+)$/
 
@@ -51,7 +51,7 @@ export default function ProjectsDash() {
 
 				const chainTypeElement = document.getElementById(
 					'blockchain-type-selector'
-				)
+				) as HTMLInputElement
 				const chainType = chainTypeElement[chainTypeElement.selectedIndex].value
 				return [pid, chainType]
 			},
