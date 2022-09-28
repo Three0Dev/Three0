@@ -61,4 +61,4 @@ function getNEARConfig(env) {
 	}
 }
 
-module.exports = getNEARConfig
+export = getNEARConfig

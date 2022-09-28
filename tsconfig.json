@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+      "outDir": "./built",
+      "allowJs": true,
+      "target": "es5",
+      "jsx": "react-jsx",
+      "moduleResolution": "node",
+    },
+    "include": ["./src/**/*"]
+  }
+  

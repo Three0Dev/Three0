@@ -6,8 +6,8 @@
   "description": "Three0 Contract and Dev Console",
   "scripts": {
     "build": "npm run build:contract && npm run build:web",
-    "build:contract": "node contract/compile.js",
-    "build:contract:debug": "node contract/compile.js --debug",
+    "build:contract": "node contract/compile.ts",
+    "build:contract:debug": "node contract/compile.ts --debug",
     "build:web": "parcel build 'src/*.html' --public-url ./",
     "dev:deploy:contract": "near dev-deploy",
     "deploy:contract": "near deploy",
@@ -19,8 +19,8 @@
     "dev": "nodemon --watch contract -e rs --exec \"npm run start\"",
     "test:contract": "npm run build:contract:debug && cd contract && cargo test -- --nocapture",
     "test": "npm run build:contract:debug && cd contract && cargo test -- --nocapture && cd .. && jest test --runInBand",
-    "lint": "eslint 'src/**/*.{js,jsx}' --no-error-on-unmatched-pattern",
-    "lint:fix": "eslint 'src/**/*.{js,jsx}' --no-error-on-unmatched-pattern --fix"
+    "lint": "eslint 'src/**/*.{ts,tsx}' --no-error-on-unmatched-pattern",
+    "lint:fix": "eslint 'src/**/*.{ts,tsx}' --no-error-on-unmatched-pattern --fix"
   },
   "devDependencies": {
     "env-cmd": "~10.1.0",
@@ -65,11 +65,11 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__mocks__/fileMock.js",
-      "\\.(css|less)$": "<rootDir>/src/__mocks__/fileMock.js"
+      "\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__mocks__/fileMock.ts",
+      "\\.(css|less)$": "<rootDir>/src/__mocks__/fileMock.ts"
     },
     "setupFiles": [
-      "<rootDir>/src/jest.init.js"
+      "<rootDir>/src/jest.init.ts"
     ],
     "testEnvironment": "near-cli/test_environment",
     "testPathIgnorePatterns": [
