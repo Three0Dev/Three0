@@ -15,7 +15,7 @@ export default function LogStoreControls() {
 	const [value, setValue] = React.useState('')
 	const [type, setType] = React.useState('string')
 
-	function handleValueChange(event) {
+	function handleValueChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
 		setValue(event.target.value)
 	}
 
@@ -26,7 +26,7 @@ export default function LogStoreControls() {
 			throw new Error('This component can only handle Log databases')
 		}
 
-		let entry = value
+		let entry:any = value
 
 		switch (type) {
 			case 'bool':
@@ -51,7 +51,7 @@ export default function LogStoreControls() {
 		dispatch({ type: actions.DB.SET_DB, db, entries })
 	}
 
-	function handleAdd(event) {
+	function handleAdd(event: React.MouseEvent<HTMLButtonElement>) {
 		if (event) event.preventDefault()
 		if (value.length === 0) return
 		addToDB()

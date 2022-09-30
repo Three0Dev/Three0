@@ -1,11 +1,11 @@
 {
-    "compilerOptions": {
-      "allowJs": true,
-      "target": "es5",
-      "jsx": "react-jsx",
-      "moduleResolution": "node",
-      "allowSyntheticDefaultImports": true
-    },
-    "include": ["./src/**/*"]
-  }
+  "include": ["src/**/*"],
+  "compilerOptions": {
+    "target": "ES6",
+    "strict": true,
+    "moduleResolution": "node",
+    "jsx": "react-jsx",
+    "skipLibCheck": true
+  },
+}
   

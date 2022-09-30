@@ -10,6 +10,7 @@ export async function initContract() {
 	const near = await connect({
 		deps: { keyStore: new keyStores.BrowserLocalStorageKeyStore() },
 		...nearConfig,
+		headers: {}
 	})
 
 	window.near = near

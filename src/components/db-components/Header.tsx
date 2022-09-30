@@ -7,8 +7,8 @@ import Search from '../templates/Search'
 export default function Header() {
 	const navigate = useNavigate()
 
-	function handleKeyUp(event) {
-		if (event.keyCode === 13) {
+	function handleKeyUp(event: React.KeyboardEvent<HTMLDivElement>) {
+		if (event.key === 13) {
 			if (event.target.value.length > 0) {
 				navigate(`./search?q=${event.target.value}`)
 			} else {
@@ -34,7 +34,7 @@ export default function Header() {
 					</Typography>
 					<Search
 						placeholder="Search…"
-						onKeyPress={(e) => handleKeyUp(e)}
+						onKeyPress={(e: React.KeyboardEvent<HTMLDivElement>) => handleKeyUp(e)}
 						onChange={() => {}}
 					/>
 				</Toolbar>

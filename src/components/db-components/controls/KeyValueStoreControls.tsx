@@ -17,11 +17,11 @@ export default function KeyValueStoreControls() {
 	const [value, setValue] = useState('')
 	const [type, setType] = useState('string')
 
-	function handleValueChange(event) {
+	function handleValueChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
 		setValue(event.target.value)
 	}
 
-	function handleKeyChange(event) {
+	function handleKeyChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
 		setKey(event.target.value)
 	}
 
@@ -32,7 +32,7 @@ export default function KeyValueStoreControls() {
 			throw new Error('This component can only handle Key-Value databases')
 		}
 
-		let entry = value
+		let entry:any = value
 
 		switch (type) {
 			case 'bool':

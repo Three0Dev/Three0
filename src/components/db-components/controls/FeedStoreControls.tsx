@@ -1,5 +1,4 @@
 import React from 'react'
-
 import {
 	Box,
 	Button,
@@ -28,7 +27,7 @@ export default function FeedStoreControls() {
 			throw new Error('This component can only handle Feed databases')
 		}
 
-		let entry = value
+		let entry:any = value
 
 		switch (type) {
 			case 'bool':
@@ -53,7 +52,7 @@ export default function FeedStoreControls() {
 		dispatch({ type: actions.DB.SET_DB, db, entries })
 	}
 
-	function handleAdd(event) {
+	function handleAdd(event: React.MouseEvent<HTMLButtonElement>) {
 		if (event) event.preventDefault()
 		if (value.length === 0) return
 		addToDB()

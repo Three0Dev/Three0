@@ -11,11 +11,11 @@ export default function DocumentStoreControls() {
 	const [key, setKey] = useState('')
 	const [value, setValue] = useState('')
 
-	function handleValueChange(event) {
+	function handleValueChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
 		setValue(event.target.value)
 	}
 
-	function handleKeyChange(event) {
+	function handleKeyChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
 		setKey(event.target.value)
 	}
 
@@ -32,11 +32,11 @@ export default function DocumentStoreControls() {
 
 		await db.put({ _id: key, value })
 
-		const entries = db.query((e) => e !== null, { fullOp: true }).reverse()
+		const entries = db.query((e: any) => e !== null, { fullOp: true }).reverse()
 		dispatch({ type: actions.DB.SET_DB, db, entries })
 	}
 
-	function handleAdd(event) {
+	function handleAdd(event: React.MouseEvent<HTMLButtonElement>) {
 		if (event) event.preventDefault()
 		if (value.length === 0) return
 		if (key.length === 0) return

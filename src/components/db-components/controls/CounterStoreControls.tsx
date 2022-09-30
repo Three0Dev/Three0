@@ -9,8 +9,8 @@ export default function CounterStoreControls() {
 	const [appState, dispatch] = useStateValue()
 	const [value, setValue] = useState(1)
 
-	function handleValueChange(event) {
-		setValue(event.target.value)
+	function handleValueChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+		setValue(parseInt(event.target.value, 10))
 	}
 
 	const addToDB = async () => {
@@ -20,10 +20,8 @@ export default function CounterStoreControls() {
 			throw new Error('This component can only handle Counter databases')
 		}
 
-		const val = parseInt(value, 10) || 0
-
-		if (val > 0) {
-			await db.inc(val)
+		if (value > 0) {
+			await db.inc(value)
 		}
 
 		const entries = [{ payload: { value: db.value } }]
@@ -32,7 +30,7 @@ export default function CounterStoreControls() {
 
 	function handleAdd(event) {
 		if (event) event.preventDefault()
-		if (value.length === 0) return
+		if (value === 0) return
 		addToDB()
 	}
 
@@ -41,6 +39,7 @@ export default function CounterStoreControls() {
 			<InputLabel>Number</InputLabel>
 			<TextField
 				onChange={(e) => handleValueChange(e)}
+				type="number"
 				name="value"
 				value={value}
 				placeholder="Value"

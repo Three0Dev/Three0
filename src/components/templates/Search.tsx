@@ -43,7 +43,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 	},
 }))
 
-export default function SearchBar(props) {
+type SearchBarProps = {
+	placeholder: string
+	onKeyPress: (e: React.KeyboardEvent<HTMLDivElement>) => void
+	onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+}
+
+export default function SearchBar(props: SearchBarProps) {
 	const item = props
 	return (
 		<Search>
