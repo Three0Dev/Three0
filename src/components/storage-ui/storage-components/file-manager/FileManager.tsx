@@ -138,7 +138,6 @@ export default function FileManager({
 				createDirectory={createDirectory}
 				uploadFiles={uploadFiles}
 				labels={labels}
-				loading={loading}
 				reload={reload}
 				enabledFeatures={enabledFeatures}
 			/>
@@ -149,7 +148,6 @@ export default function FileManager({
 				selection={selection}
 				enabledFeatures={enabledFeatures}
 				labels={labels}
-				loading={loading}
 				deletePaths={deletePaths}
 				reload={reload}
 				rename={rename}
@@ -158,14 +156,12 @@ export default function FileManager({
 				collapsed={collapsed}
 				setCollapsed={setCollapsed}
 				structure={structure}
-				setStructure={setStructure}
 				currentPath={currentPath}
 				setCurrentPath={setCurrentPath}
 				openFile={openFile}
 				reload={reload}
 				selection={selection}
 				setSelection={setSelection}
-				uploadFiles={uploadFiles}
 				enabledFeatures={enabledFeatures}
 				labels={labels}
 				loading={loading}

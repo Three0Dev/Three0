@@ -21,13 +21,11 @@ export default function MiddleArea({
 		<div className="FileManager-MiddleArea">
 			<SideBar
 				labels={labels}
-				loading={loading}
 				structure={structure}
 				currentPath={currentPath}
 				setCurrentPath={setCurrentPath}
 				collapsed={collapsed}
 				setCollapsed={setCollapsed}
-				enabledFeatures={enabledFeatures}
 			/>
 			<Body
 				structure={structure}
@@ -36,8 +34,6 @@ export default function MiddleArea({
 				setCurrentPath={setCurrentPath}
 				openFile={openFile}
 				reload={reload}
-				labels={labels}
-				loading={loading}
 				selection={selection}
 				setSelection={setSelection}
 				enabledFeatures={enabledFeatures}
