@@ -8,9 +8,9 @@ export default function Header() {
 	const navigate = useNavigate()
 
 	function handleKeyUp(event: React.KeyboardEvent<HTMLDivElement>) {
-		if (event.key === 13) {
-			if (event.target.value.length > 0) {
-				navigate(`./search?q=${event.target.value}`)
+		if (Number(event.key) === 13) {
+			if ((event.target as HTMLInputElement).value.length > 0) {
+				navigate(`./search?q=${(event.target as HTMLInputElement).value}`)
 			} else {
 				navigate('./')
 			}

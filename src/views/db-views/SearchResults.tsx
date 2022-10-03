@@ -44,9 +44,9 @@ export default function SearchResultsView() {
 		return program
 	}
 
-	const handleRemoveDatabase = (hash, program) => {
+	const handleRemoveDatabase = (contract, hash, program) => {
 		console.log('Remove database...', hash, program)
-		removeDatabase(hash).then(() => {
+		removeDatabase(contract, hash, program).then(() => {
 			console.log('Removed')
 			fetchDatabases().then((data) => {
 				console.log('Loaded programs', data)
@@ -65,7 +65,7 @@ export default function SearchResultsView() {
 				{programs !== loadingState ? (
 					<ProgramList programs={programs} onRemove={handleRemoveDatabase} />
 				) : (
-					<CircularProgress marginX="auto" marginY={120} />
+					<CircularProgress/>
 				)}
 			</Box>
 		</Box>

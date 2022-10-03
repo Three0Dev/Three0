@@ -53,6 +53,7 @@ export default function SideBar({
 				setCurrentPath={setCurrentPath}
 				collapsed={collapsed}
 				setCollapsed={setCollapsed}
+				level={0}
 			/>
 		</Box>
 	)
