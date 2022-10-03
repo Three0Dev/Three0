@@ -56,7 +56,7 @@ export default function SearchResultsView() {
 
 	return (
 		<Box display="flex" justifyContent="center">
-			<Box flex="1" elevation={1} background="white" margin={6} padding={4}>
+			<Box>
 				<Box borderBottom="default">
 					<Typography variant="body1" align="left">
 						{programs.length} programs found
