@@ -157,36 +157,36 @@ export default function ProgramView() {
 									</TableCell>
 									<TableCell>
 										{program ? (
-											<Typography variant="h8" color={colors[program.type]}>
+											<Typography variant="subtitle2" color={colors[program.type]}>
 												{program.type}
 											</Typography>
 										) : (
-											<Typography variant="h8" color="textSecondary">
+											<Typography variant="subtitle2" color="textSecondary">
 												-
 											</Typography>
 										)}
 									</TableCell>
 									<TableCell>
 										{appState.db ? (
-											<Typography variant="h8" color="textSecondary">
+											<Typography variant="subtitle2" color="textSecondary">
 												{appState.db.access.write}
 											</Typography>
 										) : (
-											<Typography variant="h8" color="textSecondary">
+											<Typography variant="subtitle2" color="textSecondary">
 												-
 											</Typography>
 										)}
 									</TableCell>
 									<TableCell>
 										{appState.db ? (
-											<Typography variant="h8" color="textSecondary">
+											<Typography variant="subtitle2" color="textSecondary">
 												{
 													// eslint-disable-next-line no-underscore-dangle
 													appState.db._oplog.values.length
 												}
 											</Typography>
 										) : (
-											<Typography variant="h8" color="textSecondary">
+											<Typography variant="subtitle2" color="textSecondary">
 												-
 											</Typography>
 										)}
@@ -199,7 +199,7 @@ export default function ProgramView() {
 				<Box flex="1" marginY={2}>
 					<Typography
 						sx={{ fontWeight: 'bold' }}
-						variant="h7"
+						variant="subtitle1"
 						color="textPrimary"
 					>
 						{getValuesTitle()}

@@ -116,7 +116,7 @@ export default function ActiveUsers() {
 						<Search
 							onKeyPress={(e) => {
 								if (e.key === 'Enter') {
-									searchUser(e.target.value)
+									searchUser((e.target as HTMLInputElement).value)
 								}
 							}}
 							onChange={(e) => {

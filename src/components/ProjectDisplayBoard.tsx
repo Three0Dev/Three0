@@ -106,7 +106,7 @@ export default function ProjectDisplayBoard() {
 								placeholder="Search…"
 								onKeyPress={(e) => {
 									if (e.key === 'Enter') {
-										searchProject(e.target.value)
+										searchProject((e.target as HTMLInputElement).value)
 									}
 								}}
 								onChange={(e) => {

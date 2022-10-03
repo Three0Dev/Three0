@@ -35,8 +35,8 @@ function ConfigFileInner() {
 		Swal.fire({
 			title: 'Copied to clipboard',
 			timer: 1500,
-			buttons: false,
 			icon: 'success',
+			showConfirmButton: false,
 		})
 	}
 
@@ -66,10 +66,10 @@ function ConfigFileInner() {
 				{copyConfigText}
 			</Paper>
 			<ButtonGroup color="primary">
-				<Button height={24} onClick={() => downloadConfig()}>
+				<Button onClick={() => downloadConfig()}>
 					Download
 				</Button>
-				<Button height={24} onClick={() => copyConfig()}>
+				<Button onClick={() => copyConfig()}>
 					Copy
 				</Button>
 			</ButtonGroup>

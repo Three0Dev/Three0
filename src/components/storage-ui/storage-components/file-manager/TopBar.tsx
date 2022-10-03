@@ -119,12 +119,11 @@ export default function TopBar({
 					<StyledInputBase
 						key={currentPath}
 						type="text"
-						variant="outlined"
 						defaultValue={currentPath || '/'}
 						onBlur={(event) => onPathChange(event.target.value)}
 						onKeyDown={(event) => {
 							if (event.keyCode === 13) {
-								onPathChange(event.target.value)
+								onPathChange((event.target as HTMLInputElement).value)
 							}
 						}}
 					/>
