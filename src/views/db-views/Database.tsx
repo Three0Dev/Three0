@@ -205,15 +205,15 @@ export default function ProgramView() {
 						{getValuesTitle()}
 					</Typography>
 					{loading ? (
-						<CircularProgress size={2} delay={100} marginy={2} />
+						<CircularProgress size={2}/>
 					) : (
 						appState.entries.map((e) => (
 							<div style={{ wordBreak: 'break-word' }}>
 								<Box>
 									<Typography
-										userSelect="none"
-										cursor="pointer"
-										onClick={() => handleSelect(e)}
+										// userSelect="none"
+										// cursor="pointer"
+										// onClick={() => handleSelect(e)}
 									>
 										{JSON.stringify(e.payload.value, null, 2)}
 									</Typography>
