@@ -271,7 +271,6 @@ export default function ProgramView() {
 			<Box
 				flex="1"
 				overflow="auto"
-				elevation={1}
 				padding={4}
 				marginX={2}
 				paddingTop={0}
@@ -280,7 +279,6 @@ export default function ProgramView() {
 					<Typography
 						sx={{ fontWeight: 'bold' }}
 						style={{ margin: 'revert' }}
-						size={500}
 						borderBottom="default"
 						overflow="auto"
 					>

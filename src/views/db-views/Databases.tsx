@@ -78,7 +78,7 @@ export default function DatabasesView() {
 			focusConfirm: false,
 			confirmButtonColor: theme.palette.secondary.dark,
 			preConfirm: () => {
-				const name = document.getElementById('database-name').value
+				const name = (document.getElementById('database-name') as HTMLInputElement).value
 				if (name.includes(' '))
 					Swal.showValidationMessage('No Spaces in Database Name')
 
@@ -90,7 +90,7 @@ export default function DatabasesView() {
 				)
 				const permissions =
 					permissionsElement[permissionsElement.selectedIndex].value
-				const overwrite = document.getElementById('database-overwrite').checked
+				const overwrite = (document.getElementById('database-overwrite') as HTMLInputElement).checked
 
 				return { name, type, permissions, overwrite }
 			},
@@ -142,8 +142,6 @@ export default function DatabasesView() {
 				<Box
 					flex="1"
 					overflow="auto"
-					elevation={1}
-					background="white"
 					marginX={6}
 				>
 					{!appState.loading.programs ? (
