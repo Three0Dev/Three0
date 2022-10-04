@@ -19,12 +19,12 @@ export default function SideBar({
 		let childNodes = tree
 		parts.forEach((part, index) => {
 			tmpPath += (index > 0 ? '/' : '') + part
-			if (!nodesByPath[tmpPath]) {
+			if (!nodesByPath[tmpPath as keyof typeof nodesByPath]) {
 				const node = { name: part, path: tmpPath, children: [] }
 				childNodes.push(node)
 				nodesByPath[tmpPath] = node
 			}
-			childNodes = nodesByPath[tmpPath].children
+			childNodes = nodesByPath[tmpPath as keyof typeof nodesByPath]['children']
 			if (index === parts.length - 1) {
 				const children = (structure[tmpPath] || [])
 					.filter((item: { type: number }) => item.type === 2)

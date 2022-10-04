@@ -69,7 +69,7 @@ export default function ProgramList({ programs, onRemove }: any) {
 								<TableCell>{program.name}</TableCell>
 								<TableCell
 									sx={{
-										color: colors[program.type],
+										color: colors[program.type as keyof typeof colors],
 									}}
 								>
 									{program.type}

@@ -60,12 +60,12 @@ export default function TopBar({
 	enabledFeatures,
 }: any) {
 	const uploadInputRef = useRef(null)
-	const onFileSelect = (event) =>
+	const onFileSelect = (event: { target: { files: any } }) =>
 		uploadFiles(currentPath, [...event.target.files])
 			.then(reload)
-			.catch((error) => error && console.error(error))
+			.catch((error: any) => error && console.error(error))
 
-	const onPathChange = (path) => {
+	const onPathChange = (path: string) => {
 		const newPath = path === '/' ? '' : path
 		if (newPath !== currentPath) {
 			setCurrentPath(newPath)
@@ -133,7 +133,7 @@ export default function TopBar({
 						<IconButton
 							color="inherit"
 							onClick={() =>
-								uploadInputRef.current && uploadInputRef.current.click()
+								uploadInputRef.current && uploadInputRef.current['click']
 							}
 						>
 							<FileUploadIcon />

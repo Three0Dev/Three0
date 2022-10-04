@@ -22,7 +22,7 @@ export const paths = {
 
 export const getList = (path: any) =>
 	new Promise((resolve, reject) => {
-		setTimeout(() => (paths[path] ? resolve(paths[path]) : reject()), 100)
+		setTimeout(() => (paths[path as keyof typeof paths] ? resolve(paths[path as keyof typeof paths]) : reject()), 100)
 	})
 
 export const createDirectory = (path: any) =>

@@ -80,7 +80,7 @@ export default function FileManager({
 				) {
 					return true
 				}
-				notChanged[path] = structure[path]
+				notChanged[path] = structure[path as keyof typeof structure]
 				return false
 			})
 			if (paths.indexOf(currentPath) === -1) {

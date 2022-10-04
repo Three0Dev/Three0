@@ -61,7 +61,7 @@ export default function ProgramView() {
 		setMetaTree({ tree: metaTree, index: idx })
 		jsonview.render(
 			metaTree,
-			document.getElementsByClassName('metajsontree')[idx]
+			document.getElementsByClassName('metajsontree')[idx as number]
 		)
 	}
 
@@ -157,7 +157,7 @@ export default function ProgramView() {
 									</TableCell>
 									<TableCell>
 										{program ? (
-											<Typography variant="subtitle2" color={colors[program.type]}>
+											<Typography variant="subtitle2" color={colors[program.type as keyof typeof colors]}>
 												{program.type}
 											</Typography>
 										) : (
