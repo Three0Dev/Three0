@@ -14,7 +14,7 @@ export default function SideBarTreeNode({
 	collapsed,
 	setCollapsed,
 	level,
-}) {
+}: any) {
 	return (
 		<div className="SideBar-TreeNode">
 			<div
@@ -52,7 +52,7 @@ export default function SideBarTreeNode({
 			</div>
 			{!!node.children && !!node.children.length && !collapsed[node.path] && (
 				<div className="TreeNode-Children">
-					{node.children.map((item) => (
+					{node.children.map((item: any) => (
 						<SideBarTreeNode
 							key={node.path}
 							node={item}

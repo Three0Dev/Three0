@@ -16,7 +16,7 @@ export default function MiddleArea({
 	labels,
 	loading,
 	enabledFeatures,
-}) {
+}: any) {
 	return (
 		<div className="FileManager-MiddleArea">
 			<SideBar

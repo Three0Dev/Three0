@@ -37,7 +37,7 @@ export default function DatabasesView() {
 		return programs
 	}
 
-	const createDB = (args) => {
+	const createDB = (args: { name: any; type: any; permissions: any; overwrite: any }) => {
 		console.log('Create database...', args)
 		setLoading(true)
 		createDatabase(
@@ -83,13 +83,13 @@ export default function DatabasesView() {
 					Swal.showValidationMessage('No Spaces in Database Name')
 
 				const typeElement = document.getElementById('database-type')
-				const type = typeElement[typeElement.selectedIndex].value
+				const type = typeElement[typeElement?.selectedIndex as keyof typeof typeElement]['value']
 
 				const permissionsElement = document.getElementById(
 					'database-permissions'
 				)
 				const permissions =
-					permissionsElement[permissionsElement.selectedIndex].value
+					permissionsElement[permissionsElement?.selectedIndex as keyof typeof permissionsElement]['value']
 				const overwrite = (document.getElementById('database-overwrite') as HTMLInputElement).checked
 
 				return { name, type, permissions, overwrite }
@@ -108,7 +108,7 @@ export default function DatabasesView() {
 		})
 	}
 
-	const handleRemoveDatabase = (hash, program) => {
+	const handleRemoveDatabase = (hash: any, program: any) => {
 		console.log('Remove database...', hash, program)
 		setLoading(true)
 		removeDatabase(projectContract, hash, program)

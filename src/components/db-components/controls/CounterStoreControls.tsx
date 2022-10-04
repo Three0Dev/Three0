@@ -28,7 +28,7 @@ export default function CounterStoreControls() {
 		dispatch({ type: actions.DB.SET_DB, db, entries })
 	}
 
-	function handleAdd(event) {
+	function handleAdd(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
 		if (event) event.preventDefault()
 		if (value === 0) return
 		addToDB()

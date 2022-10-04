@@ -29,7 +29,7 @@ export default function FileManager({
 	rename,
 	translations,
 	features,
-}) {
+}: any) {
 	const [collapsed, setCollapsed] = useState({})
 	const [structure, setStructure] = useState({})
 	const [currentPath, setCurrentPath] = useState('')
@@ -55,14 +55,14 @@ export default function FileManager({
 		}
 	}
 
-	const load = async (path) => {
+	const load = async (path: string) => {
 		try {
 			const response = await getList(path)
-			return response.map((item) => ({
+			return response.map((item: { name: any; type: number }) => ({
 				name: item.name,
 				type: item.type === 1 ? 1 : 2,
 			}))
-		} catch (error) {
+		} catch (error: any) {
 			console.error(error)
 			return `Error: ${error.message}`
 		}
@@ -70,8 +70,8 @@ export default function FileManager({
 
 	const reload = async () => {
 		setLoading(true)
-		const updated = {}
-		const notChanged = {}
+		const updated: any = {}
+		const notChanged: any = {}
 		try {
 			const paths = Object.keys(structure).filter((path) => {
 				if (

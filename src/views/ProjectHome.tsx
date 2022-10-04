@@ -90,7 +90,9 @@ export default function ProjectHome() {
 					variant="outlined"
 					sx={{ marginLeft: '5%' }}
 					onClick={() =>
-						window.open('https://github.com/Three0Org/JS-SDK', '_blank').focus()
+						// open if not null
+						window?.open('https://github.com/Three0Org/JS-SDK', '_blank')?.focus()
+
 					}
 				>
 					Visit Docs

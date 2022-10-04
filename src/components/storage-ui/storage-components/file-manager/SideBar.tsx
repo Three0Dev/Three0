@@ -9,8 +9,8 @@ export default function SideBar({
 	collapsed,
 	setCollapsed,
 	labels,
-}) {
-	const tree = []
+}: any) {
+	const tree: any[] = []
 	const nodesByPath = {}
 
 	Object.keys(structure || {}).forEach((path) => {
@@ -27,13 +27,13 @@ export default function SideBar({
 			childNodes = nodesByPath[tmpPath].children
 			if (index === parts.length - 1) {
 				const children = (structure[tmpPath] || [])
-					.filter((item) => item.type === 2)
-					.map((item) => ({
+					.filter((item: { type: number }) => item.type === 2)
+					.map((item: { name: any }) => ({
 						name: item.name,
 						path: `${tmpPath}/${item.name}`,
 						children: [],
 					}))
-				children.forEach((item) => {
+				children.forEach((item: { name: any }) => {
 					if (!childNodes.find((node) => node.name === item.name)) {
 						childNodes.push(item)
 						nodesByPath[`${tmpPath}/${item.name}`] = item

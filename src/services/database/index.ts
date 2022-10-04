@@ -7,13 +7,13 @@ import { config as Config } from './config'
 // import NearIdentityProvider from './NearIdentityProvider'
 import { nearConfig } from '../../utils'
 
-let ipfs
+let ipfs: any
 
 // OrbitDB instance
-let orbitdb
+let orbitdb: any
 
 // Databases
-let programs
+let programs: any
 
 let ipfsActivate = false
 
@@ -31,7 +31,7 @@ export const initIPFS = async () => {
 }
 
 // Start OrbitDB
-export const initOrbitDB = async (ipfsLocal) => {
+export const initOrbitDB = async (ipfsLocal: any) => {
 	if (ipfs && !orbitdb) {
 		// const identity = await IdentityProvider.createIdentity({
 		// 	type: `NearIdentity`,
@@ -44,7 +44,7 @@ export const initOrbitDB = async (ipfsLocal) => {
 	return orbitdb
 }
 
-export const getAllDatabases = async (pid) => {
+export const getAllDatabases = async (pid: string | undefined) => {
 	console.log('Getting all databases for project: ', pid)
 	if (programs) {
 		await programs.close()
@@ -57,12 +57,12 @@ export const getAllDatabases = async (pid) => {
 			create: true,
 		})
 
-		await programs.load()
+		await programs?.load()
 	}
 	return programs ? programs.iterator({ limit: -1 }).collect() : []
 }
 
-export const getDB = async (address) => {
+export const getDB = async (address: string) => {
 	let db
 	if (orbitdb) {
 		db = await orbitdb.open(address)
@@ -71,9 +71,9 @@ export const getDB = async (address) => {
 	return db
 }
 
-export const addDatabase = async (address) => {
+export const addDatabase = async (address: any) => {
 	const db = await orbitdb.open(address)
-	return programs.add({
+	return programs?.add({
 		name: db.dbname,
 		type: db.type,
 		address,
@@ -82,10 +82,10 @@ export const addDatabase = async (address) => {
 }
 
 export const createDatabase = async (
-	contract,
-	name,
-	type,
-	permissions,
+	contract: { add_database: (arg0: { database_details: { name: any; address: any; db_type: any } }) => any },
+	name: any,
+	type: any,
+	permissions: any,
 	overwrite = false
 ) => {
 	let accessController
@@ -119,7 +119,7 @@ export const createDatabase = async (
 	})
 
 	await programs
-		.add({
+		?.add({
 			name,
 			type,
 			address: db.address.toString(),
@@ -132,12 +132,12 @@ export const createDatabase = async (
 		})
 }
 
-export const removeDatabase = async (contract, hash, program) => {
+export const removeDatabase = async (contract: { delete_database: (arg0: { database_name: any }) => any }, hash: any, program: { address: any }) => {
 	const db = await orbitdb.open(program.address)
 	await db.drop()
 	await db.close()
 
-	await programs.remove(hash)
+	await programs?.remove(hash)
 
 	await fetch(`${peerDBServer}unpin?address=${program.address}`, {
 		method: 'POST',

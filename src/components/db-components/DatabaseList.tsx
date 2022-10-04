@@ -25,15 +25,15 @@ const colors = {
 	counter: '#735DD0',
 }
 
-export default function ProgramList({ programs, onRemove }) {
+export default function ProgramList({ programs, onRemove }: any) {
 	const navigate = useNavigate()
 
-	function handleSelect(program) {
+	function handleSelect(program: any) {
 		const newPath = program.address.substring(1)
 		navigate(`./${newPath}`)
 	}
 
-	function copyAddress(program) {
+	function copyAddress(program: any) {
 		const address = program.address.toString()
 		navigator.clipboard.writeText(address || program.address)
 		Swal.fire({
@@ -57,7 +57,7 @@ export default function ProgramList({ programs, onRemove }) {
 					]}
 				/>
 				<TableBody>
-					{programs.map((e) => {
+					{programs.map((e: { payload: { value: any }; hash: any }) => {
 						const program = e.payload.value
 						return (
 							<TableRow key={`program-id-${program.address}`}>

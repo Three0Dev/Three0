@@ -13,13 +13,13 @@ export default function Body({
 	setSelection,
 	rename,
 	enabledFeatures,
-}) {
+}: any) {
 	const list = structure[currentPath] || []
 
 	const onRename = () => {
 		rename(selection[0])
 			.then(reload)
-			.catch((error) => error && console.error(error))
+			.catch((error: any) => error && console.error(error))
 	}
 
 	return (
@@ -34,7 +34,7 @@ export default function Body({
 		>
 			{!!list && (
 				<>
-					{list.map((item) => {
+					{list.map((item: { name: {} | null | undefined; type: number }) => {
 						const path = `${currentPath}/${item.name}`
 						const selected = selection.indexOf(path) !== -1
 						return (
@@ -62,13 +62,13 @@ export default function Body({
 								</div>
 								<div
 									className="Body-Item-Name"
-									title={item.name}
+									title={item.name as string}
 									onClick={() => {
 										const range = window.getSelection()
 										if (
 											selection[0] === path &&
 											enabledFeatures.indexOf('rename') !== -1 &&
-											!range.toString().length
+											!range?.toString().length
 										) {
 											onRename()
 										}

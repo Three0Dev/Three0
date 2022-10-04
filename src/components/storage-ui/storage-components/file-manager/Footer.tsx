@@ -14,10 +14,10 @@ export default function Footer({
 	rename,
 	labels,
 	enabledFeatures,
-}) {
+}: any) {
 	const list = structure[currentPath] || []
-	const files = list.filter((item) => item.type === 1).length
-	const folders = list.filter((item) => item.type === 2).length
+	const files = list.filter((item: { type: number }) => item.type === 1).length
+	const folders = list.filter((item: { type: number }) => item.type === 2).length
 	const folderLabel =
 		folders === 1 ? labels.folderSingle : labels.folderMultiple
 	const fileLabel = files > 1 ? labels.fileMultiple : labels.fileSingle

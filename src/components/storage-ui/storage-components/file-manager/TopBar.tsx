@@ -58,7 +58,7 @@ export default function TopBar({
 	reload,
 	labels,
 	enabledFeatures,
-}) {
+}: any) {
 	const uploadInputRef = useRef(null)
 	const onFileSelect = (event) =>
 		uploadFiles(currentPath, [...event.target.files])

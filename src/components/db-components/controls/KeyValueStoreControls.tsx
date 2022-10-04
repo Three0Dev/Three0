@@ -59,7 +59,7 @@ export default function KeyValueStoreControls() {
 		dispatch({ type: actions.DB.SET_DB, db, entries })
 	}
 
-	function handleAdd(event) {
+	function handleAdd(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
 		if (event) event.preventDefault()
 		if (value.length === 0) return
 		if (key.length === 0) return
