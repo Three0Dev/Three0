@@ -49,6 +49,7 @@ export default function ProjectHome() {
 				if (value !== projectDetails.pid) {
 					return 'Project ID does not match'
 				}
+				return null
 			}
 		})
 
