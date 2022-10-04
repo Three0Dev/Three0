@@ -48,7 +48,7 @@ export default class NearIdentityProvider extends IdentityProvider {
 
 		const verify = keyPair.verify(
 			message,
-			Buffer.from(Object.values(identity.signatures.publicKey))
+			Buffer.from(Object.values(identity.signatures.publicKey) as any)
 		)
 
 		console.log(verify)
