@@ -81,15 +81,13 @@ export default function DatabasesView() {
 				const name = (document.getElementById('database-name') as HTMLInputElement).value
 				if (name.includes(' '))
 					Swal.showValidationMessage('No Spaces in Database Name')
+				if (name.length === 0) Swal.showValidationMessage('Database Name Required')
 
-				const typeElement = document.getElementById('database-type')
-				const type = typeElement[typeElement?.selectedIndex as keyof typeof typeElement]['value']
+				const typeElement = document.getElementById('database-type') as HTMLInputElement
+				const type = typeElement[typeElement.selectedIndex].value
 
-				const permissionsElement = document.getElementById(
-					'database-permissions'
-				)
-				const permissions =
-					permissionsElement[permissionsElement?.selectedIndex as keyof typeof permissionsElement]['value']
+				const permissionsElement = document.getElementById('database-permissions') as HTMLInputElement
+				const permissions = permissionsElement[permissionsElement.selectedIndex].value
 				const overwrite = (document.getElementById('database-overwrite') as HTMLInputElement).checked
 
 				return { name, type, permissions, overwrite }
