@@ -17,7 +17,7 @@ export default class NearIdentityProvider extends IdentityProvider {
 
 	// return a signature of data (signature of the OrbitDB public key)
 	// eslint-disable-next-line class-methods-use-this
-	async signIdentity(data) {
+	async signIdentity(data: WithImplicitCoercion<ArrayBuffer | SharedArrayBuffer>) {
 		console.log(data)
 		const dataBuffer = Buffer.from(data)
 		console.log(dataBuffer)
@@ -35,7 +35,7 @@ export default class NearIdentityProvider extends IdentityProvider {
 	}
 
 	// return true if identity.signatures are valid
-	static async verifyIdentity(identity) {
+	static async verifyIdentity(identity: { publicKey: any; signatures: { id: any; publicKey: { [s: string]: unknown } | ArrayLike<unknown> } }) {
 		const keyStore = new keyStores.BrowserLocalStorageKeyStore()
 		const keyPair = await keyStore.getKey(
 			NEAR_CONFIG.networkId,

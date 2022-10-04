@@ -22,7 +22,7 @@ export default function DBView() {
 		},
 	}
 
-	const reducer = (state, action) => {
+	const reducer = (state: { loading: any }, action: { type: any; orbitdbStatus: any; ipfsStatus: any; program: any; programs: any; db: any; entries: any; loading: any }) => {
 		switch (action.type) {
 			case actions.SYSTEMS.SET_ORBITDB:
 				return {

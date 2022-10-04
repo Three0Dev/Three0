@@ -50,7 +50,7 @@ export default function ProjectDisplayBoard() {
 	const [loading, setLoading] = React.useState(false)
 
 	const [off, setPage] = React.useState(0)
-	const updatePage = (e, val) => setPage((val - 1) * LIMIT_NUM)
+	const updatePage = (e: any, val: number) => setPage((val - 1) * LIMIT_NUM)
 
 	function getProjects() {
 		window.contract
@@ -59,11 +59,11 @@ export default function ProjectDisplayBoard() {
 				offset: 0,
 				limit: LIMIT_NUM,
 			})
-			.then((res) => setProjects(res))
-			.catch((err) => console.error(err))
+			.then((res: React.SetStateAction<{ num: number; entries: never[] }>) => setProjects(res))
+			.catch((err: any) => console.error(err))
 	}
 
-	async function searchProject(val) {
+	async function searchProject(val: string) {
 		setLoading(true)
 
 		try {

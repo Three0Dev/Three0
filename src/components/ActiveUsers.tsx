@@ -49,14 +49,14 @@ export default function ActiveUsers() {
 	const [loading, setLoading] = React.useState(false)
 	const [userNumber, setUserNum] = React.useState(0)
 
-	const updatePage = (_e, val) => setPage((val - 1) * 10)
+	const updatePage = (_e: any, val: number) => setPage((val - 1) * 10)
 
 	function getUsers() {
 		setLoading(true)
 
 		projectContract
 			.get_users({ offset: page, limit: 10 })
-			.then((users) => {
+			.then((users: { entries: React.SetStateAction<never[]>; num: React.SetStateAction<number> }) => {
 				console.log(users)
 				setProfiles(users.entries)
 				setUserNum(users.num)
@@ -65,13 +65,13 @@ export default function ActiveUsers() {
 			.finally(() => setLoading(false))
 	}
 
-	function searchUser(val) {
+	function searchUser(val: string) {
 		setLoading(true)
 
 		projectContract
 			.get_user({ account_id: val })
-			.then((user) => setProfiles([user]))
-			.catch((err) => {
+			.then((user: any) => setProfiles([user]))
+			.catch((err: any) => {
 				console.error(err)
 				setProfiles([])
 			})

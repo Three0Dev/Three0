@@ -20,31 +20,31 @@ export const paths = {
 	'/New folder 1/New folder 2/New folder 3/New folder 4': [],
 }
 
-export const getList = (path) =>
+export const getList = (path: any) =>
 	new Promise((resolve, reject) => {
 		setTimeout(() => (paths[path] ? resolve(paths[path]) : reject()), 100)
 	})
 
-export const createDirectory = (path) =>
+export const createDirectory = (path: any) =>
 	new Promise((resolve) => {
 		setTimeout(resolve, 100)
 	})
 
-export const deletePaths = (paths) =>
+export const deletePaths = (paths: any) =>
 	new Promise((resolve) => {
 		setTimeout(resolve, 100)
 	})
 
-export const openFile = (path) => {
+export const openFile = (path: any) => {
 	alert(`openFile ${path}`)
 }
 
-export const rename = (path) =>
+export const rename = (path: any) =>
 	new Promise((resolve) => {
 		setTimeout(resolve, 100)
 	})
 
-export const uploadFiles = (path, files) =>
+export const uploadFiles = (path: any, files: any) =>
 	new Promise((resolve) => {
 		setTimeout(resolve, 100)
 	})

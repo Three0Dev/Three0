@@ -16,7 +16,7 @@ export default function FeedStoreControls() {
 	const [value, setValue] = React.useState('')
 	const [type, setType] = React.useState('string')
 
-	function handleValueChange(event) {
+	function handleValueChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
 		setValue(event.target.value)
 	}
 

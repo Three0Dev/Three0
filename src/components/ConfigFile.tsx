@@ -20,7 +20,7 @@ const classes = {
 
 // TODO Make configCrendentials more generic for other networks
 
-const getProjectId = (pid) => pid.substring(0, pid.indexOf('.'))
+const getProjectId = (pid: any) => pid.substring(0, pid.indexOf('.'))
 
 function ConfigFileInner() {
 	const params = useParams()
@@ -79,7 +79,7 @@ function ConfigFileInner() {
 
 export default function ConfigFile() {
 	const [anchorEl, setAnchorEl] = React.useState(null)
-	const handleClick = (event) => {
+	const handleClick = (event: any) => {
 		setAnchorEl(event.currentTarget)
 	}
 	const handleClose = () => {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Backdrop as MuiBackdrop, CircularProgress, Box } from '@mui/material'
 
-export default function Backdrop(props) {
+export default function Backdrop(props: any) {
 	const item = props
 	return (
 		<MuiBackdrop

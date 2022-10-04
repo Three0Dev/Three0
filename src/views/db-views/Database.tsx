@@ -48,7 +48,7 @@ export default function ProgramView() {
 		tree: null,
 	})
 
-	const handleSelect = (idx, data) => {
+	const handleSelect = (idx: string | number | null, data: any) => {
 		if (metaTreeContainer.index === idx || metaTreeContainer.tree) {
 			jsonview.destroy(metaTreeContainer.tree)
 			if (metaTreeContainer.index === idx) {
@@ -75,7 +75,7 @@ export default function ProgramView() {
 		}
 	}
 
-	const fetchDB = async (addressRef) => {
+	const fetchDB = async (addressRef: string) => {
 		setLoading(true)
 		const db = await getDB(addressRef)
 
@@ -90,7 +90,7 @@ export default function ProgramView() {
 					payload: { value: { key: e, value: db.get(e) } },
 				}))
 			} else if (db.type === 'docstore') {
-				entries = db.query((e) => e !== null, { fullOp: true }).reverse()
+				entries = db.query((e: null) => e !== null, { fullOp: true }).reverse()
 			} else {
 				entries = [{ payload: { value: 'TODO' } }]
 			}
@@ -103,7 +103,7 @@ export default function ProgramView() {
 	useEffect(() => {
 		fetchDB(address)
 		const program = appState.programs.find(
-			(p) => p.payload.value.address === address
+			(p: { payload: { value: { address: string } } }) => p.payload.value.address === address
 		)
 		dispatch({ type: actions.PROGRAMS.SET_PROGRAM, program })
   }, [dispatch, address, appState.programs]) // eslint-disable-line
@@ -207,7 +207,7 @@ export default function ProgramView() {
 					{loading ? (
 						<CircularProgress size={2}/>
 					) : (
-						appState.entries.map((e) => (
+						appState.entries.map((e: { payload: { value: any } }) => (
 							<div style={{ wordBreak: 'break-word' }}>
 								<Box>
 									<Typography
