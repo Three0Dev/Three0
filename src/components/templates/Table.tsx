@@ -7,6 +7,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+} from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
