@@ -4,7 +4,7 @@ import NEAR_CONTRACT from 'url:../contract-wasms/near.wasm'
 import { nearConfig } from '../utils'
 
 export async function createNEARAccount() {
-	const { pid } = JSON.parse(localStorage.getItem('projectDetails'))
+	const { pid } = JSON.parse(localStorage.getItem('projectDetails') || '{}')
 
 	const keyPair = KeyPair.fromRandom('ed25519')
 	const publicKey = keyPair.getPublicKey().toString()
@@ -21,7 +21,7 @@ export async function createNEARAccount() {
 
 export async function createNEARProject() {
 	const { pid, blockchainNetwork } = JSON.parse(
-		localStorage.getItem('projectDetails')
+		localStorage.getItem('projectDetails') || '{}'
 	)
 
 	await window.contract.create_project({
@@ -31,7 +31,7 @@ export async function createNEARProject() {
 }
 
 export async function deployNEARProjectContract() {
-	const { pid } = JSON.parse(localStorage.getItem('projectDetails'))
+	const { pid } = JSON.parse(localStorage.getItem('projectDetails') || '{}')
 	localStorage.removeItem('projectDetails')
 	const account = await window.near.account(pid)
 
@@ -47,7 +47,7 @@ export async function deployNEARProjectContract() {
 	})
 }
 
-export async function deleteNEARProject(pid) {
+export async function deleteNEARProject(pid: string) {
 	try {
 		const canDelete = await window.contract.delete_project({
 			contract_address: pid,
@@ -79,7 +79,7 @@ export async function checkAccountStatus(hash: any) {
 
 		if (
 			result.transaction.actions.includes('CreateAccount') &&
-			result.transaction_outcome.outcome.status.SuccessReceiptId
+			result.transaction_outcome.outcome.status.SuccessReceiptId 
 		) {
 			await createNEARProject()
 			await deployNEARProjectContract()
