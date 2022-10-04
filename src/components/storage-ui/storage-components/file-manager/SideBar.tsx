@@ -11,7 +11,7 @@ export default function SideBar({
 	labels,
 }: any) {
 	const tree: any[] = []
-	const nodesByPath = {}
+	const nodesByPath: any = {}
 
 	Object.keys(structure || {}).forEach((path) => {
 		const parts = path.split('/')

@@ -108,7 +108,7 @@ export default function FileManager({
 			setCurrentPath(lastPath)
 		}
 		const processed = { ...notChanged, ...updated }
-		const ordered = {}
+		const ordered: any = {}
 		Object.keys(processed)
 			.sort((a, b) => {
 				if (a > b) {

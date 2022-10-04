@@ -1,5 +1,9 @@
 import { createContext } from 'react'
 
-const ProjectDetailsContext = createContext({})
+type State = {
+    projectDetails: any
+}
+const obj: State = {} as State;
+const ProjectDetailsContext = createContext(obj)
 
 export default ProjectDetailsContext
