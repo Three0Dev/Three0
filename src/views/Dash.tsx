@@ -10,7 +10,7 @@ export default function Dash() {
 	const navigate = useNavigate()
 
 	const [projectDetails, setProjectDetails] = React.useState({})
-	const [projectContract, setContract] = React.useState(null)
+	const [projectContract, setContract] = React.useState({})
 
 	async function isValidProject() {
 		try {

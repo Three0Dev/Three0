@@ -70,7 +70,7 @@ export default function ActiveUsers() {
 
 		projectContract
 			.get_user({ account_id: val })
-			.then((user: any) => setProfiles([user]))
+			.then((user: any) => setProfiles(user))
 			.catch((err: any) => {
 				console.error(err)
 				setProfiles([])
