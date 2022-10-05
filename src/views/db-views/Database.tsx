@@ -58,7 +58,7 @@ export default function ProgramView() {
 		}
 		const metaStringifyData = JSON.stringify(data)
 		const metaTree = jsonview.create(metaStringifyData)
-		setMetaTree({ tree: metaTree, index: idx })
+		setMetaTree({ tree: metaTree, index: idx } as any)
 		jsonview.render(
 			metaTree,
 			document.getElementsByClassName('metajsontree')[idx as number]

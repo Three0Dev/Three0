@@ -16,7 +16,7 @@ declare global {
 initContract()
 	.then(() => {
 		const container = document.querySelector('#root')
-		const root = createRoot(container)
+		const root = createRoot(container as any)
 		// eslint-disable-next-line react/jsx-filename-extension
 		root.render(<Core />)
 	})

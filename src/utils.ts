@@ -54,6 +54,6 @@ export function login() {
 	)
 }
 
-export function getContractRelativeDate(date) {
+export function getContractRelativeDate(date: any) {
 	return formatDistanceToNow(new Date(date / 1000000))
 }

@@ -13,9 +13,10 @@ export default function SearchResultsView() {
 	const [appState, dispatch] = useStateValue()
 
 	const query = useQuery().get('q')
-	const queryOk = query.length >= 1
+	const queryOk = query?.length as number >= 1
 
 	if (!queryOk) return <Navigate to="/" />
+
 
 	let { programs } = appState
 	if (query) {
@@ -44,7 +45,7 @@ export default function SearchResultsView() {
 		return program
 	}
 
-	const handleRemoveDatabase = (contract, hash, program) => {
+	const handleRemoveDatabase = (contract: any, hash: any, program: any) => {
 		console.log('Remove database...', hash, program)
 		removeDatabase(contract, hash, program).then(() => {
 			console.log('Removed')
