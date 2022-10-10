@@ -109,14 +109,14 @@ export const createDatabase = async (
 
 	console.log(dbDetails)
 
-	await fetch(`${peerDBServer}pin?address=${db.address.toString()}`, {
-		method: 'POST',
-		mode: 'cors',
-		cache: 'no-cache',
-		credentials: 'same-origin', // include, *same-origin, omit
-		redirect: 'follow',
-		referrerPolicy: 'no-referrer',
-	})
+	// await fetch(`${peerDBServer}pin?address=${db.address.toString()}`, {
+	// 	method: 'POST',
+	// 	mode: 'cors',
+	// 	cache: 'no-cache',
+	// 	credentials: 'same-origin', // include, *same-origin, omit
+	// 	redirect: 'follow',
+	// 	referrerPolicy: 'no-referrer',
+	// })
 
 	await programs
 		.add({
