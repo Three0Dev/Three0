@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 import { keyStores } from "near-api-js";
 import IdentityProvider from "orbit-db-identity-provider";

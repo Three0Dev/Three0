@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
 import FileManager from "./storage-components/file-manager/FileManager";

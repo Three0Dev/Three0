@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from "react";
 import { Outlet, useParams, useNavigate } from "react-router-dom";
 import { Box } from "@mui/material";

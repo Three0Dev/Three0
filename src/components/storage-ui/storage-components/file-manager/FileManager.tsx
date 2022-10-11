@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useEffect, useState } from "react";
 import TopBar from "./TopBar";
 import Footer from "./Footer";

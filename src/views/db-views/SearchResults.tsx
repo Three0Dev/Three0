@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from "react";
 import { Typography, CircularProgress, Box } from "@mui/material";
 import { useLocation, Navigate, useParams } from "react-router-dom";

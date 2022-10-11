@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from "react";
 import FolderIcon from "@mui/icons-material/Folder";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from "react";
 import Swal from "sweetalert2";
 import { Typography, Box, CircularProgress, useTheme } from "@mui/material";
