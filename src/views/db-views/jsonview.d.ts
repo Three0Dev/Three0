@@ -1,1 +1,1 @@
-declare module '@pgrabovets/json-view';
+declare module "@pgrabovets/json-view";

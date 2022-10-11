@@ -1,3 +1,3 @@
-import FileManager from './file-manager/FileManager'
+import FileManager from "./file-manager/FileManager";
 
-export default FileManager
+export default FileManager;

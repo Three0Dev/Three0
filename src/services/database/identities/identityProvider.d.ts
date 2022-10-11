@@ -1,1 +1,1 @@
-declare module 'orbit-db-identity-provider';
+declare module "orbit-db-identity-provider";
