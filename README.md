@@ -95,7 +95,6 @@ As you can see in `package.json`, this does two things:
 
 Troubleshooting
 ===============
-
 On Windows, if you're seeing an error containing `EPERM` it may be related to spaces in your path. Please see [this issue](https://github.com/zkat/npx/issues/209) for more details.
 
 
@@ -107,3 +106,36 @@ On Windows, if you're seeing an error containing `EPERM` it may be related to sp
   [NEAR Wallet]: https://wallet.testnet.near.org/
   [near-cli]: https://github.com/near/near-cli
   [gh-pages]: https://github.com/tschaub/gh-pages
+
+Additional Notes
+================
+## NEAR Kurtosis
+- To use your own NEAR Kurtosis instance create a `.env` folder in the `.near` directory and set the `KURTOSIS_URL` variable to the URL of your own Kurtosis instance.
+- To use the NEAR CLI for the localnet mode (Three0's Kurtosis Instance) set the `NEAR_ENV` environment variable to `localnet` before running any `near` commands. This will ensure that the NEAR CLI uses the localnet node URL and keys.
+   - To change back to testnet set the `NEAR_ENV` environment variable to `testnet` before running any `near` commands.
+- We at Three0 use our own cloud NEAR Kurtosis instance to develop. If you wish to use the `testnet` to develop change
+```
+case 'production':
+case 'testnet':
+   return {
+      ...
+   }
+case 'development':
+case 'localnet':
+	return {
+      ...
+	}
+```
+to
+```
+case 'production':
+case 'development':
+case 'testnet':
+   return {
+      ...
+   }
+case 'localnet':
+	return {
+      ...
+	}
+```

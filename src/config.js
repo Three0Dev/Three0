@@ -1,5 +1,7 @@
 const CONTRACT_NAME = process.env.CONTRACT_NAME || 'alpha.three0.testnet'
 
+const LOCAL_KURTOSIS_URL = process.env.KURTOSIS_URL
+
 function getNEARConfig(env) {
 	switch (env) {
 		case 'mainnet':
@@ -12,7 +14,6 @@ function getNEARConfig(env) {
 				explorerUrl: 'https://explorer.mainnet.near.org',
 			}
 		case 'production':
-		case 'development':
 		case 'testnet':
 			return {
 				networkId: 'testnet',
@@ -31,13 +32,17 @@ function getNEARConfig(env) {
 				helperUrl: 'https://helper.betanet.near.org',
 				explorerUrl: 'https://explorer.betanet.near.org',
 			}
-		case 'local':
+		case 'development':
+		case 'localnet':
 			return {
 				networkId: 'local',
-				nodeUrl: 'http://localhost:3030',
-				keyPath: `${process.env.HOME}/.near/validator_key.json`,
-				walletUrl: 'http://localhost:4000/wallet',
+				nodeUrl: `${LOCAL_KURTOSIS_URL}:8332`,
+				keyPath: `${process.cwd()}/.near/validator_key.json`,
+				walletUrl: `${LOCAL_KURTOSIS_URL}:8334`,
 				contractName: CONTRACT_NAME,
+				explorerUrl: `${LOCAL_KURTOSIS_URL}:8331`,
+				helperUrl: `${LOCAL_KURTOSIS_URL}:8330`,
+				masterAccount: 'test.near',
 			}
 		case 'test':
 		case 'ci':

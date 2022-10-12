@@ -146,25 +146,12 @@ export default function DatabasesView() {
 					background="white"
 					marginX={6}
 				>
-					{!appState.loading.programs ? (
-						<ProgramList
-							programs={appState.programs}
-							onRemove={handleRemoveDatabase}
-						/>
-					) : (
-						<Box
-							display="flex"
-							flexDirection="column"
-							alignItems="center"
-							marginTop={3}
-							marginBottom={1}
-						>
-							<CircularProgress size={24} />
-							<Typography variant="body1" color="textSecondary">
-								Loading...
-							</Typography>
-						</Box>
-					)}
+					<ProgramList
+						programs={appState.programs}
+						onRemove={handleRemoveDatabase}
+					/>
+
+					<Backdrop loading={appState.loading.programs} />
 				</Box>
 			</Box>
 			{appState.programs && (
