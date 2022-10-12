@@ -70,9 +70,7 @@ export async function deleteNEARProject(pid) {
 }
 
 export async function checkAccountStatus(hash) {
-	const provider = new providers.JsonRpcProvider(
-		`https://archival-rpc.${nearConfig.networkId}.near.org`
-	)
+	const provider = new providers.JsonRpcProvider(nearConfig.nodeUrl)
 
 	try {
 		const result = await provider.txStatus(hash, window.accountId)
