@@ -42,6 +42,7 @@ function getNEARConfig(env) {
 				contractName: CONTRACT_NAME,
 				explorerUrl: `${LOCAL_URL}:8331`,
 				helperUrl: `${LOCAL_URL}:8330`,
+				masterAccount: 'test.near',
 			}
 		case 'test':
 		case 'ci':
