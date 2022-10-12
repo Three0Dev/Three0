@@ -1,6 +1,6 @@
 import React from "react";
-import { Box, Typography, Stack, Chip } from "@mui/material";
 import { useParams } from "react-router-dom";
+import { Box, Typography, Stack, Chip } from "@mui/material";
 import {
   initIPFS,
   initOrbitDB,

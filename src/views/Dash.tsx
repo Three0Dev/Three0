@@ -3,8 +3,8 @@ import React from "react";
 import { Outlet, useParams, useNavigate } from "react-router-dom";
 import { Box } from "@mui/material";
 import { Contract } from "near-api-js";
-import ProjectDetailsContext from "../state/ProjectDetailsContext";
 import Navigation from "../components/Navigation";
+import ProjectDetailsContext from "../state/ProjectDetailsContext";
 
 export default function Dash() {
   const { pid } = useParams();

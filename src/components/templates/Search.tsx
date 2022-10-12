@@ -1,8 +1,8 @@
 /* eslint-disable react/no-unused-prop-types */
 /* eslint-disable no-unused-vars */
+import React from "react";
 import { styled, alpha, InputBase } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import React from "react";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",

@@ -17,6 +17,19 @@ This document will give Three0 coding standards, file formatting, and styling re
 - Use import {x as y} from 'module' for importing specific symbols with aliases
 - Use import * as x from 'module' for importing all symbols as a group
 - Use import 'module' for importing side effects only
+- Import modules in the following order:
+  - external modules
+  - modules from a parent directory
+  - modules from the same or a sibling's directory
+  - modules from a child's directory
+    - directory import order
+      - assets
+      - components
+      - services
+      - state
+      - views
+- Group similar import together
+- Don't skip lines between import
 
 ## Exports
 - Use export for exporting symbols that can be imported
