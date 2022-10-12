@@ -41,6 +41,7 @@ function getNEARConfig(env) {
 				walletUrl: `${LOCAL_URL}:8334`,
 				contractName: CONTRACT_NAME,
 				explorerUrl: `${LOCAL_URL}:8331`,
+				helperUrl: `${LOCAL_URL}:8330`,
 			}
 		case 'test':
 		case 'ci':
