@@ -37,7 +37,7 @@ function getNEARConfig(env) {
 			return {
 				networkId: 'local',
 				nodeUrl: `${LOCAL_URL}:8332`,
-				keyPath: `${process.env.HOME}/.near/validator_key.json`,
+				keyPath: `${process.cwd()}/.near/validator_key.json`,
 				walletUrl: `${LOCAL_URL}:8334`,
 				contractName: CONTRACT_NAME,
 				explorerUrl: `${LOCAL_URL}:8331`,
