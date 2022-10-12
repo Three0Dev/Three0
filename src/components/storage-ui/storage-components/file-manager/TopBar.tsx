@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 import React, { useRef } from "react";
@@ -135,7 +136,7 @@ export default function TopBar({
             <IconButton
               color="inherit"
               onClick={() =>
-                uploadInputRef.current && uploadInputRef.current.click
+                uploadInputRef.current && uploadInputRef.current["click"]
               }
             >
               <FileUploadIcon />

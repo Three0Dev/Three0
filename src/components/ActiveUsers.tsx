@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 /* eslint-disable no-console */
 import React from "react";
 import {
@@ -150,7 +151,7 @@ export default function ActiveUsers() {
               />
               <TableBody>
                 {profiles.map((profile) => (
-                  <TableRow key={profile.account_id}>
+                  <TableRow key={profile["account_id"]}>
                     <TableCell style={{ justifyContent: "center" }}>
                       <Badge
                         sx={classes.Badge}
@@ -158,16 +159,16 @@ export default function ActiveUsers() {
                           vertical: "top",
                           horizontal: "right",
                         }}
-                        color={profile.is_online ? "success" : "warning"}
+                        color={profile["is_online"] ? "success" : "warning"}
                         variant="dot"
                       />
                     </TableCell>
-                    <TableCell>{profile.account_id}</TableCell>
+                    <TableCell>{profile["account_id"]}</TableCell>
                     <TableCell>
-                      {`${getContractRelativeDate(profile.created_at)} ago`}
+                      {`${getContractRelativeDate(profile["created_at"])} ago`}
                     </TableCell>
                     <TableCell>
-                      {`${getContractRelativeDate(profile.last_online)} ago`}
+                      {`${getContractRelativeDate(profile["last_online"])} ago`}
                     </TableCell>
                   </TableRow>
                 ))}
