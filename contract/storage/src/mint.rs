@@ -7,6 +7,7 @@ impl Contract {
         &mut self,
         token_id: TokenId,
         metadata: TokenMetadata,
+        path: String,
         receiver_id: AccountId,
         //we add an optional parameter for perpetual royalties
         perpetual_royalties: Option<HashMap<AccountId, u32>>,
@@ -40,6 +41,11 @@ impl Contract {
             royalty,
         };
 
+        assert!(
+            self.filesys.get(&path).is_none(),
+            "File in specified path already exists with same name"
+        );
+
         //insert the token ID and token struct and make sure that the token doesn't exist
         assert!(
             self.tokens_by_id.insert(&token_id, &token).is_none(),
@@ -51,6 +57,8 @@ impl Contract {
 
         //call the internal method for adding the token to the owner
         self.internal_add_token_to_owner(&token.owner_id, &token_id);
+
+        self.filesys.insert(&path, &token_id);
 
         // Construct the mint log as per the events standard.
         let nft_mint_log: EventLog = EventLog {

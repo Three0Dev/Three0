@@ -87,7 +87,7 @@ export default function TopBar({
 				<input
 					ref={uploadInputRef}
 					type="file"
-					onChange={onFileSelect}
+					onChange={(e) => {onFileSelect(e);}}
 					hidden
 				/>
 				{enabledFeatures.indexOf('createDirectory') !== -1 && (
@@ -102,7 +102,7 @@ export default function TopBar({
 						<IconButton
 							color="inherit"
 							onClick={() =>
-								uploadInputRef.current && uploadInputRef.current.click()
+								{uploadInputRef.current && uploadInputRef.current.click()}
 							}
 						>
 							<FileUploadIcon />

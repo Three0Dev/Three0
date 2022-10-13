@@ -2,7 +2,7 @@ import { connect, Contract, keyStores, WalletConnection } from 'near-api-js'
 import { formatDistanceToNow } from 'date-fns'
 import getConfig from './config'
 
-export const nearConfig = getConfig(process.env.NODE_ENV || 'development')
+export const nearConfig = getConfig(process.env.NODE_ENV || 'localnet')
 
 // Initialize contract & set global variables
 export async function initContract() {

@@ -18,7 +18,7 @@ export default function Storage() {
 		ProjectDetailsContext
 	)
 
-	console.log(projectDetails.pid)
+	// console.log(projectDetails.pid)
 	projectContract.has_storage().then((storage) => {setStorage(storage)})
 
 	// return (
@@ -38,12 +38,11 @@ export default function Storage() {
 		storage ? (
 		<FileManager
 			getList={getList}
-			createDirectory={createDirectory}
 			deletePaths={deletePaths}
 			openFile={openFile}
 			uploadFiles={uploadFiles}
 			rename={rename}
-			features={['createDirectory', 'uploadFiles', 'deletePaths', 'rename']}
+			features={['uploadFiles', 'deletePaths', 'rename']}
 		/>
 		) : (
 			<div>

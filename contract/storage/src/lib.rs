@@ -98,7 +98,7 @@ impl Contract {
     #[init]
     pub fn new(owner_id: AccountId, metadata: NFTContractMetadata) -> Self {
         //create a variable of type Self with all the fields initialized. 
-        let this = Self {
+        let mut this = Self {
             //Storage keys are simply the prefixes used for the collections. This helps avoid data collision
             tokens_per_owner: LookupMap::new(StorageKey::TokensPerOwner.try_to_vec().unwrap()),
             tokens_by_id: LookupMap::new(StorageKey::TokensById.try_to_vec().unwrap()),
@@ -113,6 +113,9 @@ impl Contract {
             ),
             filesys: UnorderedMap::new(StorageKey::FileSystem.try_to_vec().unwrap()),
         };
+
+        // this.filesys.insert(&String::from("test1/hello"), &String::from("0"));
+        // this.filesys.insert(&String::from("test1"), &String::from("1"));
 
         //return the Contract object
         this

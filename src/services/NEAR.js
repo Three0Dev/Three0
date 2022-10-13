@@ -17,7 +17,7 @@ export async function createNEARAccount() {
 
 	await window.walletConnection
 		.account()
-		.createAccount(pid, publicKey, utils.format.parseNearAmount('6.5'))
+		.createAccount(pid, publicKey, utils.format.parseNearAmount('23'))
 }
 
 export async function createNEARProject() {
@@ -74,31 +74,31 @@ export async function deleteNEARProject(pid) {
 }
 
 export async function checkAccountStatus(hash) {
-	const provider = new providers.JsonRpcProvider(
-		`https://archival-rpc.${nearConfig.networkId}.near.org`
-	)
+	// const provider = new providers.JsonRpcProvider(
+	// 	`https://archival-rpc.${nearConfig.networkId}.near.org`
+	// )
 
-	try {
-		const result = await provider.txStatus(hash, window.accountId)
+	// try {
+	// 	const result = await provider.txStatus(hash, window.accountId)
 
-		if (
-			result.transaction.actions.includes('CreateAccount') &&
-			result.transaction_outcome.outcome.status.SuccessReceiptId
-		) {
+	// 	if (
+	// 		result.transaction.actions.includes('CreateAccount') &&
+	// 		result.transaction_outcome.outcome.status.SuccessReceiptId
+	// 	) {
 			await createNEARProject()
 			await deployNEARProjectContract()
-		}
+	// 	}
 
-		return Promise.resolve(result.transaction.receiver_id)
-	} catch (e) {
-		console.error(e)
-		return Promise.reject(e)
-	}
+	// 	return Promise.resolve(result.transaction.receiver_id)
+	// } catch (e) {
+	// 	console.error(e)
+	// 	return Promise.reject(e)
+	// }
 }
 
 export async function createStorageAccount(parentPID) {
 	const parentAccount = await window.near.account(parentPID)
-	console.log('storage.' + parentPID)
+	// console.log('storage.' + parentPID)
 
 	const keyPair = KeyPair.fromRandom('ed25519')
 	const publicKey = keyPair.getPublicKey().toString()
@@ -108,10 +108,10 @@ export async function createStorageAccount(parentPID) {
 		keyPair
 	)
 
-	console.log('storage.' + parentPID)
+	// console.log('storage.' + parentPID)
 
 	try {
-		await parentAccount.createAccount('storage.' + parentPID, publicKey, utils.format.parseNearAmount('14'))
+		await parentAccount.createAccount('storage.' + parentPID, publicKey, utils.format.parseNearAmount('16'))
 	}
 	catch(error) {
 		console.log(error)
@@ -122,7 +122,7 @@ export async function createStorageAccount(parentPID) {
 
 export async function deployStorageContract(parentPID) {
 	const wallet = 'storage.' + parentPID
-	console.log(wallet)
+	// console.log(wallet)
 	const storageAccount = await window.near.account(wallet)
 
 	const contract = await fetch(NEAR_STORAGE_CONTRACT)
@@ -138,7 +138,7 @@ export async function deployStorageContract(parentPID) {
 }
 
 export async function addStorage(parentContract) {
-	console.log("Test worked")
+	// console.log("Test worked")
 	await createStorageAccount(parentContract.contractId)
 	await deployStorageContract(parentContract.contractId)
 	parentContract.set_storage({'storage_account': 'storage.' + parentContract.contractId})
