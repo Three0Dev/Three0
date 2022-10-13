@@ -5,11 +5,10 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import * as short from "short-uuid";
-import ProjectDisplayBoard from "../components/ProjectDisplayBoard";
+import { ProjectDisplayBoard, CreateProjectDialog } from "../components/core";
 import wave from "../assets/wave.svg";
 import Backdrop from "../components/templates/Backdrop";
 import { createNEARAccount, checkAccountStatus } from "../services/NEAR";
-import CreateProjectDialog from "../components/CreateProjectDialog";
 
 export default function ProjectsDash() {
   const [loading, setLoading] = React.useState(false);

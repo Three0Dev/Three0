@@ -4,7 +4,7 @@ import { Outlet, useParams, useNavigate } from "react-router-dom";
 import { Box } from "@mui/material";
 import { Contract } from "near-api-js";
 import ProjectDetailsContext from "../state/ProjectDetailsContext";
-import Navigation from "../components/Navigation";
+import { Navigation } from "../components/core";
 
 export default function Dash() {
   const { pid } = useParams();

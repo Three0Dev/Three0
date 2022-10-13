@@ -5,7 +5,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import ProjectDetailsContext from "../state/ProjectDetailsContext";
-import ConfigFile from "../components/ConfigFile";
+import ConfigFile from "../components/core/ConfigFile";
 import CodeImage from "../assets/code.svg";
 import { deleteNEARProject } from "../services/NEAR";
 import Backdrop from "../components/templates/Backdrop";
