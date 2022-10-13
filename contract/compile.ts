@@ -9,6 +9,8 @@
 // devDependencies of the root project, which is why it's available here. It
 // makes it easy to use *NIX-style scripting (which works on Linux distros,
 // macOS, and Unix systems) on Windows as well.
+
+// eslint-disable-next-line import/no-extraneous-dependencies
 const sh = require('shelljs')
 
 // Figure out which directory the user called this script from, which we'll use
