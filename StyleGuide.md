@@ -66,7 +66,43 @@ This document will give Three0 coding standards, file formatting, and styling re
     - global.css (global css file for the application)
 
     visit https://www.taniarascia.com/react-architecture-directory-structure/ for more information
+
+## Classes
+- Use class for declaring classes
+- Use extends for inheriting from a parent class
+- Use implements for implementing an interface
+- Use constructor for declaring a constructor
+- Use super for calling the parent class constructor
+
+## Functions
+- Use function for declaring functions
+- Use => for declaring arrow functions
+- Use async for declaring async functions
+- Use async => for declaring async arrow functions
+
+## Variables
+- Use let for declaring variables that can be reassigned
+- Use const for declaring variables that cannot be reassigned
+
+## Types
+- Use type for declaring types
+- Use interface for declaring interfaces
+- Use enum for declaring enums
+- Use namespace for declaring namespaces
+
+## Testing
+- Use jest for testing
+- Use jest-cli for running tests from the command line
+- Use jest-junit for outputting test results in JUnit format
+- Use jest-sonar-reporter for outputting test results in SonarQube format
+- Use jest-html-reporter for outputting test results in HTML format
+- Use jest-coverage-badges for outputting test coverage in badges
     
+## Comments
+- Use // for single line comments
+- Use /* */ for multi-line comments
+- Use /// for documentation comments
+
 ## eslint
 - Use eslint for linting
 - Use eslint-config-airbnb-base for the base configuration
@@ -74,7 +110,13 @@ This document will give Three0 coding standards, file formatting, and styling re
 - Use eslint-plugin-import for linting import statements
 - Use eslint-plugin-prettier for running Prettier as an ESLint rule
 
-## Comments
-- Use // for single line comments
-- Use /* */ for multi-line comments
-- Use /// for documentation comments
+## Formatting
+- Use Prettier for formatting
+- Use prettier-eslint for formatting with ESLint
+- Use prettier-eslint-cli for formatting with ESLint from the command line
+- Use prettier-eslint-config for formatting with ESLint
+
+## npm
+- Use npm for package management
+- Use package.json for defining the package   
+
