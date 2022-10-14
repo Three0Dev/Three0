@@ -872,14 +872,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "nft_storage"
-version = "0.1.0"
-dependencies = [
- "near-sdk 4.0.0",
- "serde_json",
-]
-
-[[package]]
 name = "num-bigint"
 version = "0.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1358,6 +1350,14 @@ name = "three0_project"
 version = "0.1.0"
 dependencies = [
  "near-sdk 3.1.0",
+]
+
+[[package]]
+name = "three0_storage"
+version = "0.1.0"
+dependencies = [
+ "near-sdk 4.0.0",
+ "serde_json",
 ]
 
 [[package]]

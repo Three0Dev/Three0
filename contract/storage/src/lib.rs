@@ -98,7 +98,7 @@ impl Contract {
     #[init]
     pub fn new(owner_id: AccountId, metadata: NFTContractMetadata) -> Self {
         //create a variable of type Self with all the fields initialized. 
-        let mut this = Self {
+        let this = Self {
             //Storage keys are simply the prefixes used for the collections. This helps avoid data collision
             tokens_per_owner: LookupMap::new(StorageKey::TokensPerOwner.try_to_vec().unwrap()),
             tokens_by_id: LookupMap::new(StorageKey::TokensById.try_to_vec().unwrap()),
