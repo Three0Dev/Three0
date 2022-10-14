@@ -1,41 +1,42 @@
-// import React from 'react'
-// import FileManager, {
-// 	getList,
-// 	createDirectory,
-// 	deletePaths,
-// 	openFile,
-// 	uploadFiles,
-// 	rename,
-// } from '../components/storage-ui'
-
-// export default function Storage() {
-// 	return (
-// 		<FileManager
-// 			getList={getList}
-// 			createDirectory={createDirectory}
-// 			deletePaths={deletePaths}
-// 			openFile={openFile}
-// 			uploadFiles={uploadFiles}
-// 			rename={rename}
-// 			features={['createDirectory', 'uploadFiles', 'deletePaths', 'rename']}
-// 		/>
-// 	)
-// }
-
-import React from "react";
-import { Typography } from "@mui/material";
-import WIPPhoto from "../assets/wip.svg";
+import React from 'react'
+import FileManager, {
+	getList,
+	createDirectory,
+	deletePaths,
+	openFile,
+	uploadFiles,
+	rename,
+} from '../components/storage-components'
+import {useParams} from 'react-router-dom'
+import ProjectDetailsContext from '../state/ProjectDetailsContext'
+import { Button } from '@mui/material'
+import { addStorage } from '../services/NEAR';
 
 export default function Storage() {
+  const [storage, setStorage] = React.useState(false)
+	const { projectDetails, projectContract } = React.useContext(
+		ProjectDetailsContext
+	)
+
+	// console.log(projectDetails.pid)
+	projectContract.has_storage().then((storage: boolean) => {setStorage(storage)})
   return (
-    <>
-      <img src={WIPPhoto} alt="WIP" className="majorImg" />
-      <Typography
-        variant="h2"
-        style={{ textAlign: "center", fontWeight: "bold" }}
-      >
-        Coming Soon!
-      </Typography>
-    </>
+    storage ? (
+      <FileManager
+        getList={getList}
+        deletePaths={deletePaths}
+        openFile={openFile}
+        uploadFiles={uploadFiles}
+        rename={rename}
+        features={['uploadFiles', 'deletePaths', 'rename']}
+      />
+      ) : (
+      <div>
+        <Button onClick={() => {
+          console.log(projectDetails.pid)
+          addStorage(projectContract).then((success) => {setStorage(success)})
+        }}> Add storage </Button>
+      </div>
+    )
   );
 }
