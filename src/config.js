@@ -1,8 +1,8 @@
 const CONTRACT_NAME = process.env.CONTRACT_NAME || "alpha.three0.testnet";
 
-const LOCAL_KURTOSIS_URL = process.env.KURTOSIS_URL;
+const LOCAL_KURTOSIS_URL = process.env.KURTOSIS_URL || "http://localhost";
 
-function getNEARConfig(env: string) {
+function getNEARConfig(env) {
   switch (env) {
     case "mainnet":
       return {

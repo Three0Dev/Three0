@@ -6,8 +6,8 @@
   "description": "Three0 Contract and Dev Console",
   "scripts": {
     "build": "npm run build:contract && npm run build:web",
-    "build:contract": "node contract/compile.ts",
-    "build:contract:debug": "node contract/compile.ts --debug",
+    "build:contract": "node contract/compile.js",
+    "build:contract:debug": "node contract/compile.js --debug",
     "build:web": "parcel build 'src/*.html' --public-url ./",
     "dev:deploy:contract": "near dev-deploy",
     "deploy:contract": "near deploy",
