@@ -51,3 +51,4 @@ target/
 .vscode/
 contract_copy/.vscode/launch.json
 contracts.sh
+.near/.env
