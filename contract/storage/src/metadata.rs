@@ -26,6 +26,7 @@ pub struct TokenMetadata {
     pub description: Option<String>, // free-form description
     pub media: Option<String>, // URL to associated media, preferably to decentralized, content-addressed storage
     pub media_hash: Option<Base64VecU8>, // Base64-encoded sha256 hash of content referenced by the `media` field. Required if `media` is included.
+    pub file_type: Option<String>, // MIME type of file, if `media` is a direct link to file
     pub copies: Option<u64>, // number of copies of this set of metadata in existence when token was minted.
     pub issued_at: Option<u64>, // When token was issued or minted, Unix epoch in milliseconds
     pub expires_at: Option<u64>, // When token expires, Unix epoch in milliseconds

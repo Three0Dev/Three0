@@ -22,6 +22,7 @@ export default function Body({
     title: "",
     description: "",
     media: "",
+    file_type: "",
   });
 
   const list = structure[currentPath] || [];
@@ -119,7 +120,7 @@ export default function Body({
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                 {fileProps.description}
               </Typography>
-              <img src={fileProps.media} alt="new" />
+              {/* <img src={fileProps.media} alt="new" /> */}
             </Box>
           </Modal>
         </>

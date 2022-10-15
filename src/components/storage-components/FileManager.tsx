@@ -77,6 +77,7 @@ export default function FileManager({ pid }: FileManagerProps) {
       description: "This is a test",
       media: `http://ipfs.io/ipfs/${file.path}`,
       media_hash: btoa(file.path),
+      file_type: files[0].type,
       issued_at: Date.now(),
     };
 
