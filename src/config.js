@@ -33,7 +33,6 @@ function getNEARConfig(env) {
         helperUrl: "https://helper.betanet.near.org",
         explorerUrl: "https://explorer.betanet.near.org",
       };
-    
     case "localnet":
       return {
         networkId: "local",

@@ -6,7 +6,6 @@ import {
   utils,
   providers,
 } from "near-api-js";
-// eslint-disable-next-line import/no-unresolved
 import NEAR_CONTRACT from "url:../contract-wasms/near.wasm";
 import NEAR_STORAGE_CONTRACT from 'url:../contract-wasms/near-storage.wasm';
 import { nearConfig } from "../utils";
@@ -78,9 +77,7 @@ export async function deleteNEARProject(pid: string) {
 }
 
 export async function checkAccountStatus(hash: any) {
-  const provider = new providers.JsonRpcProvider(
-    `https://archival-rpc.${nearConfig.networkId}.near.org`
-  );
+  const provider = new providers.JsonRpcProvider(nearConfig.nodeUrl);
 
   try {
     const result = await provider.txStatus(hash, window.accountId);
