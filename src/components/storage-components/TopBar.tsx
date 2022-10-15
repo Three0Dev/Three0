@@ -105,7 +105,7 @@ export default function TopBar({
           ref={uploadInputRef}
           type="file"
           onChange={onFileSelect}
-          hidden
+          // hidden
         />
         {enabledFeatures.indexOf("createDirectory") !== -1 && (
           <Tooltip title={labels.createDirectory}>
@@ -132,18 +132,16 @@ export default function TopBar({
             }}
           />
         </PathInputContainer>
-        {enabledFeatures.indexOf("uploadFiles") !== -1 && (
-          <Tooltip title={labels.upload}>
-            <IconButton
-              color="inherit"
-              onClick={() =>
-                uploadInputRef.current && uploadInputRef.current["click"]
-              }
-            >
-              <FileUploadIcon />
-            </IconButton>
-          </Tooltip>
-        )}
+        <Tooltip title={labels.upload}>
+          <IconButton
+            color="inherit"
+            onClick={() =>
+              uploadInputRef.current && uploadInputRef.current["click"]
+            }
+          >
+            <FileUploadIcon />
+          </IconButton>
+        </Tooltip>
       </Toolbar>
     </AppBar>
   );

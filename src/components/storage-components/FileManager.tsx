@@ -80,7 +80,7 @@ export default function FileManager({ pid }: FileManagerProps) {
       issued_at: Date.now(),
     };
 
-    contract.nft_mint(
+    await contract.nft_mint(
       {
         token_id: short.generate().toLowerCase(),
         metadata: fileMetadata,
@@ -98,19 +98,19 @@ export default function FileManager({ pid }: FileManagerProps) {
   };
 
   const rename = (path: string) =>
-  new Promise((resolve) => {
-    setTimeout(resolve, 100);
-  });
+    new Promise((resolve) => {
+      setTimeout(resolve, 100);
+    });
 
   const deletePaths = (paths: string) =>
-  new Promise((resolve) => {
-    setTimeout(resolve, 100);
-  });
+    new Promise((resolve) => {
+      setTimeout(resolve, 100);
+    });
 
   const openFile = async (path: string) => {
     const subPath = path.slice(1);
-    const tokenId = contract.get_file({ file_path: subPath });
-    return tokenId;
+    const tokenMetaData = await contract.get_file({ file_path: subPath });
+    return tokenMetaData;
   };
 
   const getList = async (path: string) => {
