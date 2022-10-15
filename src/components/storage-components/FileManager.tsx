@@ -1,5 +1,8 @@
 /* eslint-disable no-console */
 import React, { useEffect, useState } from "react";
+import { Contract } from "near-api-js";
+import * as short from "short-uuid";
+import { initIPFS } from "../../services/database";
 import TopBar from "./TopBar";
 import Footer from "./Footer";
 import MiddleArea from "./MiddleArea";
@@ -21,16 +24,29 @@ const defaultLabels = {
   createDirectory: "Create directory",
 };
 
-export default function FileManager({
-  getList,
-  createDirectory,
-  deletePaths,
-  openFile,
-  uploadFiles,
-  rename,
-  translations,
-  features,
-}: any) {
+interface FileManagerProps {
+  pid: any;
+}
+
+export default function FileManager({ pid }: FileManagerProps) {
+  const contract = new Contract(
+    window.walletConnection.account(),
+    `storage.${pid}`,
+    {
+      // View methods are read only. They don't modify the state, but usually return some value.
+      viewMethods: ["list_files", "get_file", "has_storage", "get_storage"],
+      // Change methods can modify the state. But you don't receive the returned value when called.
+      changeMethods: [
+        "new_default_meta",
+        "insert_file",
+        "nft_mint",
+        "set_storage",
+      ],
+    }
+  );
+
+  const features = ["uploadFiles"];
+
   const [collapsed, setCollapsed] = useState({});
   const [structure, setStructure] = useState({});
   const [currentPath, setCurrentPath] = useState("");
@@ -38,23 +54,84 @@ export default function FileManager({
   const [selection, setSelection] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const labels = translations || defaultLabels;
+  const labels = defaultLabels;
 
-  const enabledFeatures = features || [];
-  if (!features) {
-    if (createDirectory) {
-      enabledFeatures.push("createDirectory");
+  const enabledFeatures = features;
+
+  const uploadFiles = async (path: string, files: File[]) => {
+    let filepath = path;
+    if (path === "") {
+      filepath = files[0].name;
+    } else {
+      filepath = `${path.slice(1)}/${files[0].name}`;
     }
-    if (deletePaths) {
-      enabledFeatures.push("deletePaths");
+
+    // Upload to IPFS
+
+    // Put IPFS URL into NFT and mint
+    const ipfs = await initIPFS();
+    const file = await ipfs.add(files[0]);
+
+    const fileMetadata = {
+      title: files[0].name,
+      description: "This is a test",
+      media: `http://ipfs.io/ipfs/${file.path}`,
+      media_hash: btoa(file.path),
+      issued_at: Date.now(),
+    };
+
+    contract.nft_mint(
+      {
+        token_id: short.generate().toLowerCase(),
+        metadata: fileMetadata,
+        path: filepath,
+        receiver_id: window.walletConnection.account().accountId,
+        //   perpetual_royalties: royalties
+      },
+      "300000000000000", // attached GAS (optional)
+      "100000000000000000000000" // attached deposit in yoctoNEAR (optional)
+    );
+
+    return new Promise((resolve) => {
+      setTimeout(resolve, 100);
+    });
+  };
+
+  const rename = (path: string) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, 100);
+  });
+
+  const deletePaths = (paths: string) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, 100);
+  });
+
+  const openFile = async (path: string) => {
+    const subPath = path.slice(1);
+    const tokenId = contract.get_file({ file_path: subPath });
+    return tokenId;
+  };
+
+  const getList = async (path: string) => {
+    const list = await contract.list_files({ path: `${path}/` });
+    const ret = [];
+    for (let i = 0; i < list.length; i += 1) {
+      let name = "";
+      let type = 0;
+      if (list[i].endsWith("/")) {
+        name = list[i].substring(0, list[i].length - 1);
+        type = 2;
+      } else {
+        name = list[i];
+        type = 1;
+      }
+      // get all but last character if last character is /
+      ret.push({ name, type });
     }
-    if (uploadFiles) {
-      enabledFeatures.push("uploadFiles");
-    }
-    if (rename) {
-      enabledFeatures.push("rename");
-    }
-  }
+    // console.log(ret)
+    return Promise.resolve(ret);
+  };
 
   const load = async (path: string) => {
     try {
@@ -136,7 +213,6 @@ export default function FileManager({
       <TopBar
         currentPath={currentPath}
         setCurrentPath={setCurrentPath}
-        createDirectory={createDirectory}
         uploadFiles={uploadFiles}
         labels={labels}
         reload={reload}

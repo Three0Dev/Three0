@@ -63,10 +63,11 @@ export default function TopBar({
   enabledFeatures,
 }: any) {
   const uploadInputRef = useRef(null);
-  const onFileSelect = (event: { target: { files: any } }) =>
+  const onFileSelect = (event: { target: { files: any } }) => {
     uploadFiles(currentPath, [...event.target.files])
       .then(reload)
       .catch((error: any) => error && console.error(error));
+  };
 
   const onPathChange = (path: string) => {
     const newPath = path === "/" ? "" : path;

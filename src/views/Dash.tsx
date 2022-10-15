@@ -29,8 +29,19 @@ export default function Dash() {
     const account = await window.near.account(pid);
 
     const projectContractInit = new Contract(account, pid as string, {
-      viewMethods: ["get_project", "get_users", "get_user", "has_storage", "get_storage"],
-      changeMethods: ["update_project", "add_database", "delete_database", "set_storage"],
+      viewMethods: [
+        "get_project",
+        "get_users",
+        "get_user",
+        "has_storage",
+        "get_storage",
+      ],
+      changeMethods: [
+        "update_project",
+        "add_database",
+        "delete_database",
+        "set_storage",
+      ],
     });
 
     const details = await projectContractInit.get_project({});
