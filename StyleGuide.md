@@ -8,12 +8,12 @@ This document will give Three0 coding standards, file formatting, and styling re
 - Use camelCase for function names
 - Use camelCase for method names
 - Use this-case for directory names
-- Use this_case for file names
+- Use ThisCase for file names (excluding index files)
 
 ## Imports
 - Use import for importing modules
 - Use import as for importing modules with aliases
-- Use import {x} from 'module' for importing specific symbols
+- Use import { x } from 'module' for importing specific symbols
 - Use import {x as y} from 'module' for importing specific symbols with aliases
 - Use import * as x from 'module' for importing all symbols as a group
 - Use import 'module' for importing side effects only

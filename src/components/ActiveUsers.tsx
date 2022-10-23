@@ -25,7 +25,7 @@ import {
   TableRow,
 } from "./templates/Table";
 import nousers from "../assets/nousers.svg";
-import { getContractRelativeDate } from "../utils";
+import { getContractRelativeDate } from "../Utils";
 
 const classes = {
   root: {

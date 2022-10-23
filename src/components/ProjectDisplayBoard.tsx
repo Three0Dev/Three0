@@ -13,7 +13,7 @@ import {
   CardMedia,
 } from "@mui/material";
 import NearIcon from "../assets/near_icon_nm.svg";
-import { getContractRelativeDate } from "../utils";
+import { getContractRelativeDate } from "../Utils";
 import Search from "./templates/Search";
 import Backdrop from "./templates/Backdrop";
 

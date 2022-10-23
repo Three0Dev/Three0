@@ -4,7 +4,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import Core from "./Core";
-import { initContract } from "./utils";
+import { initContract } from "./Utils";
 
 export {};
 declare global {
