@@ -56,13 +56,18 @@ if (code === 0 && calledFromDir !== __dirname) {
 	const frontEndDir = `${calledFromDir}/src/contract-wasms`
 	const frontEndLink = `${frontEndDir}/near.wasm`
 	const projectPackageName = getName('project')
-
 	const outProjectFile = `${outDir}/${projectPackageName}.wasm`
+
+	const hostingFrontEndLink = `${frontEndDir}/near-hosting.wasm`
+	const hostingPackageName = getName("hosting")
+	const outHostingFile = `${outDir}/${hostingPackageName}.wasm`
 
 	sh.mkdir('-p', frontEndDir)
 	sh.rm('-f', frontEndLink)
+	sh.rm('-f', hostingFrontEndLink)
 	// fixes #831: copy-update instead of linking .- sometimes sh.ln does not work on Windows
 	sh.cp('-u', outProjectFile, frontEndLink)
+	sh.cp('-u', outHostingFile, hostingFrontEndLink)
 
 	sh.echo('')
 	sh.echo('Controller Size:')
@@ -70,7 +75,10 @@ if (code === 0 && calledFromDir !== __dirname) {
 	sh.echo('')
 	sh.echo('Project Size:')
 	sh.exec(`wc -c ${outProjectFile} | awk '{print $1}'`)
-	sh.echo('')
+	sh.echo("")
+	sh.echo("Hosting Size:")
+	sh.exec(`wc -c ${outHostingFile} | awk '{print $1}'`)
+	sh.echo("")
 }
 
 // exit script with the same code as the build command

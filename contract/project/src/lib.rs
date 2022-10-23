@@ -31,6 +31,7 @@ pub struct Three0Project {
     pid: String,
     databases: LookupMap<String, Database>,
     users: UnorderedMap<String, User>,
+    hosting: Option<AccountId>,
 }
 
 #[near_bindgen]
@@ -43,6 +44,7 @@ impl Three0Project {
             pid,
             databases: LookupMap::new(b"databases".to_vec()),
             users: UnorderedMap::new(b"users".to_vec()),
+            hosting: None,
         }
     }
 
@@ -98,5 +100,17 @@ impl Three0Project {
 
     pub fn get_user(&self, account_id: AccountId) -> User {
         self.users.get(&account_id).unwrap_or_else(|| env::panic(b"User not found"))
+    }
+
+    pub fn set_hosting(&mut self, hosting_account: AccountId) {
+        self.hosting = Some(hosting_account);
+    }
+
+    pub fn has_hosting(&self) -> bool {
+        return !self.hosting.is_none()
+    }
+
+    pub fn get_hosting(&self) -> AccountId {
+        return self.hosting.as_ref().unwrap().to_string()
     }
 }

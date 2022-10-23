@@ -8,6 +8,7 @@ import {
 } from "near-api-js";
 // eslint-disable-next-line import/no-unresolved
 import NEAR_CONTRACT from "url:../contract-wasms/near.wasm";
+import NEAR_HOSTING_CONTRACT from "url:../contract-wasms/near-hosting.wasm";
 import { nearConfig } from "../utils";
 
 export async function createNEARAccount() {
@@ -23,7 +24,7 @@ export async function createNEARAccount() {
 
   await window.walletConnection
     .account()
-    .createAccount(pid, publicKey, utils.format.parseNearAmount("6"));
+    .createAccount(pid, publicKey, utils.format.parseNearAmount("14"));
 }
 
 export async function createNEARProject() {
@@ -97,4 +98,62 @@ export async function checkAccountStatus(hash: any) {
     console.error(e);
     return Promise.reject(e);
   }
+}
+
+export async function createHostingAccount(parentPID: string) {
+  const parentAccount = await window.near.account(parentPID);
+  // console.log('storage.' + parentPID)
+
+  const keyPair = KeyPair.fromRandom("ed25519");
+  const publicKey = keyPair.getPublicKey().toString();
+  await new keyStores.BrowserLocalStorageKeyStore().setKey(
+    nearConfig.networkId,
+    `web4.${parentPID}`,
+    keyPair
+  );
+
+  // console.log('storage.' + parentPID)
+
+  try {
+    await parentAccount.createAccount(
+      `web4.${parentPID}`,
+      publicKey,
+      utils.format.parseNearAmount("7")
+    );
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+  return true;
+}
+
+export async function deployHostingContract(parentPID: string) {
+  const wallet = `web4.${parentPID}`;
+  console.log(wallet)
+  const hostingAccount = await window.near.account(wallet);
+
+  const contract = await fetch(NEAR_HOSTING_CONTRACT);
+  const buf = await contract.arrayBuffer();
+
+  await hostingAccount.signAndSendTransaction({
+    receiverId: wallet,
+    actions: [
+      transactions.deployContract(new Uint8Array(buf)),
+      // transactions.functionCall(
+      //   "new_default_meta",
+      //   { pid: parentPID },
+      //   10000000000000,
+      //   "0"
+      // ),
+    ],
+  });
+}
+
+export async function addHosting(parentContract: any) {
+  await createHostingAccount(parentContract.contractId);
+  await deployHostingContract(parentContract.contractId);
+  parentContract.set_hosting({
+    hosting_account: `web4.${parentContract.contractId}`,
+  });
+  return true;
 }
