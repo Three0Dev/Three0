@@ -12,8 +12,8 @@ export default class NearIdentityProvider extends IdentityProvider {
 
   // return identifier of external id (eg. a public key)
   // eslint-disable-next-line class-methods-use-this
-  async getId() {
-    return window.accountId;
+  getId() {
+    return globalThis.accountId;
   }
 
   // return a signature of data (signature of the OrbitDB public key)
@@ -27,10 +27,7 @@ export default class NearIdentityProvider extends IdentityProvider {
     console.log(dataBuffer);
 
     const keyStore = new keyStores.BrowserLocalStorageKeyStore();
-    const keyPair = await keyStore.getKey(
-      NEAR_CONFIG.networkId,
-      window.accountId
-    );
+    const keyPair = await keyStore.getKey(NEAR_CONFIG.networkId, this.getId());
 
     const { signature } = keyPair.sign(dataBuffer);
     console.log(signature);
@@ -39,18 +36,9 @@ export default class NearIdentityProvider extends IdentityProvider {
   }
 
   // return true if identity.signatures are valid
-  static async verifyIdentity(identity: {
-    publicKey: any;
-    signatures: {
-      id: any;
-      publicKey: { [s: string]: unknown } | ArrayLike<unknown>;
-    };
-  }) {
+  static async verifyIdentity(identity: any) {
     const keyStore = new keyStores.BrowserLocalStorageKeyStore();
-    const keyPair = await keyStore.getKey(
-      NEAR_CONFIG.networkId,
-      window.accountId
-    );
+    const keyPair = await keyStore.getKey(NEAR_CONFIG.networkId, identity.id);
 
     console.log(identity);
 
@@ -63,6 +51,6 @@ export default class NearIdentityProvider extends IdentityProvider {
 
     console.log(verify);
 
-    return true;
+    return verify;
   }
 }

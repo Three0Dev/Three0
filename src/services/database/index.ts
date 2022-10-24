@@ -4,9 +4,9 @@
 
 import * as IPFS from "ipfs-core";
 import OrbitDB from "orbit-db";
-// import IdentityProvider from 'orbit-db-identity-provider'
+import IdentityProvider from "orbit-db-identity-provider";
 import { config as Config } from "./config";
-// import NearIdentityProvider from './NearIdentityProvider'
+import NearIdentityProvider from "./identities/NearIdentityProvider";
 import { nearConfig } from "../../utils";
 
 let ipfs: any;
@@ -21,8 +21,6 @@ let ipfsActivate = false;
 
 const peerDBServer = "https://pinning.three0dev.com/";
 
-// IdentityProvider.addIdentityProvider(NearIdentityProvider)
-
 // Start IPFS
 export const initIPFS = async () => {
   if (!(ipfs || ipfsActivate)) {
@@ -34,14 +32,16 @@ export const initIPFS = async () => {
 
 // Start OrbitDB
 export const initOrbitDB = async (ipfsLocal: any) => {
+  IdentityProvider.addIdentityProvider(NearIdentityProvider);
+
   if (ipfs && !orbitdb) {
-    // const identity = await IdentityProvider.createIdentity({
-    // 	type: `NearIdentity`,
-    // })
+    const identity = await IdentityProvider.createIdentity({
+      type: `NearIdentity`,
+    });
 
-    // orbitdb = await OrbitDB.createInstance(ipfs, {identity})
+    orbitdb = await OrbitDB.createInstance(ipfsLocal, { identity });
 
-    orbitdb = await OrbitDB.createInstance(ipfsLocal);
+    // orbitdb = await OrbitDB.createInstance(ipfsLocal);
   }
   return orbitdb;
 };
@@ -115,14 +115,14 @@ export const createDatabase = async (
 
   console.log(dbDetails);
 
-  await fetch(`${peerDBServer}pin?address=${db.address.toString()}`, {
-    method: "POST",
-    mode: "cors",
-    cache: "no-cache",
-    credentials: "same-origin", // include, *same-origin, omit
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
-  });
+  // await fetch(`${peerDBServer}pin?address=${db.address.toString()}`, {
+  //   method: "POST",
+  //   mode: "cors",
+  //   cache: "no-cache",
+  //   credentials: "same-origin", // include, *same-origin, omit
+  //   redirect: "follow",
+  //   referrerPolicy: "no-referrer",
+  // });
 
   await programs
     ?.add({

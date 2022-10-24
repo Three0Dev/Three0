@@ -14,6 +14,7 @@ function getNEARConfig(env: string) {
         explorerUrl: "https://explorer.mainnet.near.org",
       };
     case "production":
+    case "development":
     case "testnet":
       return {
         networkId: "testnet",
@@ -32,7 +33,6 @@ function getNEARConfig(env: string) {
         helperUrl: "https://helper.betanet.near.org",
         explorerUrl: "https://explorer.betanet.near.org",
       };
-    case "development":
     case "localnet":
       return {
         networkId: "local",

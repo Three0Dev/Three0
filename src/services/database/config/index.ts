@@ -11,7 +11,7 @@ export const config = {
     config: {
       Addresses: {
         Swarm: [
-          // '/dns4/three0-rtc-node.herokuapp.com/tcp/443/wss/p2p-webrtc-star/',
+          "/dns4/three0-rtc-node.herokuapp.com/tcp/443/wss/p2p-webrtc-star/",
         ],
       },
     },
