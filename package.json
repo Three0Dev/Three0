@@ -17,7 +17,7 @@
     "start": "npm run front",
     "front": "env-cmd -f ./neardev/dev-account.env env-cmd -f .near/.env parcel src/index.html --open",
     "dev": "nodemon --watch contract -e rs --exec \"npm run start\"",
-    "test": "npm run build:contract:debug && cd contract && cargo test -- --nocapture && cd .. && jest test --runInBand",
+    "test": "npm run test:contract && cd .. && jest test --runInBand",
     "test:contract": "npm run build:contract:debug && cd contract && cargo test -- --nocapture",
     "test:jest": "jest --verbose",
     "lint": "eslint 'src/**/*.{ts,tsx}' --no-error-on-unmatched-pattern",
