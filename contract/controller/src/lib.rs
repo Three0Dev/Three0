@@ -157,7 +157,7 @@ mod tests {
     // test for creating a project
     #[test]
     fn test_create_project() {
-        let context = get_context(vec![]);
+        let context = get_context(vec![], false);
         testing_env!(context);
         let mut contract = Three0::default();
         contract.create_project("eth".to_string(), "0x123".to_string());
@@ -168,7 +168,7 @@ mod tests {
     // test for deleting a project
     #[test]
     fn test_delete_project() {
-        let context = get_context(vec![]);
+        let context = get_context(vec![], false);
         testing_env!(context);
         let mut contract = Three0::default();
         contract.create_project("eth".to_string(), "0x123".to_string());
@@ -184,7 +184,7 @@ mod tests {
     // test for getting a project
     #[test]
     fn test_get_project() {
-        let context = get_context(vec![]);
+        let context = get_context(vec![], false);
         testing_env!(context);
         let mut contract = Three0::default();
         contract.create_project("eth".to_string(), "0x123".to_string());
@@ -197,7 +197,7 @@ mod tests {
     // test for getting all projects
     #[test]
     fn test_get_all_projects() {
-        let context = get_context(vec![]);
+        let context = get_context(vec![], false);
         testing_env!(context);
         let mut contract = Three0::default();
         contract.create_project("eth".to_string(), "0x123".to_string());
