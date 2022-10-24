@@ -162,8 +162,8 @@ mod tests {
         let mut contract = Three0Project::init("test".to_string());
         contract.user_action("LOGIN".to_string());
         let user = contract.get_user("bob_near".to_string());
-        assert_eq!(user.account_id, "bob_near".to_string());
-        assert_eq!(user.logged_in, true);
+        // assert_eq!(user.account_id, "bob_near".to_string());
+        assert_eq!(user.is_online, true);
     }
 
     // test for the get project function
@@ -186,10 +186,7 @@ mod tests {
         let database = Database {
             address: "test".to_string(),
             name: "test".to_string(),
-            description: "test".to_string(),
-            url: "test".to_string(),
-            username: "test".to_string(),
-            password: "test".to_string(),
+            db_type: "test".to_string(),
         };
         contract.add_database(database);
         assert_eq!(contract.valid_database("test".to_string()), true);
@@ -204,10 +201,8 @@ mod tests {
         let database = Database {
             address: "test".to_string(),
             name: "test".to_string(),
-            description: "test".to_string(),
-            url: "test".to_string(),
-            username: "test".to_string(),
-            password: "test".to_string(),
+            db_type: "test".to_string(),
+
         };
         contract.add_database(database);
         assert_eq!(contract.valid_database("test".to_string()), true);
@@ -224,10 +219,8 @@ mod tests {
         let database = Database {
             address: "test".to_string(),
             name: "test".to_string(),
-            description: "test".to_string(),
-            url: "test".to_string(),
-            username: "test".to_string(),
-            password: "test".to_string(),
+            db_type: "test".to_string(),
+
         };
         contract.add_database(database);
         assert_eq!(contract.valid_database("test".to_string()), true);
