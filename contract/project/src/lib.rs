@@ -171,7 +171,7 @@ mod tests {
     fn test_get_project() {
         let context = get_context(vec![], false);
         testing_env!(context);
-        let mut contract = Three0Project::init("test".to_string());
+        let contract = Three0Project::init("test".to_string());
         let project = contract.get_project();
         assert_eq!(project.pid, "test".to_string());
         assert_eq!(project.num_users, 0);
