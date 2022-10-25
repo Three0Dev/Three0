@@ -13,9 +13,9 @@ import {
 } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ProjectDetailsContext from "../state/ProjectDetailsContext";
-import Backdrop from "./templates/Backdrop";
-import Search from "./templates/Search";
+import ProjectDetailsContext from "../../state/ProjectDetailsContext";
+import Backdrop from "../templates/Backdrop";
+import Search from "../templates/Search";
 import {
   TableHeader,
   TableCell,
@@ -23,9 +23,9 @@ import {
   TableBody,
   TableContainer,
   TableRow,
-} from "./templates/Table";
-import nousers from "../assets/nousers.svg";
-import { getContractRelativeDate } from "../Utils";
+} from "../templates/Table";
+import nousers from "../../assets/nousers.svg";
+import { getContractRelativeDate } from "../../utils";
 
 const classes = {
   root: {
