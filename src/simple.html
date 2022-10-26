@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Simple</title>
+
+  </head>
+  <body>
+    <h1>Simple html file to deploy</h1>
+    <p>The button console logs that you clicked it</p>
+    <button id="button">Click Me</button>
+    <script>
+    function log() {
+        console.log('You clicked the button');
+    }
+    var button = document.getElementById('button');
+    button.addEventListener('click', log);
+    </script>
+  </body>
+</html>
