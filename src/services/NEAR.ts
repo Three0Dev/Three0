@@ -8,7 +8,7 @@ import {
 } from "near-api-js";
 // eslint-disable-next-line import/no-unresolved
 import NEAR_CONTRACT from "url:../contract-wasms/near.wasm";
-import { nearConfig } from "../utils";
+import { nearConfig } from "../Utils";
 
 export async function createNEARAccount() {
   const { pid } = JSON.parse(localStorage.getItem("projectDetails") || "{}");

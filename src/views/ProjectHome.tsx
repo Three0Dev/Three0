@@ -1,5 +1,5 @@
-import { Box, Button, Typography, useTheme } from "@mui/material";
 import React from "react";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useNavigate } from "react-router-dom";
@@ -7,8 +7,8 @@ import Swal from "sweetalert2";
 import ProjectDetailsContext from "../state/ProjectDetailsContext";
 import ConfigFile from "../components/core/ConfigFile";
 import CodeImage from "../assets/code.svg";
-import { deleteNEARProject } from "../services/NEAR";
 import Backdrop from "../components/templates/Backdrop";
+import { deleteNEARProject } from "../services/NEAR";
 
 const classes = {
   h1: { wordBreak: "break-all", textAlign: "center", padding: "3% 3% 0" },

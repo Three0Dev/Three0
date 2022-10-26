@@ -1,13 +1,10 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 // TODO: Handle Identity Provider
-
 import * as IPFS from "ipfs-core";
 import OrbitDB from "orbit-db";
-// import IdentityProvider from 'orbit-db-identity-provider'
+import { nearConfig } from "../../Utils";
 import { config as Config } from "./config";
-// import NearIdentityProvider from './NearIdentityProvider'
-import { nearConfig } from "../../utils";
 
 let ipfs: any;
 
