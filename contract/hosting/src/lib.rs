@@ -5,10 +5,15 @@ use near_sdk::serde::{Deserialize, Serialize};
 #[near_bindgen]
 #[derive(Default, BorshDeserialize, BorshSerialize)]
 pub struct Contract {
+    pub file_map = LookupMap<String, Web4Response>,
 }
 
 #[near_bindgen]
 impl Contract {
+    pub fn add_to_map(&mut self, key: String, value: Web4Response) {
+        self.file_map.insert(&key, &value);
+    }
+    
     /// Learn more about web4 here: https://web4.near.page
     pub fn web4_get(&self, request: Web4Request) -> Web4Response {
         if request.path == "/" {
