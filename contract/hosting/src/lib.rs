@@ -13,9 +13,19 @@ impl Contract {
     pub fn add_to_map(&mut self, key: String, value: Web4Response) {
         self.file_map.insert(&key, &value);
     }
-    
+
     /// Learn more about web4 here: https://web4.near.page
     pub fn web4_get(&self, request: Web4Request) -> Web4Response {
+
+        // let path = request.path;
+        // let body = self.file_map.get(&path).unwrap();
+
+        // Web4Response {
+        //     status: 200,
+        //     body: body,
+        //     headers: vec![("Content-Type".to_string(), "text/html".to_string())],
+        // }
+
         if request.path == "/" {
             Web4Response::Body {
                 content_type: "text/html; charset=UTF-8".to_owned(),
