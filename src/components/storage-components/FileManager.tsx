@@ -38,7 +38,6 @@ export default function FileManager({ pid }: FileManagerProps) {
       // Change methods can modify the state. But you don't receive the returned value when called.
       changeMethods: [
         "new_default_meta",
-        "insert_file",
         "nft_mint",
         "set_storage",
       ],

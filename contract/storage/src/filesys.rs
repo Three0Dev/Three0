@@ -28,21 +28,6 @@ impl Contract {
         return files.into_iter().collect();
     }
 
-    pub fn insert_file(&mut self, path: String, token_id: TokenId) {
-        let existing = self.filesys.get(&path);
-        if existing.is_some() {
-            if existing == Some(token_id) {
-                print!("Hey")
-            }
-            else {
-                print!("Nvm")
-            }
-        }
-        else {
-            self.filesys.insert(&path, &token_id);
-        }
-    }
-
     pub fn get_file(&self, file_path: String) -> TokenMetadata {
         let existing = self.filesys.get(&file_path);
         assert!(existing.is_some(), "File does not exist");
