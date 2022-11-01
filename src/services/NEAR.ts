@@ -151,7 +151,7 @@ export async function deployHostingContract(parentPID: string) {
 
 export async function addHosting(parentContract: any) {
   await createHostingAccount(parentContract.contractId);
-  await deployHostingContract(parentContract.contractId);
+  // await deployHostingContract(parentContract.contractId);
   parentContract.set_hosting({
     hosting_account: `web4.${parentContract.contractId}`,
   });

@@ -16,6 +16,63 @@ impl Contract {
                 content_type: "text/html; charset=UTF-8".to_owned(),
                 body: "<h1>Hello from Web4 on NEAR!</h1>".as_bytes().to_owned().into(),
             }
+        } else if request.path == "/testHTML" {
+            Web4Response::Body {
+                content_type: "text/html; charset=UTF-8".to_owned(),
+                body: 
+                "<!DOCTYPE html>
+                <html>
+                  <head>
+                    <meta charset=\"utf-8\">
+                    <title>Simple</title>
+                
+                  </head>
+                  <body>
+                    <h1>Simple html file to deploy</h1>
+                    <p>The button console logs that you clicked it</p>
+                    <button id=\"button\">Click Me</button>
+                    <script>
+                    function log() {
+                        console.log('You clicked the button yay');
+                    }
+                    var button = document.getElementById('button');
+                    button.addEventListener('click', log);
+                    </script>
+                    <a href=\"subpageHTML\">Subpage</a>
+                  </body>
+                </html>
+                ".as_bytes().to_owned().into(),
+            }
+        } else if request.path == "/subpageHTML" {
+            Web4Response::Body {
+                content_type: "text/html; charset=UTF-8".to_owned(),
+                body: 
+                "<!DOCTYPE html>
+                <html>
+                  <head>
+                    <meta charset=\"utf-8\">
+                    <title>subpage</title>
+                
+                  </head>
+                  <body>
+                    <h1>you were redirected to a subpage wowow</h1>
+                    <p>this does the same thing as the other page</p>
+                    <p>The button console logs that you clicked it</p>
+                    <button id=\"button\">Click Me</button>
+                    <script>
+                    function log() {
+                        console.log('You clicked the button');
+                    }
+                    var button = document.getElementById('button');
+                    button.addEventListener('click', log);
+                    </script>
+                    <!-- create a link to a subpage -->
+                    <p>click this to go back to the other page</p>
+                    <a href=\"testHTML\">Subpage</a>
+                  </body>
+                </html>
+                ".as_bytes().to_owned().into(),
+            }
         } else if request.path == "/Three0" {
             Web4Response::BodyUrl {
                 body_url: "https://www.Three0Dev.com".to_owned(),

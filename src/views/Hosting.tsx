@@ -13,7 +13,7 @@ export default function Hosting() {
 		setIsHostingEnabled(hasHosting);
 	  });
 
-	  console.log("Hello")
+	//   console.log("Hello")
 
 	return isHostingEnabled ? (
 	<UploadSystem />
