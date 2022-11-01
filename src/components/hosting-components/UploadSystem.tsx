@@ -43,6 +43,30 @@ export default function UploadSystem() {
 		return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`
 	}
 
+	// scrape the contents of the file and return the data as text
+	function readFile(file) {
+		const temporaryFileReader = new FileReader()
+
+		const p = new Promise((resolve, reject) => {
+			temporaryFileReader.onerror = () => {
+				temporaryFileReader.abort()
+				reject(new DOMException('Problem parsing input file.'))
+			}
+
+			temporaryFileReader.onload = () => {
+				resolve(temporaryFileReader.result)
+			}
+			temporaryFileReader.readAsText(file)
+		})
+
+		p.then((result) => {
+			// log file type
+			console.log(file.type)
+		})
+
+		return "hi"
+	}
+
 	return (
 		<>
 			<Box component={Paper} sx={{ padding: '5%' }}>
@@ -68,6 +92,10 @@ export default function UploadSystem() {
 										{file.path}
 									</TableCell>
 									<TableCell align="right">{formatBytes(file.size)}</TableCell>
+									{/* display contents */}
+									<TableCell align="right">
+										{readFile(file)}
+									</TableCell>
 								</TableRow>
 							))}
 						</TableBody>

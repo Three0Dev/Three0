@@ -10,12 +10,19 @@ pub struct Contract {
 
 #[near_bindgen]
 impl Contract {
-    pub fn add_to_map(&mut self, key: String, value: Web4Response) {
-        self.file_map.insert(&key, &value);
+    pub fn add_to_map(&mut self, key: String, body: String, content_type: String ) {
+        let response = Web4Response {
+            content_type,
+            body,
+        };
+        self.file_map.insert(&key, &response);
     }
 
     /// Learn more about web4 here: https://web4.near.page
     pub fn web4_get(&self, request: Web4Request) -> Web4Response {
+        let key = request.url;
+        let value = self.file_map.get(&key).unwrap();
+        value
 
         // let path = request.path;
         // let body = self.file_map.get(&path).unwrap();
