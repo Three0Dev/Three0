@@ -24,7 +24,7 @@ export async function createNEARAccount() {
 
   await window.walletConnection
     .account()
-    .createAccount(pid, publicKey, utils.format.parseNearAmount("14"));
+    .createAccount(pid, publicKey, utils.format.parseNearAmount("7"));
 }
 
 export async function createNEARProject() {

@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react'
-import { Contract } from 'near-api-js'
 import { useDropzone } from 'react-dropzone'
 import { Box, Paper, Fab } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
@@ -13,9 +12,15 @@ import {
 	TableBody,
 } from '../templates/Table'
 import { uploadFiles } from '../storage-components'
+import { Contract, keyStores } from "near-api-js";
+
 
 export default function UploadSystem() {
 	const { acceptedFiles, getRootProps, getInputProps } = useDropzone()
+
+	interface FileWithPath extends File {
+		path: string
+	}
 
 	const style = {
 		flex: 1,
@@ -46,10 +51,10 @@ export default function UploadSystem() {
 	}
 
 	// scrape the contents of the file and return the data as text
-	function uploadFile() {
-		const temporaryFileReader = new FileReader()
+	async function uploadFile() {
+		const files: { path: string; content_type: string; body: void }[] = []
 
-		window.contract = new Contract(
+		const hostingContract = new Contract(
 			window.walletConnection.account(),
 			"web4.srawulwar.testnet",
 			{
@@ -58,24 +63,74 @@ export default function UploadSystem() {
 			}
 		  );
 
-		const p = new Promise((resolve, reject) => {
-			temporaryFileReader.onerror = () => {
-				temporaryFileReader.abort()
-				reject(new DOMException('Problem parsing input file.'))
-			}
-
-			temporaryFileReader.onload = () => {
-				resolve(temporaryFileReader.result)
+		
+		  acceptedFiles.forEach(async (file) => {
+			// const p = new Promise((resolve, reject) => {
+			const temporaryFileReader = new FileReader()
+			
+			temporaryFileReader.onload = async () => {
+				files.push({
+					path: (file as FileWithPath).path,
+					content_type: file.type,
+					body: temporaryFileReader.result,
+				})		
 			}
 			temporaryFileReader.readAsText(file)
+
+			// })
+			// await p
 		})
 
-		p.then((result) => {
-			console.log(file.type)
-			console.log(result)
-		})
-
-		return "hi"
+		console.log(files)
+		const tempArr = [
+			{path: "/subpage.html", content_type: "text/html", body: `<!DOCTYPE html>
+				<html>
+				<head>
+					<meta charset="utf-8">
+					<title>subpage</title>
+				
+				</head>
+				<body>
+					<h1>you were redirected to a subpage wowow</h1>
+					<p>this does the same thing as the other page</p>
+					<p>The button console logs that you clicked it</p>
+					<button id="button">Click Me</button>
+					<script>
+					function log() {
+						console.log('You clicked the button');
+					}
+					var button = document.getElementById('button');
+					button.addEventListener('click', log);
+					</script>
+					<!-- create a link to a subpage -->
+					<p>click this to go back to the other page</p>
+					<a href="simple.html">Subpage</a>
+				</body>
+				</html>`}, 
+				{path: "/simple.html", content_type: "text/html", body: `<!DOCTYPE html>
+				<html>
+				<head>
+					<meta charset="utf-8">
+					<title>Simple</title>
+				
+				</head>
+				<body>
+					<h1>Simple html file to deploy</h1>
+					<p>The button console logs that you clicked it</p>
+					<button id="button">Click Me</button>
+					<script src="./simple.js"></script>
+					<!-- create a link to a subpage -->
+					<a href="subpage.html">Subpage</a>
+				</body>
+				</html>`}, 
+				{path: "/simple.js", content_type: "text/javascript", body: `function log() {
+					console.log('You clicked the button');
+				}
+				var button = document.getElementById('button');
+				button.addEventListener('click', log);`}
+		]
+		console.log(tempArr)
+		await hostingContract.add_to_map({content: tempArr})
 	}
 
 	return (
@@ -98,9 +153,9 @@ export default function UploadSystem() {
 						<TableHeader headers={['Name', 'Size']} />
 						<TableBody>
 							{acceptedFiles.map((file) => (
-								<TableRow key={file.path}>
+								<TableRow key={(file as FileWithPath).path}>
 									<TableCell component="th" scope="row">
-										{file.path}
+										{(file as FileWithPath).path}
 									</TableCell>
 									<TableCell align="right">{formatBytes(file.size)}</TableCell>
 									{/* display contents */}
@@ -121,7 +176,7 @@ export default function UploadSystem() {
 				}}
 				color="primary"
 				aria-label="upload-files"
-				onClick={() => uploadFiles()}
+				onClick={() => uploadFile()}
 			>
 				<CloudUploadIcon />
 			</Fab>

@@ -16,14 +16,20 @@ impl Default for Three0Hosting {
       }
     }
   }
-
+pub struct FileContents {
+    pub path: String,
+    pub body: String, 
+    pub content_type: String,
+}
 impl Three0Hosting {
-    pub fn add_to_map(&mut self, path: String, body: String, content_type: String) {
-        let response = Web4Response::Body {
-            content_type,
-            body: body.as_bytes().to_owned().into(),
-        };
-        self.file_map.insert(&path, &response);
+    pub fn add_to_map(&mut self, content: Vec<FileContents>) {
+        for file in content {
+            let response = Web4Response::Body {
+                content_type: file.content_type,
+                body: file.body.as_bytes().to_owned().into(),
+            };
+            self.file_map.insert(&file.path, &response);
+        }
     }
 
     /// Learn more about web4 here: https://web4.near.page
