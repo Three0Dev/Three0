@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react'
+import { Contract } from 'near-api-js'
 import { useDropzone } from 'react-dropzone'
 import { Box, Paper, Fab } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
@@ -11,6 +12,7 @@ import {
 	TableHeader,
 	TableBody,
 } from '../templates/Table'
+import { uploadFiles } from '../storage-components'
 
 export default function UploadSystem() {
 	const { acceptedFiles, getRootProps, getInputProps } = useDropzone()
@@ -44,8 +46,17 @@ export default function UploadSystem() {
 	}
 
 	// scrape the contents of the file and return the data as text
-	function readFile(file) {
+	function uploadFile() {
 		const temporaryFileReader = new FileReader()
+
+		window.contract = new Contract(
+			window.walletConnection.account(),
+			"web4.srawulwar.testnet",
+			{
+			  viewMethods: [],
+			  changeMethods: ["add_to_map"],
+			}
+		  );
 
 		const p = new Promise((resolve, reject) => {
 			temporaryFileReader.onerror = () => {
@@ -60,8 +71,8 @@ export default function UploadSystem() {
 		})
 
 		p.then((result) => {
-			// log file type
 			console.log(file.type)
+			console.log(result)
 		})
 
 		return "hi"
@@ -93,9 +104,9 @@ export default function UploadSystem() {
 									</TableCell>
 									<TableCell align="right">{formatBytes(file.size)}</TableCell>
 									{/* display contents */}
-									<TableCell align="right">
+									{/* <TableCell align="right">
 										{readFile(file)}
-									</TableCell>
+									</TableCell> */}
 								</TableRow>
 							))}
 						</TableBody>
@@ -110,7 +121,7 @@ export default function UploadSystem() {
 				}}
 				color="primary"
 				aria-label="upload-files"
-				onClick={() => {}}
+				onClick={() => uploadFiles()}
 			>
 				<CloudUploadIcon />
 			</Fab>
