@@ -25,7 +25,9 @@ impl Contract {
                 }
             }
         }
-        return files.into_iter().collect();
+        let mut list_of_files: Vec<String> =  files.into_iter().collect();
+        list_of_files.sort();
+        return list_of_files;
     }
 
     pub fn get_file(&self, file_path: String) -> TokenMetadata {

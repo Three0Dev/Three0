@@ -25,6 +25,7 @@ fn sample_token_metadata() -> TokenMetadata {
         description: Some("The tallest mountain in the charted solar system".into()),
         media: None,
         media_hash: None,
+        file_type: None,
         copies: Some(1u64),
         issued_at: None,
         expires_at: None,
@@ -66,7 +67,7 @@ fn test_mint_nft() {
         .build());
     let token_metadata: TokenMetadata = sample_token_metadata();
     let token_id = "0".to_string();
-    contract.nft_mint(token_id.clone(), token_metadata, accounts(0), None);
+    contract.nft_mint(token_id.clone(), token_metadata, "Olympus_Mons".to_string(), accounts(0), None);
     let contract_nft_tokens = contract.nft_tokens(Some(U128(0)), None);
     assert_eq!(contract_nft_tokens.len(), 1);
 
@@ -99,7 +100,7 @@ fn test_internal_transfer() {
         .predecessor_account_id(accounts(0))
         .build());
     let token_id = "0".to_string();
-    contract.nft_mint(token_id.clone(), sample_token_metadata(), accounts(0), None);
+    contract.nft_mint(token_id.clone(), sample_token_metadata(), "Olympus_Mons".to_string(), accounts(0), None);
 
     testing_env!(context
         .storage_usage(env::storage_usage())
@@ -151,7 +152,7 @@ fn test_nft_approve() {
         .predecessor_account_id(accounts(0))
         .build());
     let token_id = "0".to_string();
-    contract.nft_mint(token_id.clone(), sample_token_metadata(), accounts(0), None);
+    contract.nft_mint(token_id.clone(), sample_token_metadata(), "Olympus_Mons".to_string(), accounts(0), None);
 
     testing_env!(context
         .storage_usage(env::storage_usage())
@@ -181,7 +182,7 @@ fn test_nft_revoke() {
         .predecessor_account_id(accounts(0))
         .build());
     let token_id = "0".to_string();
-    contract.nft_mint(token_id.clone(), sample_token_metadata(), accounts(0), None);
+    contract.nft_mint(token_id.clone(), sample_token_metadata(), "Olympus_Mons".to_string(), accounts(0), None);
 
     // alice approves bob
     testing_env!(context
@@ -219,7 +220,7 @@ fn test_revoke_all() {
         .predecessor_account_id(accounts(0))
         .build());
     let token_id = "0".to_string();
-    contract.nft_mint(token_id.clone(), sample_token_metadata(), accounts(0), None);
+    contract.nft_mint(token_id.clone(), sample_token_metadata(), "Olympus_Mons".to_string(), accounts(0), None);
 
     // alice approves bob
     testing_env!(context
@@ -257,7 +258,7 @@ fn test_internal_remove_token_from_owner() {
         .predecessor_account_id(accounts(0))
         .build());
     let token_id = "0".to_string();
-    contract.nft_mint(token_id.clone(), sample_token_metadata(), accounts(0), None);
+    contract.nft_mint(token_id.clone(), sample_token_metadata(), "Olympus_Mons".to_string().to_string(), accounts(0), None);
 
     let contract_nft_tokens_before = contract.nft_tokens_for_owner(accounts(0), None, None);
     assert_eq!(contract_nft_tokens_before.len(), 1);
@@ -280,7 +281,7 @@ fn test_nft_payout() {
         .predecessor_account_id(accounts(0))
         .build());
     let token_id = "0".to_string();
-    contract.nft_mint(token_id.clone(), sample_token_metadata(), accounts(0), None);
+    contract.nft_mint(token_id.clone(), sample_token_metadata(), "Olympus_Mons".to_string(), accounts(0), None);
 
     // alice approves bob
     testing_env!(context
@@ -307,8 +308,120 @@ fn test_nft_total_supply() {
         .predecessor_account_id(accounts(0))
         .build());
     let token_id = "0".to_string();
-    contract.nft_mint(token_id.clone(), sample_token_metadata(), accounts(0), None);
+    contract.nft_mint(token_id.clone(), sample_token_metadata(), "Olympus_Mons".to_string(), accounts(0), None);
 
     let total_supply = contract.nft_total_supply();
     assert_eq!(total_supply, U128(1));
+}
+
+//test filesys
+#[test]
+fn test_add_file_to_root() {
+    //mint token to root, and see if list_file and get_file works
+    let mut context = get_context(accounts(0));
+    testing_env!(context.build());
+    let mut contract = Contract::new_default_meta(accounts(0).into());
+    
+    testing_env!(context
+        .storage_usage(env::storage_usage())
+        .attached_deposit(MINT_STORAGE_COST)
+        .predecessor_account_id(accounts(0))
+        .build());
+    let token_id = "0".to_string();
+    contract.nft_mint(token_id.clone(), sample_token_metadata(), "Olympus_Mons".to_string(), accounts(0), None);
+
+    let files = ["Olympus_Mons"];
+    assert_eq!(contract.list_files("".to_string()), files);
+    assert_eq!(contract.get_file("Olympus_Mons".to_string()), sample_token_metadata());
+}
+
+#[test]
+fn test_add_file_to_folder() {
+    //mint token to root, and see if list_file and get_file works
+    let mut context = get_context(accounts(0));
+    testing_env!(context.build());
+    let mut contract = Contract::new_default_meta(accounts(0).into());
+    
+    testing_env!(context
+        .storage_usage(env::storage_usage())
+        .attached_deposit(MINT_STORAGE_COST)
+        .predecessor_account_id(accounts(0))
+        .build());
+    let token_id = "0".to_string();
+    contract.nft_mint(token_id.clone(), sample_token_metadata(), "folder1/Olympus_Mons".to_string(), accounts(0), None);
+
+    let root = ["folder1/"];
+    assert_eq!(contract.list_files("".to_string()), root);
+    let folder = ["Olympus_Mons"];
+    assert_eq!(contract.list_files("folder1/".to_string()), folder);
+    assert_eq!(contract.get_file("folder1/Olympus_Mons".to_string()), sample_token_metadata());
+}
+
+#[test]
+fn test_add_multiple_files_root() {
+    //mint token to root, and see if list_file and get_file works
+    let mut context = get_context(accounts(0));
+    testing_env!(context.build());
+    let mut contract = Contract::new_default_meta(accounts(0).into());
+    
+    testing_env!(context
+        .storage_usage(env::storage_usage())
+        .attached_deposit(MINT_STORAGE_COST)
+        .predecessor_account_id(accounts(0))
+        .build());
+    contract.nft_mint("0".to_string().clone(), sample_token_metadata(), "Olympus_Mons_0".to_string(), accounts(0), None);
+    contract.nft_mint("1".to_string().clone(), sample_token_metadata(), "Olympus_Mons_1".to_string(), accounts(0), None);
+
+    let mut root = ["Olympus_Mons_0", "Olumpus_Mons_1"];
+    root.sort();
+    assert_eq!(contract.list_files("".to_string()), root);
+    assert_eq!(contract.get_file("Olympus_Mons_0".to_string()), sample_token_metadata());
+    assert_eq!(contract.get_file("Olympus_Mons_1".to_string()), sample_token_metadata());
+}
+
+#[test]
+fn test_add_multiple_files_folder() {
+    //mint token to root and folder, and see if list_file and get_file works
+    let mut context = get_context(accounts(0));
+    testing_env!(context.build());
+    let mut contract = Contract::new_default_meta(accounts(0).into());
+    
+    testing_env!(context
+        .storage_usage(env::storage_usage())
+        .attached_deposit(MINT_STORAGE_COST)
+        .predecessor_account_id(accounts(0))
+        .build());
+    contract.nft_mint("0".to_string().clone(), sample_token_metadata(), "Olympus_Mons".to_string(), accounts(0), None);
+    contract.nft_mint("1".to_string().clone(), sample_token_metadata(), "folder1/Olympus_Mons".to_string(), accounts(0), None);
+
+    let mut root = ["folder1/", "Olympus_Mons"];
+    root.sort();
+    assert_eq!(contract.list_files("".to_string()), root);
+    let folder = ["Olympus_Mons"];
+    assert_eq!(contract.list_files("folder1/".to_string()), folder);
+    assert_eq!(contract.get_file("Olympus_Mons".to_string()), sample_token_metadata());
+    assert_eq!(contract.get_file("folder1/Olympus_Mons".to_string()), sample_token_metadata());
+}
+
+#[test]
+fn test_add_to_inner_folder() {
+    //mint token to inner folder, and see if list_file and get_file works
+    let mut context = get_context(accounts(0));
+    testing_env!(context.build());
+    let mut contract = Contract::new_default_meta(accounts(0).into());
+    
+    testing_env!(context
+        .storage_usage(env::storage_usage())
+        .attached_deposit(MINT_STORAGE_COST)
+        .predecessor_account_id(accounts(0))
+        .build());
+    contract.nft_mint("0".to_string().clone(), sample_token_metadata(), "folder1/folder2/Olympus_Mons".to_string(), accounts(0), None);
+
+    let mut root = ["folder1/"];
+    assert_eq!(contract.list_files("".to_string()), root);
+    let folder1 = ["folder2/"];
+    assert_eq!(contract.list_files("folder1/".to_string()), folder1);
+    let folder2 = ["Olympus_Mons"];
+    assert_eq!(contract.list_files("folder1/folder2/".to_string()), folder2);
+    assert_eq!(contract.get_file("folder1/folder2/Olympus_Mons".to_string()), sample_token_metadata());
 }

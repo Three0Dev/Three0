@@ -13,6 +13,7 @@ function getNEARConfig(env) {
         helperUrl: "https://helper.mainnet.near.org",
         explorerUrl: "https://explorer.mainnet.near.org",
       };
+    case "development":
     case "production":
     case "development":
     case "testnet":

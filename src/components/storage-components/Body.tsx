@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 import React from "react";
 import Swal from "sweetalert2";
+import { Box, Paper } from "@mui/material";
 import FolderIcon from "@mui/icons-material/Folder";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import { Box, Paper } from "@mui/material";
 
 export default function Body({
   structure,
