@@ -38,7 +38,7 @@ function TableHeader(props: any) {
     <TableHead>
       <TableRow>
         {item.headers.map((header: any) => (
-          <StyledTableCell key={header}>{header}</StyledTableCell>
+          <StyledTableCell key={header.toString()}>{header}</StyledTableCell>
         ))}
       </TableRow>
     </TableHead>
