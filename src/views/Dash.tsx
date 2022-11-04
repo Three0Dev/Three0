@@ -39,20 +39,13 @@ export default function Dash() {
     setProjectDetails(details);
   }
 
-  function validityCheck(isValid: boolean) {
+  async function validityCheck(isValid: boolean) {
     if (isValid) {
       getProjectDetails();
-    } else {
-      window.contract.delete_project({
+    } 
+    else {
+      await window.contract.delete_project({
         contract_address: pid,
-      }).then(() => {
-        navigate("/");
-        Swal.fire({
-          title: "Error",
-          text: "Project does not exist, reference deleted",
-          icon: "error",
-          confirmButtonText: "Ok",
-        });
       }).catch(() => {
         Swal.fire({
           title: "Error",
@@ -60,6 +53,13 @@ export default function Dash() {
           icon: "error",
           confirmButtonText: "Ok",
         });
+      });
+      navigate("/");
+      Swal.fire({
+        title: "Error",
+        text: "Project does not exist, reference deleted",
+        icon: "error",
+        confirmButtonText: "Ok",
       });
     }
   }
