@@ -97,7 +97,7 @@ impl Three0 {
                     entries: Vec::new(),
                     num: 0,
                 }
-        }
+        };
     }
 
     pub fn get_project(&self, contract_address: String, account_id: String) -> AllSchema {

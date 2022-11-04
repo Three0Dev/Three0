@@ -3,6 +3,7 @@ import React from "react";
 import { Outlet, useParams, useNavigate } from "react-router-dom";
 import { Box } from "@mui/material";
 import { Contract } from "near-api-js";
+import Swal from "sweetalert2";
 import ProjectDetailsContext from "../state/ProjectDetailsContext";
 import { Navigation } from "../components/core";
 
@@ -38,13 +39,34 @@ export default function Dash() {
     setProjectDetails(details);
   }
 
+  function validityCheck(isValid: boolean) {
+    if (isValid) {
+      getProjectDetails();
+    } else {
+      window.contract.delete_project({
+        contract_address: pid,
+      }).then(() => {
+        navigate("/");
+        Swal.fire({
+          title: "Error",
+          text: "Project does not exist, reference deleted",
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+      }).catch(() => {
+        Swal.fire({
+          title: "Error",
+          text: "There was an issue with deleting the project reference to the project that is DNE",
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+      });
+    }
+  }
+
   React.useEffect(() => {
     isValidProject().then((isValid) => {
-      if (isValid) {
-        getProjectDetails();
-      } else {
-        navigate("/");
-      }
+      validityCheck(isValid);
     });
   }, []);
 

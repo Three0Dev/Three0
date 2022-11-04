@@ -3,7 +3,7 @@
 // TODO: Handle Identity Provider
 import * as IPFS from "ipfs-core";
 import OrbitDB from "orbit-db";
-import { nearConfig } from "../../Utils";
+import { nearConfig } from "../../utils";
 import { config as Config } from "./config";
 
 let ipfs: any;
