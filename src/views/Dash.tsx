@@ -44,16 +44,17 @@ export default function Dash() {
       getProjectDetails();
     } 
     else {
-      await window.contract.delete_project({
-        contract_address: pid,
-      }).catch(() => {
+      try{
+        await window.contract.delete_project({ contract_address: pid });
+      }
+      catch (e)  {
         Swal.fire({
           title: "Error",
           text: "There was an issue with deleting the project reference to the project that is DNE",
           icon: "error",
           confirmButtonText: "Ok",
         });
-      });
+      }
       navigate("/");
       Swal.fire({
         title: "Error",
