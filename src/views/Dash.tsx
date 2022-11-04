@@ -42,12 +42,17 @@ export default function Dash() {
   async function validityCheck(isValid: boolean) {
     if (isValid) {
       getProjectDetails();
-    } 
-    else {
-      try{
+    } else {
+      try {
         await window.contract.delete_project({ contract_address: pid });
-      }
-      catch (e)  {
+        navigate("/");
+        Swal.fire({
+          title: "Error",
+          text: "Project does not exist, reference deleted",
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+      } catch (e) {
         Swal.fire({
           title: "Error",
           text: "There was an issue with deleting the project reference to the project that is DNE",
@@ -55,13 +60,6 @@ export default function Dash() {
           confirmButtonText: "Ok",
         });
       }
-      navigate("/");
-      Swal.fire({
-        title: "Error",
-        text: "Project does not exist, reference deleted",
-        icon: "error",
-        confirmButtonText: "Ok",
-      });
     }
   }
 
