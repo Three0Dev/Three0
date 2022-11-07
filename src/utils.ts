@@ -1,6 +1,6 @@
 import { connect, Contract, keyStores, WalletConnection } from "near-api-js";
 import { formatDistanceToNow } from "date-fns";
-import getNEARConfig from "./Config";
+import getNEARConfig from "./config";
 
 export const nearConfig = getNEARConfig(process.env.NODE_ENV || "testnet");
 
