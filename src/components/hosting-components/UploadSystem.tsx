@@ -56,6 +56,7 @@ export default function UploadSystem() {
 
 		const hostingContract = new Contract(
 			window.walletConnection.account(),
+			// TODO: change this to the actual contract ID instead of hardcoding it
 			"web4.srawulwar.testnet",
 			{
 			  viewMethods: [],
@@ -104,10 +105,10 @@ export default function UploadSystem() {
 					</script>
 					<!-- create a link to a subpage -->
 					<p>click this to go back to the other page</p>
-					<a href="simple.html">Subpage</a>
+					<a href="index.html">Subpage</a>
 				</body>
 				</html>`}, 
-				{path: "/simple.html", content_type: "text/html", body: `<!DOCTYPE html>
+				{path: "/index.html", content_type: "text/html", body: `<!DOCTYPE html>
 				<html>
 				<head>
 					<meta charset="utf-8">

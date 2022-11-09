@@ -16,11 +16,16 @@ impl Default for Three0Hosting {
       }
     }
   }
+
+#[derive(Serialize, Deserialize)]
+#[serde(crate = "near_sdk::serde")]
 pub struct FileContents {
     pub path: String,
     pub body: String, 
     pub content_type: String,
 }
+
+#[near_bindgen]
 impl Three0Hosting {
     pub fn add_to_map(&mut self, content: Vec<FileContents>) {
         for file in content {
@@ -34,7 +39,10 @@ impl Three0Hosting {
 
     /// Learn more about web4 here: https://web4.near.page
     pub fn web4_get(&self, request: Web4Request) -> Web4Response {
-        let key = request.path;
+        let mut key = request.path;
+        if key == "/" {
+            key = "/index.html".to_string();
+        }
         let value = self.file_map.get(&key).unwrap();
         value
     }
