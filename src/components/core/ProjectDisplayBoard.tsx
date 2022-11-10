@@ -155,7 +155,6 @@ export default function ProjectDisplayBoard() {
                 </CardContent>
               </Box>
             </Card>
-            {/* <Button onClick={() => deleteProject(project["contract_address"])}>Delete</Button> */}
           </div>
         ))}
 

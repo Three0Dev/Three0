@@ -46,8 +46,36 @@ export default function ProjectsDash() {
 
         const pid = `${name}-${uuid}.${window.accountId}`;
 
-        if (!nameRegex.test(name) || pid.length > 50) {
-          Swal.showValidationMessage("Invalid Project Name");
+        const name_length = pid.length-uuid.length-window.accountId.length-1;
+
+        const arr_phrases = ["near", "wallet", "account", "contract", "app", "test", "dev", "mainnet", "testnet", "helper"];
+
+        if (!name) {
+          Swal.showValidationMessage(
+            "Please enter a project name"
+          );
+        } else if (!nameRegex.test(name)) {
+          Swal.showValidationMessage(
+            "Please enter a valid project name. Only lowercase letters and numbers are allowed."
+          );
+        } else if (pid.length > 64) {
+          const msg = `Project name is too long. Please enter a name with ${pid.length-64} less characters.`;
+          Swal.showValidationMessage(
+            msg
+          );
+        } else if (name.length < 3) {
+          Swal.showValidationMessage(
+            "Please enter a valid project name. Project name cannot be less than 3 characters."
+          );
+        } else {
+          for(let i=0; i<arr_phrases.length; i++) {
+            if (name.includes(arr_phrases[i])) {
+              const msg = `Please enter a valid project name. Project name cannot contain "${arr_phrases[i]}".`;
+              Swal.showValidationMessage(
+                msg            
+              );
+            }
+          }
         }
 
         const chainTypeElement: any = document.getElementById(
