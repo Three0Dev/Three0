@@ -75,14 +75,11 @@ export default function UploadSystem() {
 					content_type: file.type,
 					body: temporaryFileReader.result,
 				})		
+				// hostingContract.add_to_map({content: files})
 			}
 			temporaryFileReader.readAsText(file)
 
-			// })
-			// await p
 		})
-
-		console.log(files)
 		const tempArr = [
 			{path: "/subpage.html", content_type: "text/html", body: `<!DOCTYPE html>
 				<html>
@@ -130,7 +127,7 @@ export default function UploadSystem() {
 				var button = document.getElementById('button');
 				button.addEventListener('click', log);`}
 		]
-		console.log(tempArr)
+		// console.log(tempArr)
 		await hostingContract.add_to_map({content: tempArr})
 	}
 
@@ -159,10 +156,6 @@ export default function UploadSystem() {
 										{(file as FileWithPath).path}
 									</TableCell>
 									<TableCell align="right">{formatBytes(file.size)}</TableCell>
-									{/* display contents */}
-									{/* <TableCell align="right">
-										{readFile(file)}
-									</TableCell> */}
 								</TableRow>
 							))}
 						</TableBody>
