@@ -1,8 +1,14 @@
 /* eslint-disable no-console */
-import { keyStores, transactions, KeyPair, utils, providers } from 'near-api-js'
-// eslint-disable-next-line import/no-unresolved
-import NEAR_CONTRACT from 'url:../contract-wasms/near.wasm'
-import { nearConfig } from '../utils'
+import {
+  keyStores,
+  transactions,
+  KeyPair,
+  utils,
+  providers,
+} from "near-api-js";
+import NEAR_CONTRACT from "url:../contract-wasms/near.wasm";
+import NEAR_STORAGE_CONTRACT from "url:../contract-wasms/near-storage.wasm";
+import { nearConfig } from "../utils";
 
 export async function createNEARAccount() {
 	const { pid } = JSON.parse(localStorage.getItem('projectDetails') || '{}')
@@ -91,4 +97,63 @@ export async function checkAccountStatus(hash: any) {
 		console.error(e)
 		return Promise.reject(e)
 	}
+}
+
+export async function createStorageAccount(parentPID: string) {
+  const parentAccount = await window.near.account(parentPID);
+  // console.log('storage.' + parentPID)
+
+  const keyPair = KeyPair.fromRandom("ed25519");
+  const publicKey = keyPair.getPublicKey().toString();
+  await new keyStores.BrowserLocalStorageKeyStore().setKey(
+    nearConfig.networkId,
+    `storage.${parentPID}`,
+    keyPair
+  );
+
+  // console.log('storage.' + parentPID)
+
+  try {
+    await parentAccount.createAccount(
+      `storage.${parentPID}`,
+      publicKey,
+      utils.format.parseNearAmount("16")
+    );
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+  return true;
+}
+
+export async function deployStorageContract(parentPID: string) {
+  const wallet = `storage.${parentPID}`;
+  // console.log(wallet)
+  const storageAccount = await window.near.account(wallet);
+
+  const contract = await fetch(NEAR_STORAGE_CONTRACT);
+  const buf = await contract.arrayBuffer();
+
+  await storageAccount.signAndSendTransaction({
+    receiverId: wallet,
+    actions: [
+      transactions.deployContract(new Uint8Array(buf)),
+      transactions.functionCall(
+        "new_default_meta",
+        { pid: parentPID },
+        10000000000000,
+        "0"
+      ),
+    ],
+  });
+}
+
+export async function addStorage(parentContract: any) {
+  // console.log("Test worked")
+  await createStorageAccount(parentContract.contractId);
+  await deployStorageContract(parentContract.contractId);
+  parentContract.set_storage({
+    storage_account: `storage.${parentContract.contractId}`,
+  });
+  return true;
 }

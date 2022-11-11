@@ -80,7 +80,6 @@
     "sweetalert2": "^11.4.8",
     "sweetalert2-react-content": "^5.0.0"
   },
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Three0Dev/Three0.git"

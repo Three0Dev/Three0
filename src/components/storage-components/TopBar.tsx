@@ -62,11 +62,12 @@ export default function TopBar({
 	labels,
 	enabledFeatures,
 }: any) {
-	const uploadInputRef = useRef(null)
-	const onFileSelect = (event: { target: { files: any } }) =>
-		uploadFiles(currentPath, [...event.target.files])
-			.then(reload)
-			.catch((error: any) => error && console.error(error))
+  const uploadInputRef = useRef<HTMLInputElement>(null);
+  const onFileSelect = (event: { target: { files: any } }) => {
+    uploadFiles(currentPath, [...event.target.files])
+      .then(reload)
+      .catch((error: any) => error && console.error(error));
+  };
 
 	const onPathChange = (path: string) => {
 		const newPath = path === '/' ? '' : path
@@ -93,57 +94,58 @@ export default function TopBar({
 		})
 	}
 
-	return (
-		<AppBar
-			color="primary"
-			position="static"
-			sx={{ borderTopLeftRadius: '20px', borderTopRightRadius: '20px' }}
-		>
-			<Toolbar sx={{ justifyContent: 'space-around' }}>
-				<input
-					ref={uploadInputRef}
-					type="file"
-					onChange={onFileSelect}
-					hidden
-				/>
-				{enabledFeatures.indexOf('createDirectory') !== -1 && (
-					<Tooltip title={labels.createDirectory}>
-						<IconButton color="inherit" onClick={() => onCreateDirectory()}>
-							<CreateNewFolderIcon />
-						</IconButton>
-					</Tooltip>
-				)}
-				<PathInputContainer>
-					<Tooltip title={labels.home}>
-						<IconButton color="inherit" onClick={() => setCurrentPath('')}>
-							<HomeIcon />
-						</IconButton>
-					</Tooltip>
-					<StyledInputBase
-						key={currentPath}
-						type="text"
-						defaultValue={currentPath || '/'}
-						onBlur={(event) => onPathChange(event.target.value)}
-						onKeyDown={(event) => {
-							if (event.keyCode === 13) {
-								onPathChange((event.target as HTMLInputElement).value)
-							}
-						}}
-					/>
-				</PathInputContainer>
-				{enabledFeatures.indexOf('uploadFiles') !== -1 && (
-					<Tooltip title={labels.upload}>
-						<IconButton
-							color="inherit"
-							onClick={() =>
-								uploadInputRef.current && uploadInputRef.current['click']
-							}
-						>
-							<FileUploadIcon />
-						</IconButton>
-					</Tooltip>
-				)}
-			</Toolbar>
-		</AppBar>
-	)
+  return (
+    <AppBar
+      color="primary"
+      position="static"
+      sx={{ borderTopLeftRadius: "20px", borderTopRightRadius: "20px" }}
+    >
+      <Toolbar sx={{ justifyContent: "space-around" }}>
+        <input
+          ref={uploadInputRef}
+          type="file"
+          onChange={onFileSelect}
+          hidden
+        />
+        {enabledFeatures.indexOf("createDirectory") !== -1 && (
+          <Tooltip title={labels.createDirectory}>
+            <IconButton color="inherit" onClick={() => onCreateDirectory()}>
+              <CreateNewFolderIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+        <PathInputContainer>
+          <Tooltip title={labels.home}>
+            <IconButton color="inherit" onClick={() => setCurrentPath("")}>
+              <HomeIcon />
+            </IconButton>
+          </Tooltip>
+          <StyledInputBase
+            key={currentPath}
+            type="text"
+            defaultValue={currentPath || "/"}
+            onBlur={(event) => onPathChange(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.keyCode === 13) {
+                onPathChange((event.target as HTMLInputElement).value);
+              }
+            }}
+          />
+        </PathInputContainer>
+        <Tooltip title={labels.upload}>
+          <IconButton
+            color="inherit"
+            onClick={() => {
+              const node = uploadInputRef.current;
+              if (node) {
+                node.click();
+              }
+            }}
+          >
+            <FileUploadIcon />
+          </IconButton>
+        </Tooltip>
+      </Toolbar>
+    </AppBar>
+  );
 }
