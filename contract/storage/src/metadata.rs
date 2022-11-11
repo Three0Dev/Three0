@@ -71,7 +71,7 @@ pub trait NonFungibleTokenMetadata {
 }
 
 #[near_bindgen]
-impl NonFungibleTokenMetadata for Contract {
+impl NonFungibleTokenMetadata for Three0Storage {
     fn nft_metadata(&self) -> NFTContractMetadata {
         self.metadata.get().unwrap()
     }

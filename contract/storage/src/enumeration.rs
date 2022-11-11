@@ -1,7 +1,7 @@
 use crate::*;
 
 #[near_bindgen]
-impl Contract {
+impl Three0Storage {
     //Query for the total supply of NFTs on the contract
     pub fn nft_total_supply(&self) -> U128 {
         //return the length of the token metadata by ID

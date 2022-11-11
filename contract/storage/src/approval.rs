@@ -33,7 +33,7 @@ trait NonFungibleTokenApprovalsReceiver {
 }
 
 #[near_bindgen]
-impl NonFungibleTokenCore for Contract {
+impl NonFungibleTokenCore for Three0Storage {
 
     //allow a specific account ID to approve a token on your behalf
     #[payable]

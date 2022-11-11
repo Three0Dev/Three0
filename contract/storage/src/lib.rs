@@ -33,7 +33,7 @@ pub const NFT_STANDARD_NAME: &str = "nep171";
 
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize, PanicOnDefault)]
-pub struct Contract {
+pub struct Three0Storage {
     //contract owner
     pub owner_id: AccountId,
 
@@ -67,7 +67,7 @@ pub enum StorageKey {
 }
 
 #[near_bindgen]
-impl Contract {
+impl Three0Storage {
     /*
         initialization function (can only be called once).
         this initializes the contract with default metadata so the

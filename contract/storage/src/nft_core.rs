@@ -66,7 +66,7 @@ trait NonFungibleTokenResolver {
 }
 
 #[near_bindgen]
-impl NonFungibleTokenCore for Contract {
+impl NonFungibleTokenCore for Three0Storage {
 
     //implementation of the nft_transfer method. This transfers the NFT from the current owner to the receiver. 
     #[payable]
@@ -179,7 +179,7 @@ impl NonFungibleTokenCore for Contract {
 }
 
 #[near_bindgen]
-impl NonFungibleTokenResolver for Contract {
+impl NonFungibleTokenResolver for Three0Storage {
     //resolves the cross contract call when calling nft_on_transfer in the nft_transfer_call method
     //returns true if the token was successfully transferred to the receiver_id
     #[private]

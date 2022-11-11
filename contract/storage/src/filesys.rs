@@ -2,7 +2,7 @@ use crate::*;
 use std::collections::HashSet;
 
 #[near_bindgen]
-impl Contract {
+impl Three0Storage {
     pub fn list_files(&self, path: String) -> Vec<String> {
         let mut path_ = path.to_owned();
         if path_.starts_with('/') {

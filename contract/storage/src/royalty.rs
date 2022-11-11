@@ -17,7 +17,7 @@ pub trait NonFungibleTokenCore {
 }
 
 #[near_bindgen]
-impl NonFungibleTokenCore for Contract {
+impl NonFungibleTokenCore for Three0Storage {
 
     //calculates the payout for a token given the passed in balance. This is a view method
     fn nft_payout(&self, token_id: TokenId, balance: U128, max_len_payout: u32) -> Payout {

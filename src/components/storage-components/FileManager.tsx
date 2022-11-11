@@ -76,7 +76,7 @@ export default function FileManager({ pid }: FileManagerProps) {
       issued_at: Date.now(),
     };
 
-    await contract.nft_mint(
+    return contract.nft_mint(
       {
         token_id: short.generate().toLowerCase(),
         metadata: fileMetadata,
@@ -87,17 +87,15 @@ export default function FileManager({ pid }: FileManagerProps) {
       "300000000000000", // attached GAS (optional)
       "100000000000000000000000" // attached deposit in yoctoNEAR (optional)
     );
-
-    return new Promise((resolve) => {
-      setTimeout(resolve, 100);
-    });
   };
 
+  //TODO
   const rename = (path: string) =>
     new Promise((resolve) => {
       setTimeout(resolve, 100);
     });
 
+  //TODO
   const deletePaths = (paths: string) =>
     new Promise((resolve) => {
       setTimeout(resolve, 100);

@@ -1,6 +1,6 @@
 /* unit tests */
 #[cfg(test)]
-use crate::Contract;
+use crate::Three0Storage;
 use crate::TokenMetadata;
 use crate::approval::NonFungibleTokenCore;
 use near_sdk::json_types::{U128, U64};
@@ -42,14 +42,14 @@ fn sample_token_metadata() -> TokenMetadata {
 fn test_default() {
     let context = get_context(accounts(1));
     testing_env!(context.build());
-    let _contract = Contract::default();
+    let _contract = Three0Storage::default();
 }
 
 #[test]
 fn test_new_account_contract() {
     let mut context = get_context(accounts(1));
     testing_env!(context.build());
-    let contract = Contract::new_default_meta(accounts(1).into());
+    let contract = Three0Storage::new_default_meta(accounts(1).into());
     testing_env!(context.is_view(true).build());
     let contract_nft_tokens = contract.nft_tokens(Some(U128(0)), None);
     assert_eq!(contract_nft_tokens.len(), 0);
@@ -59,7 +59,7 @@ fn test_new_account_contract() {
 fn test_mint_nft() {
     let mut context = get_context(accounts(0));
     testing_env!(context.build());
-    let mut contract = Contract::new_default_meta(accounts(0).into());
+    let mut contract = Three0Storage::new_default_meta(accounts(0).into());
     testing_env!(context
         .storage_usage(env::storage_usage())
         .attached_deposit(MINT_STORAGE_COST)
@@ -92,7 +92,7 @@ fn test_mint_nft() {
 fn test_internal_transfer() {
     let mut context = get_context(accounts(0));
     testing_env!(context.build());
-    let mut contract = Contract::new_default_meta(accounts(0).into());
+    let mut contract = Three0Storage::new_default_meta(accounts(0).into());
 
     testing_env!(context
         .storage_usage(env::storage_usage())
@@ -144,7 +144,7 @@ fn test_internal_transfer() {
 fn test_nft_approve() {
     let mut context = get_context(accounts(0));
     testing_env!(context.build());
-    let mut contract = Contract::new_default_meta(accounts(0).into());
+    let mut contract = Three0Storage::new_default_meta(accounts(0).into());
 
     testing_env!(context
         .storage_usage(env::storage_usage())
@@ -174,7 +174,7 @@ fn test_nft_approve() {
 fn test_nft_revoke() {
     let mut context = get_context(accounts(0));
     testing_env!(context.build());
-    let mut contract = Contract::new_default_meta(accounts(0).into());
+    let mut contract = Three0Storage::new_default_meta(accounts(0).into());
 
     testing_env!(context
         .storage_usage(env::storage_usage())
@@ -212,7 +212,7 @@ fn test_nft_revoke() {
 fn test_revoke_all() {
     let mut context = get_context(accounts(0));
     testing_env!(context.build());
-    let mut contract = Contract::new_default_meta(accounts(0).into());
+    let mut contract = Three0Storage::new_default_meta(accounts(0).into());
 
     testing_env!(context
         .storage_usage(env::storage_usage())
@@ -250,7 +250,7 @@ fn test_revoke_all() {
 fn test_internal_remove_token_from_owner() {
     let mut context = get_context(accounts(0));
     testing_env!(context.build());
-    let mut contract = Contract::new_default_meta(accounts(0).into());
+    let mut contract = Three0Storage::new_default_meta(accounts(0).into());
 
     testing_env!(context
         .storage_usage(env::storage_usage())
@@ -273,7 +273,7 @@ fn test_nft_payout() {
     use crate::royalty::NonFungibleTokenCore;
     let mut context = get_context(accounts(0));
     testing_env!(context.build());
-    let mut contract = Contract::new_default_meta(accounts(0).into());
+    let mut contract = Three0Storage::new_default_meta(accounts(0).into());
 
     testing_env!(context
         .storage_usage(env::storage_usage())
@@ -300,7 +300,7 @@ fn test_nft_payout() {
 fn test_nft_total_supply() {
     let mut context = get_context(accounts(0));
     testing_env!(context.build());
-    let mut contract = Contract::new_default_meta(accounts(0).into());
+    let mut contract = Three0Storage::new_default_meta(accounts(0).into());
 
     testing_env!(context
         .storage_usage(env::storage_usage())
@@ -320,7 +320,7 @@ fn test_add_file_to_root() {
     //mint token to root, and see if list_file and get_file works
     let mut context = get_context(accounts(0));
     testing_env!(context.build());
-    let mut contract = Contract::new_default_meta(accounts(0).into());
+    let mut contract = Three0Storage::new_default_meta(accounts(0).into());
     
     testing_env!(context
         .storage_usage(env::storage_usage())
@@ -340,7 +340,7 @@ fn test_add_file_to_folder() {
     //mint token to root, and see if list_file and get_file works
     let mut context = get_context(accounts(0));
     testing_env!(context.build());
-    let mut contract = Contract::new_default_meta(accounts(0).into());
+    let mut contract = Three0Storage::new_default_meta(accounts(0).into());
     
     testing_env!(context
         .storage_usage(env::storage_usage())
@@ -362,7 +362,7 @@ fn test_add_multiple_files_root() {
     //mint token to root, and see if list_file and get_file works
     let mut context = get_context(accounts(0));
     testing_env!(context.build());
-    let mut contract = Contract::new_default_meta(accounts(0).into());
+    let mut contract = Three0Storage::new_default_meta(accounts(0).into());
     
     testing_env!(context
         .storage_usage(env::storage_usage())
@@ -384,7 +384,7 @@ fn test_add_multiple_files_folder() {
     //mint token to root and folder, and see if list_file and get_file works
     let mut context = get_context(accounts(0));
     testing_env!(context.build());
-    let mut contract = Contract::new_default_meta(accounts(0).into());
+    let mut contract = Three0Storage::new_default_meta(accounts(0).into());
     
     testing_env!(context
         .storage_usage(env::storage_usage())
@@ -408,7 +408,7 @@ fn test_add_to_inner_folder() {
     //mint token to inner folder, and see if list_file and get_file works
     let mut context = get_context(accounts(0));
     testing_env!(context.build());
-    let mut contract = Contract::new_default_meta(accounts(0).into());
+    let mut contract = Three0Storage::new_default_meta(accounts(0).into());
     
     testing_env!(context
         .storage_usage(env::storage_usage())
@@ -417,7 +417,7 @@ fn test_add_to_inner_folder() {
         .build());
     contract.nft_mint("0".to_string().clone(), sample_token_metadata(), "folder1/folder2/Olympus_Mons".to_string(), accounts(0), None);
 
-    let mut root = ["folder1/"];
+    let root = ["folder1/"];
     assert_eq!(contract.list_files("".to_string()), root);
     let folder1 = ["folder2/"];
     assert_eq!(contract.list_files("folder1/".to_string()), folder1);

@@ -1,7 +1,7 @@
 use crate::*;
 
 #[near_bindgen]
-impl Contract {
+impl Three0Storage {
     #[payable]
     pub fn nft_mint(
         &mut self,
