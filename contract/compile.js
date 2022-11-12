@@ -58,12 +58,18 @@ if (code === 0 && calledFromDir !== __dirname) {
   const storagePackageName = getName("storage")
   const outStorageFile = `${outDir}/${storagePackageName}.wasm`
 
+  const hostingFrontEndLink = `${frontEndDir}/near-hosting.wasm`
+	const hostingPackageName = getName("hosting")
+	const outHostingFile = `${outDir}/${hostingPackageName}.wasm`
+
   sh.mkdir('-p', frontEndDir)
   sh.rm('-f', projectFrontEndLink)
   sh.rm('-f', storageFrontEndLink)
+  sh.rm('-f', hostingFrontEndLink)
   //fixes #831: copy-update instead of linking .- sometimes sh.ln does not work on Windows
   sh.cp('-u',outProjectFile,projectFrontEndLink)
   sh.cp('-u',outStorageFile,storageFrontEndLink)
+  sh.cp('-u', outHostingFile, hostingFrontEndLink)
 
   sh.echo("")
   sh.echo("Controller Size:");
@@ -75,6 +81,9 @@ if (code === 0 && calledFromDir !== __dirname) {
   sh.echo("Storage Size:")
   sh.exec(`wc -c ${outStorageFile} | awk '{print $1}'`)
   sh.echo("")
+  sh.echo("Hosting Size:")
+	sh.exec(`wc -c ${outHostingFile} | awk '{print $1}'`)
+	sh.echo("")
 }
 
 // exit script with the same code as the build command

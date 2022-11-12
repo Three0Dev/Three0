@@ -1,3 +1,3 @@
-import NearIdentityProvider from './NearIdentityProvider'
+import NearIdentityProvider from "./NearIdentityProvider";
 
-export default { NearIdentityProvider }
+export default { NearIdentityProvider };

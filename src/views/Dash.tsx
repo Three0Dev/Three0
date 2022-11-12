@@ -3,7 +3,6 @@ import React from 'react'
 import { Outlet, useParams, useNavigate } from 'react-router-dom'
 import { Box } from '@mui/material'
 import { Contract } from 'near-api-js'
-import Swal from 'sweetalert2'
 import ProjectDetailsContext from '../state/ProjectDetailsContext'
 import { Navigation } from '../components/core'
 
@@ -29,54 +28,34 @@ export default function Dash() {
 	async function getProjectDetails() {
 		const account = await window.near.account(pid)
 
-    const projectContractInit = new Contract(account, pid as string, {
-      viewMethods: [
-        "get_project",
-        "get_users",
-        "get_user",
-        "has_storage",
-        "get_storage",
-      ],
-      changeMethods: [
-        "update_project",
-        "add_database",
-        "delete_database",
-        "set_storage",
-      ],
-    });
+		const projectContractInit = new Contract(account, pid as string, {
+			viewMethods: [
+				'get_project',
+				'get_users',
+				'get_user',
+				'has_storage',
+				'get_storage',
+			],
+			changeMethods: [
+				'update_project',
+				'add_database',
+				'delete_database',
+				'set_storage',
+			],
+		})
 
 		const details = await projectContractInit.get_project({})
 		setContract(projectContractInit)
 		setProjectDetails(details)
 	}
 
-	async function validityCheck(isValid: boolean) {
-		if (isValid) {
-			getProjectDetails()
-		} else {
-			try {
-				await window.contract.delete_project({ contract_address: pid })
-				navigate('/')
-				Swal.fire({
-					title: 'Error',
-					text: 'Project does not exist, reference deleted',
-					icon: 'error',
-					confirmButtonText: 'Ok',
-				})
-			} catch (e) {
-				Swal.fire({
-					title: 'Error',
-					text: 'There was an issue with deleting the project reference to the project that is DNE',
-					icon: 'error',
-					confirmButtonText: 'Ok',
-				})
-			}
-		}
-	}
-
 	React.useEffect(() => {
 		isValidProject().then((isValid) => {
-			validityCheck(isValid)
+			if (isValid) {
+				getProjectDetails()
+			} else {
+				navigate('/')
+			}
 		})
 	}, [])
 

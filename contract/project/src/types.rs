@@ -5,10 +5,10 @@ use near_sdk::serde::{Serialize, Deserialize};
 #[derive(BorshDeserialize, BorshSerialize, Serialize)]
 #[serde(crate = "near_sdk::serde")]
 pub struct User {
-    pub account_id: AccountId,
-    pub is_online: bool,
-    pub created_at: u64,
-    pub last_online: u64,
+    account_id: AccountId,
+    is_online: bool,
+    created_at: u64,
+    last_online: u64,
 }
 
 impl User {
@@ -38,7 +38,7 @@ pub struct ProjectReturnSchema {
     pub num_users: u32,
 }
 
-#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize)]
+#[derive(BorshDeserialize, BorshSerialize, Deserialize)]
 #[serde(crate = "near_sdk::serde")]
 pub struct Database {
     pub address: String,
