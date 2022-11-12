@@ -41,12 +41,12 @@ export default function Hosting() {
 				})
 				.catch((error) => {
 					if (error.type === 'NotEnoughBalance') {
-					  MySwal.fire({
-						title: 'Error',
-						text: 'You do not have enough NEAR to add hosting',
-						icon: 'error',
-						confirmButtonText: 'Ok',
-					  })
+						MySwal.fire({
+							title: 'Error',
+							text: 'You do not have enough NEAR to add hosting',
+							icon: 'error',
+							confirmButtonText: 'Ok',
+						})
 					}
 				})
 		}

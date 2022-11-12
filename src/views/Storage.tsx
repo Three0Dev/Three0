@@ -40,14 +40,14 @@ export default function Storage() {
 					setStorage(success)
 				})
 				.catch((error) => {
-          if (error.type === 'NotEnoughBalance') {
-            MySwal.fire({
-              title: 'Error',
-              text: 'You do not have enough NEAR to add storage',
-              icon: 'error',
-              confirmButtonText: 'Ok',
-            })
-          }
+					if (error.type === 'NotEnoughBalance') {
+						MySwal.fire({
+							title: 'Error',
+							text: 'You do not have enough NEAR to add storage',
+							icon: 'error',
+							confirmButtonText: 'Ok',
+						})
+					}
 				})
 		}
 	}
