@@ -33,6 +33,7 @@ pub struct Three0Project {
     users: UnorderedMap<String, User>,
     storage: Option<AccountId>,
     hosting: Option<AccountId>,
+    tokenization: Option<AccountId>
 }
 
 #[near_bindgen]
@@ -47,6 +48,7 @@ impl Three0Project {
             users: UnorderedMap::new(b"users".to_vec()),
             storage: None,
             hosting: None,
+            tokenization: None,
         }
     }
 
@@ -126,6 +128,18 @@ impl Three0Project {
 
     pub fn get_hosting(&self) -> AccountId {
         return self.hosting.as_ref().unwrap().to_string()
+    }
+
+    pub fn set_tokenization(&mut self, hosting_account: AccountId) {
+        self.tokenization = Some(hosting_account);
+    }
+
+    pub fn has_tokenization(&self) -> bool {
+        return !self.tokenization.is_none()
+    }
+
+    pub fn get_tokenization(&self) -> AccountId {
+        return self.tokenization.as_ref().unwrap().to_string()
     }
 }
 
@@ -264,5 +278,29 @@ mod tests {
         contract.set_storage("test".to_string());
         assert_eq!(contract.has_storage(), true);
         assert_eq!(contract.get_storage(), "test".to_string());
+    }
+
+    //test for the set hosting function
+    #[test]
+    fn test_hosting() {
+        let context = get_context(vec![], false);
+        testing_env!(context);
+        let mut contract = Three0Project::init("test".to_string());
+        assert_eq!(contract.has_hosting(), false);
+        contract.set_hosting("test".to_string());
+        assert_eq!(contract.has_hosting(), true);
+        assert_eq!(contract.get_hosting(), "test".to_string());
+    }
+
+    //test for the set tokenization function
+    #[test]
+    fn test_tokenization() {
+        let context = get_context(vec![], false);
+        testing_env!(context);
+        let mut contract = Three0Project::init("test".to_string());
+        assert_eq!(contract.has_tokenization(), false);
+        contract.set_tokenization("test".to_string());
+        assert_eq!(contract.has_tokenization(), true);
+        assert_eq!(contract.get_tokenization(), "test".to_string());
     }
 }

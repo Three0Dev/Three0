@@ -37,6 +37,8 @@ export default function Dash() {
 				'get_storage',
 				'has_hosting',
 				'get_hosting',
+				'has_tokenization',
+				'get_tokenization',
 			],
 			changeMethods: [
 				'update_project',
@@ -44,6 +46,7 @@ export default function Dash() {
 				'delete_database',
 				'set_storage',
 				'set_hosting',
+				'set_tokenization',
 			],
 		})
 

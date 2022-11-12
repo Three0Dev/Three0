@@ -4,49 +4,86 @@ import { Fab, Typography, useTheme } from '@mui/material'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import notoken from '../assets/notoken.svg'
-import { TokenForm } from '../components/token-components'
+import { TokenForm, TokenDash } from '../components/token-components'
 import ProjectDetailsContext from '../state/ProjectDetailsContext'
+import { addTokenization } from '../services/NEAR'
+
+export interface tokenMetadata {
+	spec: string
+	name: string
+	symbol: string
+	decimals: number
+	icon?: string
+}
 
 export default function Token() {
-	const { projectDetails } = React.useContext(ProjectDetailsContext)
+	const [token, setToken] = React.useState(false)
+	const { projectDetails, projectContract } = React.useContext(
+		ProjectDetailsContext
+	)
 
 	const MySwal = withReactContent(Swal)
 	const theme = useTheme()
 
+	projectContract.has_tokenization().then((hasTokenization: boolean) => {
+		setToken(hasTokenization)
+	})
+
 	async function showTokenSwal() {
 		await MySwal.fire({
-			title: 'Add Tokenization',
+			title: 'Deploy Token Contract',
 			html: <TokenForm pid={projectDetails.pid} />,
 			focusConfirm: false,
 			confirmButtonColor: theme.palette.secondary.dark,
 			confirmButtonText: 'Deploy',
 			preConfirm: () => {
-				const useDefault = (
-					document.getElementById('default') as HTMLInputElement
-				).checked
-				if (useDefault) {
-					return { useDefault }
-				}
+				const supply = (
+					document.getElementById('token-supply') as HTMLInputElement
+				).value
 				const name = (document.getElementById('token-name') as HTMLInputElement)
 					.value
 				const symbol = (
 					document.getElementById('token-symbol') as HTMLInputElement
 				).value
-				return { useDefault, name, symbol }
+				if (symbol === '') {
+					MySwal.showValidationMessage('Please enter a symbol')
+				}
+				const decimals = (
+					document.getElementById('token-decimals') as HTMLInputElement
+				).value
+				const hasIcon = (
+					document.getElementById('use-icon') as HTMLInputElement
+				).checked
+				if (!hasIcon) {
+					return [supply, name, symbol, decimals]
+				}
+				try {
+					const icon = (
+						document.getElementById('token-icon-preview') as HTMLInputElement
+					).src
+					return [supply, name, symbol, decimals, icon]
+				} catch (error: any) {
+					MySwal.showValidationMessage('No icon selected')
+				}
 			},
 		}).then(({ value: formValues }) => {
 			if (!formValues) {
 				return
 			}
-			// deploy token smart contract and call either new or new_default_meta
-			if (formValues.useDefault) {
-				console.log('call new_default_meta')
-			} else {
-				console.log('call new')
+			const metadata: tokenMetadata = {
+				spec: 'ft-1.0.0',
+				name: formValues[1],
+				symbol: formValues[2],
+				decimals: parseInt(formValues[3], 10),
+				icon: formValues.length === 5 ? formValues[4] : undefined,
 			}
+			console.log(formValues)
+			// addTokenization(projectContract, metadata, parseInt(formValues[0], 10))
 		})
 	}
-	return (
+	return token ? (
+		<TokenDash pid={projectDetails.pid} />
+	) : (
 		<>
 			<img alt="notoken" src={notoken} className="majorImg" />
 			<Typography
@@ -62,7 +99,7 @@ export default function Token() {
 					right: 16,
 				}}
 				color="primary"
-				aria-label="add-storage"
+				aria-label="add-token"
 				onClick={() => {
 					showTokenSwal()
 				}}

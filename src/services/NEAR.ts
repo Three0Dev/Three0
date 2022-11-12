@@ -6,7 +6,10 @@ import NEAR_CONTRACT from 'url:../contract-wasms/near.wasm'
 import NEAR_STORAGE_CONTRACT from 'url:../contract-wasms/near-storage.wasm'
 // eslint-disable-next-line import/no-unresolved
 import NEAR_HOSTING_CONTRACT from 'url:../contract-wasms/near-hosting.wasm'
+// eslint-disable-next-line import/no-unresolved
+import NEAR_TOKEN_CONTRACT from 'url:../contract-wasms/near-token.wasm'
 import { nearConfig } from '../utils'
+import { tokenMetadata } from '../views/Token'
 
 export async function createNEARAccount() {
 	const { pid } = JSON.parse(localStorage.getItem('projectDetails') || '{}')
@@ -97,46 +100,6 @@ export async function checkAccountStatus(hash: any) {
 	}
 }
 
-export async function createHostingAccount(parentPID: string) {
-	const parentAccount = await window.near.account(parentPID)
-
-	const keyPair = KeyPair.fromRandom('ed25519')
-	const publicKey = keyPair.getPublicKey().toString()
-	await new keyStores.BrowserLocalStorageKeyStore().setKey(
-		nearConfig.networkId,
-		`web4.${parentPID}`,
-		keyPair
-	)
-	await parentAccount.createAccount(
-		`web4.${parentPID}`,
-		publicKey,
-		utils.format.parseNearAmount('8')
-	)
-}
-
-export async function deployHostingContract(parentPID: string) {
-	const wallet = `web4.${parentPID}`
-	console.log(wallet)
-	const hostingAccount = await window.near.account(wallet)
-
-	const contract = await fetch(NEAR_HOSTING_CONTRACT)
-	const buf = await contract.arrayBuffer()
-
-	await hostingAccount.signAndSendTransaction({
-		receiverId: wallet,
-		actions: [transactions.deployContract(new Uint8Array(buf))],
-	})
-}
-
-export async function addHosting(parentContract: any) {
-	await createHostingAccount(parentContract.contractId)
-	await deployHostingContract(parentContract.contractId)
-	parentContract.set_hosting({
-		hosting_account: `web4.${parentContract.contractId}`,
-	})
-	return true
-}
-
 export async function createStorageAccount(parentPID: string) {
 	const parentAccount = await window.near.account(parentPID)
 
@@ -180,6 +143,105 @@ export async function addStorage(parentContract: any) {
 	await deployStorageContract(parentContract.contractId)
 	parentContract.set_storage({
 		storage_account: `storage.${parentContract.contractId}`,
+	})
+	return true
+}
+
+export async function createHostingAccount(parentPID: string) {
+	const parentAccount = await window.near.account(parentPID)
+
+	const keyPair = KeyPair.fromRandom('ed25519')
+	const publicKey = keyPair.getPublicKey().toString()
+	await new keyStores.BrowserLocalStorageKeyStore().setKey(
+		nearConfig.networkId,
+		`web4.${parentPID}`,
+		keyPair
+	)
+	await parentAccount.createAccount(
+		`web4.${parentPID}`,
+		publicKey,
+		utils.format.parseNearAmount('8')
+	)
+}
+
+export async function deployHostingContract(parentPID: string) {
+	const wallet = `web4.${parentPID}`
+	console.log(wallet)
+	const hostingAccount = await window.near.account(wallet)
+
+	const contract = await fetch(NEAR_HOSTING_CONTRACT)
+	const buf = await contract.arrayBuffer()
+
+	await hostingAccount.signAndSendTransaction({
+		receiverId: wallet,
+		actions: [transactions.deployContract(new Uint8Array(buf))],
+	})
+}
+
+export async function addHosting(parentContract: any) {
+	await createHostingAccount(parentContract.contractId)
+	await deployHostingContract(parentContract.contractId)
+	parentContract.set_hosting({
+		hosting_account: `web4.${parentContract.contractId}`,
+	})
+	return true
+}
+
+export async function createTokenAccount(parentPID: string) {
+	const parentAccount = await window.near.account(parentPID)
+
+	const keyPair = KeyPair.fromRandom('ed25519')
+	const publicKey = keyPair.getPublicKey().toString()
+	await new keyStores.BrowserLocalStorageKeyStore().setKey(
+		nearConfig.networkId,
+		`token.${parentPID}`,
+		keyPair
+	)
+	await parentAccount.createAccount(
+		`token.${parentPID}`,
+		publicKey,
+		utils.format.parseNearAmount('9')
+	)
+}
+
+export async function deployTokenContract(
+	parentPID: string,
+	metadata: tokenMetadata,
+	totalSupply: number
+) {
+	const wallet = `token.${parentPID}`
+	const storageAccount = await window.near.account(wallet)
+
+	const contract = await fetch(NEAR_TOKEN_CONTRACT)
+	const buf = await contract.arrayBuffer()
+
+	await storageAccount.signAndSendTransaction({
+		receiverId: wallet,
+		actions: [
+			transactions.deployContract(new Uint8Array(buf)),
+			transactions.functionCall(
+				'new',
+				{
+					owner_id: parentPID,
+					total_supply: totalSupply,
+					metadata,
+				},
+				10000000000000,
+				'0'
+			),
+		],
+	})
+}
+
+export async function addTokenization(
+	parentContract: any,
+	metadata: tokenMetadata,
+	totalSupply: number
+) {
+	await createTokenAccount(parentContract.contractId)
+	await deployTokenContract(parentContract.contractId, metadata, totalSupply)
+	parentContract.set_tokenization({
+		token_account: `token.${parentContract.contractId}`,
 	})
 	return true
 }
