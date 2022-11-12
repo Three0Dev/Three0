@@ -70,7 +70,7 @@ export default function Storage() {
 					right: 16,
 				}}
 				color="primary"
-				aria-label="create-project"
+				aria-label="add-storage"
 				onClick={() => {
 					showStorageSwal()
 				}}

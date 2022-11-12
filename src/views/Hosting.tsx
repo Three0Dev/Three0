@@ -19,9 +19,9 @@ export default function Hosting() {
 		setIsHostingEnabled(hasHosting)
 	})
 
-	async function showStorageSwal() {
+	async function showHostingSwal() {
 		const { value: formValues } = await MySwal.fire({
-			title: 'Add Storage',
+			title: 'Add Hosting',
 			html: (
 				<FormControl fullWidth sx={{ margin: '2% 0' }}>
 					<Typography>
@@ -70,9 +70,9 @@ export default function Hosting() {
 					right: 16,
 				}}
 				color="primary"
-				aria-label="create-project"
+				aria-label="add-hosting"
 				onClick={() => {
-					showStorageSwal()
+					showHostingSwal()
 				}}
 			>
 				<AddIcon />
