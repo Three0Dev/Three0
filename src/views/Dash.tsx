@@ -35,12 +35,15 @@ export default function Dash() {
 				'get_user',
 				'has_storage',
 				'get_storage',
+				'has_hosting',
+				'get_hosting',
 			],
 			changeMethods: [
 				'update_project',
 				'add_database',
 				'delete_database',
 				'set_storage',
+				'set_hosting',
 			],
 		})
 

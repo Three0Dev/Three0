@@ -3,6 +3,7 @@ import React from 'react'
 import { useDropzone } from 'react-dropzone'
 import { Box, Paper, Fab } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import { Contract, keyStores } from 'near-api-js'
 import {
 	TableCell,
 	TableRow,
@@ -12,10 +13,12 @@ import {
 	TableBody,
 } from '../templates/Table'
 import { uploadFiles } from '../storage-components'
-import { Contract, keyStores } from "near-api-js";
 
+interface HostingProps {
+	pid: string
+}
 
-export default function UploadSystem() {
+export default function UploadSystem({ pid }: HostingProps) {
 	const { acceptedFiles, getRootProps, getInputProps } = useDropzone()
 
 	interface FileWithPath extends File {
@@ -56,32 +59,32 @@ export default function UploadSystem() {
 
 		const hostingContract = new Contract(
 			window.walletConnection.account(),
-			// TODO: change this to the actual contract ID instead of hardcoding it
-			"web4.srawulwar.testnet",
+			pid,
 			{
-			  viewMethods: [],
-			  changeMethods: ["add_to_map"],
+				viewMethods: [],
+				changeMethods: ['add_to_map'],
 			}
-		  );
+		)
 
-		
-		  acceptedFiles.forEach(async (file) => {
+		acceptedFiles.forEach(async (file) => {
 			// const p = new Promise((resolve, reject) => {
 			const temporaryFileReader = new FileReader()
-			
+
 			temporaryFileReader.onload = async () => {
 				files.push({
 					path: (file as FileWithPath).path,
 					content_type: file.type,
 					body: temporaryFileReader.result,
-				})		
+				})
 				// hostingContract.add_to_map({content: files})
 			}
 			temporaryFileReader.readAsText(file)
-
 		})
 		const tempArr = [
-			{path: "/subpage.html", content_type: "text/html", body: `<!DOCTYPE html>
+			{
+				path: '/subpage.html',
+				content_type: 'text/html',
+				body: `<!DOCTYPE html>
 				<html>
 				<head>
 					<meta charset="utf-8">
@@ -104,8 +107,12 @@ export default function UploadSystem() {
 					<p>click this to go back to the other page</p>
 					<a href="index.html">Subpage</a>
 				</body>
-				</html>`}, 
-				{path: "/index.html", content_type: "text/html", body: `<!DOCTYPE html>
+				</html>`,
+			},
+			{
+				path: '/index.html',
+				content_type: 'text/html',
+				body: `<!DOCTYPE html>
 				<html>
 				<head>
 					<meta charset="utf-8">
@@ -120,15 +127,20 @@ export default function UploadSystem() {
 					<!-- create a link to a subpage -->
 					<a href="subpage.html">Subpage</a>
 				</body>
-				</html>`}, 
-				{path: "/simple.js", content_type: "text/javascript", body: `function log() {
+				</html>`,
+			},
+			{
+				path: '/simple.js',
+				content_type: 'text/javascript',
+				body: `function log() {
 					console.log('You clicked the button');
 				}
 				var button = document.getElementById('button');
-				button.addEventListener('click', log);`}
+				button.addEventListener('click', log);`,
+			},
 		]
 		// console.log(tempArr)
-		await hostingContract.add_to_map({content: tempArr})
+		await hostingContract.add_to_map({ content: tempArr })
 	}
 
 	return (
