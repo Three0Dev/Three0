@@ -1,4 +1,6 @@
 import React from 'react'
+import { styled } from '@mui/material/styles'
+import TableCell, { tableCellClasses } from '@mui/material/TableCell'
 import {
 	Table,
 	TableBody,
@@ -6,8 +8,6 @@ import {
 	TableHead,
 	TableRow,
 } from '@mui/material'
-import { styled } from '@mui/material/styles'
-import TableCell, { tableCellClasses } from '@mui/material/TableCell'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
 	[`&.${tableCellClasses.head}`]: {

@@ -25,7 +25,7 @@ const defaultLabels = {
 }
 
 interface FileManagerProps {
-	pid: any
+	pid: string
 }
 
 export default function FileManager({ pid }: FileManagerProps) {

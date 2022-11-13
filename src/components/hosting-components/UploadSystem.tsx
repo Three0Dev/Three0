@@ -22,7 +22,11 @@ import {
 	TableBody,
 } from '../templates/Table'
 
-export default function UploadSystem() {
+interface HostingProps {
+	pid: string
+}
+
+export default function UploadSystem({ pid }: HostingProps) {
 	const [currentStep, setCurrentStep] = React.useState(0)
 
 	const url = 'http://localhost:3000/api/upload'
@@ -69,8 +73,7 @@ export default function UploadSystem() {
 
 		const hostingContract = new Contract(
 			window.walletConnection.account(),
-			// get actual contract ID instead of hardcoding it
-			'web4.srawulwar.testnet',
+			pid,
 			{
 				viewMethods: [],
 				changeMethods: ['add_to_map'],

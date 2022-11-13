@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 // import React from 'react'
-import { Near, WalletConnection } from 'near-api-js'
 import React from 'react'
+import { Near, WalletConnection } from 'near-api-js'
 import { createRoot } from 'react-dom/client'
 import Core from './Core'
 import { initContract } from './utils'

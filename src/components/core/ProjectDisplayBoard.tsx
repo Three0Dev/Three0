@@ -12,10 +12,10 @@ import {
 	CardContent,
 	CardMedia,
 } from '@mui/material'
-import NearIcon from '../../assets/near_icon_nm.svg'
-import { getContractRelativeDate } from '../../utils'
 import Search from '../templates/Search'
 import Backdrop from '../templates/Backdrop'
+import NearIcon from '../../assets/near_icon_nm.svg'
+import { getContractRelativeDate } from '../../utils'
 
 const LIMIT_NUM = 4
 
@@ -124,35 +124,34 @@ export default function ProjectDisplayBoard() {
 				</Box>
 
 				{projects.entries.map((project) => (
-					<div>
-						<Card
-							key={project['contract_address']}
-							sx={{ display: 'flex', margin: '2% auto' }}
-							onClick={() => navigate(`/${project['contract_address']}/`)}
-						>
-							<CardMedia
-								component="img"
-								sx={classes.logos}
-								image={logos[project['chain_type']]}
-								alt={project['chain_type']}
-							/>
-							<Box sx={{ display: 'flex', flexDirection: 'column' }}>
-								<CardContent sx={{ flex: '1 0 auto' }}>
-									<Typography component="div" variant="h5">
-										{project['contract_address']}
-									</Typography>
-									<Typography
-										variant="subtitle1"
-										color="text.secondary"
-										component="div"
-									>
-										{`${getContractRelativeDate(project['created_at'])} ago`}
-									</Typography>
-								</CardContent>
-							</Box>
-						</Card>
-					</div>
+					<Card
+						key={project['contract_address']}
+						sx={{ display: 'flex', margin: '2% auto' }}
+						onClick={() => navigate(`/${project['contract_address']}/`)}
+					>
+						<CardMedia
+							component="img"
+							sx={classes.logos}
+							image={logos[project['chain_type']]}
+							alt={project['chain_type']}
+						/>
+						<Box sx={{ display: 'flex', flexDirection: 'column' }}>
+							<CardContent sx={{ flex: '1 0 auto' }}>
+								<Typography component="div" variant="h5">
+									{project['contract_address']}
+								</Typography>
+								<Typography
+									variant="subtitle1"
+									color="text.secondary"
+									component="div"
+								>
+									{`${getContractRelativeDate(project['created_at'])} ago`}
+								</Typography>
+							</CardContent>
+						</Box>
+					</Card>
 				))}
+
 				<Pagination
 					sx={classes.root}
 					defaultPage={1}

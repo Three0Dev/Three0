@@ -44,7 +44,7 @@ export default function ProjectsDash() {
 				// eslint-disable-next-line no-useless-escape
 				const nameRegex = /^(([a-z\d]+[\-_])*[a-z\d]+)$/
 
-				const pid = `${name}-${uuid}.testnet`
+				const pid = `${name}-${uuid}.${window.accountId}`
 
 				if (!nameRegex.test(name) || pid.length > 50) {
 					Swal.showValidationMessage('Invalid Project Name')

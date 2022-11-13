@@ -1,6 +1,6 @@
 import React from 'react'
-import { Typography } from '@mui/material'
 import FolderIcon from '@mui/icons-material/Folder'
+import { Typography } from '@mui/material'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 
 const OFFSET = 16

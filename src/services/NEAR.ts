@@ -9,6 +9,7 @@ import {
 	Account,
 } from 'near-api-js'
 import NEAR_CONTRACT from 'url:../contract-wasms/near.wasm'
+// eslint-disable-next-line import/no-unresolved
 import NEAR_STORAGE_CONTRACT from 'url:../contract-wasms/near-storage.wasm'
 import NEAR_HOSTING_CONTRACT from 'url:../contract-wasms/near-hosting.wasm'
 import { nearConfig } from '../utils'

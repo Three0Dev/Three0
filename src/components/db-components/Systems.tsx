@@ -1,6 +1,6 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
 import { Box, Typography, Stack, Chip } from '@mui/material'
+import { useParams } from 'react-router-dom'
 import { initIPFS, initOrbitDB, getAllDatabases } from '../../services/database'
 import { actions, useStateValue } from '../../state/DatabaseState'
 

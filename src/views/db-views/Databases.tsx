@@ -1,20 +1,20 @@
 /* eslint-disable no-console */
 import React from 'react'
-import { Typography, Box, CircularProgress, useTheme } from '@mui/material'
-import Fab from '@mui/material/Fab'
-import AddIcon from '@mui/icons-material/Add'
 import Swal from 'sweetalert2'
+import { Typography, Box, CircularProgress, useTheme } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
+import Fab from '@mui/material/Fab'
 import withReactContent from 'sweetalert2-react-content'
-import ProgramList from '../../components/db-components/DatabaseList'
-import CreateDialog from '../../components/db-components/CreateDialog'
-import Backdrop from '../../components/templates/Backdrop'
+import { useStateValue, actions } from '../../state/DatabaseState'
 import {
 	getAllDatabases,
 	removeDatabase,
 	createDatabase,
 } from '../../services/database'
-import { useStateValue, actions } from '../../state/DatabaseState'
+import ProgramList from '../../components/db-components/DatabaseList'
+import CreateDialog from '../../components/db-components/CreateDialog'
 import ProjectDetailsContext from '../../state/ProjectDetailsContext'
+import Backdrop from '../../components/templates/Backdrop'
 
 export default function DatabasesView() {
 	const [appState, dispatch] = useStateValue()
