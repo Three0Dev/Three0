@@ -67,7 +67,7 @@ export default function UploadSystem({ pid }: HostingProps) {
 		return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`
 	}
 
-	// scrape the contents of the file and return the data as text
+	// get the uploaded files and add them to the hosting contract map
 	async function uploadFile() {
 		const files: { path: string; content_type: string; body: void }[] = []
 
@@ -81,19 +81,16 @@ export default function UploadSystem({ pid }: HostingProps) {
 		)
 
 		acceptedFiles.forEach(async (file) => {
-			const temporaryFileReader = new FileReader()
-
-			temporaryFileReader.onload = async () => {
+			const reader = new FileReader()
+			reader.onload = async () => {
 				files.push({
 					path: file.path.startsWith('/') ? file.path : `/${file.path}`,
 					content_type: file.type,
-					body: temporaryFileReader.result,
+					body: reader.result,
 				})
+				await hostingContract.add_to_map({ files })
 			}
-			temporaryFileReader.onloadend = async () => {
-				hostingContract.add_to_map({ content: files })
-			}
-			temporaryFileReader.readAsText(file)
+			reader.readAsText(file)
 		})
 	}
 
