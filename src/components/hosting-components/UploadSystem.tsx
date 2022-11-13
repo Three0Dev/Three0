@@ -56,79 +56,30 @@ export default function UploadSystem() {
 
 		const hostingContract = new Contract(
 			window.walletConnection.account(),
-			// TODO: change this to the actual contract ID instead of hardcoding it
+			// get actual contract ID instead of hardcoding it
 			"web4.srawulwar.testnet",
 			{
 			  viewMethods: [],
 			  changeMethods: ["add_to_map"],
 			}
 		  );
-
 		
 		  acceptedFiles.forEach(async (file) => {
-			// const p = new Promise((resolve, reject) => {
 			const temporaryFileReader = new FileReader()
 			
 			temporaryFileReader.onload = async () => {
 				files.push({
-					path: (file as FileWithPath).path,
+					path: file.path.startsWith('/') ? file.path : `/${file.path}`,
 					content_type: file.type,
 					body: temporaryFileReader.result,
 				})		
-				// hostingContract.add_to_map({content: files})
+			}
+			temporaryFileReader.onloadend = async () => {
+				hostingContract.add_to_map({content: files})
 			}
 			temporaryFileReader.readAsText(file)
 
 		})
-		const tempArr = [
-			{path: "/subpage.html", content_type: "text/html", body: `<!DOCTYPE html>
-				<html>
-				<head>
-					<meta charset="utf-8">
-					<title>subpage</title>
-				
-				</head>
-				<body>
-					<h1>you were redirected to a subpage wowow</h1>
-					<p>this does the same thing as the other page</p>
-					<p>The button console logs that you clicked it</p>
-					<button id="button">Click Me</button>
-					<script>
-					function log() {
-						console.log('You clicked the button');
-					}
-					var button = document.getElementById('button');
-					button.addEventListener('click', log);
-					</script>
-					<!-- create a link to a subpage -->
-					<p>click this to go back to the other page</p>
-					<a href="index.html">Subpage</a>
-				</body>
-				</html>`}, 
-				{path: "/index.html", content_type: "text/html", body: `<!DOCTYPE html>
-				<html>
-				<head>
-					<meta charset="utf-8">
-					<title>Simple</title>
-				
-				</head>
-				<body>
-					<h1>Simple html file to deploy</h1>
-					<p>The button console logs that you clicked it</p>
-					<button id="button">Click Me</button>
-					<script src="./simple.js"></script>
-					<!-- create a link to a subpage -->
-					<a href="subpage.html">Subpage</a>
-				</body>
-				</html>`}, 
-				{path: "/simple.js", content_type: "text/javascript", body: `function log() {
-					console.log('You clicked the button');
-				}
-				var button = document.getElementById('button');
-				button.addEventListener('click', log);`}
-		]
-		// console.log(tempArr)
-		await hostingContract.add_to_map({content: tempArr})
 	}
 
 	return (
