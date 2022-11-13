@@ -67,3 +67,4 @@ function getNEARConfig(env: string) {
 }
 
 module.exports = getNEARConfig
+export default getNEARConfig
