@@ -1,8 +1,15 @@
 /* eslint-disable no-console */
-import { keyStores, transactions, KeyPair, utils, providers } from 'near-api-js'
+import {
+	keyStores,
+	transactions,
+	KeyPair,
+	utils,
+	providers,
+	Account,
+	WalletConnection,
+} from 'near-api-js'
 import NEAR_CONTRACT from 'url:../contract-wasms/near.wasm'
 import NEAR_STORAGE_CONTRACT from 'url:../contract-wasms/near-storage.wasm'
-// eslint-disable-next-line import/no-unresolved
 import NEAR_HOSTING_CONTRACT from 'url:../contract-wasms/near-hosting.wasm'
 import { nearConfig } from '../utils'
 
@@ -17,9 +24,9 @@ export async function createNEARAccount() {
 		keyPair
 	)
 
-	await window.walletConnection
+	await (window.walletConnection as WalletConnection)
 		.account()
-		.createAccount(pid, publicKey, utils.format.parseNearAmount('7'))
+		.createAccount(pid, publicKey, utils.format.parseNearAmount('21'))
 }
 
 export async function createNEARProject() {
@@ -73,9 +80,7 @@ export async function deleteNEARProject(pid: string) {
 }
 
 export async function checkAccountStatus(hash: any) {
-	const provider = new providers.JsonRpcProvider(
-		`https://archival-rpc.${nearConfig.networkId}.near.org`
-	)
+	const provider = new providers.JsonRpcProvider(nearConfig.nodeUrl)
 
 	try {
 		const result = await provider.txStatus(hash, window.accountId)
@@ -97,7 +102,6 @@ export async function checkAccountStatus(hash: any) {
 
 export async function createHostingAccount(parentPID: string) {
 	const parentAccount = await window.near.account(parentPID)
-	// console.log('storage.' + parentPID)
 
 	const keyPair = KeyPair.fromRandom('ed25519')
 	const publicKey = keyPair.getPublicKey().toString()
@@ -106,8 +110,6 @@ export async function createHostingAccount(parentPID: string) {
 		`web4.${parentPID}`,
 		keyPair
 	)
-
-	// console.log('storage.' + parentPID)
 
 	try {
 		await parentAccount.createAccount(
@@ -124,33 +126,19 @@ export async function createHostingAccount(parentPID: string) {
 
 export async function deployHostingContract(parentPID: string) {
 	const wallet = `web4.${parentPID}`
-	console.log(wallet)
-	const hostingAccount = await window.near.account(wallet)
+	const hostingAccount: Account = await window.near.account(wallet)
 
-	const contract = await fetch(NEAR_HOSTING_CONTRACT)
-	const buf = await contract.arrayBuffer()
-
-	await hostingAccount.signAndSendTransaction({
-		receiverId: wallet,
-		actions: [
-			transactions.deployContract(new Uint8Array(buf)),
-			// transactions.functionCall(
-			//   "new_default_meta",
-			//   { pid: parentPID },
-			//   10000000000000,
-			//   "0"
-			// ),
-		],
-	})
+	hostingAccount.deployContract(
+		new Uint8Array(await (await fetch(NEAR_HOSTING_CONTRACT)).arrayBuffer())
+	)
 }
 
 export async function addHosting(parentContract: any) {
 	await createHostingAccount(parentContract.contractId)
-	// await deployHostingContract(parentContract.contractId);
+	await deployHostingContract(parentContract.contractId);
 	parentContract.set_hosting({
 		hosting_account: `web4.${parentContract.contractId}`,
 	})
-	return true
 }
 
 export async function createStorageAccount(parentPID: string) {
@@ -203,11 +191,9 @@ export async function deployStorageContract(parentPID: string) {
 }
 
 export async function addStorage(parentContract: any) {
-	// console.log("Test worked")
 	await createStorageAccount(parentContract.contractId)
 	await deployStorageContract(parentContract.contractId)
 	parentContract.set_storage({
 		storage_account: `storage.${parentContract.contractId}`,
 	})
-	return true
 }
