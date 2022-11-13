@@ -15,7 +15,7 @@ export default function Hosting() {
 	)
 	const MySwal = withReactContent(Swal)
 	const theme = useTheme()
-	projectContract.has_hosting().then((hasHosting: boolean) => {
+	projectContract.get_hosting().then((hasHosting: boolean) => {
 		setIsHostingEnabled(hasHosting)
 	})
 
