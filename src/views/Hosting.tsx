@@ -17,7 +17,14 @@ export default function Hosting() {
 
 	React.useEffect(() => {
 		if (projectDetails) {
-			setIsHostingEnabled(projectDetails.has_hosting)
+			projectContract
+				.get_hosting()
+				.then(() => {
+					setIsHostingEnabled(true)
+				})
+				.catch(() => {
+					setIsHostingEnabled(false)
+				})
 		}
 	}, [projectDetails])
 
