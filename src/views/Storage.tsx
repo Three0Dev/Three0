@@ -15,7 +15,7 @@ export default function Storage() {
 	)
 	const MySwal = withReactContent(Swal)
 	const theme = useTheme()
-	projectContract.has_storage().then((hasStorage: boolean) => {
+	projectContract.get_storage().then((hasStorage: boolean) => {
 		setStorage(hasStorage)
 	})
 

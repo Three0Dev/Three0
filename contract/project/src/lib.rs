@@ -54,8 +54,8 @@ impl Three0Project {
         ProjectReturnSchema {
             pid: self.pid.clone(),
             num_users: self.users.len() as u32,
-            has_storage: self.storage.is_some(),
-            has_hosting: self.hosting.is_some(),
+            get_storage: self.storage.is_some(),
+            get_hosting: self.hosting.is_some(),
         }
     }
 
