@@ -1,34 +1,35 @@
 import React from 'react'
-import ProjectDetailsContext from "../state/ProjectDetailsContext";
-import { Button } from "@mui/material";
+import { Button } from '@mui/material'
+import ProjectDetailsContext from '../state/ProjectDetailsContext'
 import { UploadSystem } from '../components/hosting-components'
-import { addHosting, deployHostingContract } from "../services/NEAR";
+import { addHosting } from '../services/NEAR'
 
 export default function Hosting() {
 	const [isHostingEnabled, setIsHostingEnabled] = React.useState(false)
 	const { projectDetails, projectContract } = React.useContext(
 		ProjectDetailsContext
-	  );
-	  projectContract.has_hosting().then((hasHosting: boolean) => {
-		setIsHostingEnabled(hasHosting);
-	  });
+	)
+
+	// React.useEffect(() => {
+	// 	if (projectDetails) {
+
 
 	//   console.log("Hello")
 
 	return isHostingEnabled ? (
-	<UploadSystem />
+		<UploadSystem />
 	) : (
-			<div>
-			  <Button
+		<div>
+			<Button
 				onClick={() => {
-				  addHosting(projectContract).then((success: boolean) => {
-					setIsHostingEnabled(success);
-				  });
+					addHosting(projectContract).then(() => {
+						setIsHostingEnabled(true)
+					})
 				}}
-			  >
-				{" "}
-				Add hosting{" "}
-			  </Button>
-			</div>
-		  );
+			>
+				{' '}
+				Add hosting{' '}
+			</Button>
+		</div>
+	)
 }

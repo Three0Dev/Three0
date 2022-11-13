@@ -2,7 +2,7 @@ const CONTRACT_NAME = process.env.CONTRACT_NAME || 'alpha.three0.testnet'
 
 const LOCAL_KURTOSIS_URL = process.env.KURTOSIS_URL
 
-function getNEARConfig(env) {
+function getNEARConfig(env: string) {
 	switch (env) {
 		case 'mainnet':
 			return {
@@ -13,8 +13,8 @@ function getNEARConfig(env) {
 				helperUrl: 'https://helper.mainnet.near.org',
 				explorerUrl: 'https://explorer.mainnet.near.org',
 			}
-		case 'production':
 		case 'development':
+		case 'production':
 		case 'testnet':
 			return {
 				networkId: 'testnet',
@@ -33,7 +33,6 @@ function getNEARConfig(env) {
 				helperUrl: 'https://helper.betanet.near.org',
 				explorerUrl: 'https://explorer.betanet.near.org',
 			}
-		
 		case 'localnet':
 			return {
 				networkId: 'local',

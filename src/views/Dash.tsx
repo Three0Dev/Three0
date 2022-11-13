@@ -3,6 +3,7 @@ import React from 'react'
 import { Outlet, useParams, useNavigate } from 'react-router-dom'
 import { Box } from '@mui/material'
 import { Contract } from 'near-api-js'
+import Swal from 'sweetalert2'
 import ProjectDetailsContext from '../state/ProjectDetailsContext'
 import { Navigation } from '../components/core'
 
@@ -41,6 +42,7 @@ export default function Dash() {
 				'add_database',
 				'delete_database',
 				'set_storage',
+				'set_hosting',
 			],
 		})
 
@@ -49,13 +51,33 @@ export default function Dash() {
 		setProjectDetails(details)
 	}
 
+	async function validityCheck(isValid: boolean) {
+		if (isValid) {
+			getProjectDetails()
+		} else {
+			try {
+				await window.contract.delete_project({ contract_address: pid })
+				navigate('/')
+				Swal.fire({
+					title: 'Error',
+					text: 'Project does not exist, reference deleted',
+					icon: 'error',
+					confirmButtonText: 'Ok',
+				})
+			} catch (e) {
+				Swal.fire({
+					title: 'Error',
+					text: 'There was an issue with deleting the project reference to the project that is DNE',
+					icon: 'error',
+					confirmButtonText: 'Ok',
+				})
+			}
+		}
+	}
+
 	React.useEffect(() => {
 		isValidProject().then((isValid) => {
-			if (isValid) {
-				getProjectDetails()
-			} else {
-				navigate('/')
-			}
+			validityCheck(isValid)
 		})
 	}, [])
 

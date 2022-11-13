@@ -54,6 +54,8 @@ impl Three0Project {
         ProjectReturnSchema {
             pid: self.pid.clone(),
             num_users: self.users.len() as u32,
+            has_storage: self.storage.is_some(),
+            has_hosting: self.hosting.is_some(),
         }
     }
 
@@ -119,7 +121,7 @@ impl Three0Project {
     }
 
     pub fn get_hosting(&self) -> AccountId {
-        self.storage.as_ref()
+        self.hosting.as_ref()
         .unwrap_or_else(|| env::panic(b"Hosting not set"))
         .to_string()
     }

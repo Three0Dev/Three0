@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 /* eslint-disable no-console */
 import {
 	keyStores,
@@ -6,30 +7,39 @@ import {
 	utils,
 	providers,
 	Account,
-	WalletConnection,
 } from 'near-api-js'
 import NEAR_CONTRACT from 'url:../contract-wasms/near.wasm'
 import NEAR_STORAGE_CONTRACT from 'url:../contract-wasms/near-storage.wasm'
 import NEAR_HOSTING_CONTRACT from 'url:../contract-wasms/near-hosting.wasm'
 import { nearConfig } from '../utils'
 
-export async function createNEARAccount() {
-	const { pid } = JSON.parse(localStorage.getItem('projectDetails') || '{}')
-
+export async function createNEARAccount(
+	name: string,
+	amount: string,
+	parentAccount: Account
+) {
 	const keyPair = KeyPair.fromRandom('ed25519')
 	const publicKey = keyPair.getPublicKey().toString()
 	await new keyStores.BrowserLocalStorageKeyStore().setKey(
 		nearConfig.networkId,
-		pid,
+		name,
 		keyPair
 	)
 
-	await (window.walletConnection as WalletConnection)
-		.account()
-		.createAccount(pid, publicKey, utils.format.parseNearAmount('21'))
+	await parentAccount.createAccount(
+		name,
+		publicKey,
+		utils.format.parseNearAmount(amount)
+	)
 }
 
-export async function createNEARProject() {
+export async function createNEARProjectAccount() {
+	const { pid } = JSON.parse(localStorage.getItem('projectDetails') || '{}')
+	const parentAccount = window.walletConnection.account()
+	await createNEARAccount(pid, '7', parentAccount)
+}
+
+export async function createNEARProjectReference() {
 	const { pid, blockchainNetwork } = JSON.parse(
 		localStorage.getItem('projectDetails') || '{}'
 	)
@@ -82,46 +92,22 @@ export async function deleteNEARProject(pid: string) {
 export async function checkAccountStatus(hash: any) {
 	const provider = new providers.JsonRpcProvider(nearConfig.nodeUrl)
 
-	try {
-		const result = await provider.txStatus(hash, window.accountId)
+	const result = await provider.txStatus(hash, window.accountId)
 
-		if (
-			result.transaction.actions.includes('CreateAccount') &&
-			result.transaction_outcome.outcome.status.SuccessReceiptId
-		) {
-			await createNEARProject()
-			await deployNEARProjectContract()
-		}
-
-		return Promise.resolve(result.transaction.receiver_id)
-	} catch (e) {
-		console.error(e)
-		return Promise.reject(e)
+	if (
+		result.transaction.actions.includes('CreateAccount') &&
+		result.transaction_outcome.outcome.status.SuccessReceiptId
+	) {
+		await createNEARProjectReference()
+		await deployNEARProjectContract()
 	}
+
+	return result.transaction.receiver_id
 }
 
 export async function createHostingAccount(parentPID: string) {
 	const parentAccount = await window.near.account(parentPID)
-
-	const keyPair = KeyPair.fromRandom('ed25519')
-	const publicKey = keyPair.getPublicKey().toString()
-	await new keyStores.BrowserLocalStorageKeyStore().setKey(
-		nearConfig.networkId,
-		`web4.${parentPID}`,
-		keyPair
-	)
-
-	try {
-		await parentAccount.createAccount(
-			`web4.${parentPID}`,
-			publicKey,
-			utils.format.parseNearAmount('7')
-		)
-	} catch (error) {
-		console.log(error)
-		return false
-	}
-	return true
+	await createNEARAccount(`web4.${parentPID}`, '8', parentAccount)
 }
 
 export async function deployHostingContract(parentPID: string) {
@@ -135,42 +121,19 @@ export async function deployHostingContract(parentPID: string) {
 
 export async function addHosting(parentContract: any) {
 	await createHostingAccount(parentContract.contractId)
-	await deployHostingContract(parentContract.contractId);
-	parentContract.set_hosting({
+	await deployHostingContract(parentContract.contractId)
+	await parentContract.set_hosting({
 		hosting_account: `web4.${parentContract.contractId}`,
 	})
 }
 
 export async function createStorageAccount(parentPID: string) {
 	const parentAccount = await window.near.account(parentPID)
-	// console.log('storage.' + parentPID)
-
-	const keyPair = KeyPair.fromRandom('ed25519')
-	const publicKey = keyPair.getPublicKey().toString()
-	await new keyStores.BrowserLocalStorageKeyStore().setKey(
-		nearConfig.networkId,
-		`storage.${parentPID}`,
-		keyPair
-	)
-
-	// console.log('storage.' + parentPID)
-
-	try {
-		await parentAccount.createAccount(
-			`storage.${parentPID}`,
-			publicKey,
-			utils.format.parseNearAmount('16')
-		)
-	} catch (error) {
-		console.log(error)
-		return false
-	}
-	return true
+	await createNEARAccount(`storage.${parentPID}`, '16', parentAccount)
 }
 
 export async function deployStorageContract(parentPID: string) {
 	const wallet = `storage.${parentPID}`
-	// console.log(wallet)
 	const storageAccount = await window.near.account(wallet)
 
 	const contract = await fetch(NEAR_STORAGE_CONTRACT)
@@ -193,7 +156,7 @@ export async function deployStorageContract(parentPID: string) {
 export async function addStorage(parentContract: any) {
 	await createStorageAccount(parentContract.contractId)
 	await deployStorageContract(parentContract.contractId)
-	parentContract.set_storage({
+	await parentContract.set_storage({
 		storage_account: `storage.${parentContract.contractId}`,
 	})
 }

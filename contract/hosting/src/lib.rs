@@ -1,7 +1,7 @@
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::near_bindgen;
 use near_sdk::serde::{Deserialize, Serialize};
-use near_sdk::collections::{LookupMap};
+use near_sdk::collections::LookupMap;
 
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize)]
