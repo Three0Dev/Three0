@@ -1361,6 +1361,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "three0_storage"
+version = "0.1.0"
+dependencies = [
+ "near-sdk 4.0.0",
+ "serde_json",
+]
+
+[[package]]
 name = "time"
 version = "0.1.44"
 source = "registry+https://github.com/rust-lang/crates.io-index"

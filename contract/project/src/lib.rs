@@ -31,6 +31,7 @@ pub struct Three0Project {
     pid: String,
     databases: LookupMap<String, Database>,
     users: UnorderedMap<String, User>,
+    storage: Option<AccountId>,
     hosting: Option<AccountId>,
 }
 
@@ -44,6 +45,7 @@ impl Three0Project {
             pid,
             databases: LookupMap::new(b"databases".to_vec()),
             users: UnorderedMap::new(b"users".to_vec()),
+            storage: None,
             hosting: None,
         }
     }
@@ -102,6 +104,19 @@ impl Three0Project {
         self.users.get(&account_id).unwrap_or_else(|| env::panic(b"User not found"))
     }
 
+    pub fn set_storage(&mut self, storage_account: AccountId) {
+        self.storage = Some(storage_account);
+    }
+
+    pub fn has_storage(&self) -> bool {
+        return !self.storage.is_none()
+    }
+
+    pub fn get_storage(&self) -> AccountId {
+        return self.storage.as_ref().unwrap().to_string()
+    }
+}
+
     pub fn set_hosting(&mut self, hosting_account: AccountId) {
         self.hosting = Some(hosting_account);
     }
@@ -113,4 +128,17 @@ impl Three0Project {
     pub fn get_hosting(&self) -> AccountId {
         return self.hosting.as_ref().unwrap().to_string()
     }
+
+    //test for the set storage function
+    #[test]
+    fn test_storage() {
+        let context = get_context(vec![], false);
+        testing_env!(context);
+        let mut contract = Three0Project::init("test".to_string());
+        assert_eq!(contract.has_storage(), false);
+        contract.set_storage("test".to_string());
+        assert_eq!(contract.has_storage(), true);
+        assert_eq!(contract.get_storage(), "test".to_string());
+    }
+
 }
