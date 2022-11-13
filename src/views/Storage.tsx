@@ -17,7 +17,14 @@ export default function Storage() {
 
 	React.useEffect(() => {
 		if (projectDetails) {
-			setIsStorageEnabled(projectDetails.has_storage)
+			projectContract
+				.get_storage()
+				.then(() => {
+					setIsStorageEnabled(true)
+				})
+				.catch(() => {
+					setIsStorageEnabled(false)
+				})
 		}
 	}, [projectDetails])
 
