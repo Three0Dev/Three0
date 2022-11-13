@@ -5,14 +5,9 @@ import NotFoundPhoto from '../assets/notfound.svg'
 export default function NotFound() {
 	return (
 		<>
-			<img
-				src={NotFoundPhoto}
-				style={{ width: '50%' }}
-				alt="WIP"
-				className="majorImg"
-			/>
+			<img src={NotFoundPhoto} alt="WIP" className="majorImg" />
 			<Typography
-				variant="h2"
+				variant="h3"
 				style={{
 					textAlign: 'center',
 					color: '#81C784',
