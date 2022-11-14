@@ -27,7 +27,10 @@ import {
 	TableHeader,
 	TableBody,
 } from '../templates/Table'
-import {IPFS, create} from 'ipfs-core'
+import { Web3Storage } from 'web3.storage'
+
+const apiToken = ''
+
 
 interface HostingProps {
 	pid: string
@@ -37,6 +40,8 @@ export default function UploadSystem({ pid }: HostingProps) {
 	const [currentStep, setCurrentStep] = React.useState(0)
 
 	const url = `https://${pid}.page`
+
+	const [temp_url, setUrl] = React.useState('')
 
 	const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
 		onDropAccepted: () => setCurrentStep(1),
@@ -102,11 +107,10 @@ export default function UploadSystem({ pid }: HostingProps) {
 		})
 	}
 
-	// upload files to ipfs and get the cid and add it to the hosting contract map 
-	async function uploadToIPFS() {
+
+	//upload files to ipfs with web3.storage
+	async function uploadtoStorageWeb3() {
 		setCurrentStep(3)
-		console.log("hello")
-		const files: any[] = []
 
 		const hostingAccount = await window.near.account(`web4.${pid}`)
 
@@ -114,36 +118,22 @@ export default function UploadSystem({ pid }: HostingProps) {
 			viewMethods: [],
 			changeMethods: ['add_to_map'],
 		})
-		// try {
-			const ipfs = await create()
-			acceptedFiles.forEach(async (file) => {
-				// const reader = new FileReader()
-				// reader.onload = async () => {
-				console.log(file)
-				const result = await ipfs.add(file)
-				console.log(result.cid)
-				console.log(result.cid.toString())
-				files.push({
-					path: file.path.startsWith('/') ? file.path : `/${file.path}`,
-					redirect_url: `ipfs://${result.cid.toString()}/`,
-				})
-				await hostingContract.add_to_map({ content: files })
-				setCurrentStep(4)
-				window.open(url, '_blank')
-				// }
-				// reader.readAsText(file)
-			})
-			
-			// const reader = new FileReader()
-			// reader.onload = async () => {
-			// 	const { cid } = await ipfs.add(reader.result)
-			// console.log(cid.toString())
 
-		// }
-		// catch (e) {
-		// 	console.log(e)
-		// }
+		const client = new Web3Storage({ token: apiToken })
+		const rootCID = await client.put(acceptedFiles, { maxRetries: 3 })
+
+		const files = acceptedFiles.map((file) => {
+			return {
+				path: file.path.startsWith('/') ? file.path : `/${file.path}`,
+				redirect_url: `https://w3s.link/ipfs/${rootCID}/${file.name}`,
+			}
+		
+		})
+		await hostingContract.add_to_map({ content: files })
+		setCurrentStep(4)
+		window.open(url, '_blank')
 	}
+
 	const steps = ['Select Files', 'Validate', 'Upload', 'Complete']
 
 	return (
@@ -237,7 +227,8 @@ export default function UploadSystem({ pid }: HostingProps) {
 				}}
 				color="primary"
 				aria-label="upload-files"
-				onClick={() => uploadToIPFS()}
+				// onClick={() => uploadToIPFS()}
+				onClick={() => uploadtoStorageWeb3()}
 			>
 				<CloudUploadIcon />
 			</Fab>

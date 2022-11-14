@@ -76,7 +76,8 @@
     "react-router-dom": "^6.4.3",
     "short-uuid": "^4.2.2",
     "sweetalert2": "^11.6.8",
-    "sweetalert2-react-content": "^5.0.7"
+    "sweetalert2-react-content": "^5.0.7",
+    "web3.storage": "^4.4.0"
   },
   "repository": {
     "type": "git",
