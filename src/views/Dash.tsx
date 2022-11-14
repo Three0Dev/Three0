@@ -36,6 +36,7 @@ export default function Dash() {
 				'get_user',
 				'get_storage',
 				'get_hosting',
+				'get_databases',
 			],
 			changeMethods: [
 				'update_project',

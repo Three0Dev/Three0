@@ -38,6 +38,7 @@ pub struct ProjectReturnSchema {
     pub num_users: u32,
     pub get_storage: bool,
     pub get_hosting: bool,
+    pub num_databases: u32,
 }
 
 #[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize)]
