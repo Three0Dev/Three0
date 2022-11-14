@@ -77,7 +77,7 @@ impl Three0Hosting {
     pub fn add_to_map(&mut self, content: Vec<FileContents>) {
         for file in content {
             let response = Web4Response::BodyUrl {
-                    body_url: file.redirect_url,
+                body_url: file.redirect_url,
             };
             self.file_map.insert(&file.path, &response);
         }

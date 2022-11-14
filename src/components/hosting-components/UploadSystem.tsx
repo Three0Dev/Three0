@@ -105,7 +105,8 @@ export default function UploadSystem({ pid }: HostingProps) {
 	// upload files to ipfs and get the cid and add it to the hosting contract map 
 	async function uploadToIPFS() {
 		setCurrentStep(3)
-		const files: { path: string; content_type: string; body: void }[] = []
+		console.log("hello")
+		const files: any[] = []
 
 		const hostingAccount = await window.near.account(`web4.${pid}`)
 
@@ -113,22 +114,24 @@ export default function UploadSystem({ pid }: HostingProps) {
 			viewMethods: [],
 			changeMethods: ['add_to_map'],
 		})
-		try {
+		// try {
 			const ipfs = await create()
 			acceptedFiles.forEach(async (file) => {
-				const reader = new FileReader()
-				reader.onload = async () => {
-					const { cid } = await ipfs.add(file)
-					files.push({
-						path: file.path.startsWith('/') ? file.path : `/${file.path}`,
-						content_type: file.type,
-						body: cid.toString(),
-					})
-					await hostingContract.add_to_map({ content: files })
-					setCurrentStep(4)
-					window.open(url, '_blank')
-				}
-				reader.readAsText(file)
+				// const reader = new FileReader()
+				// reader.onload = async () => {
+				console.log(file)
+				const result = await ipfs.add(file)
+				console.log(result.cid)
+				console.log(result.cid.toString())
+				files.push({
+					path: file.path.startsWith('/') ? file.path : `/${file.path}`,
+					redirect_url: `ipfs://${result.cid.toString()}/`,
+				})
+				await hostingContract.add_to_map({ content: files })
+				setCurrentStep(4)
+				window.open(url, '_blank')
+				// }
+				// reader.readAsText(file)
 			})
 			
 			// const reader = new FileReader()
@@ -136,25 +139,10 @@ export default function UploadSystem({ pid }: HostingProps) {
 			// 	const { cid } = await ipfs.add(reader.result)
 			// console.log(cid.toString())
 
-			// acceptedFiles.forEach(async (file) => {
-			// 	const reader = new FileReader()
-			// 	reader.onload = async () => {
-			// 		files.push({
-			// 			path: file.path.startsWith('/') ? file.path : `/${file.path}`,
-			// 			content_type: file.type,
-			// 			body: reader.result,
-			// 		})
-			// 		const cid = await ipfs.add(files)
-			// 		await hostingContract.add_to_map({ content: cid })
-			// 		setCurrentStep(4)
-			// 		window.open(url, '_blank')
-			// 	}
-			// 	reader.readAsText(file)
-			// })
-		}
-		catch (e) {
-			console.log(e)
-		}
+		// }
+		// catch (e) {
+		// 	console.log(e)
+		// }
 	}
 	const steps = ['Select Files', 'Validate', 'Upload', 'Complete']
 
