@@ -27,6 +27,7 @@ import {
 	TableHeader,
 	TableBody,
 } from '../templates/Table'
+import {IPFS, create} from 'ipfs-core'
 
 interface HostingProps {
 	pid: string
@@ -101,6 +102,60 @@ export default function UploadSystem({ pid }: HostingProps) {
 		})
 	}
 
+	// upload files to ipfs and get the cid and add it to the hosting contract map 
+	async function uploadToIPFS() {
+		setCurrentStep(3)
+		const files: { path: string; content_type: string; body: void }[] = []
+
+		const hostingAccount = await window.near.account(`web4.${pid}`)
+
+		const hostingContract = new Contract(hostingAccount, `web4.${pid}`, {
+			viewMethods: [],
+			changeMethods: ['add_to_map'],
+		})
+		try {
+			const ipfs = await create()
+			acceptedFiles.forEach(async (file) => {
+				const reader = new FileReader()
+				reader.onload = async () => {
+					const { cid } = await ipfs.add(file)
+					files.push({
+						path: file.path.startsWith('/') ? file.path : `/${file.path}`,
+						content_type: file.type,
+						body: cid.toString(),
+					})
+					await hostingContract.add_to_map({ content: files })
+					setCurrentStep(4)
+					window.open(url, '_blank')
+				}
+				reader.readAsText(file)
+			})
+			
+			// const reader = new FileReader()
+			// reader.onload = async () => {
+			// 	const { cid } = await ipfs.add(reader.result)
+			// console.log(cid.toString())
+
+			// acceptedFiles.forEach(async (file) => {
+			// 	const reader = new FileReader()
+			// 	reader.onload = async () => {
+			// 		files.push({
+			// 			path: file.path.startsWith('/') ? file.path : `/${file.path}`,
+			// 			content_type: file.type,
+			// 			body: reader.result,
+			// 		})
+			// 		const cid = await ipfs.add(files)
+			// 		await hostingContract.add_to_map({ content: cid })
+			// 		setCurrentStep(4)
+			// 		window.open(url, '_blank')
+			// 	}
+			// 	reader.readAsText(file)
+			// })
+		}
+		catch (e) {
+			console.log(e)
+		}
+	}
 	const steps = ['Select Files', 'Validate', 'Upload', 'Complete']
 
 	return (
@@ -194,7 +249,7 @@ export default function UploadSystem({ pid }: HostingProps) {
 				}}
 				color="primary"
 				aria-label="upload-files"
-				onClick={() => uploadFile()}
+				onClick={() => uploadToIPFS()}
 			>
 				<CloudUploadIcon />
 			</Fab>
