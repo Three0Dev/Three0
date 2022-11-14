@@ -45,39 +45,49 @@ export default function ProjectsDash() {
 				const nameRegex = /^(([a-z\d]+[\-_])*[a-z\d]+)$/
 
 				const pid = `${name}_three0-${uuid}.${window.accountId}`
-			
+
 				const pid_max_length = pid.length + 'storage'.length
 
-				const INVALID_PHRASES = ["near", "wallet", "account", "contract", "app", "test", "dev", "mainnet", "testnet", "helper", "three0", "_", "-"];
+				const INVALID_PHRASES = [
+					'near',
+					'wallet',
+					'account',
+					'contract',
+					'app',
+					'test',
+					'dev',
+					'mainnet',
+					'testnet',
+					'helper',
+					'three0',
+					'_',
+					'-',
+				]
 
 				if (!name) {
-				Swal.showValidationMessage(
-					"Please enter a project name"
-				);
+					Swal.showValidationMessage('Please enter a project name')
 				} else if (!nameRegex.test(name)) {
-				Swal.showValidationMessage(
-					"Please enter a valid project name. Only lowercase letters and numbers are allowed."
-				);
-				} else if (pid_max_length > 64) {
-				const msg = `Project name is too long. Please enter a name with ${pid_max_length-64} less characters.`;
-				Swal.showValidationMessage(
-					msg
-				);
-				} else if (name.length < 3) {
-				Swal.showValidationMessage(
-					"Please enter a valid project name. Project name cannot be less than 3 characters."
-				);
-				} else if (name.includes(" ")) {
 					Swal.showValidationMessage(
-						"Please enter a valid project name. Project name cannot contain spaces."
-				);
+						'Please enter a valid project name. Only lowercase letters and numbers are allowed.'
+					)
+				} else if (pid_max_length > 64) {
+					const msg = `Project name is too long. Please enter a name with ${
+						pid_max_length - 64
+					} less characters.`
+					Swal.showValidationMessage(msg)
+				} else if (name.length < 3) {
+					Swal.showValidationMessage(
+						'Please enter a valid project name. Project name cannot be less than 3 characters.'
+					)
+				} else if (name.includes(' ')) {
+					Swal.showValidationMessage(
+						'Please enter a valid project name. Project name cannot contain spaces.'
+					)
 				} else {
-					for(let i=0; i<INVALID_PHRASES.length; i++) {
+					for (let i = 0; i < INVALID_PHRASES.length; i++) {
 						if (name.includes(INVALID_PHRASES[i])) {
-							const msg = `Please enter a valid project name. Project name cannot contain "${INVALID_PHRASES[i]}".`;
-							Swal.showValidationMessage(
-								msg            
-							);
+							const msg = `Please enter a valid project name. Project name cannot contain "${INVALID_PHRASES[i]}".`
+							Swal.showValidationMessage(msg)
 						}
 					}
 				}

@@ -3,7 +3,7 @@ import React from 'react'
 import { useDropzone } from 'react-dropzone'
 import { Box, Paper, Fab } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
-import { Contract, keyStores } from 'near-api-js'
+import { Contract } from 'near-api-js'
 import {
 	TableCell,
 	TableRow,
@@ -12,7 +12,6 @@ import {
 	TableHeader,
 	TableBody,
 } from '../templates/Table'
-import { uploadFiles } from '../storage-components'
 
 interface HostingProps {
 	pid: string

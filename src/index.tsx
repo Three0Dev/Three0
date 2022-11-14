@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 // import React from 'react'
-import React from "react";
-import { createRoot } from "react-dom/client";
-import Core from "./Core";
-import { initContract } from "./utils";
+import React from 'react'
+import { createRoot } from 'react-dom/client'
+import Core from './Core'
+import { initContract } from './utils'
 
 export {}
 declare global {

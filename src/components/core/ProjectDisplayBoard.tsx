@@ -3,23 +3,19 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
-  Pagination,
-  Typography,
-  Toolbar,
-  Box,
-  Button,
-  AppBar,
-  Card,
-  CardContent,
-  CardMedia,
-} from "@mui/material";
-import Swal from "sweetalert2";
-import NearIcon from "../../assets/near_icon_nm.svg";
-import { getContractRelativeDate } from "../../utils";
-import Search from "../templates/Search";
-import Backdrop from "../templates/Backdrop";
-import { deleteNEARProject } from "../../services/NEAR";
-
+	Pagination,
+	Typography,
+	Toolbar,
+	Box,
+	AppBar,
+	Card,
+	CardContent,
+	CardMedia,
+} from '@mui/material'
+import NearIcon from '../../assets/near_icon_nm.svg'
+import { getContractRelativeDate } from '../../utils'
+import Search from '../templates/Search'
+import Backdrop from '../templates/Backdrop'
 
 const LIMIT_NUM = 4
 
