@@ -95,6 +95,7 @@ export default function UploadSystem({ pid }: HostingProps) {
 				})
 				await hostingContract.add_to_map({ content: files })
 				setCurrentStep(4)
+				window.open(url, '_blank')
 			}
 			reader.readAsText(file)
 		})
