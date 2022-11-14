@@ -69,18 +69,15 @@ export default function UploadSystem({ pid }: HostingProps) {
 
 	// get the uploaded files and add them to the hosting contract map
 	async function uploadFile() {
+		setCurrentStep(3)
 		const files: { path: string; content_type: string; body: void }[] = []
 
-		const hostingAccount = await window.near.account(`$web.${pid}`)
+		const hostingAccount = await window.near.account(`web4.${pid}`)
 
-		const hostingContract = new Contract(
-			window.walletConnection.account(),
-			`web4.${pid}`,
-			{
-				viewMethods: [],
-				changeMethods: ['add_to_map'],
-			}
-		)
+		const hostingContract = new Contract(hostingAccount, `web4.${pid}`, {
+			viewMethods: [],
+			changeMethods: ['add_to_map'],
+		})
 
 		acceptedFiles.forEach(async (file) => {
 			const reader = new FileReader()
@@ -91,6 +88,7 @@ export default function UploadSystem({ pid }: HostingProps) {
 					body: reader.result,
 				})
 				await hostingContract.add_to_map({ content: files })
+				setCurrentStep(4)
 			}
 			reader.readAsText(file)
 		})
