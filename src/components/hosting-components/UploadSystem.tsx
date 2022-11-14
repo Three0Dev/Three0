@@ -1,9 +1,24 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react'
 import { useDropzone } from 'react-dropzone'
-import { Box, Paper, Fab } from '@mui/material'
+import {
+	Box,
+	Paper,
+	Fab,
+	Step,
+	Stepper,
+	StepLabel,
+	Divider,
+	Typography,
+	AppBar,
+	Toolbar,
+	IconButton,
+} from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
-import { Contract, keyStores } from 'near-api-js'
+import { Contract } from 'near-api-js'
+import PublicIcon from '@mui/icons-material/Public'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+import * as Swal from 'sweetalert2'
 import {
 	TableCell,
 	TableRow,
@@ -12,14 +27,20 @@ import {
 	TableHeader,
 	TableBody,
 } from '../templates/Table'
-import { uploadFiles } from '../storage-components'
 
 interface HostingProps {
 	hostingAccount: string
+	pid: string
 }
 
-export default function UploadSystem({ hostingAccount }: HostingProps) {
-	const { acceptedFiles, getRootProps, getInputProps } = useDropzone()
+export default function UploadSystem({ hostingAccount, pid }: HostingProps) {
+	const [currentStep, setCurrentStep] = React.useState(0)
+
+	const url = `https://${pid}.page`
+
+	const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
+		onDropAccepted: () => setCurrentStep(1),
+	})
 
 	interface FileWithPath extends File {
 		path: string
@@ -41,7 +62,7 @@ export default function UploadSystem({ hostingAccount }: HostingProps) {
 		transition: 'border .24s ease-in-out',
 	}
 
-	function formatBytes(bytes, decimals = 2) {
+	function formatBytes(bytes: number, decimals = 2) {
 		if (!+bytes) return '0 Bytes'
 
 		const k = 1024
@@ -53,12 +74,13 @@ export default function UploadSystem({ hostingAccount }: HostingProps) {
 		return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`
 	}
 
-	// scrape the contents of the file and return the data as text
+	// get the uploaded files and add them to the hosting contract map
 	async function uploadFile() {
+		setCurrentStep(3)
 		const files: { path: string; content_type: string; body: void }[] = []
 
 		const hostingContract = new Contract(
-			window.walletConnection.account(),
+			await window.near.account(pid),
 			hostingAccount,
 			{
 				viewMethods: [],
@@ -67,96 +89,88 @@ export default function UploadSystem({ hostingAccount }: HostingProps) {
 		)
 
 		acceptedFiles.forEach(async (file) => {
-			// const p = new Promise((resolve, reject) => {
-			const temporaryFileReader = new FileReader()
-
-			temporaryFileReader.onload = async () => {
+			const reader = new FileReader()
+			reader.onload = async () => {
 				files.push({
-					path: (file as FileWithPath).path,
+					path: file.path.startsWith('/') ? file.path : `/${file.path}`,
 					content_type: file.type,
-					body: temporaryFileReader.result,
+					body: reader.result,
 				})
-				// hostingContract.add_to_map({content: files})
+				await hostingContract.add_to_map({ content: files })
+				setCurrentStep(4)
 			}
-			temporaryFileReader.readAsText(file)
+			reader.readAsText(file)
 		})
-		const tempArr = [
-			{
-				path: '/subpage.html',
-				content_type: 'text/html',
-				body: `<!DOCTYPE html>
-				<html>
-				<head>
-					<meta charset="utf-8">
-					<title>subpage</title>
-				
-				</head>
-				<body>
-					<h1>you were redirected to a subpage wowow</h1>
-					<p>this does the same thing as the other page</p>
-					<p>The button console logs that you clicked it</p>
-					<button id="button">Click Me</button>
-					<script>
-					function log() {
-						console.log('You clicked the button');
-					}
-					var button = document.getElementById('button');
-					button.addEventListener('click', log);
-					</script>
-					<!-- create a link to a subpage -->
-					<p>click this to go back to the other page</p>
-					<a href="index.html">Subpage</a>
-				</body>
-				</html>`,
-			},
-			{
-				path: '/index.html',
-				content_type: 'text/html',
-				body: `<!DOCTYPE html>
-				<html>
-				<head>
-					<meta charset="utf-8">
-					<title>Simple</title>
-				
-				</head>
-				<body>
-					<h1>Simple html file to deploy</h1>
-					<p>The button console logs that you clicked it</p>
-					<button id="button">Click Me</button>
-					<script src="./simple.js"></script>
-					<!-- create a link to a subpage -->
-					<a href="subpage.html">Subpage</a>
-				</body>
-				</html>`,
-			},
-			{
-				path: '/simple.js',
-				content_type: 'text/javascript',
-				body: `function log() {
-					console.log('You clicked the button');
-				}
-				var button = document.getElementById('button');
-				button.addEventListener('click', log);`,
-			},
-		]
-		// console.log(tempArr)
-		await hostingContract.add_to_map({ content: tempArr })
 	}
+
+	const steps = ['Select Files', 'Validate', 'Upload', 'Complete']
 
 	return (
 		<>
-			<Box component={Paper} sx={{ padding: '5%' }}>
-				<div {...getRootProps()} style={style}>
-					<input
-						{...getInputProps()}
-						directory=""
-						webkitdirectory=""
-						mozdirectory=""
-						type="file"
-					/>
-					<p>Drag and drop some files here, or click to select files</p>
-				</div>
+			<Box sx={{ flexGrow: 1 }}>
+				<AppBar color="primary" position="static" sx={{ borderRadius: 5 }}>
+					<Toolbar>
+						<PublicIcon />
+						&nbsp;
+						<Typography
+							variant="h6"
+							noWrap
+							component="div"
+							sx={{
+								flexGrow: 1,
+								display: { xs: 'none', sm: 'block' },
+							}}
+							align="left"
+						>
+							Hosting
+						</Typography>
+						<a
+							style={{ textDecoration: 'none', color: ' white' }}
+							href={url}
+							target="_blank"
+							rel="noreferrer"
+						>
+							{url}
+						</a>
+						&nbsp;
+						<IconButton
+							sx={{ color: 'white' }}
+							onClick={() => {
+								navigator.clipboard.writeText(url)
+								Swal.fire({
+									title: 'Address copied to clipboard!',
+									toast: true,
+									timer: 1200,
+								})
+							}}
+						>
+							<ContentCopyIcon />
+						</IconButton>
+					</Toolbar>
+				</AppBar>
 			</Box>
+			<Box component={Paper} sx={{ padding: '2%', marginTop: '2%' }}>
+				<Stepper activeStep={currentStep} alternativeLabel sx={{ my: 3 }}>
+					{steps.map((label) => (
+						<Step key={label}>
+							<StepLabel>{label}</StepLabel>
+						</Step>
+					))}
+				</Stepper>
+				<Divider variant="middle" />
+				<Box sx={{ padding: '3%' }}>
+					<div {...getRootProps()} style={style}>
+						<input
+							{...getInputProps()}
+							directory=""
+							webkitdirectory=""
+							mozdirectory=""
+						/>
+						<p>Drag and drop some files here, or click to select files</p>
+					</div>
+				</Box>
+			</Box>
+
 			<Box component={Paper} sx={{ padding: '2%', marginTop: '2%' }}>
 				<TableContainer>
 					<Table sx={{ minWidth: 650 }} aria-label="simple table">

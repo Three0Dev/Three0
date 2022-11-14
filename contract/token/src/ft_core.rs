@@ -55,6 +55,12 @@ pub trait FungibleTokenCore {
 
     /// Returns the balance of the account. If the account doesn't exist must returns `"0"`.
     fn ft_balance_of(&self, account_id: AccountId) -> U128;
+
+    // Returns a list of balances for a list of accounts. If an account doesn't exist it must return `"0"`.
+    fn ft_balance_of_batch(&self, account_ids: Vec<AccountId>) -> Vec<U128>;
+
+    // Returns a list of registration status for a list of accounts.
+    fn ft_is_registered(&self, account_ids: Vec<AccountId>) -> Vec<bool>;
 }
 
 #[near_bindgen]
@@ -111,6 +117,22 @@ impl FungibleTokenCore for Contract {
     fn ft_balance_of(&self, account_id: AccountId) -> U128 {
         // Return the balance of the account casted to a U128
         self.accounts.get(&account_id).unwrap_or(0).into()
+    }
+
+    fn ft_balance_of_batch(&self, account_ids: Vec<AccountId>) -> Vec<U128> {
+        // Return the balance of the accounts casted to a U128
+        account_ids
+            .iter()
+            .map(|account_id| self.accounts.get(account_id).unwrap_or(0).into())
+            .collect()
+    }
+
+    fn ft_is_registered(&self, account_ids: Vec<AccountId>) -> Vec<bool> {
+        // Return the registration status of the accounts
+        account_ids
+            .iter()
+            .map(|account_id| self.accounts.contains_key(account_id))
+            .collect()
     }
 }
 

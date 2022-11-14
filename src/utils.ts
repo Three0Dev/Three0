@@ -8,9 +8,8 @@ export const nearConfig = getNEARConfig(process.env.NODE_ENV || 'testnet')
 export async function initContract() {
 	// Initialize connection to the NEAR testnet
 	const near = await connect({
-		deps: { keyStore: new keyStores.BrowserLocalStorageKeyStore() },
+		keyStore: new keyStores.BrowserLocalStorageKeyStore(),
 		...nearConfig,
-		headers: {},
 	})
 
 	window.near = near
@@ -41,17 +40,12 @@ export function logout() {
 }
 
 export function login() {
-	// Allow the current app to make calls to the specified contract on the
-	// user's behalf.
-	// This works by creating a new access key for the user's account and storing
-	// the private key in localStorage.
 	const starter = window.location.origin
-	window.walletConnection.requestSignIn(
-		nearConfig.contractName,
-		'Three0',
-		`${starter}/`,
-		`${starter}/login`
-	)
+	window.walletConnection.requestSignIn({
+		contractId: nearConfig.contractName,
+		successUrl: `${starter}/`,
+		failureUrl: `${starter}/login`,
+	})
 }
 
 export function getContractRelativeDate(date: any) {

@@ -123,3 +123,90 @@ impl Three0 {
         }
     }
 }
+
+// create unit tests in this file
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use near_sdk::MockedBlockchain;
+    use near_sdk::{testing_env, VMContext};
+
+    // Initializing the context for the test
+    // See https://docs.rs/near-sdk/3.1.0/near_sdk/struct.VMContext.html
+    fn get_context(input: Vec<u8>, is_view: bool) -> VMContext {
+        VMContext {
+            current_account_id: "alice_near".to_string(),
+            signer_account_id: "bob_near".to_string(),
+            signer_account_pk: vec![0, 1, 2],
+            predecessor_account_id: "carol_near".to_string(),
+            input,
+            block_index: 0,
+            block_timestamp: 0,
+            account_balance: 0,
+            account_locked_balance: 0,
+            storage_usage: 0,
+            attached_deposit: 0,
+            prepaid_gas: 10u64.pow(18),
+            random_seed: vec![0, 1, 2],
+            is_view,
+            output_data_receivers: vec![],
+            epoch_height: 0,
+        }
+    }
+
+    // test for creating a project
+    #[test]
+    fn test_create_project() {
+        let context = get_context(vec![], false);
+        testing_env!(context);
+        let mut contract = Three0::default();
+        contract.create_project("eth".to_string(), "0x123".to_string());
+        let projects = contract.get_all_projects(env::signer_account_id(), 0, 10);
+        assert_eq!(projects.entries.len(), 1);
+    }
+
+    // test for deleting a project
+    #[test]
+    fn test_delete_project() {
+        let context = get_context(vec![], false);
+        testing_env!(context);
+        let mut contract = Three0::default();
+        contract.create_project("eth".to_string(), "0x123".to_string());
+        contract.create_project("eth".to_string(), "0x456".to_string());
+        contract.create_project("eth".to_string(), "0x789".to_string());
+        let projects = contract.get_all_projects(env::signer_account_id(), 0, 10);
+        assert_eq!(projects.entries.len(), 3);
+        contract.delete_project("0x456".to_string());
+        let projects = contract.get_all_projects(env::signer_account_id(), 0, 10);
+        assert_eq!(projects.entries.len(), 2);
+    }
+
+    // test for getting a project
+    #[test]
+    fn test_get_project() {
+        let context = get_context(vec![], false);
+        testing_env!(context);
+        let mut contract = Three0::default();
+        contract.create_project("eth".to_string(), "0x123".to_string());
+        contract.create_project("eth".to_string(), "0x456".to_string());
+        contract.create_project("eth".to_string(), "0x789".to_string());
+        let projects = contract.get_project("0x456".to_string(), env::signer_account_id());
+        assert_eq!(projects.entries.len(), 1);
+    }
+
+    // test for getting all projects
+    #[test]
+    fn test_get_all_projects() {
+        let context = get_context(vec![], false);
+        testing_env!(context);
+        let mut contract = Three0::default();
+        contract.create_project("eth".to_string(), "0x123".to_string());
+        contract.create_project("eth".to_string(), "0x456".to_string());
+        contract.create_project("eth".to_string(), "0x789".to_string());
+        let projects = contract.get_all_projects(env::signer_account_id(), 0, 10);
+        assert_eq!(projects.entries.len(), 3);
+    }
+}
+
+
+

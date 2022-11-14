@@ -30,6 +30,8 @@ interface FileManagerProps {
 }
 
 export default function FileManager({ storageAccount }: FileManagerProps) {
+	const { projectContract } = React.useContext(ProjectDetailsContext)
+
 	const features = ['uploadFiles']
 
 	const [collapsed, setCollapsed] = useState({})
@@ -43,16 +45,12 @@ export default function FileManager({ storageAccount }: FileManagerProps) {
 
 	const enabledFeatures = features
 
-	const contract = new Contract(
-		window.walletConnection.account(),
-		storageAccount,
-		{
-			// View methods are read only. They don't modify the state, but usually return some value.
-			viewMethods: ['list_files', 'get_file', 'has_storage', 'get_storage'],
-			// Change methods can modify the state. But you don't receive the returned value when called.
-			changeMethods: ['new_default_meta', 'nft_mint', 'set_storage'],
-		}
-	)
+	const contract = new Contract(projectContract.account, storageAccount, {
+		// View methods are read only. They don't modify the state, but usually return some value.
+		viewMethods: ['list_files', 'get_file', 'has_storage', 'get_storage'],
+		// Change methods can modify the state. But you don't receive the returned value when called.
+		changeMethods: ['new_default_meta', 'nft_mint', 'set_storage'],
+	})
 
 	const uploadFiles = async (path: string, files: File[]) => {
 		let filepath = path

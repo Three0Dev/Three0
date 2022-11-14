@@ -1,5 +1,5 @@
-import { Paper, Box } from '@mui/material'
 import React from 'react'
+import { Paper, Box } from '@mui/material'
 import SideBarTreeNode from './SideBarTreeNode'
 
 export default function SideBar({

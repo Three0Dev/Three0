@@ -158,9 +158,7 @@ export default function ProjectDisplayBoard() {
 					count={Math.floor(projects.num / LIMIT_NUM) + 1}
 					boundaryCount={2}
 					onChange={updatePage}
-				>
-					{' '}
-				</Pagination>
+				/>
 			</Box>
 		</>
 	)

@@ -1,63 +1,68 @@
 import React from 'react'
 import AddIcon from '@mui/icons-material/Add'
-import { Fab, Typography, FormControl, useTheme } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import FileManager from '../components/storage-components/FileManager'
 import ProjectDetailsContext from '../state/ProjectDetailsContext'
-import { addStorage } from '../services/NEAR'
+import { addStorage as addNearStorage } from '../services/NEAR'
 import nostorage from '../assets/nostorage.svg'
 import Backdrop from '../components/templates/Backdrop'
 
 export default function Storage() {
 	const [loading, setLoading] = React.useState(true)
 	const [storageAccount, setStorageAccount] = React.useState('')
+	const [backdrop, setBackdrop] = React.useState(false)
 	const { projectDetails, projectContract } = React.useContext(
 		ProjectDetailsContext
 	)
 	const MySwal = withReactContent(Swal)
-	const theme = useTheme()
-	projectContract.has_storage().then((hasStorage: boolean) => {
-		if (hasStorage) {
-			projectContract.get_storage().then((account: string) => {
-				setStorageAccount(account)
-				setLoading(false)
-			})
-		}
-		setLoading(false)
-	})
 
-	async function showStorageSwal() {
-		const { value: formValues } = await MySwal.fire({
-			title: 'Add Storage',
-			html: (
-				<FormControl fullWidth sx={{ margin: '2% 0' }}>
-					<Typography>
-						Do you have 16 NEAR to add storage to your project?
-					</Typography>
-				</FormControl>
-			),
-			focusConfirm: false,
-			confirmButtonColor: theme.palette.secondary.dark,
-			confirmButtonText: 'Yes',
-		})
-
-		if (formValues) {
-			addStorage(projectContract)
-				.then(() => {
-					setStorageAccount(`storage.${projectDetails.pid}`)
+	React.useEffect(() => {
+		if (Object.keys(projectContract).length !== 0) {
+			projectContract
+				.get_storage()
+				.then((account: string) => {
+					setStorageAccount(account)
+					setLoading(false)
 				})
-				.catch((error) => {
-					if (error.type === 'NotEnoughBalance') {
-						MySwal.fire({
-							title: 'Error',
-							text: 'You do not have enough NEAR to add storage',
-							icon: 'error',
-							confirmButtonText: 'Ok',
-						})
-					}
+				.catch(() => {
+					setStorageAccount('')
+					setLoading(false)
 				})
 		}
+	}, [projectContract])
+
+	async function addStorage() {
+		setBackdrop(true)
+		try {
+			await addNearStorage(projectContract)
+			setStorageAccount(`storage.${projectDetails.pid}`)
+		} catch (error: any) {
+			if (error.type === 'NotEnoughBalance') {
+				MySwal.fire({
+					title: 'Not enough balance',
+					text: `Your project account ${error.signer_id} needs an additional ${(
+						(error.cost - error.balance) *
+						0.000000000000000000000001
+					).toPrecision(3)} NEAR to cover the storage subaccount creation`,
+					icon: 'error',
+					confirmButtonText: 'Ok',
+				})
+			} else if (error.type === 'LackBalanceForState') {
+				MySwal.fire({
+					title: 'Not enough balance',
+					text: `Your project account ${
+						error.kind.signer_id
+					} needs an additional ${(
+						error.amount * 0.000000000000000000000001
+					).toPrecision(3)} NEAR to cover the storage for contract deployment`,
+					icon: 'error',
+					confirmButtonText: 'Ok',
+				})
+			}
+		}
+		setBackdrop(false)
 	}
 
 	return loading ? (
@@ -67,27 +72,23 @@ export default function Storage() {
 			{storageAccount !== '' && <FileManager storageAccount={storageAccount} />}
 			{storageAccount === '' && (
 				<>
+					<Backdrop loading={backdrop} />
 					<img alt="nostorage" src={nostorage} className="majorImg" />
 					<Typography
-						variant="h2"
+						variant="h3"
 						style={{ textAlign: 'center', fontWeight: 'bold' }}
 					>
 						No Storage Contract Deployed
 					</Typography>
-					<Fab
-						sx={{
-							position: 'fixed',
-							bottom: 16,
-							right: 16,
-						}}
-						color="primary"
-						aria-label="add-storage"
-						onClick={() => {
-							showStorageSwal()
-						}}
-					>
-						<AddIcon />
-					</Fab>
+
+					<Box sx={{ marginTop: '20px', textAlign: 'center' }}>
+						<Button>Get Documentation</Button>
+						&nbsp;&nbsp;&nbsp;
+						<Button onClick={() => addStorage()} variant="contained">
+							<AddIcon />
+							Add Storage
+						</Button>
+					</Box>
 				</>
 			)}
 		</>

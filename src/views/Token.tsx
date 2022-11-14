@@ -1,6 +1,6 @@
 import React from 'react'
 import AddIcon from '@mui/icons-material/Add'
-import { Fab, Typography, useTheme } from '@mui/material'
+import { Box, Button, Typography, useTheme } from '@mui/material'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import notoken from '../assets/notoken.svg'
@@ -19,6 +19,7 @@ export interface tokenMetadata {
 
 export default function Token() {
 	const [loading, setLoading] = React.useState(true)
+	const [backdrop, setBackdrop] = React.useState(false)
 	const [tokenAccount, setTokenAccount] = React.useState('')
 	const { projectDetails, projectContract } = React.useContext(
 		ProjectDetailsContext
@@ -27,15 +28,20 @@ export default function Token() {
 	const MySwal = withReactContent(Swal)
 	const theme = useTheme()
 
-	projectContract.has_tokenization().then((hasTokenization: boolean) => {
-		if (hasTokenization) {
-			projectContract.get_tokenization().then((account: string) => {
-				setTokenAccount(account)
-				setLoading(false)
-			})
-			setLoading(false)
+	React.useEffect(() => {
+		if (Object.keys(projectContract).length !== 0) {
+			projectContract
+				.get_tokenization()
+				.then((account: string) => {
+					setTokenAccount(account)
+					setLoading(false)
+				})
+				.catch(() => {
+					setTokenAccount('')
+					setLoading(false)
+				})
 		}
-	})
+	}, [projectContract])
 
 	async function showTokenSwal() {
 		await MySwal.fire({
@@ -95,8 +101,10 @@ export default function Token() {
 				icon: formValues.length === 5 ? formValues[4] : undefined,
 			}
 			// console.log(formValues)
+			setBackdrop(true)
 			addTokenization(projectContract, metadata, formValues[0])
 				.then(() => {
+					setBackdrop(false)
 					setTokenAccount(`token.${projectDetails.pid}`)
 				})
 				.catch((error) => {
@@ -106,14 +114,13 @@ export default function Token() {
 							text: `Your project account ${
 								error.signer_id
 							} needs an additional ${(
-								error.cost -
-								error.balance * 0.000000000000000000000001
+								(error.cost - error.balance) *
+								0.000000000000000000000001
 							).toPrecision(3)} NEAR to cover the token subaccount creation`,
 							icon: 'error',
 							confirmButtonText: 'Ok',
 						})
-					}
-					if (error.type === 'LackBalanceForState') {
+					} else if (error.type === 'LackBalanceForState') {
 						MySwal.fire({
 							title: 'Not enough balance',
 							text: `Your project account ${
@@ -137,27 +144,23 @@ export default function Token() {
 			{tokenAccount !== '' && <TokenDash tokenAccount={tokenAccount} />}
 			{tokenAccount === '' && (
 				<>
+					<Backdrop loading={backdrop} />
 					<img alt="notoken" src={notoken} className="majorImg" />
 					<Typography
-						variant="h2"
+						variant="h3"
 						style={{ textAlign: 'center', fontWeight: 'bold' }}
 					>
 						No Token Contract Deployed
 					</Typography>
-					<Fab
-						sx={{
-							position: 'fixed',
-							bottom: 16,
-							right: 16,
-						}}
-						color="primary"
-						aria-label="add-token"
-						onClick={() => {
-							showTokenSwal()
-						}}
-					>
-						<AddIcon />
-					</Fab>
+
+					<Box sx={{ marginTop: '20px', textAlign: 'center' }}>
+						<Button>Get Documentation</Button>
+						&nbsp;&nbsp;&nbsp;
+						<Button onClick={() => showTokenSwal()} variant="contained">
+							<AddIcon />
+							Add Tokenization
+						</Button>
+					</Box>
 				</>
 			)}
 		</>

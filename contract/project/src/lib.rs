@@ -56,6 +56,9 @@ impl Three0Project {
         ProjectReturnSchema {
             pid: self.pid.clone(),
             num_users: self.users.len() as u32,
+            has_storage: self.storage.is_some(),
+            has_hosting: self.hosting.is_some(),
+            has_tokenization: self.tokenization.is_some(),
         }
     }
 
@@ -106,43 +109,37 @@ impl Three0Project {
         self.users.get(&account_id).unwrap_or_else(|| env::panic(b"User not found"))
     }
 
-    pub fn set_storage(&mut self, storage_account: AccountId) {
-        self.storage = Some(storage_account);
-    }
-
-    pub fn has_storage(&self) -> bool {
-        return !self.storage.is_none()
+    pub fn set_storage(&mut self) {
+        self.storage = format!("storage.{}", env::current_account_id().clone()).into();
     }
 
     pub fn get_storage(&self) -> AccountId {
-        return self.storage.as_ref().unwrap().to_string()
+        self.storage.as_ref()
+            .unwrap_or_else(|| env::panic(b"Storage not set"))
+            .to_string()
     }
 
-    pub fn set_hosting(&mut self, hosting_account: AccountId) {
-        self.hosting = Some(hosting_account);
-    }
-
-    pub fn has_hosting(&self) -> bool {
-        return !self.hosting.is_none()
+    pub fn set_hosting(&mut self) {
+        self.hosting = format!("web4.{}", env::current_account_id().clone()).into();
     }
 
     pub fn get_hosting(&self) -> AccountId {
-        return self.hosting.as_ref().unwrap().to_string()
+        self.hosting.as_ref()
+        .unwrap_or_else(|| env::panic(b"Hosting not set"))
+        .to_string()
     }
 
-    pub fn set_tokenization(&mut self, token_account: AccountId) {
-        self.tokenization = Some(token_account);
-    }
-
-    pub fn has_tokenization(&self) -> bool {
-        return !self.tokenization.is_none()
+    pub fn set_tokenization(&mut self) {
+        self.tokenization = format!("token.{}", env::current_account_id().clone()).into();
     }
 
     pub fn get_tokenization(&self) -> AccountId {
-        return self.tokenization.as_ref().unwrap().to_string()
+        self.tokenization.as_ref()
+        .unwrap_or_else(|| env::panic(b"Tokenization not set"))
+        .to_string()
     }
 }
-
+  
 // create unit tests in this file
 #[cfg(test)]
 mod tests {
@@ -273,34 +270,26 @@ mod tests {
     fn test_storage() {
         let context = get_context(vec![], false);
         testing_env!(context);
-        let mut contract = Three0Project::init("test".to_string());
-        assert_eq!(contract.has_storage(), false);
-        contract.set_storage("test".to_string());
-        assert_eq!(contract.has_storage(), true);
-        assert_eq!(contract.get_storage(), "test".to_string());
+        let mut contract = Three0Project::init("alice_near".to_string());
+        contract.set_storage();
+        assert_eq!(contract.get_storage(), "storage.alice_near".to_string());
     }
 
-    //test for the set hosting function
     #[test]
     fn test_hosting() {
         let context = get_context(vec![], false);
         testing_env!(context);
-        let mut contract = Three0Project::init("test".to_string());
-        assert_eq!(contract.has_hosting(), false);
-        contract.set_hosting("test".to_string());
-        assert_eq!(contract.has_hosting(), true);
-        assert_eq!(contract.get_hosting(), "test".to_string());
+        let mut contract = Three0Project::init("alice_near".to_string());
+        contract.set_hosting();
+        assert_eq!(contract.get_hosting(), "web4.alice_near".to_string());
     }
 
-    //test for the set tokenization function
     #[test]
     fn test_tokenization() {
         let context = get_context(vec![], false);
         testing_env!(context);
-        let mut contract = Three0Project::init("test".to_string());
-        assert_eq!(contract.has_tokenization(), false);
-        contract.set_tokenization("test".to_string());
-        assert_eq!(contract.has_tokenization(), true);
-        assert_eq!(contract.get_tokenization(), "test".to_string());
+        let mut contract = Three0Project::init("alice_near".to_string());
+        contract.set_tokenization();
+        assert_eq!(contract.get_tokenization(), "token.alice_near".to_string());
     }
 }
