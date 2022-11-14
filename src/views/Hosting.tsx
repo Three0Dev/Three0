@@ -56,7 +56,7 @@ export default function Hosting() {
 				<Button>Get Documentation</Button>
 				<Button onClick={() => addHosting()} variant="contained">
 					<AddIcon />
-					Add Storage
+					Add Hosting
 				</Button>
 			</Box>
 		</>
