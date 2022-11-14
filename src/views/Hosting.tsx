@@ -16,7 +16,7 @@ export default function Hosting() {
 	)
 
 	React.useEffect(() => {
-		if (projectDetails) {
+		if (Object.keys(projectContract).length !== 0) {
 			projectContract
 				.get_hosting()
 				.then(() => {
@@ -26,7 +26,7 @@ export default function Hosting() {
 					setIsHostingEnabled(false)
 				})
 		}
-	}, [projectDetails])
+	}, [projectContract])
 
 	async function addHosting() {
 		setBackdrop(true)

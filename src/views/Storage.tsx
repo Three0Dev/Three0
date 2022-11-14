@@ -16,7 +16,7 @@ export default function Storage() {
 	)
 
 	React.useEffect(() => {
-		if (projectDetails) {
+		if (Object.keys(projectContract).length !== 0) {
 			projectContract
 				.get_storage()
 				.then(() => {
@@ -26,7 +26,7 @@ export default function Storage() {
 					setIsStorageEnabled(false)
 				})
 		}
-	}, [projectDetails])
+	}, [projectContract])
 
 	async function addStorage() {
 		setBackdrop(true)

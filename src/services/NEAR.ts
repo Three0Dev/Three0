@@ -5,6 +5,7 @@ import {
 	transactions,
 	KeyPair,
 	utils,
+	// eslint-disable-next-line no-unused-vars
 	providers,
 	Account,
 } from 'near-api-js'
@@ -14,30 +15,29 @@ import NEAR_STORAGE_CONTRACT from 'url:../contract-wasms/near-storage.wasm'
 import NEAR_HOSTING_CONTRACT from 'url:../contract-wasms/near-hosting.wasm'
 import { nearConfig } from '../utils'
 
-export async function createNEARAccount(
-	name: string,
-	amount: string,
-	parentAccount: Account
-) {
+export async function generateKey(name: string) {
 	const keyPair = KeyPair.fromRandom('ed25519')
-	const publicKey = keyPair.getPublicKey().toString()
+	const publicKey = keyPair.getPublicKey()
 	await new keyStores.BrowserLocalStorageKeyStore().setKey(
 		nearConfig.networkId,
 		name,
 		keyPair
 	)
 
+	return publicKey
+}
+
+export async function createNEARAccount(
+	name: string,
+	amount: string,
+	parentAccount: Account
+) {
+	const publicKey = await generateKey(name)
 	await parentAccount.createAccount(
 		name,
 		publicKey,
 		utils.format.parseNearAmount(amount)
 	)
-}
-
-export async function createNEARProjectAccount() {
-	const { pid } = JSON.parse(localStorage.getItem('projectDetails') || '{}')
-	const parentAccount = window.walletConnection.account()
-	await createNEARAccount(pid, '7', parentAccount)
 }
 
 export async function createNEARProjectReference() {
@@ -68,6 +68,18 @@ export async function deployNEARProjectContract() {
 	})
 }
 
+export async function createNEARProjectAccount() {
+	const { pid } = JSON.parse(localStorage.getItem('projectDetails') || '{}')
+
+	const publicKey = await generateKey(pid)
+
+	await window.near.createAccount(pid, publicKey)
+	// TODO transfer some amount of NEAR to the account in mainnet
+
+	await createNEARProjectReference()
+	await deployNEARProjectContract()
+}
+
 export async function deleteNEARProject(pid: string) {
 	try {
 		const canDelete = await window.contract.delete_project({
@@ -75,6 +87,7 @@ export async function deleteNEARProject(pid: string) {
 		})
 		if (canDelete) {
 			const account = await window.near.account(pid)
+			// TODO donate money to faucet in testnet
 			await account.deleteAccount(window.accountId)
 
 			await new keyStores.BrowserLocalStorageKeyStore().removeKey(
@@ -90,25 +103,22 @@ export async function deleteNEARProject(pid: string) {
 	return false
 }
 
-export async function checkAccountStatus(hash: any) {
-	const provider = new providers.JsonRpcProvider(nearConfig.nodeUrl)
+// export async function checkAccountStatus(hash: any) {
+// 	const provider = new providers.JsonRpcProvider({ url: nearConfig.nodeUrl })
 
-	const result = await provider.txStatus(hash, window.accountId)
+// 	const result = await provider.txStatus(hash, nearConfig.networkId)
 
-	if (
-		result.transaction.actions.includes('CreateAccount') &&
-		result.transaction_outcome.outcome.status.SuccessReceiptId
-	) {
-		await createNEARProjectReference()
-		await deployNEARProjectContract()
-	}
+// 	if (result.transaction_outcome.outcome.status.SuccessReceiptId) {
+// 		await createNEARProjectReference()
+// 		await deployNEARProjectContract()
+// 	}
 
-	return result.transaction.receiver_id
-}
+// 	return result.transaction.receiver_id
+// }
 
 export async function createHostingAccount(parentPID: string) {
 	const parentAccount = await window.near.account(parentPID)
-	await createNEARAccount(`web4.${parentPID}`, '8', parentAccount)
+	await createNEARAccount(`web4.${parentPID}`, '9', parentAccount)
 }
 
 export async function deployHostingContract(parentPID: string) {
@@ -134,14 +144,14 @@ export async function createStorageAccount(parentPID: string) {
 }
 
 export async function deployStorageContract(parentPID: string) {
-	const wallet = `storage.${parentPID}`
-	const storageAccount = await window.near.account(wallet)
+	const storageContract = `storage.${parentPID}`
+	const storageAccount = await window.near.account(storageContract)
 
 	const contract = await fetch(NEAR_STORAGE_CONTRACT)
 	const buf = await contract.arrayBuffer()
 
 	await storageAccount.signAndSendTransaction({
-		receiverId: wallet,
+		receiverId: storageContract,
 		actions: [
 			transactions.deployContract(new Uint8Array(buf)),
 			transactions.functionCall(

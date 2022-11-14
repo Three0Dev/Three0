@@ -1,33 +1,37 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import AddIcon from '@mui/icons-material/Add'
 import { Fab, useTheme } from '@mui/material'
-import { useSearchParams, useNavigate } from 'react-router-dom'
+// import { useSearchParams, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import * as short from 'short-uuid'
 import { ProjectDisplayBoard, CreateProjectDialog } from '../components/core'
 import wave from '../assets/wave.svg'
 import Backdrop from '../components/templates/Backdrop'
-import { createNEARProjectAccount, checkAccountStatus } from '../services/NEAR'
+import {
+	createNEARProjectAccount,
+	// checkAccountStatus
+} from '../services/NEAR'
+import { nearConfig } from '../utils'
 
 export default function ProjectsDash() {
 	const [loading, setLoading] = React.useState(false)
 
-	const [params] = useSearchParams()
-	const navigate = useNavigate()
+	// const [params] = useSearchParams()
+	// const navigate = useNavigate()
 	const theme = useTheme()
 
 	const MySwal = withReactContent(Swal)
 
-	function handleCreateQueryParams() {
-		const hash = params.get('transactionHashes')
-		if (!hash) return
+	// function handleCreateQueryParams() {
+	// 	const hash = params.get('transactionHashes')
+	// 	if (!hash) return
 
-		setLoading(true)
-		checkAccountStatus(hash)
-			.then((pid) => navigate(`/${pid}`))
-			.finally(() => setLoading(false))
-	}
+	// 	setLoading(true)
+	// 	checkAccountStatus(hash)
+	// 		.then((pid) => navigate(`/${pid}`))
+	// 		.finally(() => setLoading(false))
+	// }
 
 	async function showProjectSwal() {
 		const uuid = short.generate().toLowerCase()
@@ -44,7 +48,7 @@ export default function ProjectsDash() {
 				// eslint-disable-next-line no-useless-escape
 				const nameRegex = /^(([a-z\d]+[\-_])*[a-z\d]+)$/
 
-				const pid = `${name}-${uuid}.${window.accountId}`
+				const pid = `${name}-${uuid}.${nearConfig.networkId}`
 
 				if (!nameRegex.test(name) || pid.length > 50) {
 					Swal.showValidationMessage('Invalid Project Name')
@@ -71,9 +75,9 @@ export default function ProjectsDash() {
 		}
 	}
 
-	useEffect(() => {
-		handleCreateQueryParams()
-	}, [])
+	// React.useEffect(() => {
+	// handleCreateQueryParams()
+	// }, [])
 
 	return (
 		<>
