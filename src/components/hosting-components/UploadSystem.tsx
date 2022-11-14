@@ -71,9 +71,11 @@ export default function UploadSystem({ pid }: HostingProps) {
 	async function uploadFile() {
 		const files: { path: string; content_type: string; body: void }[] = []
 
+		const hostingAccount = await window.near.account(`$web.${pid}`)
+
 		const hostingContract = new Contract(
 			window.walletConnection.account(),
-			pid,
+			`web4.${pid}`,
 			{
 				viewMethods: [],
 				changeMethods: ['add_to_map'],
@@ -88,7 +90,7 @@ export default function UploadSystem({ pid }: HostingProps) {
 					content_type: file.type,
 					body: reader.result,
 				})
-				await hostingContract.add_to_map({ files })
+				await hostingContract.add_to_map({ content: files })
 			}
 			reader.readAsText(file)
 		})
