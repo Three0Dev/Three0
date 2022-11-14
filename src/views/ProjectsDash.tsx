@@ -1,7 +1,7 @@
 import React from 'react'
 import AddIcon from '@mui/icons-material/Add'
 import { Fab, useTheme } from '@mui/material'
-// import { useSearchParams, useNavigate } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import * as short from 'short-uuid'
@@ -17,8 +17,8 @@ import { nearConfig } from '../utils'
 export default function ProjectsDash() {
 	const [loading, setLoading] = React.useState(false)
 
-	// const [params] = useSearchParams()
-	// const navigate = useNavigate()
+	const [params] = useSearchParams()
+	const navigate = useNavigate()
 	const theme = useTheme()
 
 	const MySwal = withReactContent(Swal)
@@ -71,7 +71,9 @@ export default function ProjectsDash() {
 				})
 			)
 			setLoading(true)
-			createNEARProjectAccount()
+			await createNEARProjectAccount()
+			setLoading(false)
+			navigate(`/${formValues[0]}`)
 		}
 	}
 
