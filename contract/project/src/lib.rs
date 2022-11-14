@@ -16,7 +16,7 @@ mod types;
 // To conserve gas, efficient serialization is achieved through Borsh (http://borsh.io/)
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::{PanicOnDefault, near_bindgen, setup_alloc, AccountId, env};
-use near_sdk::collections::{LookupMap, UnorderedMap};
+use near_sdk::collections::UnorderedMap;
 
 pub use crate::types::*;
 
@@ -29,7 +29,7 @@ setup_alloc!();
 pub struct Three0Project {
     owner: AccountId,
     pid: String,
-    databases: LookupMap<String, Database>,
+    databases: UnorderedMap<String, Database>,
     users: UnorderedMap<String, User>,
     storage: Option<AccountId>,
     hosting: Option<AccountId>,
@@ -42,7 +42,7 @@ impl Three0Project {
         Self {
             owner: env::signer_account_id(),
             pid,
-            databases: LookupMap::new(b"databases".to_vec()),
+            databases: UnorderedMap::new(b"databases".to_vec()),
             users: UnorderedMap::new(b"users".to_vec()),
             storage: None,
             hosting: None,
@@ -55,6 +55,7 @@ impl Three0Project {
             num_users: self.users.len() as u32,
             get_storage: self.storage.is_some(),
             get_hosting: self.hosting.is_some(),
+            num_databases: self.databases.len() as u32,
         }
     }
 
@@ -63,11 +64,15 @@ impl Three0Project {
     }
 
     pub fn valid_database(&self, address: String) -> bool {
-        self.databases.contains_key(&address)
+        self.databases.get(&address).is_some()
     }
 
     pub fn delete_database(&mut self, database_name: String){
         self.databases.remove(&database_name);
+    }
+
+    pub fn get_databases(&self) -> Vec<Database> {
+        self.databases.values().collect()
     }
 
     pub fn get_users(&self, offset: usize, limit: usize) -> AllSchema {

@@ -3,8 +3,9 @@
 // TODO: Handle Identity Provider
 import * as IPFS from 'ipfs-core'
 import OrbitDB from 'orbit-db'
-import { nearConfig } from '../../utils'
+// import IdentityProvider from 'orbit-db-identity-provider'
 import { config as Config } from './config'
+// import NearIdentityProvider from './NearIdentityProvider'
 
 let ipfs: any
 
@@ -16,7 +17,7 @@ let programs: any
 
 let ipfsActivate = false
 
-const peerDBServer = 'https://pinning.three0dev.com/'
+// const peerDBServer = 'https://pinning.three0dev.com/'
 
 // IdentityProvider.addIdentityProvider(NearIdentityProvider)
 
@@ -24,7 +25,7 @@ const peerDBServer = 'https://pinning.three0dev.com/'
 export const initIPFS = async () => {
 	if (!(ipfs || ipfsActivate)) {
 		ipfsActivate = true
-		ipfs = await IPFS.create(Config.ipfs)
+		ipfs = await IPFS.create(Config)
 	}
 	return ipfs
 }
@@ -43,22 +44,16 @@ export const initOrbitDB = async (ipfsLocal: any) => {
 	return orbitdb
 }
 
-export const getAllDatabases = async (pid: string | undefined) => {
+export const getAllDatabases = async (
+	pid: string | undefined,
+	projectContract: any
+) => {
 	console.log('Getting all databases for project: ', pid)
-	if (programs) {
-		await programs.close()
-		programs = null
-	}
-	if (!programs && orbitdb) {
+	if (orbitdb) {
 		// Load programs database
-		programs = await orbitdb.feed(`three0-${pid}-${nearConfig.contractName}`, {
-			accessController: { write: [orbitdb.identity.id] },
-			create: true,
-		})
-
-		await programs?.load()
+		programs = await projectContract.get_databases({})
 	}
-	return programs ? programs.iterator({ limit: -1 }).collect() : []
+	return programs || []
 }
 
 export const getDB = async (address: string) => {
@@ -112,48 +107,38 @@ export const createDatabase = async (
 
 	console.log(dbDetails)
 
-	await fetch(`${peerDBServer}pin?address=${db.address.toString()}`, {
-		method: 'POST',
-		mode: 'cors',
-		cache: 'no-cache',
-		credentials: 'same-origin', // include, *same-origin, omit
-		redirect: 'follow',
-		referrerPolicy: 'no-referrer',
-	})
+	// await fetch(`${peerDBServer}pin?address=${db.address.toString()}`, {
+	// 	method: 'POST',
+	// 	mode: 'cors',
+	// 	cache: 'no-cache',
+	// 	credentials: 'same-origin', // include, *same-origin, omit
+	// 	redirect: 'follow',
+	// 	referrerPolicy: 'no-referrer',
+	// })
 
-	await programs
-		?.add({
-			name,
-			type,
-			address: db.address.toString(),
-			added: Date.now(),
-		})
-		.then(async () => {
-			await contract.add_database({
-				database_details: dbDetails,
-			})
-		})
+	await contract.add_database({
+		database_details: dbDetails,
+	})
 }
 
 export const removeDatabase = async (
 	contract: { delete_database: (arg0: { database_name: any }) => any },
-	hash: any,
 	program: { address: any }
 ) => {
 	const db = await orbitdb.open(program.address)
 	await db.drop()
 	await db.close()
 
-	await programs?.remove(hash)
+	// programs.remove(hash)
 
-	await fetch(`${peerDBServer}unpin?address=${program.address}`, {
-		method: 'POST',
-		mode: 'cors',
-		cache: 'no-cache',
-		credentials: 'same-origin', // include, *same-origin, omit
-		redirect: 'follow',
-		referrerPolicy: 'no-referrer',
-	})
+	// await fetch(`${peerDBServer}unpin?address=${program.address}`, {
+	// 	method: 'POST',
+	// 	mode: 'cors',
+	// 	cache: 'no-cache',
+	// 	credentials: 'same-origin', // include, *same-origin, omit
+	// 	redirect: 'follow',
+	// 	referrerPolicy: 'no-referrer',
+	// })
 
 	await contract.delete_database({
 		database_name: program.address,

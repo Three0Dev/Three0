@@ -104,18 +104,17 @@ export default function ProgramView() {
 	useEffect(() => {
 		fetchDB(address)
 		const program = appState.programs.find(
-			(p: { payload: { value: { address: string } } }) =>
-				p.payload.value.address === address
+			(p: { address: string }) => p.address === address
 		)
 		dispatch({ type: actions.PROGRAMS.SET_PROGRAM, program })
   }, [dispatch, address, appState.programs]) // eslint-disable-line
 
 	function getValuesTitle() {
-		const db = appState.program ? appState.program.payload.value : null
+		const db = appState.program ? appState.program : null
 		let value = ''
 		if (!db) value = 'No database found'
 		else {
-			switch (db.type) {
+			switch (db.db_type) {
 				case 'eventlog':
 					value = 'Latest 10 events'
 					break
@@ -132,7 +131,7 @@ export default function ProgramView() {
 					value = 'Count'
 					break
 				default:
-					value = `No values found for ${db.type}`
+					value = `No values found for ${db.db_type}`
 			}
 		}
 		return (
@@ -143,7 +142,7 @@ export default function ProgramView() {
 	}
 
 	function renderProgram() {
-		const program = appState.program ? appState.program.payload.value : null
+		const program = appState.program ? appState.program : null
 		return (
 			<>
 				<Box component={Paper}>
@@ -161,9 +160,9 @@ export default function ProgramView() {
 										{program ? (
 											<Typography
 												variant="subtitle2"
-												color={colors[program.type as keyof typeof colors]}
+												color={colors[program.db_type as keyof typeof colors]}
 											>
-												{program.type}
+												{program.db_type}
 											</Typography>
 										) : (
 											<Typography variant="subtitle2" color="textSecondary">

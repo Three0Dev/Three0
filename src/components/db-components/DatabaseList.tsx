@@ -43,63 +43,52 @@ export default function ProgramList({ programs, onRemove }: any) {
 		})
 	}
 
+	React.useEffect(() => {
+		console.log(programs)
+	}, [programs])
+
 	return (
 		<TableContainer component={Paper}>
 			<Table>
 				<TableHeader
-					headers={[
-						<LaunchIcon />,
-						'Name',
-						'Type',
-						'Address',
-						'Added',
-						<DeleteIcon />,
-					]}
+					headers={[<LaunchIcon />, 'Name', 'Type', 'Address', <DeleteIcon />]}
 				/>
 				<TableBody>
-					{programs.map((e: { payload: { value: any }; hash: any }) => {
-						const program = e.payload.value
-						return (
-							<TableRow key={`program-id-${program.address}`}>
-								<TableCell>
-									<IconButton onClick={() => handleSelect(program)}>
-										<StorageIcon />
-									</IconButton>
-								</TableCell>
-								<TableCell>{program.name}</TableCell>
-								<TableCell
-									sx={{
-										color: colors[program.type as keyof typeof colors],
-									}}
-								>
-									{program.type}
-								</TableCell>
-								<TableCell
-									sx={{
-										textOverflow: 'ellipsis',
-										maxWidth: '200px',
-										overflow: 'hidden',
-										whiteSpace: 'nowrap',
-									}}
-									onClick={() => copyAddress(program)}
-								>
-									{program.address.toString()
-										? program.address.toString()
-										: program.address}
-								</TableCell>
-								<TableCell>
-									{program.added
-										? `${formatDistanceToNow(program.added)} ago`
-										: 'Unknown'}
-								</TableCell>
-								<TableCell>
-									<IconButton onClick={() => onRemove(e.hash, program)}>
-										<CloseIcon />
-									</IconButton>
-								</TableCell>
-							</TableRow>
-						)
-					})}
+					{programs.map((program: any) => (
+						<TableRow key={`program-id-${program.address}`}>
+							<TableCell>
+								<IconButton onClick={() => handleSelect(program)}>
+									<StorageIcon />
+								</IconButton>
+							</TableCell>
+							<TableCell>{program.name}</TableCell>
+							<TableCell
+								sx={{
+									color: colors[program.db_type as keyof typeof colors],
+								}}
+							>
+								{program.db_type}
+							</TableCell>
+							<TableCell
+								sx={{
+									textOverflow: 'ellipsis',
+									maxWidth: '200px',
+									overflow: 'hidden',
+									whiteSpace: 'nowrap',
+								}}
+								onClick={() => copyAddress(program)}
+							>
+								{program.address.toString()
+									? program.address.toString()
+									: program.address}
+							</TableCell>
+							<TableCell>
+								<IconButton onClick={() => onRemove(program)}>
+									<CloseIcon />
+								</IconButton>
+							</TableCell>
+						</TableRow>
+					))}
 				</TableBody>
 			</Table>
 		</TableContainer>

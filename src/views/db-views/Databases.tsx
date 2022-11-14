@@ -29,7 +29,7 @@ export default function DatabasesView() {
 
 	async function fetchDatabases() {
 		dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: true })
-		const programs = await getAllDatabases(projectDetails.pid)
+		const programs = await getAllDatabases(projectDetails.pid, projectContract)
 		dispatch({
 			type: actions.PROGRAMS.SET_PROGRAMS,
 			programs: programs.reverse(),
@@ -122,10 +122,10 @@ export default function DatabasesView() {
 		})
 	}
 
-	const handleRemoveDatabase = (hash: any, program: any) => {
-		console.log('Remove database...', hash, program)
+	const handleRemoveDatabase = (program: any) => {
+		console.log('Remove database...', program.address)
 		setLoading(true)
-		removeDatabase(projectContract, hash, program)
+		removeDatabase(projectContract, program)
 			.then(() => {
 				console.log('Removed')
 				fetchDatabases().then((data) => {
