@@ -34,9 +34,7 @@ export default function Dash() {
 				'get_project',
 				'get_users',
 				'get_user',
-				'has_storage',
 				'get_storage',
-				'has_hosting',
 				'get_hosting',
 			],
 			changeMethods: [

@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 // import React from 'react'
 import React from 'react'
+import { Near, WalletConnection } from 'near-api-js'
 import { createRoot } from 'react-dom/client'
 import Core from './Core'
 import { initContract } from './utils'
@@ -11,8 +12,8 @@ declare global {
 	interface Window {
 		contract: any
 		accountId: string
-		near: any
-		walletConnection: any
+		near: Near
+		walletConnection: WalletConnection
 	}
 }
 

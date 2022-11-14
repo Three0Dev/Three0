@@ -1,82 +1,68 @@
+/* eslint-disable no-console */
 import React from 'react'
+import { Typography, Button, Box } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
-import { Fab, Typography, FormControl, useTheme } from '@mui/material'
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
-import FileManager from '../components/storage-components/FileManager'
 import ProjectDetailsContext from '../state/ProjectDetailsContext'
-import { addStorage } from '../services/NEAR'
+import { addStorage as addNearStorage } from '../services/NEAR'
 import nostorage from '../assets/nostorage.svg'
+import Backdrop from '../components/templates/Backdrop'
+import FileManager from '../components/storage-components/FileManager'
 
 export default function Storage() {
-	const [storage, setStorage] = React.useState(false)
+	const [isStorageEnabled, setIsStorageEnabled] = React.useState(false)
+	const [backdrop, setBackdrop] = React.useState(false)
 	const { projectDetails, projectContract } = React.useContext(
 		ProjectDetailsContext
 	)
-	const MySwal = withReactContent(Swal)
-	const theme = useTheme()
-	projectContract.has_storage().then((hasStorage: boolean) => {
-		setStorage(hasStorage)
-	})
 
-	async function showStorageSwal() {
-		const { value: formValues } = await MySwal.fire({
-			title: 'Add Storage',
-			html: (
-				<FormControl fullWidth sx={{ margin: '2% 0' }}>
-					<Typography>
-						Do you have 16 NEAR to add storage to your project?
-					</Typography>
-				</FormControl>
-			),
-			focusConfirm: false,
-			confirmButtonColor: theme.palette.secondary.dark,
-			confirmButtonText: 'Yes',
-		})
-
-		if (formValues) {
-			addStorage(projectContract)
-				.then((success) => {
-					setStorage(success)
+	React.useEffect(() => {
+		if (Object.keys(projectContract).length !== 0) {
+			projectContract
+				.get_storage()
+				.then(() => {
+					setIsStorageEnabled(true)
 				})
-				.catch((error) => {
-					if (error.type === 'NotEnoughBalance') {
-						MySwal.fire({
-							title: 'Error',
-							text: 'You do not have enough NEAR to add storage',
-							icon: 'error',
-							confirmButtonText: 'Ok',
-						})
-					}
+				.catch(() => {
+					setIsStorageEnabled(false)
 				})
 		}
+	}, [projectContract])
+
+	async function addStorage() {
+		setBackdrop(true)
+		try {
+			await addNearStorage(projectContract)
+			setIsStorageEnabled(true)
+		} catch (e) {
+			console.error(e)
+		}
+		setBackdrop(false)
 	}
 
-	return storage ? (
+	return isStorageEnabled ? (
 		<FileManager pid={projectDetails.pid} />
 	) : (
 		<>
+			<Backdrop loading={backdrop} />
 			<img alt="nostorage" src={nostorage} className="majorImg" />
 			<Typography
-				variant="h2"
+				variant="h3"
 				style={{ textAlign: 'center', fontWeight: 'bold' }}
 			>
-				No Storage Contract Deployed
+				Storage not Enabled
 			</Typography>
-			<Fab
-				sx={{
-					position: 'fixed',
-					bottom: 16,
-					right: 16,
-				}}
-				color="primary"
-				aria-label="add-storage"
-				onClick={() => {
-					showStorageSwal()
-				}}
-			>
-				<AddIcon />
-			</Fab>
+
+			<Box sx={{ marginTop: '20px', textAlign: 'center' }}>
+				<Button>Get Documentation</Button>
+				<Button
+					onClick={() => addStorage()}
+					variant="contained"
+					sx={{ ml: '1%' }}
+				>
+					<AddIcon />
+					Add Storage
+				</Button>
+			</Box>
 		</>
 	)
 }
