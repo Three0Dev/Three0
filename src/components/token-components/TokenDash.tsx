@@ -13,7 +13,7 @@ import {
 } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import RefreshIcon from '@mui/icons-material/Refresh'
-import SyncAltIcon from '@mui/icons-material/SyncAlt'
+import SendIcon from '@mui/icons-material/Send'
 import { Contract, utils } from 'near-api-js'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
@@ -46,7 +46,7 @@ const classes = {
 }
 
 interface User {
-	profile: string
+	accountId: string
 	registered: boolean
 	balance: number
 }
@@ -58,6 +58,7 @@ interface TokenDashProps {
 
 export default function TokenDash({ tokenAccount }: TokenDashProps) {
 	const [profiles, setProfiles] = React.useState<User[]>([])
+	const [projectAccount, setProjectAccount] = React.useState<User>()
 	const [userNumber, setUserNum] = React.useState(0)
 	const [balances, setBalances] = React.useState<number[]>([])
 	const [page, setPage] = React.useState(1)
@@ -89,27 +90,27 @@ export default function TokenDash({ tokenAccount }: TokenDashProps) {
 			.get_users({ offset: page, limit: 10 })
 			.then((users: { entries: string[]; num: number }) => {
 				const profileList = users.entries.map((user: any) => user.account_id)
-				setUserNum(users.num)
-				const range = Array.from(Array(users.num).keys())
+				profileList.push(projectContract.account.accountId)
+				// profileList.unshift(projectContract.account.accountId)
+				setUserNum(users.num + 1)
+				const range = Array.from(Array(users.num + 1).keys())
 				contract
 					.ft_balance_of_batch({ account_ids: profileList })
 					.then((balanceList: number[]) => {
-						setBalances(balanceList)
 						contract
 							.ft_is_registered({ account_ids: profileList })
 							.then((registered: boolean[]) => {
+								var userProfiles = range.map((i: number) => ({
+									accountId: profileList[i],
+									balance: balanceList[i],
+									registered: registered[i],
+								}))
+								setProjectAccount(userProfiles.pop())
 								setProfiles(
-									range.map((i: number) => ({
-										profile: profileList[i],
-										balance: balanceList[i],
-										registered: registered[i],
-									}))
+									userProfiles
 								)
-								console.log(profiles)
 							})
 					})
-
-				setProfiles(profile_list)
 			})
 			.catch(console.error)
 			.finally(() => setLoading(false))
@@ -132,8 +133,6 @@ export default function TokenDash({ tokenAccount }: TokenDashProps) {
 	React.useEffect(() => {
 		getUsers()
 	}, [projectDetails, page])
-	// console.log("Hey")
-	// console.log(contract.ft_balance_of({ account_id: 'vlasp.testnet' }))
 
 	return (
 		<>
@@ -187,15 +186,35 @@ export default function TokenDash({ tokenAccount }: TokenDashProps) {
 						<Table style={{ margin: '2%' }}>
 							<TableHeader
 								headers={[
-									<Typography>Public Identifer</Typography>,
+									<Typography>Account ID</Typography>,
 									<Typography>Is Registered</Typography>,
-									<Typography>Account Balance</Typography>,
+									<Typography>Balance</Typography>,
+									<Typography>Add Balance</Typography>,
 								]}
 							/>
 							<TableBody>
+							{projectAccount && 
+								<TableRow key={projectAccount.accountId}>
+								<TableCell>{projectAccount.accountId}</TableCell>
+											<TableCell>
+												<Badge
+													sx={classes.Badge}
+													anchorOrigin={{
+														vertical: 'top',
+														horizontal: 'right',
+													}}
+													color={'success'}
+													variant="dot"
+												/>
+											</TableCell>
+											<TableCell>{`${projectAccount.balance}`}</TableCell>
+											<TableCell>
+											</TableCell>
+								</TableRow>
+							}
 								{profiles.map((profile, index) => (
-									<TableRow key={profile.profile}>
-										<TableCell>{profile.profile}</TableCell>
+									<TableRow key={profile.accountId}>
+										<TableCell>{profile.accountId}</TableCell>
 										<TableCell>
 											<Badge
 												sx={classes.Badge}
@@ -211,7 +230,7 @@ export default function TokenDash({ tokenAccount }: TokenDashProps) {
 													onClick={() => {
 														contract.storage_deposit({
 															args: {
-																account_id: profile.profile,
+																account_id: profile.accountId,
 															},
 															amount: utils.format.parseNearAmount('0.00125'),
 														})
@@ -221,54 +240,51 @@ export default function TokenDash({ tokenAccount }: TokenDashProps) {
 												</Button>
 											)}
 										</TableCell>
+										<TableCell>{`${profile.balance}`}</TableCell>
 										<TableCell>
 											<TextField
-												defaultValue={profile.balance}
+												defaultValue={0}
+												id={`add-balance-${profile.accountId}`}
 												type="number"
 												InputProps={{ inputProps: { min: 0 } }}
 												disabled={!profile.registered}
-												onChange={(e) => {
-													const newBalances = [...balances]
-													newBalances[index] = parseInt(e.target.value, 10)
-													setBalances(newBalances)
-												}}
+												style = {{width: 100}}
 											/>
 											<Button
 												disabled={!profile.registered}
 												onClick={() => {
-													// determine if withdraw or deposit
-													if (profile.balance - balances[index] > 0) {
-														// withdraw
-														// TODO: add withdraw function
-													} else if (profile.balance - balances[index] < 0) {
-														setLoading(true)
-														// deposit
-														contract
-															.ft_transfer({
-																args: {
-																	receiver_id: profile.profile,
-																	amount: `${
-																		balances[index] - profile.balance
-																	}`,
-																},
-																amount: '1',
+													setLoading(true)
+													// deposit
+													contract
+														.ft_transfer({
+															args: {
+																receiver_id: profile.accountId,
+																amount: (document.getElementById(`add-balance-${profile.accountId}`) as HTMLInputElement).value,
+															},
+															amount: '1',
+														})
+														.then(() => {
+															setLoading(false)
+															getUsers()
+															MySwal.fire({
+																title: 'Success!',
+																text: 'Balance updated',
+																icon: 'success',
+																confirmButtonText: 'Cool',
 															})
-															.then(() => {
-																setLoading(false)
-																getUsers()
-																MySwal.fire({
-																	title: 'Success!',
-																	text: 'Balance updated',
-																	icon: 'success',
-																	confirmButtonText: 'Cool',
-																})
+														})
+														.catch((error: any) => {
+															setLoading(false)
+															MySwal.fire({
+																title: 'Error!',
+																text: error.kind.ExecutionError,
+																icon: 'error',
+																confirmButtonText: 'Cool',
 															})
-													} else {
-														alert('No change in balance')
-													}
+														})
 												}}
 											>
-												<SyncAltIcon />
+												<SendIcon />
 											</Button>
 										</TableCell>
 									</TableRow>
