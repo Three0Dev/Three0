@@ -10,9 +10,15 @@ import {
 	StepLabel,
 	Divider,
 	Typography,
+	AppBar,
+	Toolbar,
+	IconButton,
 } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { Contract } from 'near-api-js'
+import PublicIcon from '@mui/icons-material/Public'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+import * as Swal from 'sweetalert2'
 import {
 	TableCell,
 	TableRow,
@@ -29,7 +35,7 @@ interface HostingProps {
 export default function UploadSystem({ pid }: HostingProps) {
 	const [currentStep, setCurrentStep] = React.useState(0)
 
-	const url = 'http://localhost:3000/api/upload'
+	const url = `https://${pid}.page`
 
 	const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
 		onDropAccepted: () => setCurrentStep(1),
@@ -69,18 +75,15 @@ export default function UploadSystem({ pid }: HostingProps) {
 
 	// get the uploaded files and add them to the hosting contract map
 	async function uploadFile() {
+		setCurrentStep(3)
 		const files: { path: string; content_type: string; body: void }[] = []
 
-		const hostingAccount = await window.near.account(`$web.${pid}`)
+		const hostingAccount = await window.near.account(`web4.${pid}`)
 
-		const hostingContract = new Contract(
-			window.walletConnection.account(),
-			`web4.${pid}`,
-			{
-				viewMethods: [],
-				changeMethods: ['add_to_map'],
-			}
-		)
+		const hostingContract = new Contract(hostingAccount, `web4.${pid}`, {
+			viewMethods: [],
+			changeMethods: ['add_to_map'],
+		})
 
 		acceptedFiles.forEach(async (file) => {
 			const reader = new FileReader()
@@ -91,6 +94,7 @@ export default function UploadSystem({ pid }: HostingProps) {
 					body: reader.result,
 				})
 				await hostingContract.add_to_map({ content: files })
+				setCurrentStep(4)
 			}
 			reader.readAsText(file)
 		})
@@ -100,7 +104,49 @@ export default function UploadSystem({ pid }: HostingProps) {
 
 	return (
 		<>
-			<Box component={Paper} sx={{ padding: '2%' }}>
+			<Box sx={{ flexGrow: 1 }}>
+				<AppBar color="primary" position="static" sx={{ borderRadius: 5 }}>
+					<Toolbar>
+						<PublicIcon />
+						&nbsp;
+						<Typography
+							variant="h6"
+							noWrap
+							component="div"
+							sx={{
+								flexGrow: 1,
+								display: { xs: 'none', sm: 'block' },
+							}}
+							align="left"
+						>
+							Hosting
+						</Typography>
+						<a
+							style={{ textDecoration: 'none', color: ' white' }}
+							href={url}
+							target="_blank"
+							rel="noreferrer"
+						>
+							{url}
+						</a>
+						&nbsp;
+						<IconButton
+							sx={{ color: 'white' }}
+							onClick={() => {
+								navigator.clipboard.writeText(url)
+								Swal.fire({
+									title: 'Address copied to clipboard!',
+									toast: true,
+									timer: 1200,
+								})
+							}}
+						>
+							<ContentCopyIcon />
+						</IconButton>
+					</Toolbar>
+				</AppBar>
+			</Box>
+			<Box component={Paper} sx={{ padding: '2%', marginTop: '2%' }}>
 				<Stepper activeStep={currentStep} alternativeLabel sx={{ my: 3 }}>
 					{steps.map((label) => (
 						<Step key={label}>
@@ -108,15 +154,6 @@ export default function UploadSystem({ pid }: HostingProps) {
 						</Step>
 					))}
 				</Stepper>
-				{currentStep === 4 ? (
-					<Typography
-						sx={{
-							textAlign: 'center',
-						}}
-					>
-						Your site is: <a href={url}>{url}</a>
-					</Typography>
-				) : null}
 				<Divider variant="middle" />
 				<Box sx={{ padding: '3%' }}>
 					<div {...getRootProps()} style={style}>
