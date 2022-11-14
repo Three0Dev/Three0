@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
-import React from 'react'
-import { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Contract } from 'near-api-js'
 import * as short from 'short-uuid'
 import { initIPFS } from '../../services/database'
@@ -198,7 +197,7 @@ export default function FileManager({ pid }: FileManagerProps) {
 		setStructure(ordered)
 	}
 
-	useEffect(() => {
+	React.useEffect(() => {
 		reload()
 		setSelection([])
 	}, [currentPath])
