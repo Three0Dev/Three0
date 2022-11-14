@@ -9,6 +9,7 @@ import ConfigFile from '../components/core/ConfigFile'
 import CodeImage from '../assets/code.svg'
 import Backdrop from '../components/templates/Backdrop'
 import { deleteNEARProject } from '../services/NEAR'
+import { getAllDatabases, removeDatabase } from '../services/database'
 
 const classes = {
 	h1: { wordBreak: 'break-all', textAlign: 'center', padding: '3% 3% 0' },
@@ -23,7 +24,9 @@ const classes = {
 }
 
 export default function ProjectHome() {
-	const { projectDetails } = React.useContext(ProjectDetailsContext)
+	const { projectDetails, projectContract } = React.useContext(
+		ProjectDetailsContext
+	)
 	const [loading, setLoading] = React.useState(false)
 
 	const navigate = useNavigate()
@@ -55,20 +58,29 @@ export default function ProjectHome() {
 
 		if (isConfirmed) {
 			setLoading(true)
-			deleteNEARProject(projectDetails.pid)
-				.then((canDelete) => {
-					if (canDelete) {
-						navigate('/')
-					} else {
-						Swal.fire({
-							title: 'Error',
-							text: 'Unable to delete project',
-							icon: 'error',
-							confirmButtonText: 'Ok',
-						})
-					}
+
+			const allDatabases = await getAllDatabases(projectContract)
+
+			await Promise.all(
+				allDatabases.map((database) =>
+					removeDatabase(projectContract, database)
+				)
+			)
+
+			const canDelete = await deleteNEARProject(projectDetails.pid)
+
+			if (canDelete) {
+				navigate('/')
+			} else {
+				Swal.fire({
+					title: 'Error',
+					text: 'Unable to delete project',
+					icon: 'error',
+					confirmButtonText: 'Ok',
 				})
-				.finally(() => setLoading(false))
+			}
+
+			setLoading(false)
 		}
 	}
 
@@ -76,7 +88,6 @@ export default function ProjectHome() {
 		<>
 			<Backdrop loading={loading} />
 			<img src={CodeImage} alt="Code" style={classes.img} />
-			{/* TODO Change to Name */}
 			<Typography variant="h1" sx={classes.h1}>
 				Welcome to
 			</Typography>

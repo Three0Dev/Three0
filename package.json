@@ -56,7 +56,7 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
-    "@constl/orbit-db-types": "^1.0.4",
+    "@types/orbit-db": "npm:@constl/orbit-db-types@^1.0.5",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.4",
     "@mui/icons-material": "^5.10.6",

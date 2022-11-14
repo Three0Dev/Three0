@@ -1,14 +1,11 @@
 import React from 'react'
 import { Box, Typography, Stack, Chip } from '@mui/material'
-import { useParams } from 'react-router-dom'
 import { initIPFS, initOrbitDB, getAllDatabases } from '../../services/database'
 import { actions, useStateValue } from '../../state/DatabaseState'
 import ProjectDetailsContext from '../../state/ProjectDetailsContext'
 
 export default function Systems() {
 	const [appState, dispatch] = useStateValue()
-
-	const { pid } = useParams()
 
 	const { projectContract } = React.useContext(ProjectDetailsContext)
 
@@ -23,7 +20,7 @@ export default function Systems() {
 					type: actions.SYSTEMS.SET_ORBITDB,
 					orbitdbStatus: 'Started',
 				})
-				getAllDatabases(pid, projectContract).then((programs) => {
+				getAllDatabases(projectContract).then((programs) => {
 					dispatch({
 						type: actions.PROGRAMS.SET_PROGRAMS,
 						programs: programs.reverse(),

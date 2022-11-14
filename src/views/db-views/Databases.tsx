@@ -21,15 +21,13 @@ export default function DatabasesView() {
 	const [loading, setLoading] = React.useState(false)
 	const theme = useTheme()
 
-	const { projectContract, projectDetails } = React.useContext(
-		ProjectDetailsContext
-	)
+	const { projectContract } = React.useContext(ProjectDetailsContext)
 
 	const MySwal = withReactContent(Swal)
 
 	async function fetchDatabases() {
 		dispatch({ type: actions.PROGRAMS.SET_PROGRAMS_LOADING, loading: true })
-		const programs = await getAllDatabases(projectDetails.pid, projectContract)
+		const programs = await getAllDatabases(projectContract)
 		dispatch({
 			type: actions.PROGRAMS.SET_PROGRAMS,
 			programs: programs.reverse(),
