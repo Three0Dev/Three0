@@ -1,7 +1,7 @@
 [package]
 name = "three0_storage"
 version = "0.1.0"
-authors = ["Uneeb Sajjad <usajjad5@utexas.edu>"]
+authors = ["Three0 <usajjad5@utexas.edu>"]
 edition = "2021"
 
 [lib]
