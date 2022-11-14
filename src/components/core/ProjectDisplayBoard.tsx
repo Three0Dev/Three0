@@ -48,7 +48,10 @@ const logos = {
 
 export default function ProjectDisplayBoard() {
 	const navigate = useNavigate()
-	const [projects, setProjects] = React.useState({ num: 0, entries: [] })
+	const [projects, setProjects] = React.useState({
+		entries: [],
+		num: 0,
+	})
 	const [loading, setLoading] = React.useState(false)
 
 	const [off, setPage] = React.useState(0)
@@ -58,7 +61,7 @@ export default function ProjectDisplayBoard() {
 		window.contract
 			.get_all_projects({
 				owner: window.accountId,
-				offset: 0,
+				offset: off,
 				limit: LIMIT_NUM,
 			})
 			.then((res: React.SetStateAction<{ num: number; entries: never[] }>) =>

@@ -14,10 +14,12 @@ import {
 	Toolbar,
 	IconButton,
 } from '@mui/material'
-import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { Contract } from 'near-api-js'
-import PublicIcon from '@mui/icons-material/Public'
-import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+import {
+	Public as PublicIcon,
+	ContentCopy as ContentCopyIcon,
+	CloudUpload as CloudUploadIcon,
+} from '@mui/icons-material'
 import Swal from 'sweetalert2'
 import {
 	TableCell,
@@ -80,7 +82,11 @@ export default function UploadSystem({ hostingAccount, pid }: HostingProps) {
 	// get the uploaded files and add them to the hosting contract map
 	async function uploadFile() {
 		setCurrentStep(3)
-		const files: { path: string; content_type: string; body: void }[] = []
+		const files: {
+			path: string
+			content_type: string
+			body: string | ArrayBuffer | null
+		}[] = []
 
 		const hostingContract = new Contract(
 			projectContract.account,
