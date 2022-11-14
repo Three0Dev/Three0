@@ -8,36 +8,50 @@ import ProjectDetailsContext from "../state/ProjectDetailsContext";
 import { Navigation } from "../components/core";
 
 export default function Dash() {
-  const { pid } = useParams();
-  const navigate = useNavigate();
+	const { pid } = useParams()
+	const navigate = useNavigate()
 
-  const [projectDetails, setProjectDetails] = React.useState({});
-  const [projectContract, setContract] = React.useState({});
+	const [projectDetails, setProjectDetails] = React.useState({})
+	const [projectContract, setContract] = React.useState({})
 
-  async function isValidProject() {
-    try {
-      const account = await window.near.account(pid);
-      const status = await account.state();
+	async function isValidProject() {
+		try {
+			const account = await window.near.account(pid)
+			const status = await account.state()
 
-      return status.code_hash !== "11111111111111111111111111111111";
-    } catch (e) {
-      console.error(e);
-      return false;
-    }
-  }
+			return status.code_hash !== '11111111111111111111111111111111'
+		} catch (e) {
+			console.error(e)
+			return false
+		}
+	}
 
-  async function getProjectDetails() {
-    const account = await window.near.account(pid);
+	async function getProjectDetails() {
+		const account = await window.near.account(pid)
 
-    const projectContractInit = new Contract(account, pid as string, {
-      viewMethods: ["get_project", "get_users", "get_user"],
-      changeMethods: ["update_project", "add_database", "delete_database"],
-    });
+		const projectContractInit = new Contract(account, pid as string, {
+			viewMethods: [
+				'get_project',
+				'get_users',
+				'get_user',
+				'has_storage',
+				'get_storage',
+				'has_hosting',
+				'get_hosting',
+			],
+			changeMethods: [
+				'update_project',
+				'add_database',
+				'delete_database',
+				'set_storage',
+				'set_hosting',
+			],
+		})
 
-    const details = await projectContractInit.get_project({});
-    setContract(projectContractInit);
-    setProjectDetails(details);
-  }
+		const details = await projectContractInit.get_project({})
+		setContract(projectContractInit)
+		setProjectDetails(details)
+	}
 
   async function validityCheck(isValid: boolean) {
     if (isValid) {
@@ -69,19 +83,19 @@ export default function Dash() {
     });
   }, []);
 
-  const projectProviderValue = React.useMemo(
-    () => ({ projectDetails, projectContract }),
-    [projectDetails, projectContract]
-  );
+	const projectProviderValue = React.useMemo(
+		() => ({ projectDetails, projectContract }),
+		[projectDetails, projectContract]
+	)
 
-  return (
-    <Box sx={{ display: "flex", flex: 1 }}>
-      <Navigation />
-      <ProjectDetailsContext.Provider value={projectProviderValue}>
-        <div style={{ width: "98%", padding: "2% 1%" }}>
-          <Outlet />
-        </div>
-      </ProjectDetailsContext.Provider>
-    </Box>
-  );
+	return (
+		<Box sx={{ display: 'flex', flex: 1 }}>
+			<Navigation />
+			<ProjectDetailsContext.Provider value={projectProviderValue}>
+				<div style={{ width: '98%', padding: '2% 1%' }}>
+					<Outlet />
+				</div>
+			</ProjectDetailsContext.Provider>
+		</Box>
+	)
 }

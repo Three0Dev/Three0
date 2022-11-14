@@ -9,4 +9,4 @@ panic = "abort"
 overflow-checks = true
 
 [workspace]
-members = ["controller", "project"]
+members = ["controller", "project", "storage", "hosting"]
