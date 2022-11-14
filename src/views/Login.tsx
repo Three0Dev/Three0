@@ -2,6 +2,7 @@ import React from 'react'
 import { Button, Box, Typography } from '@mui/material'
 import UpdatedLogo from '../assets/logos/UpdatedLogo.png'
 import { login } from '../utils'
+import nearlogo from '../assets/icon_wht_nm.svg'
 
 export default function Login() {
 	const styles = {
@@ -50,7 +51,8 @@ export default function Login() {
 					Three0
 				</Typography>
 				<Button sx={styles.button} variant="contained" onClick={login}>
-					Log In
+					<img src={nearlogo} style={{ height: '45%' }} />
+					&nbsp; Log In w/ NEAR
 				</Button>
 			</Box>
 		</Box>
