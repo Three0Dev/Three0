@@ -11,6 +11,7 @@ import {
 	NotFound,
 	ProjectHome,
 	Hosting,
+	Token,
 } from './views'
 import DBView from './views/db-views/DBView'
 import {
@@ -77,6 +78,7 @@ export default function Core() {
 							</Route>
 							<Route path="storage" element={<Storage />} />
 							<Route path="hosting" element={<Hosting />} />
+							<Route path="token" element={<Token />} />
 						</Route>
 					</Route>
 					<Route path="404" element={<NotFound />} />

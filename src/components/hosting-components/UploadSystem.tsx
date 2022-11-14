@@ -18,7 +18,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { Contract } from 'near-api-js'
 import PublicIcon from '@mui/icons-material/Public'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
-import * as Swal from 'sweetalert2'
+import Swal from 'sweetalert2'
 import {
 	TableCell,
 	TableRow,
@@ -27,13 +27,16 @@ import {
 	TableHeader,
 	TableBody,
 } from '../templates/Table'
+import ProjectDetailsContext from '../../state/ProjectDetailsContext'
 
 interface HostingProps {
+	hostingAccount: string
 	pid: string
 }
 
-export default function UploadSystem({ pid }: HostingProps) {
+export default function UploadSystem({ hostingAccount, pid }: HostingProps) {
 	const [currentStep, setCurrentStep] = React.useState(0)
+	const { projectContract } = React.useContext(ProjectDetailsContext)
 
 	const url = `https://${pid}.page`
 
@@ -74,16 +77,19 @@ export default function UploadSystem({ pid }: HostingProps) {
 	}
 
 	// get the uploaded files and add them to the hosting contract map
+	// get the uploaded files and add them to the hosting contract map
 	async function uploadFile() {
 		setCurrentStep(3)
 		const files: { path: string; content_type: string; body: void }[] = []
 
-		const hostingAccount = await window.near.account(`web4.${pid}`)
-
-		const hostingContract = new Contract(hostingAccount, `web4.${pid}`, {
-			viewMethods: [],
-			changeMethods: ['add_to_map'],
-		})
+		const hostingContract = new Contract(
+			projectContract.account,
+			hostingAccount,
+			{
+				viewMethods: [],
+				changeMethods: ['add_to_map'],
+			}
+		)
 
 		acceptedFiles.forEach(async (file) => {
 			const reader = new FileReader()

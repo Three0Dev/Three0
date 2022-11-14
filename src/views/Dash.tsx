@@ -34,9 +34,10 @@ export default function Dash() {
 				'get_project',
 				'get_users',
 				'get_user',
+				'get_databases',
 				'get_storage',
 				'get_hosting',
-				'get_databases',
+				'get_tokenization',
 			],
 			changeMethods: [
 				'update_project',
@@ -44,6 +45,7 @@ export default function Dash() {
 				'delete_database',
 				'set_storage',
 				'set_hosting',
+				'set_tokenization',
 			],
 		})
 

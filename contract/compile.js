@@ -62,14 +62,20 @@ if (code === 0 && calledFromDir !== __dirname) {
 	const hostingPackageName = getName("hosting")
 	const outHostingFile = `${outDir}/${hostingPackageName}.wasm`
 
+  const tokenFrontEndLink = `${frontEndDir}/near-token.wasm`
+	const tokenPackageName = getName("token")
+	const outTokenFile = `${outDir}/${tokenPackageName}.wasm`
+
   sh.mkdir('-p', frontEndDir)
   sh.rm('-f', projectFrontEndLink)
   sh.rm('-f', storageFrontEndLink)
   sh.rm('-f', hostingFrontEndLink)
+  sh.rm('-f', tokenFrontEndLink)
   //fixes #831: copy-update instead of linking .- sometimes sh.ln does not work on Windows
   sh.cp('-u',outProjectFile,projectFrontEndLink)
   sh.cp('-u',outStorageFile,storageFrontEndLink)
   sh.cp('-u', outHostingFile, hostingFrontEndLink)
+  sh.cp('-u', outTokenFile, tokenFrontEndLink)
 
   sh.echo("")
   sh.echo("Controller Size:");
@@ -83,6 +89,9 @@ if (code === 0 && calledFromDir !== __dirname) {
   sh.echo("")
   sh.echo("Hosting Size:")
 	sh.exec(`wc -c ${outHostingFile} | awk '{print $1}'`)
+	sh.echo("")
+  sh.echo("Token Size:")
+	sh.exec(`wc -c ${outTokenFile} | awk '{print $1}'`)
 	sh.echo("")
 }
 

@@ -1,12 +1,13 @@
 [package]
-name = "three0_storage"
-version = "0.1.0"
+name = "three0_token"
+version = "1.0.0"
 authors = ["Three0 <usajjad5@utexas.edu>"]
 edition = "2021"
 
 [lib]
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 near-sdk = "4.0.0"
-serde_json = "1.0"
+serde = "1"
+serde_json = "1"

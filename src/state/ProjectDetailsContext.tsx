@@ -1,6 +1,7 @@
 import { createContext } from 'react'
 
 type State = {
+	pid: string
 	projectDetails: any
 	projectContract: any
 }

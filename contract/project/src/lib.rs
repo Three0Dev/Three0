@@ -33,6 +33,7 @@ pub struct Three0Project {
     users: UnorderedMap<String, User>,
     storage: Option<AccountId>,
     hosting: Option<AccountId>,
+    tokenization: Option<AccountId>
 }
 
 #[near_bindgen]
@@ -46,6 +47,7 @@ impl Three0Project {
             users: UnorderedMap::new(b"users".to_vec()),
             storage: None,
             hosting: None,
+            tokenization: None,
         }
     }
 
@@ -53,9 +55,10 @@ impl Three0Project {
         ProjectReturnSchema {
             pid: self.pid.clone(),
             num_users: self.users.len() as u32,
-            get_storage: self.storage.is_some(),
-            get_hosting: self.hosting.is_some(),
             num_databases: self.databases.len() as u32,
+            has_storage: self.storage.is_some(),
+            has_hosting: self.hosting.is_some(),
+            has_tokenization: self.tokenization.is_some(),
         }
     }
 
@@ -127,6 +130,16 @@ impl Three0Project {
     pub fn get_hosting(&self) -> AccountId {
         self.hosting.as_ref()
         .unwrap_or_else(|| env::panic(b"Hosting not set"))
+        .to_string()
+    }
+
+    pub fn set_tokenization(&mut self) {
+        self.tokenization = format!("token.{}", env::current_account_id().clone()).into();
+    }
+
+    pub fn get_tokenization(&self) -> AccountId {
+        self.tokenization.as_ref()
+        .unwrap_or_else(|| env::panic(b"Tokenization not set"))
         .to_string()
     }
 }
@@ -273,5 +286,14 @@ mod tests {
         let mut contract = Three0Project::init("alice_near".to_string());
         contract.set_hosting();
         assert_eq!(contract.get_hosting(), "web4.alice_near".to_string());
+    }
+
+    #[test]
+    fn test_tokenization() {
+        let context = get_context(vec![], false);
+        testing_env!(context);
+        let mut contract = Three0Project::init("alice_near".to_string());
+        contract.set_tokenization();
+        assert_eq!(contract.get_tokenization(), "token.alice_near".to_string());
     }
 }

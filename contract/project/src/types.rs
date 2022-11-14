@@ -36,9 +36,10 @@ impl User {
 pub struct ProjectReturnSchema {
     pub pid: String,
     pub num_users: u32,
-    pub get_storage: bool,
-    pub get_hosting: bool,
     pub num_databases: u32,
+    pub has_storage: bool,
+    pub has_hosting: bool,
+    pub has_tokenization: bool,
 }
 
 #[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize)]

@@ -7,6 +7,7 @@ import Auth from './Auth'
 import ProjectsDash from './ProjectsDash'
 import ProjectHome from './ProjectHome'
 import Hosting from './Hosting'
+import Token from './Token'
 
 export {
 	Login,
@@ -18,4 +19,5 @@ export {
 	ProjectsDash,
 	ProjectHome,
 	Hosting,
+	Token,
 }

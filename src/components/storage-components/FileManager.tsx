@@ -2,10 +2,13 @@
 import React, { useState } from 'react'
 import { Contract } from 'near-api-js'
 import * as short from 'short-uuid'
+import Swal from 'sweetalert2'
+import ProjectDetailsContext from '../../state/ProjectDetailsContext'
 import { initIPFS } from '../../services/database'
 import TopBar from './TopBar'
 import Footer from './Footer'
 import MiddleArea from './MiddleArea'
+import Backdrop from '../templates/Backdrop'
 import './FileManager.css'
 
 const defaultLabels = {
@@ -25,21 +28,10 @@ const defaultLabels = {
 }
 
 interface FileManagerProps {
-	pid: string
+	storageAccount: string
 }
 
-export default function FileManager({ pid }: FileManagerProps) {
-	const contract = new Contract(
-		window.walletConnection.account(),
-		`storage.${pid}`,
-		{
-			// View methods are read only. They don't modify the state, but usually return some value.
-			viewMethods: ['list_files', 'get_file', 'get_storage'],
-			// Change methods can modify the state. But you don't receive the returned value when called.
-			changeMethods: ['new_default_meta', 'nft_mint', 'set_storage'],
-		}
-	)
-
+export default function FileManager({ storageAccount }: FileManagerProps) {
 	const features = ['uploadFiles']
 
 	const [collapsed, setCollapsed] = useState({})
@@ -48,10 +40,19 @@ export default function FileManager({ pid }: FileManagerProps) {
 	const [lastPath, setLastPath] = useState('')
 	const [selection, setSelection] = useState([])
 	const [loading, setLoading] = useState(false)
+	const [backdrop, setBackdrop] = React.useState(false)
+	const { projectContract } = React.useContext(ProjectDetailsContext)
 
 	const labels = defaultLabels
 
 	const enabledFeatures = features
+
+	const contract = new Contract(projectContract.account, storageAccount, {
+		// View methods are read only. They don't modify the state, but usually return some value.
+		viewMethods: ['list_files', 'get_file', 'has_storage', 'get_storage'],
+		// Change methods can modify the state. But you don't receive the returned value when called.
+		changeMethods: ['new_default_meta', 'nft_mint', 'set_storage'],
+	})
 
 	const uploadFiles = async (path: string, files: File[]) => {
 		let filepath = path
@@ -103,7 +104,9 @@ export default function FileManager({ pid }: FileManagerProps) {
 
 	const openFile = async (path: string) => {
 		const subPath = path.slice(1)
-		const tokenMetaData = await contract.get_file({ file_path: subPath })
+		const tokenMetaData = await contract.get_file({
+			file_path: subPath,
+		})
 		return tokenMetaData
 	}
 
@@ -141,6 +144,7 @@ export default function FileManager({ pid }: FileManagerProps) {
 	}
 
 	const reload = async () => {
+		setBackdrop(true)
 		setLoading(true)
 		const updated: any = {}
 		const notChanged: any = {}
@@ -174,8 +178,10 @@ export default function FileManager({ pid }: FileManagerProps) {
 					return promise
 				})
 			)
+			setBackdrop(false)
 			setLoading(false)
 		} catch (error) {
+			setBackdrop(false)
 			setLoading(false)
 			setCurrentPath(lastPath)
 		}
@@ -204,6 +210,7 @@ export default function FileManager({ pid }: FileManagerProps) {
 
 	return (
 		<div className={`FileManager${loading ? ' FileManager-Loading' : ''}`}>
+			<Backdrop loading={backdrop} />
 			<TopBar
 				currentPath={currentPath}
 				setCurrentPath={setCurrentPath}
@@ -211,6 +218,8 @@ export default function FileManager({ pid }: FileManagerProps) {
 				labels={labels}
 				reload={reload}
 				enabledFeatures={enabledFeatures}
+				setBackdrop={setBackdrop}
+				swal={Swal}
 			/>
 			<Footer
 				structure={structure}
