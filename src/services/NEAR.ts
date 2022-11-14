@@ -88,12 +88,30 @@ export async function deleteNEARProject(pid: string) {
 		if (canDelete) {
 			const account = await window.near.account(pid)
 			// TODO donate money to faucet in testnet
-			await account.deleteAccount(window.accountId)
+			await account.deleteAccount(
+				nearConfig.networkId === 'testnet'
+					? 'v1.faucet.nonofficial.testnet'
+					: window.accountId
+			)
 
 			await new keyStores.BrowserLocalStorageKeyStore().removeKey(
 				nearConfig.networkId,
 				pid
 			)
+
+			try {
+				await new keyStores.BrowserLocalStorageKeyStore().removeKey(
+					nearConfig.networkId,
+					`web4.${pid}`
+				)
+
+				await new keyStores.BrowserLocalStorageKeyStore().removeKey(
+					nearConfig.networkId,
+					`storage.${pid}`
+				)
+			} catch (e) {
+				console.error(e)
+			}
 
 			return true
 		}

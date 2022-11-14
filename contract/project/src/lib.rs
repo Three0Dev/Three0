@@ -37,7 +37,6 @@ pub struct Three0Project {
 
 #[near_bindgen]
 impl Three0Project {
-    
     #[init]
     pub fn init(pid: String) -> Self {
         Self {
