@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import AddIcon from '@mui/icons-material/Add'
 import { Fab, useTheme } from '@mui/material'
 import { useSearchParams, useNavigate } from 'react-router-dom'
@@ -8,7 +8,11 @@ import * as short from 'short-uuid'
 import { ProjectDisplayBoard, CreateProjectDialog } from '../components/core'
 import wave from '../assets/wave.svg'
 import Backdrop from '../components/templates/Backdrop'
-import { createNEARAccount, checkAccountStatus } from '../services/NEAR'
+import {
+	createNEARProjectAccount,
+	// checkAccountStatus
+} from '../services/NEAR'
+import { nearConfig } from '../utils'
 
 export default function ProjectsDash() {
 	const [loading, setLoading] = React.useState(false)
@@ -19,15 +23,15 @@ export default function ProjectsDash() {
 
 	const MySwal = withReactContent(Swal)
 
-	function handleCreateQueryParams() {
-		const hash = params.get('transactionHashes')
-		if (!hash) return
+	// function handleCreateQueryParams() {
+	// 	const hash = params.get('transactionHashes')
+	// 	if (!hash) return
 
-		setLoading(true)
-		checkAccountStatus(hash)
-			.then((pid) => navigate(`/${pid}`))
-			.finally(() => setLoading(false))
-	}
+	// 	setLoading(true)
+	// 	checkAccountStatus(hash)
+	// 		.then((pid) => navigate(`/${pid}`))
+	// 		.finally(() => setLoading(false))
+	// }
 
 	async function showProjectSwal() {
 		const uuid = short.generate().toLowerCase()
@@ -44,7 +48,7 @@ export default function ProjectsDash() {
 				// eslint-disable-next-line no-useless-escape
 				const nameRegex = /^(([a-z\d]+[\-_])*[a-z\d]+)$/
 
-				const pid = `${name}_three0-${uuid}.${window.accountId}`
+				const pid = `${name}_three0-${uuid}.${nearConfig.networkId}`
 
 				const pidMaxLength = pid.length + 'storage'.length
 
@@ -106,13 +110,15 @@ export default function ProjectsDash() {
 				})
 			)
 			setLoading(true)
-			createNEARAccount()
+			await createNEARProjectAccount()
+			setLoading(false)
+			navigate(`/${formValues[0]}`)
 		}
 	}
 
-	useEffect(() => {
-		handleCreateQueryParams()
-	}, [])
+	// React.useEffect(() => {
+	// handleCreateQueryParams()
+	// }, [])
 
 	return (
 		<>

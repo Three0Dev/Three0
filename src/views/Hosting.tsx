@@ -1,82 +1,64 @@
+/* eslint-disable no-console */
 import React from 'react'
-import { FormControl, Typography, useTheme, Fab } from '@mui/material'
+import { Typography, Button, Box } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
 import ProjectDetailsContext from '../state/ProjectDetailsContext'
 import { UploadSystem } from '../components/hosting-components'
-import { addHosting } from '../services/NEAR'
+import { addHosting as addNearHosting } from '../services/NEAR'
 import nohosting from '../assets/nohosting.svg'
+import Backdrop from '../components/templates/Backdrop'
 
 export default function Hosting() {
 	const [isHostingEnabled, setIsHostingEnabled] = React.useState(false)
+	const [backdrop, setBackdrop] = React.useState(false)
 	const { projectDetails, projectContract } = React.useContext(
 		ProjectDetailsContext
 	)
-	const MySwal = withReactContent(Swal)
-	const theme = useTheme()
-	projectContract.has_hosting().then((hasHosting: boolean) => {
-		setIsHostingEnabled(hasHosting)
-	})
 
-	async function showHostingSwal() {
-		const { value: formValues } = await MySwal.fire({
-			title: 'Add Hosting',
-			html: (
-				<FormControl fullWidth sx={{ margin: '2% 0' }}>
-					<Typography>
-						Do you have 8 NEAR to add hosting to your project?
-					</Typography>
-				</FormControl>
-			),
-			focusConfirm: false,
-			confirmButtonColor: theme.palette.secondary.dark,
-			confirmButtonText: 'Yes',
-		})
-
-		if (formValues) {
-			addHosting(projectContract)
-				.then((success: boolean) => {
-					setIsHostingEnabled(success)
+	React.useEffect(() => {
+		if (Object.keys(projectContract).length !== 0) {
+			projectContract
+				.get_hosting()
+				.then(() => {
+					setIsHostingEnabled(true)
 				})
-				.catch((error) => {
-					if (error.type === 'NotEnoughBalance') {
-						MySwal.fire({
-							title: 'Error',
-							text: 'You do not have enough NEAR to add hosting',
-							icon: 'error',
-							confirmButtonText: 'Ok',
-						})
-					}
+				.catch(() => {
+					setIsHostingEnabled(false)
 				})
 		}
+	}, [projectContract])
+
+	async function addHosting() {
+		setBackdrop(true)
+		try {
+			await addNearHosting(projectContract)
+			setIsHostingEnabled(true)
+		} catch (e) {
+			console.error(e)
+		}
+		setBackdrop(false)
 	}
 
 	return isHostingEnabled ? (
 		<UploadSystem pid={projectDetails.pid} />
 	) : (
 		<>
+			<Backdrop loading={backdrop} />
 			<img alt="nohosting" src={nohosting} className="majorImg" />
 			<Typography
-				variant="h2"
+				variant="h3"
 				style={{ textAlign: 'center', fontWeight: 'bold' }}
 			>
 				No Hosting Contract Deployed
 			</Typography>
-			<Fab
-				sx={{
-					position: 'fixed',
-					bottom: 16,
-					right: 16,
-				}}
-				color="primary"
-				aria-label="add-hosting"
-				onClick={() => {
-					showHostingSwal()
-				}}
-			>
-				<AddIcon />
-			</Fab>
+
+			<Box sx={{ marginTop: '20px', textAlign: 'center' }}>
+				<Button>Get Documentation</Button>
+				<Button onClick={() => addHosting()} variant="contained">
+					<AddIcon />
+					Add Hosting
+				</Button>
+			</Box>
 		</>
 	)
 }

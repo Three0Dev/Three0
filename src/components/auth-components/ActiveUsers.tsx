@@ -188,7 +188,7 @@ export default function ActiveUsers() {
 				<>
 					<img alt="nousers" src={nousers} className="majorImg" />
 					<Typography
-						variant="h2"
+						variant="h3"
 						style={{ textAlign: 'center', fontWeight: 'bold' }}
 					>
 						No Users Yet!

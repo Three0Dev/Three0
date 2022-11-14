@@ -67,7 +67,7 @@
     "date-fns": "^2.29.3",
     "ipfs-core": "^0.14.3",
     "jest-environment-jsdom": "^29.2.1",
-    "near-api-js": "^0.44.2",
+    "near-api-js": "^1.1.0",
     "orbit-db": "^0.28.7",
     "orbit-db-identity-provider": "^0.4.0",
     "react": "^18.2.0",
