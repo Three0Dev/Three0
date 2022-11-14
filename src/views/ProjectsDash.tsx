@@ -44,10 +44,49 @@ export default function ProjectsDash() {
 				// eslint-disable-next-line no-useless-escape
 				const nameRegex = /^(([a-z\d]+[\-_])*[a-z\d]+)$/
 
-				const pid = `${name}-${uuid}.${window.accountId}`
+				const pid = `${name}_three0-${uuid}.${window.accountId}`
 
-				if (!nameRegex.test(name) || pid.length > 50) {
-					Swal.showValidationMessage('Invalid Project Name')
+				const pidMaxLength = pid.length + 'storage'.length
+
+				const INVALID_PHRASES = [
+					'near',
+					'wallet',
+					'account',
+					'contract',
+					'app',
+					'test',
+					'dev',
+					'mainnet',
+					'testnet',
+					'helper',
+					'three0',
+					'_',
+					'-',
+				]
+
+				if (!name) {
+					Swal.showValidationMessage('Please enter a project name')
+				} else if (!nameRegex.test(name)) {
+					Swal.showValidationMessage(
+						'Please enter a valid project name. Only lowercase letters and numbers are allowed.'
+					)
+				} else if (pidMaxLength > 64) {
+					const msg = `Project name is too long. Please enter a name with ${
+						pidMaxLength - 64
+					} less characters.`
+					Swal.showValidationMessage(msg)
+				} else if (name.length < 3) {
+					Swal.showValidationMessage(
+						'Please enter a valid project name. Project name cannot be less than 3 characters.'
+					)
+				} else {
+					INVALID_PHRASES.forEach((phrase) => {
+						if (name.includes(phrase)) {
+							Swal.showValidationMessage(
+								`Please enter a valid project name. Project name cannot contain "${phrase}".`
+							)
+						}
+					})
 				}
 
 				const chainTypeElement: any = document.getElementById(
