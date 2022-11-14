@@ -2,7 +2,6 @@
 import React, { useState } from 'react'
 import { Contract } from 'near-api-js'
 import * as short from 'short-uuid'
-import Swal from 'sweetalert2'
 import ProjectDetailsContext from '../../state/ProjectDetailsContext'
 import { initIPFS } from '../../services/database'
 import TopBar from './TopBar'
@@ -219,7 +218,6 @@ export default function FileManager({ storageAccount }: FileManagerProps) {
 				reload={reload}
 				enabledFeatures={enabledFeatures}
 				setBackdrop={setBackdrop}
-				swal={Swal}
 			/>
 			<Footer
 				structure={structure}
