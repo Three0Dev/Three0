@@ -100,15 +100,13 @@ export default function TokenDash({ tokenAccount }: TokenDashProps) {
 						contract
 							.ft_is_registered({ account_ids: profileList })
 							.then((registered: boolean[]) => {
-								var userProfiles = range.map((i: number) => ({
+								const userProfiles = range.map((i: number) => ({
 									accountId: profileList[i],
 									balance: balanceList[i],
 									registered: registered[i],
 								}))
 								setProjectAccount(userProfiles.pop())
-								setProfiles(
-									userProfiles
-								)
+								setProfiles(userProfiles)
 							})
 					})
 			})
@@ -193,25 +191,24 @@ export default function TokenDash({ tokenAccount }: TokenDashProps) {
 								]}
 							/>
 							<TableBody>
-							{projectAccount && 
-								<TableRow key={projectAccount.accountId}>
-								<TableCell>{projectAccount.accountId}</TableCell>
-											<TableCell>
-												<Badge
-													sx={classes.Badge}
-													anchorOrigin={{
-														vertical: 'top',
-														horizontal: 'right',
-													}}
-													color={'success'}
-													variant="dot"
-												/>
-											</TableCell>
-											<TableCell>{`${projectAccount.balance}`}</TableCell>
-											<TableCell>
-											</TableCell>
-								</TableRow>
-							}
+								{projectAccount && (
+									<TableRow key={projectAccount.accountId}>
+										<TableCell>{projectAccount.accountId}</TableCell>
+										<TableCell>
+											<Badge
+												sx={classes.Badge}
+												anchorOrigin={{
+													vertical: 'top',
+													horizontal: 'right',
+												}}
+												color="success"
+												variant="dot"
+											/>
+										</TableCell>
+										<TableCell>{`${projectAccount.balance}`}</TableCell>
+										<TableCell />
+									</TableRow>
+								)}
 								{profiles.map((profile, index) => (
 									<TableRow key={profile.accountId}>
 										<TableCell>{profile.accountId}</TableCell>
@@ -248,7 +245,7 @@ export default function TokenDash({ tokenAccount }: TokenDashProps) {
 												type="number"
 												InputProps={{ inputProps: { min: 0 } }}
 												disabled={!profile.registered}
-												style = {{width: 100}}
+												style={{ width: 100 }}
 											/>
 											<Button
 												disabled={!profile.registered}
@@ -259,7 +256,11 @@ export default function TokenDash({ tokenAccount }: TokenDashProps) {
 														.ft_transfer({
 															args: {
 																receiver_id: profile.accountId,
-																amount: (document.getElementById(`add-balance-${profile.accountId}`) as HTMLInputElement).value,
+																amount: (
+																	document.getElementById(
+																		`add-balance-${profile.accountId}`
+																	) as HTMLInputElement
+																).value,
 															},
 															amount: '1',
 														})
