@@ -7,16 +7,24 @@ import ProjectDetailsContext from '../state/ProjectDetailsContext'
 import { UploadSystem } from '../components/hosting-components'
 import { addHosting } from '../services/NEAR'
 import nohosting from '../assets/nohosting.svg'
+import Backdrop from '../components/templates/Backdrop'
 
 export default function Hosting() {
-	const [isHostingEnabled, setIsHostingEnabled] = React.useState(false)
+	const [loading, setLoading] = React.useState(true)
+	const [hostingAccount, setHostingAccount] = React.useState('')
 	const { projectDetails, projectContract } = React.useContext(
 		ProjectDetailsContext
 	)
 	const MySwal = withReactContent(Swal)
 	const theme = useTheme()
 	projectContract.has_hosting().then((hasHosting: boolean) => {
-		setIsHostingEnabled(hasHosting)
+		if (hasHosting) {
+			projectContract.get_hosting().then((account: string) => {
+				setHostingAccount(account)
+				setLoading(false)
+			})
+		}
+		setLoading(false)
 	})
 
 	async function showHostingSwal() {
@@ -36,8 +44,8 @@ export default function Hosting() {
 
 		if (formValues) {
 			addHosting(projectContract)
-				.then((success: boolean) => {
-					setIsHostingEnabled(success)
+				.then(() => {
+					setHostingAccount(`hosting.${projectDetails.pid}`)
 				})
 				.catch((error) => {
 					if (error.type === 'NotEnoughBalance') {
@@ -52,31 +60,38 @@ export default function Hosting() {
 		}
 	}
 
-	return isHostingEnabled ? (
-		<UploadSystem pid={projectDetails.pid} />
+	return loading ? (
+		<Backdrop loading={loading} />
 	) : (
 		<>
-			<img alt="nohosting" src={nohosting} className="majorImg" />
-			<Typography
-				variant="h2"
-				style={{ textAlign: 'center', fontWeight: 'bold' }}
-			>
-				No Hosting Contract Deployed
-			</Typography>
-			<Fab
-				sx={{
-					position: 'fixed',
-					bottom: 16,
-					right: 16,
-				}}
-				color="primary"
-				aria-label="add-hosting"
-				onClick={() => {
-					showHostingSwal()
-				}}
-			>
-				<AddIcon />
-			</Fab>
+			{hostingAccount !== '' && (
+				<UploadSystem hostingAccount={hostingAccount} />
+			)}
+			{hostingAccount === '' && (
+				<>
+					<img alt="nohosting" src={nohosting} className="majorImg" />
+					<Typography
+						variant="h2"
+						style={{ textAlign: 'center', fontWeight: 'bold' }}
+					>
+						No Hosting Contract Deployed
+					</Typography>
+					<Fab
+						sx={{
+							position: 'fixed',
+							bottom: 16,
+							right: 16,
+						}}
+						color="primary"
+						aria-label="add-hosting"
+						onClick={() => {
+							showHostingSwal()
+						}}
+					>
+						<AddIcon />
+					</Fab>
+				</>
+			)}
 		</>
 	)
 }

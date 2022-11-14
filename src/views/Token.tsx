@@ -7,6 +7,7 @@ import notoken from '../assets/notoken.svg'
 import { TokenForm, TokenDash } from '../components/token-components'
 import ProjectDetailsContext from '../state/ProjectDetailsContext'
 import { addTokenization } from '../services/NEAR'
+import Backdrop from '../components/templates/Backdrop'
 
 export interface tokenMetadata {
 	spec: string
@@ -17,7 +18,8 @@ export interface tokenMetadata {
 }
 
 export default function Token() {
-	const [token, setToken] = React.useState(false)
+	const [loading, setLoading] = React.useState(true)
+	const [tokenAccount, setTokenAccount] = React.useState('')
 	const { projectDetails, projectContract } = React.useContext(
 		ProjectDetailsContext
 	)
@@ -26,7 +28,13 @@ export default function Token() {
 	const theme = useTheme()
 
 	projectContract.has_tokenization().then((hasTokenization: boolean) => {
-		setToken(hasTokenization)
+		if (hasTokenization) {
+			projectContract.get_tokenization().then((account: string) => {
+				setTokenAccount(account)
+				setLoading(false)
+			})
+			setLoading(false)
+		}
 	})
 
 	async function showTokenSwal() {
@@ -40,8 +48,14 @@ export default function Token() {
 				const supply = (
 					document.getElementById('token-supply') as HTMLInputElement
 				).value
+				if (supply === '') {
+					MySwal.showValidationMessage('Please enter an initial supply')
+				}
 				const name = (document.getElementById('token-name') as HTMLInputElement)
 					.value
+				if (name === '') {
+					MySwal.showValidationMessage('Please enter a name')
+				}
 				const symbol = (
 					document.getElementById('token-symbol') as HTMLInputElement
 				).value
@@ -51,6 +65,9 @@ export default function Token() {
 				const decimals = (
 					document.getElementById('token-decimals') as HTMLInputElement
 				).value
+				if (decimals === '') {
+					MySwal.showValidationMessage('Please enter significant digits')
+				}
 				const hasIcon = (
 					document.getElementById('use-icon') as HTMLInputElement
 				).checked
@@ -77,35 +94,72 @@ export default function Token() {
 				decimals: parseInt(formValues[3], 10),
 				icon: formValues.length === 5 ? formValues[4] : undefined,
 			}
-			console.log(formValues)
-			// addTokenization(projectContract, metadata, parseInt(formValues[0], 10))
+			// console.log(formValues)
+			addTokenization(projectContract, metadata, formValues[0])
+				.then(() => {
+					setTokenAccount(`token.${projectDetails.pid}`)
+				})
+				.catch((error) => {
+					if (error.type === 'NotEnoughBalance') {
+						MySwal.fire({
+							title: 'Not enough balance',
+							text: `Your project account ${
+								error.signer_id
+							} needs an additional ${(
+								error.cost -
+								error.balance * 0.000000000000000000000001
+							).toPrecision(3)} NEAR to cover the token subaccount creation`,
+							icon: 'error',
+							confirmButtonText: 'Ok',
+						})
+					}
+					if (error.type === 'LackBalanceForState') {
+						MySwal.fire({
+							title: 'Not enough balance',
+							text: `Your project account ${
+								error.kind.signer_id
+							} needs an additional ${(
+								error.amount * 0.000000000000000000000001
+							).toPrecision(
+								3
+							)} NEAR to cover the storage for contract deployment`,
+							icon: 'error',
+							confirmButtonText: 'Ok',
+						})
+					}
+				})
 		})
 	}
-	return token ? (
-		<TokenDash pid={projectDetails.pid} />
+	return loading ? (
+		<Backdrop loading={loading} />
 	) : (
 		<>
-			<img alt="notoken" src={notoken} className="majorImg" />
-			<Typography
-				variant="h2"
-				style={{ textAlign: 'center', fontWeight: 'bold' }}
-			>
-				No Token Contract Deployed
-			</Typography>
-			<Fab
-				sx={{
-					position: 'fixed',
-					bottom: 16,
-					right: 16,
-				}}
-				color="primary"
-				aria-label="add-token"
-				onClick={() => {
-					showTokenSwal()
-				}}
-			>
-				<AddIcon />
-			</Fab>
+			{tokenAccount !== '' && <TokenDash tokenAccount={tokenAccount} />}
+			{tokenAccount === '' && (
+				<>
+					<img alt="notoken" src={notoken} className="majorImg" />
+					<Typography
+						variant="h2"
+						style={{ textAlign: 'center', fontWeight: 'bold' }}
+					>
+						No Token Contract Deployed
+					</Typography>
+					<Fab
+						sx={{
+							position: 'fixed',
+							bottom: 16,
+							right: 16,
+						}}
+						color="primary"
+						aria-label="add-token"
+						onClick={() => {
+							showTokenSwal()
+						}}
+					>
+						<AddIcon />
+					</Fab>
+				</>
+			)}
 		</>
 	)
 }

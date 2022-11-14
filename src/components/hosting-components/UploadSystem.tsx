@@ -15,10 +15,10 @@ import {
 import { uploadFiles } from '../storage-components'
 
 interface HostingProps {
-	pid: string
+	hostingAccount: string
 }
 
-export default function UploadSystem({ pid }: HostingProps) {
+export default function UploadSystem({ hostingAccount }: HostingProps) {
 	const { acceptedFiles, getRootProps, getInputProps } = useDropzone()
 
 	interface FileWithPath extends File {
@@ -59,7 +59,7 @@ export default function UploadSystem({ pid }: HostingProps) {
 
 		const hostingContract = new Contract(
 			window.walletConnection.account(),
-			pid,
+			hostingAccount,
 			{
 				viewMethods: [],
 				changeMethods: ['add_to_map'],

@@ -207,7 +207,7 @@ export async function createTokenAccount(parentPID: string) {
 export async function deployTokenContract(
 	parentPID: string,
 	metadata: tokenMetadata,
-	totalSupply: number
+	totalSupply: string
 ) {
 	const wallet = `token.${parentPID}`
 	const storageAccount = await window.near.account(wallet)
@@ -236,7 +236,7 @@ export async function deployTokenContract(
 export async function addTokenization(
 	parentContract: any,
 	metadata: tokenMetadata,
-	totalSupply: number
+	totalSupply: string
 ) {
 	await createTokenAccount(parentContract.contractId)
 	await deployTokenContract(parentContract.contractId, metadata, totalSupply)

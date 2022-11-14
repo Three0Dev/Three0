@@ -7,16 +7,24 @@ import FileManager from '../components/storage-components/FileManager'
 import ProjectDetailsContext from '../state/ProjectDetailsContext'
 import { addStorage } from '../services/NEAR'
 import nostorage from '../assets/nostorage.svg'
+import Backdrop from '../components/templates/Backdrop'
 
 export default function Storage() {
-	const [storage, setStorage] = React.useState(false)
+	const [loading, setLoading] = React.useState(true)
+	const [storageAccount, setStorageAccount] = React.useState('')
 	const { projectDetails, projectContract } = React.useContext(
 		ProjectDetailsContext
 	)
 	const MySwal = withReactContent(Swal)
 	const theme = useTheme()
 	projectContract.has_storage().then((hasStorage: boolean) => {
-		setStorage(hasStorage)
+		if (hasStorage) {
+			projectContract.get_storage().then((account: string) => {
+				setStorageAccount(account)
+				setLoading(false)
+			})
+		}
+		setLoading(false)
 	})
 
 	async function showStorageSwal() {
@@ -36,8 +44,8 @@ export default function Storage() {
 
 		if (formValues) {
 			addStorage(projectContract)
-				.then((success) => {
-					setStorage(success)
+				.then(() => {
+					setStorageAccount(`storage.${projectDetails.pid}`)
 				})
 				.catch((error) => {
 					if (error.type === 'NotEnoughBalance') {
@@ -52,31 +60,36 @@ export default function Storage() {
 		}
 	}
 
-	return storage ? (
-		<FileManager pid={projectDetails.pid} />
+	return loading ? (
+		<Backdrop loading={loading} />
 	) : (
 		<>
-			<img alt="nostorage" src={nostorage} className="majorImg" />
-			<Typography
-				variant="h2"
-				style={{ textAlign: 'center', fontWeight: 'bold' }}
-			>
-				No Storage Contract Deployed
-			</Typography>
-			<Fab
-				sx={{
-					position: 'fixed',
-					bottom: 16,
-					right: 16,
-				}}
-				color="primary"
-				aria-label="add-storage"
-				onClick={() => {
-					showStorageSwal()
-				}}
-			>
-				<AddIcon />
-			</Fab>
+			{storageAccount !== '' && <FileManager storageAccount={storageAccount} />}
+			{storageAccount === '' && (
+				<>
+					<img alt="nostorage" src={nostorage} className="majorImg" />
+					<Typography
+						variant="h2"
+						style={{ textAlign: 'center', fontWeight: 'bold' }}
+					>
+						No Storage Contract Deployed
+					</Typography>
+					<Fab
+						sx={{
+							position: 'fixed',
+							bottom: 16,
+							right: 16,
+						}}
+						color="primary"
+						aria-label="add-storage"
+						onClick={() => {
+							showStorageSwal()
+						}}
+					>
+						<AddIcon />
+					</Fab>
+				</>
+			)}
 		</>
 	)
 }

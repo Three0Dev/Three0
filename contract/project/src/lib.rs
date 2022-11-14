@@ -130,8 +130,8 @@ impl Three0Project {
         return self.hosting.as_ref().unwrap().to_string()
     }
 
-    pub fn set_tokenization(&mut self, hosting_account: AccountId) {
-        self.tokenization = Some(hosting_account);
+    pub fn set_tokenization(&mut self, token_account: AccountId) {
+        self.tokenization = Some(token_account);
     }
 
     pub fn has_tokenization(&self) -> bool {

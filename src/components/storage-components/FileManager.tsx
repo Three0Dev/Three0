@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { Contract } from 'near-api-js'
 import * as short from 'short-uuid'
+import ProjectDetailsContext from '../../state/ProjectDetailsContext'
 import { initIPFS } from '../../services/database'
 import TopBar from './TopBar'
 import Footer from './Footer'
@@ -25,21 +26,10 @@ const defaultLabels = {
 }
 
 interface FileManagerProps {
-	pid: string
+	storageAccount: string
 }
 
-export default function FileManager({ pid }: FileManagerProps) {
-	const contract = new Contract(
-		window.walletConnection.account(),
-		`storage.${pid}`,
-		{
-			// View methods are read only. They don't modify the state, but usually return some value.
-			viewMethods: ['list_files', 'get_file', 'has_storage', 'get_storage'],
-			// Change methods can modify the state. But you don't receive the returned value when called.
-			changeMethods: ['new_default_meta', 'nft_mint', 'set_storage'],
-		}
-	)
-
+export default function FileManager({ storageAccount }: FileManagerProps) {
 	const features = ['uploadFiles']
 
 	const [collapsed, setCollapsed] = useState({})
@@ -52,6 +42,17 @@ export default function FileManager({ pid }: FileManagerProps) {
 	const labels = defaultLabels
 
 	const enabledFeatures = features
+
+	const contract = new Contract(
+		window.walletConnection.account(),
+		storageAccount,
+		{
+			// View methods are read only. They don't modify the state, but usually return some value.
+			viewMethods: ['list_files', 'get_file', 'has_storage', 'get_storage'],
+			// Change methods can modify the state. But you don't receive the returned value when called.
+			changeMethods: ['new_default_meta', 'nft_mint', 'set_storage'],
+		}
+	)
 
 	const uploadFiles = async (path: string, files: File[]) => {
 		let filepath = path
@@ -103,7 +104,9 @@ export default function FileManager({ pid }: FileManagerProps) {
 
 	const openFile = async (path: string) => {
 		const subPath = path.slice(1)
-		const tokenMetaData = await contract.get_file({ file_path: subPath })
+		const tokenMetaData = await contract.get_file({
+			file_path: subPath,
+		})
 		return tokenMetaData
 	}
 
