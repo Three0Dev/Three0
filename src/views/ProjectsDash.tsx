@@ -46,7 +46,7 @@ export default function ProjectsDash() {
 
 				const pid = `${name}_three0-${uuid}.${window.accountId}`
 
-				const pid_max_length = pid.length + 'storage'.length
+				const pidMaxLength = pid.length + 'storage'.length
 
 				const INVALID_PHRASES = [
 					'near',
@@ -70,26 +70,23 @@ export default function ProjectsDash() {
 					Swal.showValidationMessage(
 						'Please enter a valid project name. Only lowercase letters and numbers are allowed.'
 					)
-				} else if (pid_max_length > 64) {
+				} else if (pidMaxLength > 64) {
 					const msg = `Project name is too long. Please enter a name with ${
-						pid_max_length - 64
+						pidMaxLength - 64
 					} less characters.`
 					Swal.showValidationMessage(msg)
 				} else if (name.length < 3) {
 					Swal.showValidationMessage(
 						'Please enter a valid project name. Project name cannot be less than 3 characters.'
 					)
-				} else if (name.includes(' ')) {
-					Swal.showValidationMessage(
-						'Please enter a valid project name. Project name cannot contain spaces.'
-					)
 				} else {
-					for (let i = 0; i < INVALID_PHRASES.length; i++) {
-						if (name.includes(INVALID_PHRASES[i])) {
-							const msg = `Please enter a valid project name. Project name cannot contain "${INVALID_PHRASES[i]}".`
-							Swal.showValidationMessage(msg)
+					INVALID_PHRASES.forEach((phrase) => {
+						if (name.includes(phrase)) {
+							Swal.showValidationMessage(
+								`Please enter a valid project name. Project name cannot contain "${phrase}".`
+							)
 						}
-					}
+					})
 				}
 
 				const chainTypeElement: any = document.getElementById(
