@@ -102,7 +102,7 @@ export default function TokenForm({ pid }: TokenFormProps) {
 							onChange={(event) => {
 								const file = event.target.files![0]
 								const reader = new FileReader()
-								reader.onloadend = function () {
+								reader.onloadend = () => {
 									setIcon(reader.result)
 								}
 								reader.readAsDataURL(file)
