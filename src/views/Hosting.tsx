@@ -39,7 +39,7 @@ export default function Hosting() {
 		setBackdrop(true)
 		try {
 			await addNearHosting(projectContract)
-			setHostingAccount(`hosting.${projectDetails.pid}`)
+			setHostingAccount(`web4.${projectDetails.pid}`)
 		} catch (error: any) {
 			if (error.type === 'NotEnoughBalance') {
 				MySwal.fire({
@@ -73,7 +73,7 @@ export default function Hosting() {
 		<>
 			{hostingAccount !== '' && (
 				<UploadSystem
-					hostingAccount={hostingAccount}
+					hostingAccountId={hostingAccount}
 					pid={projectDetails.pid}
 				/>
 			)}
