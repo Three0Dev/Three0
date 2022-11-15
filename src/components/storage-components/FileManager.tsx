@@ -62,7 +62,7 @@ export default function FileManager({ storageAccount }: FileManagerProps) {
 
 		const filepath = path === '' ? file.name : `${path.slice(1)}/${file.name}`
 
-		const cid = web3StorageClient.put(files)
+		const cid = await web3StorageClient.put(files)
 
 		const fileMetadata = {
 			title: file.name,
