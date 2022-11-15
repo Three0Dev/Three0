@@ -1,4 +1,4 @@
-import { Web3Storage } from 'web3.storage'
+import { Web3Storage } from 'web3.storage/dist/bundle.esm.min.js'
 
 const token = process.env.WEB3_STORAGE_TOKEN
 
