@@ -100,13 +100,16 @@ export default function TokenDash({ tokenAccount }: TokenDashProps) {
 						contract
 							.ft_is_registered({ account_ids: profileList })
 							.then((registered: boolean[]) => {
-								const userProfiles = range.map((i: number) => ({
-									accountId: profileList[i],
-									balance: balanceList[i],
-									registered: registered[i],
-								}))
-								setProjectAccount(userProfiles.pop())
-								setProfiles(userProfiles)
+								contract.ft_metadata().then((metadata: any) => {
+									const digits = metadata.decimals;
+									const userProfiles = range.map((i: number) => ({
+										accountId: profileList[i],
+										balance: balanceList[i] / 10 ** digits,
+										registered: registered[i],
+									}))
+									setProjectAccount(userProfiles.pop())
+									setProfiles(userProfiles)
+								})
 							})
 					})
 			})
@@ -177,7 +180,6 @@ export default function TokenDash({ tokenAccount }: TokenDashProps) {
 					</Toolbar>
 				</AppBar>
 			</Box>
-			{profiles.length !== 0 && (
 				<>
 					<Backdrop loading={loading} />
 					<TableContainer sx={classes.root}>
@@ -225,11 +227,20 @@ export default function TokenDash({ tokenAccount }: TokenDashProps) {
 											{!profile.registered && (
 												<Button
 													onClick={() => {
+														setLoading(true)
 														contract.storage_deposit({
 															args: {
 																account_id: profile.accountId,
 															},
 															amount: utils.format.parseNearAmount('0.00125'),
+														}).then(() => {
+															getUsers()
+														}
+														).catch((e: any) => {
+															console.log(e)
+														}
+														).finally(() => {
+															setLoading(false)
 														})
 													}}
 												>
@@ -301,8 +312,7 @@ export default function TokenDash({ tokenAccount }: TokenDashProps) {
 						onChange={updatePage}
 					/>
 				</>
-			)}
-			{profiles.length === 0 && (
+			{/* {profiles.length === 0 && (
 				<>
 					<img alt="nousers" src={nousers} className="majorImg" />
 					<Typography
@@ -312,7 +322,7 @@ export default function TokenDash({ tokenAccount }: TokenDashProps) {
 						No Users Yet!
 					</Typography>
 				</>
-			)}
+			)} */}
 		</>
 	)
 }

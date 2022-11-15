@@ -70,10 +70,23 @@ export default function TokenForm({ pid }: TokenFormProps) {
 				type="number"
 				helperText={
 					<FormHelperText>
-						Initial supply of the token, can be changed later
+						Initial supply of the token sent to your project account
 					</FormHelperText>
 				}
 				defaultValue={1000000000000000}
+				// variant="filled"
+			/>
+			<br />
+			<TextField
+				id="token-exchange"
+				label="Token Exchange Rate"
+				type="number"
+				helperText={
+					<FormHelperText>
+						How many FTs are needed to be worth 1 NEAR
+					</FormHelperText>
+				}
+				defaultValue={10}
 				// variant="filled"
 			/>
 			<FormControlLabel

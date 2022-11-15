@@ -13,6 +13,20 @@ impl Contract {
         }
     }
 
+    pub(crate) fn internal_mint(&mut self, account_id: &AccountId, amount: Balance) {
+        let mut balance = self.internal_unwrap_balance_of(account_id);
+        //use exchange rate to convert amount from NEAR to token value
+        let token_amount = U128(((amount * self.exchange_rate.0) as f64 * u128::pow(10, self.metadata.get().unwrap().decimals.into()) as f64 / (1e24)) as u128);
+
+        balance += token_amount.0;
+        self.accounts.insert(account_id, &balance);
+        FtMint {
+            owner_id: &account_id,
+            amount: &token_amount,
+            memo: Some(&format!("User {} minted {} tokens", &account_id, &token_amount.0).to_string()),
+        }.emit()
+    }
+
     /// Internal method for depositing some amount of FTs into an account. 
     pub(crate) fn internal_deposit(&mut self, account_id: &AccountId, amount: Balance) {
         // Get the current balance of the account. If they're not registered, panic.

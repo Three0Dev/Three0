@@ -21,8 +21,8 @@ pub struct Contract {
     /// Keep track of each account's balances
     pub accounts: LookupMap<AccountId, Balance>,
 
-    /// Total supply of all tokens.
-    pub total_supply: Balance,
+    /// How many FT it takes to be worth 1 NEAR.
+    pub exchange_rate: U128,
 
     /// The bytes for the largest possible account ID that can be registered on the contract 
     pub bytes_for_longest_account_id: StorageUsage,
@@ -48,6 +48,7 @@ impl Contract {
         Self::new(
             owner_id,
             total_supply,
+            U128(10),
             FungibleTokenMetadata {
                 spec: FT_METADATA_SPEC.to_string(),
                 name: "Team Token FT Tutorial".to_string(),
@@ -56,6 +57,7 @@ impl Contract {
                 reference: None,
                 reference_hash: None,
                 decimals: 24,
+                exchange_rate: 10,
             },
         )
     }
@@ -65,13 +67,14 @@ impl Contract {
     #[init]
     pub fn new(
         owner_id: AccountId,
-        total_supply: U128,
+        initial_supply: U128,
+        exchange_rate: U128,
         metadata: FungibleTokenMetadata,
     ) -> Self {
         // Create a variable of type Self with all the fields initialized. 
         let mut this = Self {
-            // Set the total supply
-            total_supply: total_supply.0,
+            // Set the exchange rate
+            exchange_rate: exchange_rate,
             // Set the bytes for the longest account ID to 0 temporarily until it's calculated later
             bytes_for_longest_account_id: 0,
             // Storage keys are simply the prefixes used for the collections. This helps avoid data collision
@@ -87,12 +90,12 @@ impl Contract {
 
         // Register the owner's account and set their balance to the total supply.
         this.internal_register_account(&owner_id);
-        this.internal_deposit(&owner_id, total_supply.into());
+        this.internal_deposit(&owner_id, initial_supply.into());
         
         // Emit an event showing that the FTs were minted
         FtMint {
             owner_id: &owner_id,
-            amount: &total_supply,
+            amount: &initial_supply,
             memo: Some("Initial token supply is minted"),
         }
         .emit();

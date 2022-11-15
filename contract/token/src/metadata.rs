@@ -15,6 +15,7 @@ pub struct FungibleTokenMetadata {
     pub reference: Option<String>, // A link to a valid JSON file containing various keys offering supplementary details on the token 
     pub reference_hash: Option<Base64VecU8>, // The base64-encoded sha256 hash of the JSON file contained in the reference field. This is to guard against off-chain tampering.
     pub decimals: u8, // used in frontends to show the proper significant digits of a token. This concept is explained well in this OpenZeppelin post. https://docs.openzeppelin.com/contracts/3.x/erc20#a-note-on-decimals
+    pub exchange_rate: u128 // The exchange rate of the token in relation to the NEAR token. This is used to calculate the NEAR value of the token. The exchange rate is the number of tokens that are equivalent to 1 NEAR. For example, if the exchange rate is 100, then 100 tokens are equivalent to 1 NEAR.
 }
 
 pub trait FungibleTokenMetadataProvider {

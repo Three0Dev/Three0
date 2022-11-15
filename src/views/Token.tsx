@@ -14,6 +14,7 @@ export interface tokenMetadata {
 	name: string
 	symbol: string
 	decimals: number
+	exchange_rate: number
 	icon?: string
 }
 
@@ -74,17 +75,23 @@ export default function Token() {
 				if (decimals === '') {
 					MySwal.showValidationMessage('Please enter significant digits')
 				}
+				const exchange = (
+					document.getElementById('token-exchange') as HTMLInputElement
+				).value
+				if (exchange === '') {
+					MySwal.showValidationMessage('Please enter an exchange rate')
+				}
 				const hasIcon = (
 					document.getElementById('use-icon') as HTMLInputElement
 				).checked
 				if (!hasIcon) {
-					return [supply, name, symbol, decimals]
+					return [supply, exchange, name, symbol, decimals]
 				}
 				try {
 					const icon = (
 						document.getElementById('token-icon-preview') as HTMLInputElement
 					).src
-					return [supply, name, symbol, decimals, icon]
+					return [supply, exchange, name, symbol, decimals, icon]
 				} catch (error: any) {
 					MySwal.showValidationMessage('No icon selected')
 				}
@@ -95,14 +102,15 @@ export default function Token() {
 			}
 			const metadata: tokenMetadata = {
 				spec: 'ft-1.0.0',
-				name: formValues[1],
-				symbol: formValues[2],
-				decimals: parseInt(formValues[3], 10),
-				icon: formValues.length === 5 ? formValues[4] : undefined,
+				name: formValues[2],
+				symbol: formValues[3],
+				decimals: parseInt(formValues[4], 10),
+				exchange_rate: parseInt(formValues[1], 10),
+				icon: formValues.length === 6 ? formValues[5] : undefined,
 			}
 			// console.log(formValues)
 			setBackdrop(true)
-			addTokenization(projectContract, metadata, formValues[0])
+			addTokenization(projectContract, metadata, formValues[0], formValues[1])
 				.then(() => {
 					setBackdrop(false)
 					setTokenAccount(`token.${projectDetails.pid}`)

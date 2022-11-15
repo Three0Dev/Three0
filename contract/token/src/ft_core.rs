@@ -51,7 +51,13 @@ pub trait FungibleTokenCore {
     ) -> PromiseOrValue<U128>;
 
     /// Returns the total supply of the token in a decimal string representation.
-    fn ft_total_supply(&self) -> U128;
+    // fn ft_total_supply(&self) -> U128;
+
+    /// Mints the tokens and assigns them to the `account_id` of the caller of the method.
+    /// Requirements:
+    /// * The caller of the method must attach a deposit
+    /// * The amount minted must be equivalent to the exchange rate of the attached deposit
+    fn ft_mint(&mut self);
 
     /// Returns the balance of the account. If the account doesn't exist must returns `"0"`.
     fn ft_balance_of(&self, account_id: AccountId) -> U128;
@@ -109,9 +115,19 @@ impl FungibleTokenCore for Contract {
             .into()
     }
 
-    fn ft_total_supply(&self) -> U128 {
-        // Return the total supply casted to a U128
-        self.total_supply.into()
+    // fn ft_total_supply(&self) -> U128 {
+    //     // Return the total supply casted to a U128
+    //     self.total_supply.into()
+    // }
+
+    #[payable]
+    fn ft_mint(&mut self) {
+        // The reciever is the user who called the method
+        let receiver_id = env::predecessor_account_id();
+        // The amount of tokens to mint is the attached deposit
+        let amount = env::attached_deposit();
+        // Mint the tokens
+        self.internal_mint(&receiver_id, amount);
     }
 
     fn ft_balance_of(&self, account_id: AccountId) -> U128 {
