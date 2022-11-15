@@ -3,12 +3,14 @@ import React, { useState } from 'react'
 import { Contract } from 'near-api-js'
 import * as short from 'short-uuid'
 import ProjectDetailsContext from '../../state/ProjectDetailsContext'
-import { initIPFS } from '../../services/database'
 import TopBar from './TopBar'
 import Footer from './Footer'
 import MiddleArea from './MiddleArea'
 import Backdrop from '../templates/Backdrop'
 import './FileManager.css'
+import web3StorageClient, {
+	web3StorageGateway,
+} from '../../services/Web3Storage'
 
 const defaultLabels = {
 	fileSingle: 'file',
@@ -40,7 +42,9 @@ export default function FileManager({ storageAccount }: FileManagerProps) {
 	const [selection, setSelection] = useState([])
 	const [loading, setLoading] = useState(false)
 	const [backdrop, setBackdrop] = React.useState(false)
-	const { projectContract } = React.useContext(ProjectDetailsContext)
+	const { projectContract, projectDetails } = React.useContext(
+		ProjectDetailsContext
+	)
 
 	const labels = defaultLabels
 
@@ -53,26 +57,19 @@ export default function FileManager({ storageAccount }: FileManagerProps) {
 		changeMethods: ['new_default_meta', 'nft_mint', 'set_storage'],
 	})
 
-	const uploadFiles = async (path: string, files: File[]) => {
-		let filepath = path
-		if (path === '') {
-			filepath = files[0].name
-		} else {
-			filepath = `${path.slice(1)}/${files[0].name}`
-		}
+	const uploadFile = async (path: string, files: File[]) => {
+		const file = files[0]
 
-		// Upload to IPFS
+		const filepath = path === '' ? file.name : `${path.slice(1)}/${file.name}`
 
-		// Put IPFS URL into NFT and mint
-		const ipfs = await initIPFS()
-		const file = await ipfs.add(files[0])
+		const cid = web3StorageClient.put(files)
 
 		const fileMetadata = {
-			title: files[0].name,
-			description: 'This is a test',
-			media: `http://ipfs.io/ipfs/${file.path}`,
-			media_hash: btoa(file.path),
-			file_type: files[0].type,
+			title: file.name,
+			description: `Uploaded from ${projectDetails.pid} using Three0`,
+			media: `${web3StorageGateway}/${cid}/${file.name}`,
+			media_hash: btoa(cid),
+			file_type: file.type,
 			issued_at: Date.now(),
 		}
 
@@ -213,7 +210,7 @@ export default function FileManager({ storageAccount }: FileManagerProps) {
 			<TopBar
 				currentPath={currentPath}
 				setCurrentPath={setCurrentPath}
-				uploadFiles={uploadFiles}
+				uploadFiles={uploadFile}
 				labels={labels}
 				reload={reload}
 				enabledFeatures={enabledFeatures}

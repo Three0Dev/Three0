@@ -16,7 +16,7 @@
     "deploy": "npm run deploy:contract && npm run deploy:pages",
     "prestart": "npm run build:contract:debug && npm run dev:deploy:contract",
     "start": "npm run front",
-    "front": "env-cmd -f ./neardev/dev-account.env env-cmd -f .near/.env parcel src/index.html --open",
+    "front": "env-cmd -f ./neardev/dev-account.env env-cmd -f .env parcel src/index.html --open",
     "dev": "nodemon --watch contract -e rs --exec \"npm run start\"",
     "test": "npm run test:contract && cd .. && jest test --runInBand",
     "test:contract": "npm run build:contract:debug && cd contract && cargo test -- --nocapture",

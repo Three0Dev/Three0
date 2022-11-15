@@ -21,7 +21,6 @@ import {
 	CloudUpload as CloudUploadIcon,
 } from '@mui/icons-material'
 import Swal from 'sweetalert2'
-import { Web3Storage } from 'web3.storage'
 import {
 	TableCell,
 	TableRow,
@@ -30,8 +29,9 @@ import {
 	TableHeader,
 	TableBody,
 } from '../templates/Table'
-
-const apiToken = ''
+import web3StorageClient, {
+	web3StorageGateway,
+} from '../../services/Web3Storage'
 
 interface HostingProps {
 	hostingAccountId: string
@@ -90,12 +90,13 @@ export default function UploadSystem({ hostingAccountId, pid }: HostingProps) {
 			changeMethods: ['add_to_map'],
 		})
 
-		const client = new Web3Storage({ token: apiToken })
-		const rootCID = await client.put(acceptedFiles, { maxRetries: 3 })
+		const rootCID = await web3StorageClient.put(acceptedFiles, {
+			maxRetries: 3,
+		})
 
 		const files = acceptedFiles.map((file) => ({
 			path: file.path.startsWith('/') ? file.path : `/${file.path}`,
-			redirect_url: `https://w3s.link/ipfs/${rootCID}/${file.name}`,
+			redirect_url: `${web3StorageGateway}/${rootCID}/${file.name}`,
 		}))
 		await hostingContract.add_to_map({ content: files })
 		setCurrentStep(4)
