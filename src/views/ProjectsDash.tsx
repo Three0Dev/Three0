@@ -51,7 +51,7 @@ export default function ProjectsDash() {
 				// eslint-disable-next-line no-useless-escape
 				const nameRegex = /^(([a-z\d]+[\-_])*[a-z\d]+)$/
 
-				const pid = `${name}_three0-${uuid}.${nearConfig.networkId}`
+				const pid = `${name}-three0-${uuid}.${nearConfig.networkId}`
 
 				const pidMaxLength = pid.length + 'storage'.length
 

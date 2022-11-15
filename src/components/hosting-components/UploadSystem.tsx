@@ -21,6 +21,7 @@ import {
 	CloudUpload as CloudUploadIcon,
 } from '@mui/icons-material'
 import Swal from 'sweetalert2'
+import { Web3Storage } from 'web3.storage'
 import {
 	TableCell,
 	TableRow,
@@ -29,16 +30,16 @@ import {
 	TableHeader,
 	TableBody,
 } from '../templates/Table'
-import ProjectDetailsContext from '../../state/ProjectDetailsContext'
+
+const apiToken = ''
 
 interface HostingProps {
-	hostingAccount: string
+	hostingAccountId: string
 	pid: string
 }
 
-export default function UploadSystem({ hostingAccount, pid }: HostingProps) {
+export default function UploadSystem({ hostingAccountId, pid }: HostingProps) {
 	const [currentStep, setCurrentStep] = React.useState(0)
-	const { projectContract } = React.useContext(ProjectDetailsContext)
 
 	const url = `https://${pid}.page`
 
@@ -78,39 +79,27 @@ export default function UploadSystem({ hostingAccount, pid }: HostingProps) {
 		return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`
 	}
 
-	// get the uploaded files and add them to the hosting contract map
-	// get the uploaded files and add them to the hosting contract map
-	async function uploadFile() {
+	// upload files to ipfs with web3.storage
+	async function uploadtoStorageWeb3() {
 		setCurrentStep(3)
-		const files: {
-			path: string
-			content_type: string
-			body: string | ArrayBuffer | null
-		}[] = []
 
-		const hostingContract = new Contract(
-			projectContract.account,
-			hostingAccount,
-			{
-				viewMethods: [],
-				changeMethods: ['add_to_map'],
-			}
-		)
+		const hostingAccount = await window.near.account(hostingAccountId)
 
-		acceptedFiles.forEach(async (file) => {
-			const reader = new FileReader()
-			reader.onload = async () => {
-				files.push({
-					path: file.path.startsWith('/') ? file.path : `/${file.path}`,
-					content_type: file.type,
-					body: reader.result,
-				})
-				await hostingContract.add_to_map({ content: files })
-				setCurrentStep(4)
-				window.open(url, '_blank')
-			}
-			reader.readAsText(file)
+		const hostingContract = new Contract(hostingAccount, hostingAccountId, {
+			viewMethods: [],
+			changeMethods: ['add_to_map'],
 		})
+
+		const client = new Web3Storage({ token: apiToken })
+		const rootCID = await client.put(acceptedFiles, { maxRetries: 3 })
+
+		const files = acceptedFiles.map((file) => ({
+			path: file.path.startsWith('/') ? file.path : `/${file.path}`,
+			redirect_url: `https://w3s.link/ipfs/${rootCID}/${file.name}`,
+		}))
+		await hostingContract.add_to_map({ content: files })
+		setCurrentStep(4)
+		window.open(url, '_blank')
 	}
 
 	const steps = ['Select Files', 'Validate', 'Upload', 'Complete']
@@ -206,7 +195,8 @@ export default function UploadSystem({ hostingAccount, pid }: HostingProps) {
 				}}
 				color="primary"
 				aria-label="upload-files"
-				onClick={() => uploadFile()}
+				// onClick={() => uploadToIPFS()}
+				onClick={() => uploadtoStorageWeb3()}
 			>
 				<CloudUploadIcon />
 			</Fab>
