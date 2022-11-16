@@ -78,7 +78,7 @@ export default function TopBar({
 				})
 			})
 			.catch((error: any) => {
-				error()
+				console.log(error)
 				setBackdrop(false)
 				// TODO: Make specific error messages
 				Swal.fire({

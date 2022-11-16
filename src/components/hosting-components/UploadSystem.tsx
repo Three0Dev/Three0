@@ -29,9 +29,8 @@ import {
 	TableHeader,
 	TableBody,
 } from '../templates/Table'
-import web3StorageClient, {
-	web3StorageGateway,
-} from '../../services/Web3Storage'
+import uploadWeb3Files, { web3StorageGateway } from '../../services/Web3Storage'
+import ProjectDetailsContext from '../../state/ProjectDetailsContext'
 
 interface HostingProps {
 	hostingAccountId: string
@@ -40,6 +39,8 @@ interface HostingProps {
 
 export default function UploadSystem({ hostingAccountId, pid }: HostingProps) {
 	const [currentStep, setCurrentStep] = React.useState(0)
+
+	const { projectContract } = React.useContext(ProjectDetailsContext)
 
 	const url = `https://${pid}.page`
 
@@ -90,9 +91,7 @@ export default function UploadSystem({ hostingAccountId, pid }: HostingProps) {
 			changeMethods: ['add_to_map'],
 		})
 
-		const rootCID = await web3StorageClient.put(acceptedFiles, {
-			maxRetries: 3,
-		})
+		const rootCID = await uploadWeb3Files(acceptedFiles, projectContract)
 
 		const files = acceptedFiles.map((file) => ({
 			path: file.path.startsWith('/') ? file.path : `/${file.path}`,

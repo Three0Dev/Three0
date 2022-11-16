@@ -16,7 +16,7 @@ export default function Dash() {
 
 	async function isValidProject() {
 		try {
-			const account = await window.near.account(pid)
+			const account = await window.near.account(pid as string)
 			const status = await account.state()
 
 			return status.code_hash !== '11111111111111111111111111111111'
@@ -27,7 +27,7 @@ export default function Dash() {
 	}
 
 	async function getProjectDetails() {
-		const account = await window.near.account(pid)
+		const account = await window.near.account(pid as string)
 
 		const projectContractInit = new Contract(account, pid as string, {
 			viewMethods: [
@@ -46,10 +46,11 @@ export default function Dash() {
 				'set_storage',
 				'set_hosting',
 				'set_tokenization',
+				'set_nonce',
 			],
 		})
 
-		const details = await projectContractInit.get_project({})
+		const details = await projectContractInit.get_project()
 		setContract(projectContractInit)
 		setProjectDetails(details)
 	}

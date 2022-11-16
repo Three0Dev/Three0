@@ -8,9 +8,7 @@ import Footer from './Footer'
 import MiddleArea from './MiddleArea'
 import Backdrop from '../templates/Backdrop'
 import './FileManager.css'
-import web3StorageClient, {
-	web3StorageGateway,
-} from '../../services/Web3Storage'
+import uploadWeb3Files, { web3StorageGateway } from '../../services/Web3Storage'
 
 const defaultLabels = {
 	fileSingle: 'file',
@@ -62,7 +60,7 @@ export default function FileManager({ storageAccount }: FileManagerProps) {
 
 		const filepath = path === '' ? file.name : `${path.slice(1)}/${file.name}`
 
-		const cid = await web3StorageClient.put(files)
+		const cid = await uploadWeb3Files(files, projectContract)
 
 		const fileMetadata = {
 			title: file.name,
