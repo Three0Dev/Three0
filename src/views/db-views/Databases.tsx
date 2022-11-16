@@ -48,7 +48,7 @@ export default function DatabasesView() {
 		setLoading(true)
 		createDatabase(
 			projectContract,
-			args.name + projectDetails.pid,
+			args.name + '-' + projectDetails.pid,
 			args.type,
 			args.permissions,
 			args.overwrite
