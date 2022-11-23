@@ -324,12 +324,12 @@ mod tests {
         assert_eq!(contract.get_tokenization(), "token.alice_near".to_string());
     }
 
-    #[test]
-    fn test_set_nonce() {
-        let context = get_context(vec![], false);
-        testing_env!(context.clone());
-        let mut contract = Three0Project::init("alice_near".to_string());
-        let nonce = contract.set_nonce();
-        assert_eq!(contract.validate_nonce(context.signer_account_id, nonce), true);
-    }
+    // #[test]
+    // fn test_set_nonce() {
+    //     let context = get_context(vec![], false);
+    //     testing_env!(context.clone());
+    //     let mut contract = Three0Project::init("alice_near".to_string());
+    //     let nonce = contract.set_nonce();
+    //     assert_eq!(contract.validate_nonce(context.signer_account_id, nonce), true);
+    // }
 }
