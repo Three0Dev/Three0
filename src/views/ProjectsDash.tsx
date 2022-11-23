@@ -1,7 +1,10 @@
 import React from 'react'
 import AddIcon from '@mui/icons-material/Add'
 import { Fab, useTheme } from '@mui/material'
-import { useSearchParams, useNavigate } from 'react-router-dom'
+import {
+	// useSearchParams,
+	useNavigate,
+} from 'react-router-dom'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import * as short from 'short-uuid'
@@ -17,7 +20,7 @@ import { nearConfig } from '../utils'
 export default function ProjectsDash() {
 	const [loading, setLoading] = React.useState(false)
 
-	const [params] = useSearchParams()
+	// const [params] = useSearchParams()
 	const navigate = useNavigate()
 	const theme = useTheme()
 
@@ -48,7 +51,7 @@ export default function ProjectsDash() {
 				// eslint-disable-next-line no-useless-escape
 				const nameRegex = /^(([a-z\d]+[\-_])*[a-z\d]+)$/
 
-				const pid = `${name}_three0-${uuid}.${nearConfig.networkId}`
+				const pid = `${name}-three0-${uuid}.${nearConfig.networkId}`
 
 				const pidMaxLength = pid.length + 'storage'.length
 

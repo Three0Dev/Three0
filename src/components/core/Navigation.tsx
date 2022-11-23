@@ -7,22 +7,33 @@ import {
 	ListItemIcon,
 	ListItemText,
 } from '@mui/material'
-import FolderIcon from '@mui/icons-material/Folder'
-import StorageIcon from '@mui/icons-material/Storage'
-import PublicIcon from '@mui/icons-material/Public'
-import KeyIcon from '@mui/icons-material/Key'
-import HomeIcon from '@mui/icons-material/Home'
+import {
+	Folder,
+	Storage,
+	Public,
+	Key,
+	Home,
+	MonetizationOn,
+} from '@mui/icons-material'
 
 export default function Navigation() {
 	const [selectedIndex, setSelectedIndex] = React.useState(0)
 
-	const tabs = ['Home', 'Authentication', 'Database', 'Storage', 'Hosting']
+	const tabs = [
+		'Home',
+		'Authentication',
+		'Database',
+		'Storage',
+		'Hosting',
+		'Tokenization',
+	]
 	const tabIcon = [
-		<HomeIcon />,
-		<KeyIcon />,
-		<StorageIcon />,
-		<FolderIcon />,
-		<PublicIcon />,
+		<Home />,
+		<Key />,
+		<Storage />,
+		<Folder />,
+		<Public />,
+		<MonetizationOn />,
 	]
 
 	const navigate = useNavigate()
@@ -50,6 +61,9 @@ export default function Navigation() {
 				break
 			case 4:
 				url += '/hosting'
+				break
+			case 5:
+				url += '/token'
 				break
 			default:
 				break

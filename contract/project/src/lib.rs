@@ -16,7 +16,7 @@ mod types;
 // To conserve gas, efficient serialization is achieved through Borsh (http://borsh.io/)
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::{PanicOnDefault, near_bindgen, setup_alloc, AccountId, env};
-use near_sdk::collections::UnorderedMap;
+use near_sdk::collections::{UnorderedMap, LookupMap};
 
 pub use crate::types::*;
 
@@ -30,9 +30,11 @@ pub struct Three0Project {
     owner: AccountId,
     pid: String,
     databases: UnorderedMap<String, Database>,
-    users: UnorderedMap<String, User>,
+    users: UnorderedMap<AccountId, User>,
     storage: Option<AccountId>,
     hosting: Option<AccountId>,
+    tokenization: Option<AccountId>,
+    storage_nonce_map: LookupMap<AccountId, u64>,
 }
 
 #[near_bindgen]
@@ -46,6 +48,33 @@ impl Three0Project {
             users: UnorderedMap::new(b"users".to_vec()),
             storage: None,
             hosting: None,
+            tokenization: None,
+            storage_nonce_map: LookupMap::new(b"storage_nonce_map".to_vec()),
+        }
+    }
+
+    pub fn set_nonce(&mut self) -> u64 {
+        // signed is hi.testnet
+        // owner is sree.testnet
+        // current account is hi.testnet
+        // signer is not in valid users
+        if env::signer_account_id() == self.owner || env::signer_account_id() == env::current_account_id() || self.users.get(&env::signer_account_id()).is_some() {
+            let current_nonce = env::block_index();
+            self.storage_nonce_map.insert(&env::signer_account_id(), &current_nonce);
+            current_nonce
+        } else {
+            env::panic(b"Unauthorized");
+        }
+    }
+
+    pub fn validate_nonce(&mut self, account_to_validate: AccountId, nonce: u64){
+        if env::signer_account_id() != "three0.testnet" && env::signer_account_id() != self.owner {
+            env::panic(b"Only valid project can validate nonce");
+        }
+
+        let current_nonce = self.storage_nonce_map.remove(&account_to_validate).unwrap();
+        if current_nonce != nonce {
+            env::panic(b"Nonce mismatch");
         }
     }
 
@@ -53,9 +82,10 @@ impl Three0Project {
         ProjectReturnSchema {
             pid: self.pid.clone(),
             num_users: self.users.len() as u32,
-            get_storage: self.storage.is_some(),
-            get_hosting: self.hosting.is_some(),
             num_databases: self.databases.len() as u32,
+            has_storage: self.storage.is_some(),
+            has_hosting: self.hosting.is_some(),
+            has_tokenization: self.tokenization.is_some(),
         }
     }
 
@@ -127,6 +157,16 @@ impl Three0Project {
     pub fn get_hosting(&self) -> AccountId {
         self.hosting.as_ref()
         .unwrap_or_else(|| env::panic(b"Hosting not set"))
+        .to_string()
+    }
+
+    pub fn set_tokenization(&mut self) {
+        self.tokenization = format!("token.{}", env::current_account_id().clone()).into();
+    }
+
+    pub fn get_tokenization(&self) -> AccountId {
+        self.tokenization.as_ref()
+        .unwrap_or_else(|| env::panic(b"Tokenization not set"))
         .to_string()
     }
 }
@@ -274,4 +314,22 @@ mod tests {
         contract.set_hosting();
         assert_eq!(contract.get_hosting(), "web4.alice_near".to_string());
     }
+
+    #[test]
+    fn test_tokenization() {
+        let context = get_context(vec![], false);
+        testing_env!(context);
+        let mut contract = Three0Project::init("alice_near".to_string());
+        contract.set_tokenization();
+        assert_eq!(contract.get_tokenization(), "token.alice_near".to_string());
+    }
+
+    // #[test]
+    // fn test_set_nonce() {
+    //     let context = get_context(vec![], false);
+    //     testing_env!(context.clone());
+    //     let mut contract = Three0Project::init("alice_near".to_string());
+    //     let nonce = contract.set_nonce();
+    //     assert_eq!(contract.validate_nonce(context.signer_account_id, nonce), true);
+    // }
 }

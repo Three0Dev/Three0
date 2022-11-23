@@ -51,7 +51,7 @@ export default function Login() {
 					Three0
 				</Typography>
 				<Button sx={styles.button} variant="contained" onClick={login}>
-					<img src={nearlogo} style={{ height: '45%' }} />
+					<img src={nearlogo} alt="nearlogo" style={{ height: '45%' }} />
 					&nbsp; Log In w/ NEAR
 				</Button>
 			</Box>

@@ -1,13 +1,14 @@
 /* eslint-disable no-console */
-import React from 'react'
-import { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Contract } from 'near-api-js'
 import * as short from 'short-uuid'
-import { initIPFS } from '../../services/database'
+import ProjectDetailsContext from '../../state/ProjectDetailsContext'
 import TopBar from './TopBar'
 import Footer from './Footer'
 import MiddleArea from './MiddleArea'
+import Backdrop from '../templates/Backdrop'
 import './FileManager.css'
+import uploadWeb3Files, { web3StorageGateway } from '../../services/Web3Storage'
 
 const defaultLabels = {
 	fileSingle: 'file',
@@ -26,21 +27,10 @@ const defaultLabels = {
 }
 
 interface FileManagerProps {
-	pid: string
+	storageAccount: string
 }
 
-export default function FileManager({ pid }: FileManagerProps) {
-	const contract = new Contract(
-		window.walletConnection.account(),
-		`storage.${pid}`,
-		{
-			// View methods are read only. They don't modify the state, but usually return some value.
-			viewMethods: ['list_files', 'get_file', 'get_storage'],
-			// Change methods can modify the state. But you don't receive the returned value when called.
-			changeMethods: ['new_default_meta', 'nft_mint', 'set_storage'],
-		}
-	)
-
+export default function FileManager({ storageAccount }: FileManagerProps) {
 	const features = ['uploadFiles']
 
 	const [collapsed, setCollapsed] = useState({})
@@ -49,31 +39,35 @@ export default function FileManager({ pid }: FileManagerProps) {
 	const [lastPath, setLastPath] = useState('')
 	const [selection, setSelection] = useState([])
 	const [loading, setLoading] = useState(false)
+	const [backdrop, setBackdrop] = React.useState(false)
+	const { projectContract, projectDetails } = React.useContext(
+		ProjectDetailsContext
+	)
 
 	const labels = defaultLabels
 
 	const enabledFeatures = features
 
-	const uploadFiles = async (path: string, files: File[]) => {
-		let filepath = path
-		if (path === '') {
-			filepath = files[0].name
-		} else {
-			filepath = `${path.slice(1)}/${files[0].name}`
-		}
+	const contract = new Contract(projectContract.account, storageAccount, {
+		// View methods are read only. They don't modify the state, but usually return some value.
+		viewMethods: ['list_files', 'get_file', 'has_storage', 'get_storage'],
+		// Change methods can modify the state. But you don't receive the returned value when called.
+		changeMethods: ['new_default_meta', 'nft_mint', 'set_storage'],
+	})
 
-		// Upload to IPFS
+	const uploadFile = async (path: string, files: File[]) => {
+		const file = files[0]
 
-		// Put IPFS URL into NFT and mint
-		const ipfs = await initIPFS()
-		const file = await ipfs.add(files[0])
+		const filepath = path === '' ? file.name : `${path.slice(1)}/${file.name}`
+
+		const cid = await uploadWeb3Files(files, projectContract)
 
 		const fileMetadata = {
-			title: files[0].name,
-			description: 'This is a test',
-			media: `http://ipfs.io/ipfs/${file.path}`,
-			media_hash: btoa(file.path),
-			file_type: files[0].type,
+			title: file.name,
+			description: `Uploaded from ${projectDetails.pid} using Three0`,
+			media: `${web3StorageGateway}/${cid}/${file.name}`,
+			media_hash: btoa(cid),
+			file_type: file.type,
 			issued_at: Date.now(),
 		}
 
@@ -104,7 +98,9 @@ export default function FileManager({ pid }: FileManagerProps) {
 
 	const openFile = async (path: string) => {
 		const subPath = path.slice(1)
-		const tokenMetaData = await contract.get_file({ file_path: subPath })
+		const tokenMetaData = await contract.get_file({
+			file_path: subPath,
+		})
 		return tokenMetaData
 	}
 
@@ -142,6 +138,7 @@ export default function FileManager({ pid }: FileManagerProps) {
 	}
 
 	const reload = async () => {
+		setBackdrop(true)
 		setLoading(true)
 		const updated: any = {}
 		const notChanged: any = {}
@@ -175,8 +172,10 @@ export default function FileManager({ pid }: FileManagerProps) {
 					return promise
 				})
 			)
+			setBackdrop(false)
 			setLoading(false)
 		} catch (error) {
+			setBackdrop(false)
 			setLoading(false)
 			setCurrentPath(lastPath)
 		}
@@ -198,20 +197,22 @@ export default function FileManager({ pid }: FileManagerProps) {
 		setStructure(ordered)
 	}
 
-	useEffect(() => {
+	React.useEffect(() => {
 		reload()
 		setSelection([])
 	}, [currentPath])
 
 	return (
 		<div className={`FileManager${loading ? ' FileManager-Loading' : ''}`}>
+			<Backdrop loading={backdrop} />
 			<TopBar
 				currentPath={currentPath}
 				setCurrentPath={setCurrentPath}
-				uploadFiles={uploadFiles}
+				uploadFiles={uploadFile}
 				labels={labels}
 				reload={reload}
 				enabledFeatures={enabledFeatures}
+				setBackdrop={setBackdrop}
 			/>
 			<Footer
 				structure={structure}

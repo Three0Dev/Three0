@@ -9,11 +9,16 @@ import {
 	providers,
 	Account,
 } from 'near-api-js'
+// eslint-disable-next-line import/no-unresolved
 import NEAR_CONTRACT from 'url:../contract-wasms/near.wasm'
 // eslint-disable-next-line import/no-unresolved
 import NEAR_STORAGE_CONTRACT from 'url:../contract-wasms/near-storage.wasm'
+// eslint-disable-next-line import/no-unresolved
 import NEAR_HOSTING_CONTRACT from 'url:../contract-wasms/near-hosting.wasm'
+// eslint-disable-next-line import/no-unresolved
+import NEAR_TOKEN_CONTRACT from 'url:../contract-wasms/near-token.wasm'
 import { nearConfig } from '../utils'
+import { tokenMetadata } from '../views/Token'
 
 export async function generateKey(name: string) {
 	const keyPair = KeyPair.fromRandom('ed25519')
@@ -134,28 +139,6 @@ export async function deleteNEARProject(pid: string) {
 // 	return result.transaction.receiver_id
 // }
 
-export async function createHostingAccount(parentPID: string) {
-	const parentAccount = await window.near.account(parentPID)
-	await createNEARAccount(`web4.${parentPID}`, '9', parentAccount)
-}
-
-export async function deployHostingContract(parentPID: string) {
-	const wallet = `web4.${parentPID}`
-	const hostingAccount: Account = await window.near.account(wallet)
-
-	hostingAccount.deployContract(
-		new Uint8Array(await (await fetch(NEAR_HOSTING_CONTRACT)).arrayBuffer())
-	)
-}
-
-export async function addHosting(parentContract: any) {
-	await createHostingAccount(parentContract.contractId)
-	await deployHostingContract(parentContract.contractId)
-	await parentContract.set_hosting({
-		hosting_account: `web4.${parentContract.contractId}`,
-	})
-}
-
 export async function createStorageAccount(parentPID: string) {
 	const parentAccount = await window.near.account(parentPID)
 	await createNEARAccount(`storage.${parentPID}`, '16', parentAccount)
@@ -185,7 +168,77 @@ export async function deployStorageContract(parentPID: string) {
 export async function addStorage(parentContract: any) {
 	await createStorageAccount(parentContract.contractId)
 	await deployStorageContract(parentContract.contractId)
-	await parentContract.set_storage({
-		storage_account: `storage.${parentContract.contractId}`,
+	await parentContract.set_storage()
+}
+
+export async function createHostingAccount(parentPID: string) {
+	const parentAccount = await window.near.account(parentPID)
+	await createNEARAccount(`web4.${parentPID}`, '9', parentAccount)
+}
+
+export async function deployHostingContract(parentPID: string) {
+	const wallet = `web4.${parentPID}`
+	const hostingAccount: Account = await window.near.account(wallet)
+
+	hostingAccount.deployContract(
+		new Uint8Array(await (await fetch(NEAR_HOSTING_CONTRACT)).arrayBuffer())
+	)
+}
+
+export async function addHosting(parentContract: any) {
+	await createHostingAccount(parentContract.contractId)
+	await deployHostingContract(parentContract.contractId)
+	await parentContract.set_hosting()
+}
+
+export async function createTokenAccount(parentPID: string) {
+	const parentAccount = await window.near.account(parentPID)
+	await createNEARAccount(`token.${parentPID}`, '9', parentAccount)
+}
+
+export async function deployTokenContract(
+	parentPID: string,
+	metadata: tokenMetadata,
+	totalSupply: string,
+	exchangeRate: string
+) {
+	const wallet = `token.${parentPID}`
+	const storageAccount = await window.near.account(wallet)
+
+	const contract = await fetch(NEAR_TOKEN_CONTRACT)
+	const buf = await contract.arrayBuffer()
+
+	await storageAccount.signAndSendTransaction({
+		receiverId: wallet,
+		actions: [
+			transactions.deployContract(new Uint8Array(buf)),
+			transactions.functionCall(
+				'new',
+				{
+					owner_id: parentPID,
+					initial_supply: totalSupply,
+					exchange_rate: exchangeRate,
+					metadata,
+				},
+				10000000000000,
+				'0'
+			),
+		],
 	})
+}
+
+export async function addTokenization(
+	parentContract: any,
+	metadata: tokenMetadata,
+	totalSupply: string,
+	exchangeRate: string
+) {
+	await createTokenAccount(parentContract.contractId)
+	await deployTokenContract(
+		parentContract.contractId,
+		metadata,
+		totalSupply,
+		exchangeRate
+	)
+	parentContract.set_tokenization()
 }

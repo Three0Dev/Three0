@@ -61,12 +61,34 @@ export default function TopBar({
 	reload,
 	labels,
 	enabledFeatures,
+	setBackdrop,
 }: any) {
 	const uploadInputRef = useRef<HTMLInputElement>(null)
 	const onFileSelect = (event: { target: { files: any } }) => {
+		setBackdrop(true)
 		uploadFiles(currentPath, [...event.target.files])
-			.then(reload)
-			.catch((error: any) => error && console.error(error))
+			.then(() => {
+				reload()
+				setBackdrop(false)
+				Swal.fire({
+					title: 'Success',
+					text: 'File uploaded successfully',
+					icon: 'success',
+					confirmButtonText: 'Ok',
+				})
+			})
+			.catch((error: any) => {
+				console.log(error)
+				setBackdrop(false)
+				// TODO: Make specific error messages
+				Swal.fire({
+					title: 'Error',
+					text: 'File upload failed',
+					icon: 'error',
+					confirmButtonText: 'Ok',
+				})
+				// console.error(error)
+			})
 	}
 
 	const onPathChange = (path: string) => {

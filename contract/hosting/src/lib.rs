@@ -21,17 +21,63 @@ impl Default for Three0Hosting {
 #[serde(crate = "near_sdk::serde")]
 pub struct FileContents {
     pub path: String,
-    pub body: String, 
-    pub content_type: String,
+    pub redirect_url: String, 
 }
 
 #[near_bindgen]
+
 impl Three0Hosting {
+    // #[init]
+    // pub fn init(&self) {
+    //     let response = Web4Response {
+    //         body: 
+    //             "<!DOCTYPE html>
+    //             <html>
+    //               <head>
+    //                 <meta charset=\"utf-8\">
+    //                 <title>Three0 Hosting</title>
+    //               </head>
+    //               <body>
+    //                 <h1>Welcome to Hosting!</h1>
+    //                 <p>please upload your files to host your project</p>
+    //                 <p>this site will then be replaced by your project!/p>
+    //               </body>
+    //             </html>
+    //             ".as_bytes().to_owned().into(),
+    //         content_type: "text/html; charset=UTF-8".to_owned(),
+    //     };
+    //     self.file_map.insert("https://testing-q8op5t6xnxb2hcfeceqxsr.testnet.page/", &response);
+    // }
+
+    // #[init]
+    // pub fn init() -> Self {
+    //     let response = Web4Response {
+    //         body: 
+    //             "<!DOCTYPE html>
+    //             <html>
+    //               <head>
+    //                 <meta charset=\"utf-8\">
+    //                 <title>Three0 Hosting</title>
+    //               </head>
+    //               <body>
+    //                 <h1>Welcome to Hosting!</h1>
+    //                 <p>please upload files to host your project</p>
+    //                 <p>this site will then be replaced by your project!/p>
+    //               </body>
+    //             </html>
+    //             ".as_bytes().to_owned().into(),
+    //         content_type: "text/html; charset=UTF-8".to_owned(),
+
+    //     };
+    //     let mut file_map = LookupMap::new(b"hosting_map".to_vec());
+    //     file_map.insert("https://testing-q8op5t6xnxb2hcfeceqxsr.testnet.page/", &response);
+    // }
+
+
     pub fn add_to_map(&mut self, content: Vec<FileContents>) {
         for file in content {
-            let response = Web4Response::Body {
-                content_type: file.content_type,
-                body: file.body.as_bytes().to_owned().into(),
+            let response = Web4Response::BodyUrl {
+                body_url: file.redirect_url,
             };
             self.file_map.insert(&file.path, &response);
         }
