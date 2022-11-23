@@ -7,13 +7,13 @@ import OrbitDB from 'orbit-db'
 import { config as Config } from './config'
 // import NearIdentityProvider from './NearIdentityProvider'
 
-let ipfs: any
+let ipfs: IPFS.IPFS
 
 // OrbitDB instance
-let orbitdb: any
+let orbitdb: OrbitDB
 
 // Databases
-let programs: any
+let programs: Array<any>
 
 let ipfsActivate = false
 
@@ -44,11 +44,8 @@ export const initOrbitDB = async (ipfsLocal: any) => {
 	return orbitdb
 }
 
-export const getAllDatabases = async (
-	pid: string | undefined,
-	projectContract: any
-) => {
-	console.log('Getting all databases for project: ', pid)
+export const getAllDatabases = async (projectContract: any) => {
+	console.log('Getting all databases for project')
 	if (orbitdb) {
 		// Load programs database
 		programs = await projectContract.get_databases({})
@@ -125,11 +122,10 @@ export const removeDatabase = async (
 	contract: { delete_database: (arg0: { database_name: any }) => any },
 	program: { address: any }
 ) => {
+	console.log('Removing database')
 	const db = await orbitdb.open(program.address)
 	await db.drop()
 	await db.close()
-
-	// programs.remove(hash)
 
 	// await fetch(`${peerDBServer}unpin?address=${program.address}`, {
 	// 	method: 'POST',
