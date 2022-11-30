@@ -2,7 +2,7 @@ const CONTRACT_NAME = process.env.CONTRACT_NAME || 'alpha.three0.testnet'
 
 const LOCAL_KURTOSIS_URL = process.env.KURTOSIS_URL
 
-function getNEARConfig(env: string) {
+export default function getNEARConfig(env: string) {
 	switch (env) {
 		case 'mainnet':
 			return {
@@ -67,4 +67,3 @@ function getNEARConfig(env: string) {
 }
 
 module.exports = getNEARConfig
-export default getNEARConfig

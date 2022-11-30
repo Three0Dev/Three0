@@ -20,7 +20,7 @@ export const config: IPFSOptions = {
 		Addresses: {
 			Swarm: [
 				'/dns4/signal-rtc.three0dev.com/tcp/443/wss/p2p-webrtc-star/',
-				'/dns4/three0-ipfs-wss-node.onrender.com/tcp/10000/wss/p2p/QmXz8gH7VhjuGYRbPR8HyGXB6BGvNg9WMkiGUg2qh6Hshx',
+				// '/dns4/three0-ipfs-wss-node.onrender.com/tcp/10000/wss/p2p/QmXz8gH7VhjuGYRbPR8HyGXB6BGvNg9WMkiGUg2qh6Hshx',
 			],
 		},
 	},
