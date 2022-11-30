@@ -1,0 +1,201 @@
+.FileManager {
+  min-height: 100%;
+  height: 100%;
+  flex-direction: column;
+  font-size: 14px;
+  display: flex;
+}
+
+.FileManager * {
+  box-sizing: border-box;
+}
+
+.FileManager.FileManager-Loading {
+  pointer-events: none;
+  opacity: .8;
+}
+
+.FileManager .FileManager-TopBar {
+  height: 48px;
+  background-color: #0000001a;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 8px;
+  line-height: 32px;
+  display: flex;
+}
+
+.FileManager-TopBar .TopBar-Left {
+  white-space: nowrap;
+  flex-direction: row;
+  flex: auto;
+  display: flex;
+}
+
+.FileManager-TopBar .TopBar-Button {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  line-height: 32px;
+}
+
+.TopBar-Button.Icon-Button {
+  padding: 0;
+}
+
+.TopBar-Button svg {
+  width: 16px;
+  height: 16px;
+  transform: translateY(2px);
+}
+
+.TopBar-Left input[type="text"] {
+  height: 32px;
+  flex: auto;
+  padding: 0 8px;
+  line-height: 32px;
+}
+
+.TopBar-Left button {
+  margin-right: 4px;
+}
+
+.TopBar-Right button {
+  margin-left: 4px;
+}
+
+.FileManager-SideBar .SideBar-TreeNode {
+  color: #789;
+  padding: 2%;
+}
+
+.SideBar-TreeNode .TreeNode-Name {
+  cursor: pointer;
+  align-items: center;
+  display: flex;
+}
+
+.TreeNode-Name.TreeNode-Current {
+  color: #000;
+  background-color: #0000ff1a;
+}
+
+.FileManager .FileManager-MiddleArea {
+  flex-direction: row;
+  flex: 1;
+  justify-content: space-between;
+  padding: 1%;
+  display: flex;
+}
+
+.FileManager .FileManager-SideBar {
+  min-width: 250px;
+  margin: 1%;
+  padding: 8px 0;
+  overflow: auto;
+}
+
+.FileManager .FileManager-Body {
+  grid-gap: 16px;
+  border-left: 1px solid #0003;
+  flex: auto;
+  grid-template-rows: repeat(auto-fill, minmax(96px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  margin: 1%;
+  padding: 8px;
+  display: grid;
+  overflow: auto;
+}
+
+.FileManager-Body .Body-Item {
+  text-align: center;
+  color: #708090;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.Body-Item .Body-Item-Name {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.Body-Item .Body-Item-Icon svg {
+  width: 64px;
+  height: 64px;
+}
+
+.Body-Item.Item-Selected {
+  color: #000;
+  background-color: #0000ff1a;
+}
+
+.FileManager .FileManager-Footer {
+  color: #fff;
+  background-color: #6247aa;
+  border-radius: 0 0 20px 20px;
+  align-items: center;
+  padding: .5% 1% .5% 2%;
+  font-weight: bold;
+  display: flex;
+  box-shadow: 0 2px 4px -1px #0003, 0 4px 5px #00000024;
+}
+
+.FileManager-Footer .Footer-Right {
+  text-align: right;
+  flex: auto;
+}
+
+.Footer-Right button {
+  min-width: 28px;
+  height: 28px;
+  margin-left: 4px;
+  padding: 0 8px;
+  line-height: 28px;
+}
+
+.Footer-Right button.Icon-Button {
+  padding: 0;
+}
+
+.Footer-Right button svg {
+  width: 16px;
+  height: 16px;
+  transform: translateY(2px);
+}
+
+@font-face {
+  font-family: myFont;
+  src: url("font.8995201e.ttf");
+}
+
+* {
+  box-sizing: border-box;
+  font-family: myFont !important;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #eceff1;
+  margin: 0;
+}
+
+.majorImg {
+  width: 60%;
+  margin: 2% auto;
+  display: block;
+}
+
+#root {
+  height: 100%;
+  min-height: 100%;
+  flex-direction: column;
+  display: flex;
+}
+
+/*# sourceMappingURL=index.7d689e6e.css.map */
