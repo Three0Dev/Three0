@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved
 import { IPFSOptions } from 'ipfs-core/src/components/network'
 
 // eslint-disable-next-line import/prefer-default-export
