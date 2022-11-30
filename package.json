@@ -12,7 +12,7 @@
     "predeploy": "npm run build",
     "dev:deploy:contract": "near dev-deploy",
     "deploy:contract": "near deploy alpha.three0.testnet",
-    "deploy:pages": "echo 'app.three0dev.com' > ./dist/CNAME && NODE_DEBUG=gh-pages gh-pages -d dist/",
+    "deploy:pages": "echo 'app.three0dev.com' > ./dist/CNAME && gh-pages -d dist",
     "deploy": "npm run deploy:contract && npm run deploy:pages",
     "prestart": "npm run build:contract:debug && npm run dev:deploy:contract",
     "start": "npm run front",
