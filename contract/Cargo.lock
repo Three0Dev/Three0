@@ -1349,8 +1349,7 @@ dependencies = [
 name = "three0_hosting"
 version = "0.1.0"
 dependencies = [
- "near-sdk 4.0.0",
- "serde_json",
+ "near-sdk 3.1.0",
 ]
 
 [[package]]

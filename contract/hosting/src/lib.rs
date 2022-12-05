@@ -25,55 +25,7 @@ pub struct FileContents {
 }
 
 #[near_bindgen]
-
 impl Three0Hosting {
-    // #[init]
-    // pub fn init(&self) {
-    //     let response = Web4Response {
-    //         body: 
-    //             "<!DOCTYPE html>
-    //             <html>
-    //               <head>
-    //                 <meta charset=\"utf-8\">
-    //                 <title>Three0 Hosting</title>
-    //               </head>
-    //               <body>
-    //                 <h1>Welcome to Hosting!</h1>
-    //                 <p>please upload your files to host your project</p>
-    //                 <p>this site will then be replaced by your project!/p>
-    //               </body>
-    //             </html>
-    //             ".as_bytes().to_owned().into(),
-    //         content_type: "text/html; charset=UTF-8".to_owned(),
-    //     };
-    //     self.file_map.insert("https://testing-q8op5t6xnxb2hcfeceqxsr.testnet.page/", &response);
-    // }
-
-    // #[init]
-    // pub fn init() -> Self {
-    //     let response = Web4Response {
-    //         body: 
-    //             "<!DOCTYPE html>
-    //             <html>
-    //               <head>
-    //                 <meta charset=\"utf-8\">
-    //                 <title>Three0 Hosting</title>
-    //               </head>
-    //               <body>
-    //                 <h1>Welcome to Hosting!</h1>
-    //                 <p>please upload files to host your project</p>
-    //                 <p>this site will then be replaced by your project!/p>
-    //               </body>
-    //             </html>
-    //             ".as_bytes().to_owned().into(),
-    //         content_type: "text/html; charset=UTF-8".to_owned(),
-
-    //     };
-    //     let mut file_map = LookupMap::new(b"hosting_map".to_vec());
-    //     file_map.insert("https://testing-q8op5t6xnxb2hcfeceqxsr.testnet.page/", &response);
-    // }
-
-
     pub fn add_to_map(&mut self, content: Vec<FileContents>) {
         for file in content {
             let response = Web4Response::BodyUrl {
@@ -153,36 +105,6 @@ mod tests {
     }
 
     #[test]
-    fn test_add_to_map() {
-        let context = get_context("bob_near".to_string());
-        testing_env!(context);
-        let mut contract = Three0Hosting::default();
-        let content = vec![
-            FileContents {
-                path: "/index.html".to_string(),
-                redirect_url: "https://testing-q8op5t6xnxb2hcfeceqxsr.testnet.page/".to_string(),
-            },
-            FileContents {
-                path: "/style.css".to_string(),
-                redirect_url: "https://testing-q8op5t6xnxb2hcfeceqxsr.testnet.page/style.css".to_string(),
-            },
-        ];
-        contract.add_to_map(content);
-        assert_eq!(
-            contract.file_map.get("/index.html").unwrap(),
-            Web4Response::BodyUrl {
-                body_url: "https://testing-q8op5t6xnxb2hcfeceqxsr.testnet.page/".to_string()
-            }
-        );
-        assert_eq!(
-            contract.file_map.get("/style.css").unwrap(),
-            Web4Response::BodyUrl {
-                body_url: "https://testing-q8op5t6xnxb2hcfeceqxsr.testnet.page/style.css".to_string()
-            }
-        );
-    }
-
-    #[test]
     fn test_web4_get() {
         let context = get_context("bob_near".to_string());
         testing_env!(context);
@@ -205,11 +127,16 @@ mod tests {
             query: std::collections::HashMap::new(),
             preloads: None,
         };
-        assert_eq!(
-            contract.web4_get(request),
-            Web4Response::BodyUrl {
-                body_url: "https://testing-q8op5t6xnxb2hcfeceqxsr.testnet.page/".to_string()
+
+        let response = contract.web4_get(request);
+        match response {
+            Web4Response::BodyUrl { body_url } => {
+                assert_eq!(
+                    body_url,
+                    "https://testing-q8op5t6xnxb2hcfeceqxsr.testnet.page/"
+                );
             }
-        );
+            _ => panic!("Unexpected response"),
+        }
     }
 }
