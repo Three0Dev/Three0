@@ -8,7 +8,7 @@
     "build": "npm run build:contract && npm run build:web",
     "build:contract": "node contract/compile.js",
     "build:contract:debug": "node contract/compile.js --debug",
-    "build:web": "parcel build 'src/*.html' --public-url ./",
+    "build:web": "parcel build 'src/*.html' --no-cache --public-url ./",
     "predeploy": "npm run build",
     "dev:deploy:contract": "near dev-deploy",
     "deploy:contract": "near deploy alpha.three0.testnet",
