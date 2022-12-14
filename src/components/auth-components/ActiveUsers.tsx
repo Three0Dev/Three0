@@ -54,6 +54,9 @@ export default function ActiveUsers() {
 	const updatePage = (_e: any, val: number) => setPage((val - 1) * 10)
 
 	function getUsers() {
+		console.log(projectContract)
+		if(Object.keys(projectContract).length === 0) return
+
 		setLoading(true)
 
 		projectContract
@@ -88,7 +91,7 @@ export default function ActiveUsers() {
 	// Todo change users schema
 	React.useEffect(() => {
 		getUsers()
-	}, [projectDetails, page])
+	}, [projectContract, page])
 
 	return (
 		<>
