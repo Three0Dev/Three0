@@ -24,11 +24,11 @@ const getProjectId = (pid: any) => pid.substring(0, pid.indexOf('.'))
 
 function ConfigFileInner() {
 	const params = useParams()
-	const configCredentials = `{\n"contractName": "${
-		params.pid
-	}",\n"projectId": "${getProjectId(
-		params.pid
-	)}",\n"chainType": "NEAR_TESTNET"\n}`
+	const configCredentials = `{
+		"contractName": "${params.pid}",
+		"projectId": "${getProjectId(params.pid)}",
+		"chainType": "NEAR_TESTNET"
+	}`
 	const copyConfigText = `const config = ${configCredentials};`
 	function copyConfig() {
 		navigator.clipboard.writeText(copyConfigText)
@@ -63,7 +63,7 @@ function ConfigFileInner() {
 			flexDirection="column"
 		>
 			<Paper elevation={0} sx={classes.Paper}>
-				{copyConfigText}
+				<code>{copyConfigText}</code>
 			</Paper>
 			<ButtonGroup color="primary">
 				<Button onClick={() => downloadConfig()}>Download</Button>
