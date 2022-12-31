@@ -45,15 +45,15 @@ const classes = {
 export default function ActiveUsers() {
 	const [profiles, setProfiles] = React.useState([])
 	const [page, setPage] = React.useState(1)
-	const { projectDetails, projectContract } = React.useContext(
-		ProjectDetailsContext
-	)
+	const { projectContract } = React.useContext(ProjectDetailsContext)
 	const [loading, setLoading] = React.useState(false)
 	const [userNumber, setUserNum] = React.useState(0)
 
 	const updatePage = (_e: any, val: number) => setPage((val - 1) * 10)
 
 	function getUsers() {
+		if (Object.keys(projectContract).length === 0) return
+
 		setLoading(true)
 
 		projectContract
@@ -63,7 +63,6 @@ export default function ActiveUsers() {
 					entries: React.SetStateAction<never[]>
 					num: React.SetStateAction<number>
 				}) => {
-					console.log(users)
 					setProfiles(users.entries)
 					setUserNum(users.num)
 				}
@@ -88,7 +87,7 @@ export default function ActiveUsers() {
 	// Todo change users schema
 	React.useEffect(() => {
 		getUsers()
-	}, [projectDetails, page])
+	}, [projectContract, page])
 
 	return (
 		<>

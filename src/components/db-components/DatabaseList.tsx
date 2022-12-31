@@ -42,10 +42,6 @@ export default function ProgramList({ programs, onRemove }: any) {
 		})
 	}
 
-	React.useEffect(() => {
-		console.log(programs)
-	}, [programs])
-
 	return (
 		<TableContainer component={Paper}>
 			<Table>

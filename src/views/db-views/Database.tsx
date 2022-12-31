@@ -12,6 +12,7 @@ import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace'
 import Divider from '@mui/material/Divider'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import jsonview from '@pgrabovets/json-view'
+import DocumentStore from 'orbit-db-docstore'
 import {
 	TableHeader,
 	Table,
@@ -91,7 +92,9 @@ export default function ProgramView() {
 					payload: { value: { key: e, value: db.get(e) } },
 				}))
 			} else if (db.type === 'docstore') {
-				entries = db.query((e: null) => e !== null, { fullOp: true }).reverse()
+				entries = (db as DocumentStore<any>)
+					.query((e: null) => e !== null)
+					.reverse()
 			} else {
 				entries = [{ payload: { value: 'TODO' } }]
 			}

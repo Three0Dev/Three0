@@ -27,6 +27,7 @@ export default class NearIdentityProvider extends IdentityProvider {
 		console.log(dataBuffer)
 
 		const keyStore = new keyStores.BrowserLocalStorageKeyStore()
+
 		const keyPair = await keyStore.getKey(
 			NEAR_CONFIG.networkId,
 			window.accountId

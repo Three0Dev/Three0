@@ -79,7 +79,7 @@ export async function createNEARProjectAccount() {
 	const publicKey = await generateKey(pid)
 
 	await window.near.createAccount(pid, publicKey)
-	// TODO transfer some amount of NEAR to the account in mainnet
+	// TODO: transfer some amount of NEAR to the account in mainnet
 
 	await createNEARProjectReference()
 	await deployNEARProjectContract()
@@ -90,36 +90,22 @@ export async function deleteNEARProject(pid: string) {
 		const canDelete = await window.contract.delete_project({
 			contract_address: pid,
 		})
-		if (canDelete) {
-			const account = await window.near.account(pid)
-			// TODO donate money to faucet in testnet
-			await account.deleteAccount(
-				nearConfig.networkId === 'testnet'
-					? 'v1.faucet.nonofficial.testnet'
-					: window.accountId
-			)
+		if (!canDelete) return false
+		const account = await window.near.account(pid)
 
-			await new keyStores.BrowserLocalStorageKeyStore().removeKey(
-				nearConfig.networkId,
-				pid
-			)
+		await account.deleteAccount(
+			nearConfig.networkId === 'testnet'
+				? 'v1.faucet.nonofficial.testnet'
+				: window.accountId
+		)
 
-			try {
-				await new keyStores.BrowserLocalStorageKeyStore().removeKey(
-					nearConfig.networkId,
-					`web4.${pid}`
-				)
+		const keyStore = new keyStores.BrowserLocalStorageKeyStore()
 
-				await new keyStores.BrowserLocalStorageKeyStore().removeKey(
-					nearConfig.networkId,
-					`storage.${pid}`
-				)
-			} catch (e) {
-				console.error(e)
-			}
+		await keyStore.removeKey(nearConfig.networkId, pid)
+		await keyStore.removeKey(nearConfig.networkId, `web4.${pid}`)
+		await keyStore.removeKey(nearConfig.networkId, `storage.${pid}`)
 
-			return true
-		}
+		return true
 	} catch (e) {
 		console.error(e)
 	}
@@ -203,12 +189,12 @@ export async function deployTokenContract(
 	exchangeRate: string
 ) {
 	const wallet = `token.${parentPID}`
-	const storageAccount = await window.near.account(wallet)
+	const tokenAccount = await window.near.account(wallet)
 
 	const contract = await fetch(NEAR_TOKEN_CONTRACT)
 	const buf = await contract.arrayBuffer()
 
-	await storageAccount.signAndSendTransaction({
+	await tokenAccount.signAndSendTransaction({
 		receiverId: wallet,
 		actions: [
 			transactions.deployContract(new Uint8Array(buf)),

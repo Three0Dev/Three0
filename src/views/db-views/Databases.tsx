@@ -46,7 +46,7 @@ export default function DatabasesView() {
 		setLoading(true)
 		createDatabase(
 			projectContract,
-			args.name,
+			args.name + '-' + projectDetails.pid,
 			args.type,
 			args.permissions,
 			args.overwrite
@@ -54,6 +54,7 @@ export default function DatabasesView() {
 			.then(() => {
 				fetchDatabases().then((data) => {
 					console.log('Loaded programs', data)
+					console.log(args.name + projectDetails.pid)
 				})
 				Swal.fire({
 					title: 'Database Created!',
