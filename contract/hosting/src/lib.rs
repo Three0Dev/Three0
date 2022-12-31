@@ -25,7 +25,6 @@ pub struct FileContents {
 }
 
 #[near_bindgen]
-
 impl Three0Hosting {
     pub fn add_to_map(&mut self, content: Vec<FileContents>) {
         for file in content {
@@ -76,4 +75,68 @@ pub enum Web4Response {
         #[serde(rename = "preloadUrls")]
         preload_urls: Vec<String>,
     },
+}
+//create unit tests
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use near_sdk::MockedBlockchain;
+    use near_sdk::{testing_env, VMContext};
+
+    fn get_context(predecessor_account_id: String) -> VMContext {
+        VMContext {
+            current_account_id: "alice_near".to_string(),
+            signer_account_id: "bob_near".to_string(),
+            signer_account_pk: vec![0, 1, 2],
+            predecessor_account_id,
+            input: vec![],
+            block_index: 0,
+            block_timestamp: 0,
+            account_balance: 0,
+            account_locked_balance: 0,
+            storage_usage: 0,
+            attached_deposit: 0,
+            prepaid_gas: 10u64.pow(18),
+            random_seed: vec![0, 1, 2],
+            is_view: false,
+            output_data_receivers: vec![],
+            epoch_height: 0,
+        }
+    }
+
+    #[test]
+    fn test_web4_get() {
+        let context = get_context("bob_near".to_string());
+        testing_env!(context);
+        let mut contract = Three0Hosting::default();
+        let content = vec![
+            FileContents {
+                path: "/index.html".to_string(),
+                redirect_url: "https://testing-q8op5t6xnxb2hcfeceqxsr.testnet.page/".to_string(),
+            },
+            FileContents {
+                path: "/style.css".to_string(),
+                redirect_url: "https://testing-q8op5t6xnxb2hcfeceqxsr.testnet.page/style.css".to_string(),
+            },
+        ];
+        contract.add_to_map(content);
+        let request = Web4Request {
+            account_id: None,
+            path: "/index.html".to_string(),
+            params: std::collections::HashMap::new(),
+            query: std::collections::HashMap::new(),
+            preloads: None,
+        };
+
+        let response = contract.web4_get(request);
+        match response {
+            Web4Response::BodyUrl { body_url } => {
+                assert_eq!(
+                    body_url,
+                    "https://testing-q8op5t6xnxb2hcfeceqxsr.testnet.page/"
+                );
+            }
+            _ => panic!("Unexpected response"),
+        }
+    }
 }
