@@ -47,7 +47,8 @@ pub struct ProjectReturnSchema {
 pub struct Database {
     pub address: String,
     pub name: String,
-    pub db_type: String, 
+    pub db_type: String,
+    pub is_pinned: bool, 
 }
 
 #[derive(BorshDeserialize, BorshSerialize, Serialize)]

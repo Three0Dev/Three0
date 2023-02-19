@@ -22,8 +22,6 @@ pub use crate::types::*;
 
 setup_alloc!();
 
-// Structs in Rust are similar to other languages, and may include impl keyword as shown below
-// Note: the names of the structs are not important when calling the smart contract, but the function names are
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize, PanicOnDefault)]
 pub struct Three0Project {
@@ -54,10 +52,6 @@ impl Three0Project {
     }
 
     pub fn set_nonce(&mut self) -> u64 {
-        // signed is hi.testnet
-        // owner is sree.testnet
-        // current account is hi.testnet
-        // signer is not in valid users
         if env::signer_account_id() == self.owner || env::signer_account_id() == env::current_account_id() || self.users.get(&env::signer_account_id()).is_some() {
             let current_nonce = env::block_index();
             self.storage_nonce_map.insert(&env::signer_account_id(), &current_nonce);
@@ -103,6 +97,19 @@ impl Three0Project {
 
     pub fn get_databases(&self) -> Vec<Database> {
         self.databases.values().collect()
+    }
+
+    // TODO: Make Payable
+    pub fn set_pinning(&mut self, database_name: String) {
+        let mut database = self.databases.get(&database_name).unwrap_or_else(|| env::panic(b"Database not found"));
+        database.is_pinned = true;
+        self.databases.insert(&database_name, &database);
+    }
+
+    pub fn disable_pinning(&mut self, database_name: String) {
+        let mut database = self.databases.get(&database_name).unwrap_or_else(|| env::panic(b"Database not found"));
+        database.is_pinned = false;
+        self.databases.insert(&database_name, &database);
     }
 
     pub fn get_users(&self, offset: usize, limit: usize) -> AllSchema {
@@ -257,6 +264,7 @@ mod tests {
             address: "test".to_string(),
             name: "test".to_string(),
             db_type: "test".to_string(),
+            is_pinned: false,
         };
         contract.add_database(database);
         assert_eq!(contract.valid_database("test".to_string()), true);
@@ -272,7 +280,7 @@ mod tests {
             address: "test".to_string(),
             name: "test".to_string(),
             db_type: "test".to_string(),
-
+            is_pinned: false,
         };
         contract.add_database(database);
         assert_eq!(contract.valid_database("test".to_string()), true);
@@ -290,7 +298,7 @@ mod tests {
             address: "test".to_string(),
             name: "test".to_string(),
             db_type: "test".to_string(),
-
+            is_pinned: false,
         };
         contract.add_database(database);
         assert_eq!(contract.valid_database("test".to_string()), true);

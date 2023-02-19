@@ -101,7 +101,7 @@ export default function TokenDash({ tokenAccount }: TokenDashProps) {
 							.ft_is_registered({ account_ids: profileList })
 							.then((registered: boolean[]) => {
 								contract.ft_metadata().then((metadata: any) => {
-									const digits = metadata.decimals;
+									const digits = metadata.decimals
 									const userProfiles = range.map((i: number) => ({
 										accountId: profileList[i],
 										balance: balanceList[i] / 10 ** digits,
@@ -180,138 +180,140 @@ export default function TokenDash({ tokenAccount }: TokenDashProps) {
 					</Toolbar>
 				</AppBar>
 			</Box>
-				<>
-					<Backdrop loading={loading} />
-					<TableContainer sx={classes.root}>
-						<Table style={{ margin: '2%' }}>
-							<TableHeader
-								headers={[
-									<Typography>Account ID</Typography>,
-									<Typography>Is Registered</Typography>,
-									<Typography>Balance</Typography>,
-									<Typography>Add Balance</Typography>,
-								]}
-							/>
-							<TableBody>
-								{projectAccount && (
-									<TableRow key={projectAccount.accountId}>
-										<TableCell>{projectAccount.accountId}</TableCell>
-										<TableCell>
-											<Badge
-												sx={classes.Badge}
-												anchorOrigin={{
-													vertical: 'top',
-													horizontal: 'right',
-												}}
-												color="success"
-												variant="dot"
-											/>
-										</TableCell>
-										<TableCell>{`${projectAccount.balance}`}</TableCell>
-										<TableCell />
-									</TableRow>
-								)}
-								{profiles.map((profile, index) => (
-									<TableRow key={profile.accountId}>
-										<TableCell>{profile.accountId}</TableCell>
-										<TableCell>
-											<Badge
-												sx={classes.Badge}
-												anchorOrigin={{
-													vertical: 'top',
-													horizontal: 'right',
-												}}
-												color={profile.registered ? 'success' : 'warning'}
-												variant="dot"
-											/>
-											{!profile.registered && (
-												<Button
-													onClick={() => {
-														setLoading(true)
-														contract.storage_deposit({
+			<>
+				<Backdrop loading={loading} />
+				<TableContainer sx={classes.root}>
+					<Table style={{ margin: '2%' }}>
+						<TableHeader
+							headers={[
+								<Typography>Account ID</Typography>,
+								<Typography>Is Registered</Typography>,
+								<Typography>Balance</Typography>,
+								<Typography>Add Balance</Typography>,
+							]}
+						/>
+						<TableBody>
+							{projectAccount && (
+								<TableRow key={projectAccount.accountId}>
+									<TableCell>{projectAccount.accountId}</TableCell>
+									<TableCell>
+										<Badge
+											sx={classes.Badge}
+											anchorOrigin={{
+												vertical: 'top',
+												horizontal: 'right',
+											}}
+											color="success"
+											variant="dot"
+										/>
+									</TableCell>
+									<TableCell>{`${projectAccount.balance}`}</TableCell>
+									<TableCell />
+								</TableRow>
+							)}
+							{profiles.map((profile, index) => (
+								<TableRow key={profile.accountId}>
+									<TableCell>{profile.accountId}</TableCell>
+									<TableCell>
+										<Badge
+											sx={classes.Badge}
+											anchorOrigin={{
+												vertical: 'top',
+												horizontal: 'right',
+											}}
+											color={profile.registered ? 'success' : 'warning'}
+											variant="dot"
+										/>
+										{!profile.registered && (
+											<Button
+												onClick={() => {
+													setLoading(true)
+													contract
+														.storage_deposit({
 															args: {
 																account_id: profile.accountId,
 															},
 															amount: utils.format.parseNearAmount('0.00125'),
-														}).then(() => {
-															getUsers()
-														}
-														).catch((e: any) => {
-															console.log(e)
-														}
-														).finally(() => {
-															setLoading(false)
-														})
-													}}
-												>
-													Register
-												</Button>
-											)}
-										</TableCell>
-										<TableCell>{`${profile.balance}`}</TableCell>
-										<TableCell>
-											<TextField
-												defaultValue={0}
-												id={`add-balance-${profile.accountId}`}
-												type="number"
-												InputProps={{ inputProps: { min: 0 } }}
-												disabled={!profile.registered}
-												style={{ width: 100 }}
-											/>
-											<Button
-												disabled={!profile.registered}
-												onClick={() => {
-													setLoading(true)
-													// deposit
-													contract
-														.ft_transfer({
-															args: {
-																receiver_id: profile.accountId,
-																amount: (
-																	document.getElementById(
-																		`add-balance-${profile.accountId}`
-																	) as HTMLInputElement
-																).value,
-															},
-															amount: '1',
 														})
 														.then(() => {
-															setLoading(false)
 															getUsers()
-															MySwal.fire({
-																title: 'Success!',
-																text: 'Balance updated',
-																icon: 'success',
-																confirmButtonText: 'Cool',
-															})
 														})
-														.catch((error: any) => {
+														.catch((e: any) => {
+															console.log(e)
+														})
+														.finally(() => {
 															setLoading(false)
-															MySwal.fire({
-																title: 'Error!',
-																text: error.kind.ExecutionError,
-																icon: 'error',
-																confirmButtonText: 'Cool',
-															})
 														})
 												}}
 											>
-												<SendIcon />
+												Register
 											</Button>
-										</TableCell>
-									</TableRow>
-								))}
-							</TableBody>
-						</Table>
-					</TableContainer>
-					<Pagination
-						sx={classes.root}
-						defaultPage={1}
-						count={Math.floor(userNumber / 6) + 1}
-						boundaryCount={2}
-						onChange={updatePage}
-					/>
-				</>
+										)}
+									</TableCell>
+									<TableCell>{`${profile.balance}`}</TableCell>
+									<TableCell>
+										<TextField
+											defaultValue={0}
+											id={`add-balance-${profile.accountId}`}
+											type="number"
+											InputProps={{ inputProps: { min: 0 } }}
+											disabled={!profile.registered}
+											style={{ width: 100 }}
+										/>
+										<Button
+											disabled={!profile.registered}
+											onClick={() => {
+												setLoading(true)
+												// deposit
+												contract
+													.ft_transfer({
+														args: {
+															receiver_id: profile.accountId,
+															amount: (
+																document.getElementById(
+																	`add-balance-${profile.accountId}`
+																) as HTMLInputElement
+															).value,
+														},
+														amount: '1',
+													})
+													.then(() => {
+														setLoading(false)
+														getUsers()
+														MySwal.fire({
+															title: 'Success!',
+															text: 'Balance updated',
+															icon: 'success',
+															confirmButtonText: 'Cool',
+														})
+													})
+													.catch((error: any) => {
+														setLoading(false)
+														MySwal.fire({
+															title: 'Error!',
+															text: error.kind.ExecutionError,
+															icon: 'error',
+															confirmButtonText: 'Cool',
+														})
+													})
+											}}
+										>
+											<SendIcon />
+										</Button>
+									</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+				</TableContainer>
+				<Pagination
+					sx={classes.root}
+					defaultPage={1}
+					count={Math.floor(userNumber / 6) + 1}
+					boundaryCount={2}
+					onChange={updatePage}
+				/>
+			</>
 			{/* {profiles.length === 0 && (
 				<>
 					<img alt="nousers" src={nousers} className="majorImg" />

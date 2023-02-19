@@ -21,7 +21,9 @@ export default function DatabasesView() {
 	const [loading, setLoading] = React.useState(false)
 	const theme = useTheme()
 
-	const { projectContract } = React.useContext(ProjectDetailsContext)
+	const { projectContract, projectDetails } = React.useContext(
+		ProjectDetailsContext
+	)
 
 	const MySwal = withReactContent(Swal)
 
@@ -46,7 +48,7 @@ export default function DatabasesView() {
 		setLoading(true)
 		createDatabase(
 			projectContract,
-			args.name + '-' + projectDetails.pid,
+			`${args.name}-${projectDetails.pid}`,
 			args.type,
 			args.permissions,
 			args.overwrite

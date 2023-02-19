@@ -13,6 +13,9 @@ import Divider from '@mui/material/Divider'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import jsonview from '@pgrabovets/json-view'
 import DocumentStore from 'orbit-db-docstore'
+import FeedStore from 'orbit-db-feedstore'
+import CounterStore from 'orbit-db-counterstore'
+import KeyValueStore from 'orbit-db-kvstore'
 import {
 	TableHeader,
 	Table,
@@ -81,15 +84,23 @@ export default function ProgramView() {
 		setLoading(true)
 		const db = await getDB(addressRef)
 
-		if (db) {
+		if (!db) return
+
+		const getEntries = () => {
 			let entries
 			if (db.type === 'eventlog' || db.type === 'feed') {
-				entries = await db.iterator({ limit: 10 }).collect().reverse()
+				entries = (db as FeedStore<any>)
+					.iterator({ limit: 10 })
+					.collect()
+					.reverse()
 			} else if (db.type === 'counter') {
-				entries = [{ payload: { value: db.value } }]
+				entries = [{ payload: { value: (db as CounterStore).value } }]
 			} else if (db.type === 'keyvalue') {
-				entries = Object.keys(db.all).map((e) => ({
-					payload: { value: { key: e, value: db.get(e) } },
+				// TODO: Simplify
+				entries = Object.keys((db as KeyValueStore<any>).all).map((e) => ({
+					payload: {
+						value: { key: e, value: (db as KeyValueStore<any>).get(e) },
+					},
 				}))
 			} else if (db.type === 'docstore') {
 				entries = (db as DocumentStore<any>)
@@ -100,8 +111,12 @@ export default function ProgramView() {
 			}
 
 			dispatch({ type: actions.DB.SET_DB, db, entries })
-			setLoading(false)
 		}
+
+		db.events.on('replicated', getEntries)
+
+		getEntries()
+		setLoading(false)
 	}
 
 	useEffect(() => {
@@ -174,29 +189,17 @@ export default function ProgramView() {
 										)}
 									</TableCell>
 									<TableCell>
-										{appState.db ? (
-											<Typography variant="subtitle2" color="textSecondary">
-												{appState.db.access.write}
-											</Typography>
-										) : (
-											<Typography variant="subtitle2" color="textSecondary">
-												-
-											</Typography>
-										)}
+										<Typography variant="subtitle2" color="textSecondary">
+											{appState.db ? appState.db.access.write : '-'}
+										</Typography>
 									</TableCell>
 									<TableCell>
-										{appState.db ? (
-											<Typography variant="subtitle2" color="textSecondary">
-												{
-													// eslint-disable-next-line no-underscore-dangle
-													appState.db._oplog.values.length
-												}
-											</Typography>
-										) : (
-											<Typography variant="subtitle2" color="textSecondary">
-												-
-											</Typography>
-										)}
+										<Typography variant="subtitle2" color="textSecondary">
+											{
+												// eslint-disable-next-line no-underscore-dangle
+												appState.db ? appState.db._oplog.values.length : '-'
+											}
+										</Typography>
 									</TableCell>
 								</TableRow>
 							</TableBody>

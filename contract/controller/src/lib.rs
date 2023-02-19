@@ -118,7 +118,7 @@ impl Three0 {
         let len = entries.len();
 
         AllSchema{
-            entries: entries,
+            entries,
             num: len as u16,
         }
     }
